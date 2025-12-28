@@ -7,246 +7,45 @@ export const jetbrainsCheatsheet = {
   icon: Zap,
   colorTheme: 'purple' as const,
   sections: [
+    // BEGINNER LEVEL
     {
       title: 'Getting Started with JetBrains IDEs',
       commands: [
         {
-          command: 'IntelliJ IDEA Installation',
-          description: 'Install IntelliJ IDEA IDE',
+          command: 'IDE Installation and Setup',
+          description: 'Install and configure JetBrains IDEs',
           usage: 'Download from jetbrains.com',
-          example: `# IntelliJ IDEA (Java/Kotlin/Scala)`,
+          example: '# IntelliJ IDEA (Java/Kotlin/Scala)\n# PyCharm (Python)\n# WebStorm (JavaScript/TypeScript)\n# PhpStorm (PHP)\n# RubyMine (Ruby)\n# CLion (C/C++)\n# GoLand (Go)\n# DataGrip (SQL)\n\n# Installation:\n# - Download from jetbrains.com\n# - Choose Community or Ultimate\n# - Run installer and follow setup\n\n# First-time setup:\n# 1. Import settings if available\n# 2. Choose UI theme (Darcula/Light)\n# 3. Configure keymap (Default/VS Code/Emacs)\n# 4. Install essential plugins',
         },
         {
-          command: 'PyCharm Installation',
-          description: 'Install PyCharm IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# PyCharm (Python)`,
+          command: 'Understanding the Interface',
+          description: 'JetBrains IDE UI components and layout',
+          usage: 'Menu bar, tool windows, editor area',
+          example: '# Main Components:\n# Menu Bar - File, Edit, View, Navigate, Code, Refactor, Run, Tools, Window, Help\n# Tool Windows - Project, Structure, Favorites, Find, Run, Debug, Terminal, etc.\n# Editor Area - Code editing with tabs\n# Status Bar - Information, notifications, quick actions\n\n# Customization:\n# View > Appearance > various options\n# Right-click tool window header for layout options\n# Drag tool windows to rearrange layout',
         },
         {
-          command: 'WebStorm Installation',
-          description: 'Install WebStorm IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# WebStorm (JavaScript/TypeScript)`,
-        },
-        {
-          command: 'PhpStorm Installation',
-          description: 'Install PhpStorm IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# PhpStorm (PHP)`,
-        },
-        {
-          command: 'RubyMine Installation',
-          description: 'Install RubyMine IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# RubyMine (Ruby)`,
-        },
-        {
-          command: 'CLion Installation',
-          description: 'Install CLion IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# CLion (C/C++)`,
-        },
-        {
-          command: 'GoLand Installation',
-          description: 'Install GoLand IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# GoLand (Go)`,
-        },
-        {
-          command: 'DataGrip Installation',
-          description: 'Install DataGrip IDE',
-          usage: 'Download from jetbrains.com',
-          example: `# DataGrip (SQL)`,
-        },
-        {
-          command: 'First-Time Setup Import Settings',
-          description: 'Import existing IDE settings',
-          usage: 'Import settings during setup',
-          example: `# 1. Import settings if available`,
-        },
-        {
-          command: 'Choose UI Theme',
-          description: 'Select IDE appearance theme',
-          usage: 'Setup theme selection',
-          example: `# 2. Choose UI theme (Darcula/Light)`,
-        },
-        {
-          command: 'Configure Keymap',
-          description: 'Select keyboard shortcut scheme',
-          usage: 'Setup keymap preferences',
-          example: `# 3. Configure keymap (Default/Visual Studio/Emacs)`,
-        },
-        {
-          command: 'Install Essential Plugins',
-          description: 'Install recommended plugins',
-          usage: 'Plugin installation during setup',
-          example: `# 4. Install essential plugins`,
-        },
-        {
-          command: 'Menu Bar Components',
-          description: 'Understanding menu bar structure',
-          usage: 'Menu bar navigation',
-          example: `# Menu Bar - File, Edit, View, Navigate, Code, Refactor, Run, Tools, Window, Help`,
-        },
-        {
-          command: 'Tool Windows Overview',
-          description: 'Understanding tool windows',
-          usage: 'Tool window navigation',
-          example: `# Tool Windows - Project, Structure, Favorites, Find, Run, Debug, etc.`,
-        },
-        {
-          command: 'Editor Area Features',
-          description: 'Understanding editor workspace',
-          usage: 'Editor area navigation',
-          example: `# Editor Area - Code editing with tabs`,
-        },
-        {
-          command: 'Status Bar Information',
-          description: 'Understanding status bar',
-          usage: 'Status bar information',
-          example: `# Status Bar - Information, notifications, quick actions`,
-        },
-        {
-          command: 'Customize Appearance',
-          description: 'Customize IDE appearance',
-          usage: 'View > Appearance options',
-          example: `# View > Appearance > various options`,
-        },
-        {
-          command: 'Customize Tool Windows',
-          description: 'Customize tool window layout',
-          usage: 'Right-click tool window header',
-          example: `# Right-click tool window header for customization`,
-        },
-        {
-          command: 'Find Action Shortcut',
-          description: 'Access all IDE commands',
+          command: 'Find Action - Universal Command Search',
+          description: 'Access all IDE commands and settings',
           usage: 'Cmd+Shift+A (Mac) / Ctrl+Shift+A (Win)',
-          example: `# Open Find Action
-Cmd+Shift+A (Mac) / Ctrl+Shift+A (Win)`,
+          example: '# Open Find Action\nCmd+Shift+A (Mac) / Ctrl+Shift+A (Win)\n\n# Common commands via Find Action:\n# > Settings - Open IDE settings\n# > Project Structure - Configure project\n# > Reformat Code - Format current file\n# > Git Commit - Open commit dialog\n# > Run Configuration - Create run config\n\n# Features:\n# - Search any IDE action\n# - Find settings and preferences\n# - Execute commands directly',
         },
         {
-          command: 'Find Action Settings',
-          description: 'Open IDE settings via Find Action',
-          usage: 'Find Action > Settings',
-          example: `# > Settings - Open IDE settings`,
+          command: 'Search Everywhere - Universal Search',
+          description: 'Search for classes, files, symbols, actions, and more',
+          usage: 'Double Shift (press Shift twice quickly)',
+          example: '# Search Everywhere\nPress Shift twice quickly\n\n# Search categories:\n# - Classes and files\n# - Symbols and methods\n# - Actions and settings\n# - Git branches\n# - Recent locations\n\n# Search tips:\n# - Use filters: Classes, Files, Symbols, Actions\n# - Camel case matching: MyClassName matches mcn\n# - Fuzzy matching enabled\n# - Navigate with arrow keys and Enter',
         },
         {
-          command: 'Find Action Project Structure',
-          description: 'Configure project via Find Action',
-          usage: 'Find Action > Project Structure',
-          example: `# > Project Structure - Configure project`,
-        },
-        {
-          command: 'Find Action Reformat Code',
-          description: 'Format code via Find Action',
-          usage: 'Find Action > Reformat Code',
-          example: `# > Reformat Code - Format current file`,
-        },
-        {
-          command: 'Find Action Git Commit',
-          description: 'Open commit dialog via Find Action',
-          usage: 'Find Action > Git Commit',
-          example: `# > Git Commit - Open commit dialog`,
-        },
-        {
-          command: 'Find Action Run Configuration',
-          description: 'Create run config via Find Action',
-          usage: 'Find Action > Run Configuration',
-          example: `# > Run Configuration - Create run config`,
-        },
-        {
-          command: 'Search Everywhere Activation',
-          description: 'Activate universal search',
-          usage: 'Double Shift',
-          example: `# Search Everywhere
-Press Shift twice quickly`,
-        },
-        {
-          command: 'Search Everywhere Classes',
-          description: 'Search for classes and files',
-          usage: 'Search Everywhere categories',
-          example: `# - Classes and files`,
-        },
-        {
-          command: 'Search Everywhere Symbols',
-          description: 'Search for symbols and methods',
-          usage: 'Search Everywhere categories',
-          example: `# - Symbols and methods`,
-        },
-        {
-          command: 'Search Everywhere Actions',
-          description: 'Search for actions and settings',
-          usage: 'Search Everywhere categories',
-          example: `# - Actions and settings`,
-        },
-        {
-          command: 'Search Everywhere Git Branches',
-          description: 'Search for Git branches',
-          usage: 'Search Everywhere categories',
-          example: `# - Git branches`,
-        },
-        {
-          command: 'Search Everywhere Recent Locations',
-          description: 'Search for recent locations',
-          usage: 'Search Everywhere categories',
-          example: `# - Recent locations`,
-        },
-        {
-          command: 'Search Everywhere Filters',
-          description: 'Use search filters',
-          usage: 'Search Everywhere tips',
-          example: `# - Use filters (Classes, Files, Symbols, Actions)`,
-        },
-        {
-          command: 'Search Everywhere Camel Case',
-          description: 'Use camel case matching',
-          usage: 'Search Everywhere tips',
-          example: `# - Use camel case matching: MyClassName matches mcn`,
-        },
-        {
-          command: 'Open Settings Shortcut',
-          description: 'Open IDE settings',
+          command: 'IDE Settings and Preferences',
+          description: 'Configure IDE behavior and appearance',
           usage: 'Cmd+, (Mac) / Ctrl+Alt+S (Win)',
-          example: `# Open Settings
-Cmd+, (Mac) / Ctrl+Alt+S (Win)`,
+          example: '# Open Settings\nCmd+, (Mac) / Ctrl+Alt+S (Win)\n\n# Settings categories:\n# - Appearance & Behavior (themes, fonts, keymaps)\n# - Editor (colors, code style, inspections, intentions)\n# - Build, Execution, Deployment (build tools, run configurations)\n# - Version Control (Git, SVN, Mercurial)\n# - Plugins (manage IDE extensions)\n\n# Project-specific settings:\n# File > Project Structure\n# .idea folder for project configuration',
         },
         {
-          command: 'Settings Appearance Behavior',
-          description: 'Configure appearance and behavior',
-          usage: 'Settings categories',
-          example: `# - Appearance & Behavior (themes, fonts)`,
-        },
-        {
-          command: 'Settings Editor',
-          description: 'Configure editor settings',
-          usage: 'Settings categories',
-          example: `# - Editor (colors, code style, inspections)`,
-        },
-        {
-          command: 'Settings Build Execution',
-          description: 'Configure build and deployment',
-          usage: 'Settings categories',
-          example: `# - Build, Execution, Deployment`,
-        },
-        {
-          command: 'Settings Version Control',
-          description: 'Configure version control',
-          usage: 'Settings categories',
-          example: `# - Version Control`,
-        },
-        {
-          command: 'Settings Plugins',
-          description: 'Configure plugins',
-          usage: 'Settings categories',
-          example: `# - Plugins`,
-        },
-        {
-          command: 'Project Structure Settings',
-          description: 'Configure project-specific settings',
-          usage: 'File > Project Structure',
-          example: `# Project-specific settings:
-# File > Project Structure`,
+          command: 'Plugin Management',
+          description: 'Install and manage IDE plugins',
+          usage: 'Settings > Plugins',
+          example: '# Plugin Management\nSettings > Plugins\n\n# Popular plugins:\n# - Key Promoter X (shows shortcuts)\n# - Rainbow Brackets (color matching)\n# - GitToolBox (Git enhancements)\n# - Markdown Navigator (Markdown support)\n# - Docker (container integration)\n# - Database Navigator (SQL tools)\n\n# Plugin operations:\n# - Install: Marketplace tab > Search > Install\n# - Enable/Disable: Installed tab > Toggle\n# - Update: Updates tab > Update All\n# - Configure: Plugin settings in IDE preferences',
         },
       ],
     },
@@ -254,115 +53,40 @@ Cmd+, (Mac) / Ctrl+Alt+S (Win)`,
       title: 'Basic Navigation and File Operations',
       commands: [
         {
-          command: 'Recent Files Shortcut',
-          description: 'Access recent files',
+          command: 'Recent Files Access',
+          description: 'Quickly access recently opened files',
           usage: 'Cmd+E (Mac) / Ctrl+E (Win)',
-          example: `# Recent Files
-Cmd+E (Mac) / Ctrl+E (Win)`,
+          example: '# Recent Files\nCmd+E (Mac) / Ctrl+E (Win)\n\n# Features:\n# - Jump to any recently opened file\n# - Filter by typing filename\n# - Shows most recent at top\n# - Includes files from all projects\n\n# Usage:\n# - Type to filter results\n# - Arrow keys to navigate\n# - Enter to open selected file',
         },
         {
-          command: 'Recent Files Features',
-          description: 'Recent files capabilities',
-          usage: 'Recent files functionality',
-          example: `# Features:
-# - Jump to any recently opened file
-# - Filter by typing filename
-# - Shows most recent at top`,
-        },
-        {
-          command: 'Recent Locations Shortcut',
-          description: 'Access recent locations',
+          command: 'Recent Locations Navigation',
+          description: 'Navigate to recent cursor positions',
           usage: 'Cmd+Shift+E (Mac) / Ctrl+Shift+E (Win)',
-          example: `# Recent Locations:
-Cmd+Shift+E (Mac) / Ctrl+Shift+E (Win)`,
+          example: '# Recent Locations\nCmd+Shift+E (Mac) / Ctrl+Shift+E (Win)\n\n# Features:\n# - Jump to recent cursor positions\n# - Shows file and line number\n# - Maintains location history\n# - Works across all open files',
         },
         {
-          command: 'Go to Class Shortcut',
-          description: 'Navigate to any class',
+          command: 'Go to Class Navigation',
+          description: 'Navigate to any class in project',
           usage: 'Cmd+O (Mac) / Ctrl+N (Win)',
-          example: `# Go to Class
-Cmd+O (Mac) / Ctrl+N (Win)`,
+          example: '# Go to Class\nCmd+O (Mac) / Ctrl+N (Win)\n\n# Features:\n# - Fuzzy matching\n# - Camel case support\n# - Show qualified names\n# - Navigate to inner classes\n\n# Examples:\n# - Type "MyClass" to find MyClass\n# - Type "MC" to find MyClassController\n# - Check "Include non-project items" for libraries',
         },
         {
-          command: 'Go to Class Features',
-          description: 'Class navigation capabilities',
-          usage: 'Go to class functionality',
-          example: `# Features:
-# - Fuzzy matching
-# - Camel case support
-# - Show qualified names
-# - Navigate to inner classes`,
-        },
-        {
-          command: 'Go to File Shortcut',
-          description: 'Navigate to any file',
+          command: 'Go to File Navigation',
+          description: 'Navigate to any file in project',
           usage: 'Cmd+Shift+O (Mac) / Ctrl+Shift+N (Win)',
-          example: `# Go to File
-Cmd+Shift+O (Mac) / Ctrl+Shift+N (Win)`,
+          example: '# Go to File\nCmd+Shift+O (Mac) / Ctrl+Shift+N (Win)\n\n# Features:\n# - Navigate any file type\n# - Partial filename matching\n# - Directory navigation\n# - Show file paths\n\n# Examples:\n# - pom.xml -> pom\n# - src/main/java -> Navigate directories\n# - README.md -> Find readme files\n# - *.properties -> Filter by extension',
         },
         {
-          command: 'Go to File Partial Name',
-          description: 'Use partial filename matching',
-          usage: 'Go to file tips',
-          example: `# - Use partial filename: pom.xml -> pom`,
-        },
-        {
-          command: 'Go to File Directories',
-          description: 'Navigate directories',
-          usage: 'Go to file tips',
-          example: `# - Navigate directories: src/main/java`,
-        },
-        {
-          command: 'Go to File Paths',
-          description: 'Show file paths in results',
-          usage: 'Go to file tips',
-          example: `# - Show file paths in results`,
-        },
-        {
-          command: 'Go to Symbol Shortcut',
-          description: 'Navigate to symbols',
+          command: 'Go to Symbol Navigation',
+          description: 'Navigate to methods, fields, and symbols',
           usage: 'Cmd+Alt+O (Mac) / Ctrl+Alt+Shift+N (Win)',
-          example: `# Go to Symbol
-Cmd+Alt+O (Mac) / Ctrl+Alt+Shift+N (Win)`,
+          example: '# Go to Symbol\nCmd+Alt+O (Mac) / Ctrl+Alt+Shift+N (Win)\n\n# Symbol types:\n# - Methods and functions\n# - Fields and variables\n# - Constants\n# - Class members\n\n# Features:\n# - Search across all files\n# - Filter by symbol type\n# - Show containing class\n# - Navigate to declaration',
         },
         {
-          command: 'Go to Symbol Methods',
-          description: 'Search for methods and functions',
-          usage: 'Go to symbol searches',
-          example: `# - Methods and functions`,
-        },
-        {
-          command: 'Go to Symbol Fields',
-          description: 'Search for fields and variables',
-          usage: 'Go to symbol searches',
-          example: `# - Fields and variables`,
-        },
-        {
-          command: 'Go to Symbol Constants',
-          description: 'Search for constants',
-          usage: 'Go to symbol searches',
-          example: `# - Constants`,
-        },
-        {
-          command: 'Go to Symbol Class Members',
-          description: 'Search for class members',
-          usage: 'Go to symbol searches',
-          example: `# - Class members`,
-        },
-        {
-          command: 'Go to Line Shortcut',
-          description: 'Jump to specific line',
+          command: 'Go to Line Navigation',
+          description: 'Jump to specific line number',
           usage: 'Cmd+L (Mac) / Ctrl+G (Win)',
-          example: `# Go to Line
-Cmd+L (Mac) / Ctrl+G (Win)`,
-        },
-        {
-          command: 'Go to Line Features',
-          description: 'Line navigation features',
-          usage: 'Go to line functionality',
-          example: `# Enter line number to jump
-# Shows current line in dialog
-# Works with column numbers too`,
+          example: '# Go to Line\nCmd+L (Mac) / Ctrl+G (Win)\n\n# Features:\n# - Enter line number to jump\n# - Shows current line in dialog\n# - Works with column numbers\n# - Supports relative line numbers',
         },
       ],
     },
@@ -370,192 +94,46 @@ Cmd+L (Mac) / Ctrl+G (Win)`,
       title: 'Basic Code Editing',
       commands: [
         {
-          command: 'Duplicate Line Shortcut',
-          description: 'Duplicate current line',
+          command: 'Duplicate Line or Selection',
+          description: 'Duplicate current line or selection',
           usage: 'Cmd+D (Mac) / Ctrl+D (Win)',
-          example: `# Duplicate Line
-Cmd+D (Mac) / Ctrl+D (Win)`,
+          example: '# Duplicate Line/Selection\nCmd+D (Mac) / Ctrl+D (Win)\n\n# Works with:\n# - Single lines\n# - Multi-line selections\n# - Code blocks\n# - Any text selection\n\n# Features:\n# - Maintains proper indentation\n# - Preserves formatting\n# - Works with any language',
         },
         {
-          command: 'Duplicate Line Features',
-          description: 'Duplication capabilities',
-          usage: 'Duplicate line functionality',
-          example: `# Works with:
-# - Single lines
-# - Multi-line selections
-# - Code blocks`,
-        },
-        {
-          command: 'Delete Line Shortcut',
-          description: 'Delete entire line',
+          command: 'Delete Line',
+          description: 'Delete entire line at cursor',
           usage: 'Cmd+Backspace (Mac) / Ctrl+Y (Win)',
-          example: `# Delete Line
-Cmd+Backspace (Mac) / Ctrl+Y (Win)`,
+          example: '# Delete Line\nCmd+Backspace (Mac) / Ctrl+Y (Win)\n\n# Features:\n# - Removes entire line\n# - Preserves undo history\n# - Works with multiple selected lines\n# - Maintains file structure',
         },
         {
-          command: 'Delete Line Features',
-          description: 'Deletion capabilities',
-          usage: 'Delete line functionality',
-          example: `# Features:
-# - Removes entire line
-# - Preserves undo history
-# - Works with multiple selected lines`,
+          command: 'Move Lines Up/Down',
+          description: 'Move lines up or down in file',
+          usage: 'Cmd+Shift+↑/↓ (Mac) / Ctrl+Shift+↑/↓ (Win)',
+          example: '# Move Line Up\nCmd+Shift+↑ (Mac) / Ctrl+Shift+↑ (Win)\n\n# Move Line Down\nCmd+Shift+↓ (Mac) / Ctrl+Shift+↓ (Win)\n\n# Features:\n# - Maintains proper indentation\n# - Works with multi-line selections\n# - Preserves code structure\n# - Smart formatting',
         },
         {
-          command: 'Move Line Up',
-          description: 'Move line up',
-          usage: 'Cmd+Shift+↑ (Mac) / Ctrl+Shift+↑ (Win)',
-          example: `# Move Line
-Cmd+Shift+↑ (Mac) - Move line up`,
-        },
-        {
-          command: 'Move Line Down',
-          description: 'Move line down',
-          usage: 'Cmd+Shift+↓ (Mac) / Ctrl+Shift+↓ (Win)',
-          example: `Cmd+Shift+↓ (Mac) - Move line down`,
-        },
-        {
-          command: 'Move Line Features',
-          description: 'Line movement features',
-          usage: 'Move line functionality',
-          example: `# Maintains proper indentation
-# Works with multi-line selections`,
-        },
-        {
-          command: 'Comment Line Shortcut',
-          description: 'Toggle line comments',
+          command: 'Toggle Line Comments',
+          description: 'Add or remove line comments',
           usage: 'Cmd+/ (Mac) / Ctrl+/ (Win)',
-          example: `# Comment Line
-Cmd+/ (Mac) / Ctrl+/ (Win)`,
+          example: '# Toggle Line Comment\nCmd+/ (Mac) / Ctrl+/ (Win)\n\n# Features:\n# - Toggle comment on/off\n# - Works with multiple lines\n# - Language-specific comment syntax\n# - Smart indentation\n\n# Examples:\n# // Java, JavaScript, C++\n# # Python, Ruby, Shell\n# -- SQL, Haskell',
         },
         {
-          command: 'Comment Line Features',
-          description: 'Line comment features',
-          usage: 'Comment line functionality',
-          example: `# Features:
-# - Toggle comment on/off
-# - Works with multiple lines
-# - Language-specific comment syntax`,
-        },
-        {
-          command: 'Comment Block Shortcut',
-          description: 'Toggle block comments',
+          command: 'Toggle Block Comments',
+          description: 'Add or remove block comments',
           usage: 'Cmd+Alt+/ (Mac) / Ctrl+Shift+/ (Win)',
-          example: `# Comment Block
-Cmd+Alt+/ (Mac) / Ctrl+Shift+/ (Win)`,
+          example: '# Toggle Block Comment\nCmd+Alt+/ (Mac) / Ctrl+Shift+/ (Win)\n\n# Comment types by language:\n# /* ... */ for C-style languages (Java, C++, JavaScript)\n# <!-- ... --> for XML/HTML\n# """...""" for Python\n# (* ... *) for Pascal\n# {- ... -} for Haskell',
         },
         {
-          command: 'Comment Block C Style',
-          description: 'C-style block comments',
-          usage: 'Comment block types',
-          example: `# /* ... */ for C-style languages`,
+          command: 'Smart Line Join',
+          description: 'Join multiple lines into one',
+          usage: 'Cmd+Shift+J (Mac) / Ctrl+Shift+J (Win)',
+          example: '# Smart Line Join\nCmd+Shift+J (Mac) / Ctrl+Shift+J (Win)\n\n# Features:\n# - Intelligently joins lines\n# - Removes unnecessary whitespace\n# - Maintains code structure\n# - Works with strings and code',
         },
         {
-          command: 'Comment Block XML',
-          description: 'XML/HTML block comments',
-          usage: 'Comment block types',
-          example: `# <!-- ... --> for XML/HTML`,
-        },
-        {
-          command: 'Comment Block Python',
-          description: 'Python block comments',
-          usage: 'Comment block types',
-          example: `# """...""" for Python`,
-        },
-      ],
-    },
-    {
-      title: 'Advanced Navigation',
-      commands: [
-        {
-          command: 'Go to Declaration Shortcut',
-          description: 'Navigate to symbol definition',
-          usage: 'Cmd+B (Mac) / Ctrl+B (Win)',
-          example: `# Go to Declaration
-Cmd+B (Mac) / Ctrl+B (Win)`,
-        },
-        {
-          command: 'Go to Declaration Alternative',
-          description: 'Alternative navigation methods',
-          usage: 'Click navigation',
-          example: `# Alternative:
-# - Ctrl+Click (Mac/Win)
-# - Cmd+Click (Mac)`,
-        },
-        {
-          command: 'Go to Declaration Features',
-          description: 'Declaration navigation features',
-          usage: 'Declaration navigation',
-          example: `# Features:
-# - Jump to class/method definition
-# - Navigate to variable declaration
-# - Follow imports and includes`,
-        },
-        {
-          command: 'Go to Implementation Shortcut',
-          description: 'Navigate to implementations',
-          usage: 'Cmd+Alt+B (Mac) / Ctrl+Alt+B (Win)',
-          example: `# Go to Implementation
-Cmd+Alt+B (Mac) / Ctrl+Alt+B (Win)`,
-        },
-        {
-          command: 'Go to Implementation Features',
-          description: 'Implementation navigation features',
-          usage: 'Implementation navigation',
-          example: `# Shows:
-# - Class implementations of interface
-# - Method overrides
-# - Multiple implementations available`,
-        },
-        {
-          command: 'Go to Super Method Shortcut',
-          description: 'Navigate to parent method',
-          usage: 'Cmd+U (Mac) / Ctrl+U (Win)',
-          example: `# Go to Super Method
-Cmd+U (Mac) / Ctrl+U (Win)`,
-        },
-        {
-          command: 'Go to Super Method Features',
-          description: 'Super method navigation features',
-          usage: 'Super method navigation',
-          example: `# Navigates to:
-# - Parent class
-# - Overridden method
-# - Interface method`,
-        },
-        {
-          command: 'Navigate Back Shortcut',
-          description: 'Navigate back in history',
-          usage: 'Cmd+[ (Mac) / Ctrl+Alt+← (Win)',
-          example: `# Navigate History
-Cmd+[ (Mac) / Ctrl+Alt+← (Win) - Back`,
-        },
-        {
-          command: 'Navigate Forward Shortcut',
-          description: 'Navigate forward in history',
-          usage: 'Cmd+] (Mac) / Ctrl+Alt+→ (Win)',
-          example: `Cmd+] (Mac) / Ctrl+Alt+→ (Win) - Forward`,
-        },
-        {
-          command: 'Navigate History Features',
-          description: 'Navigation history features',
-          usage: 'Navigation history',
-          example: `# Maintains navigation stack
-# Works across files and symbols`,
-        },
-        {
-          command: 'Last Edit Location Shortcut',
-          description: 'Jump to last edit position',
-          usage: 'Cmd+Shift+Backspace (Mac) / Ctrl+Shift+Backspace (Win)',
-          example: `# Last Edit Location
-Cmd+Shift+Backspace (Mac) / Ctrl+Shift+Backspace (Win)`,
-        },
-        {
-          command: 'Last Edit Location Features',
-          description: 'Last edit location features',
-          usage: 'Last edit navigation',
-          example: `# Quickly return to where you were editing
-# Maintains edit history across sessions`,
+          command: 'Split Line',
+          description: 'Split current line at cursor position',
+          usage: 'Cmd+Enter (Mac) / Ctrl+Enter (Win)',
+          example: '# Split Line\nCmd+Enter (Mac) / Ctrl+Enter (Win)\n\n# Features:\n# - Split line at cursor\n# - Smart indentation\n# - Maintains code structure\n# - Works with any language',
         },
       ],
     },
@@ -563,89 +141,82 @@ Cmd+Shift+Backspace (Mac) / Ctrl+Shift+Backspace (Win)`,
       title: 'Code Completion and Intelligence',
       commands: [
         {
-          command: 'Basic Completion Shortcut',
-          description: 'Standard code completion',
+          command: 'Basic Code Completion',
+          description: 'Standard code completion suggestions',
           usage: 'Ctrl+Space',
-          example: `# Basic Completion
-Ctrl+Space`,
+          example: '# Basic Completion\nCtrl+Space\n\n# Suggestions:\n# - Local variables and methods\n# - Class members\n# - Keywords and syntax\n# - Import suggestions\n# - Code templates\n\n# Features:\n# - Context-aware suggestions\n# - Automatic import completion\n# - Camel case support',
         },
         {
-          command: 'Basic Completion Suggestions',
-          description: 'Basic completion suggestions',
-          usage: 'Basic completion types',
-          example: `# Suggestions:
-# - Local variables and methods
-# - Class members
-# - Keywords and syntax
-# - Import suggestions`,
-        },
-        {
-          command: 'Smart Completion Shortcut',
-          description: 'Context-aware completion',
+          command: 'Smart Type Completion',
+          description: 'Context-aware completion filtered by type',
           usage: 'Ctrl+Shift+Space',
-          example: `# Smart Completion
-Ctrl+Shift+Space`,
+          example: '# Smart Completion\nCtrl+Shift+Space\n\n# Filters suggestions based on:\n# - Expected type\n# - Current context\n# - Variable types\n# - Method return types\n\n# Features:\n# - More precise suggestions\n# - Type-compatible only\n# - Reduces suggestion list\n# - Better code accuracy',
         },
         {
-          command: 'Smart Completion Filtering',
-          description: 'Smart completion filtering',
-          usage: 'Smart completion features',
-          example: `# Filters suggestions based on:
-# - Expected type
-# - Current context
-# - Variable types
-# - Method return types`,
-        },
-        {
-          command: 'Complete Statement Shortcut',
-          description: 'Auto-complete current statement',
+          command: 'Complete Current Statement',
+          description: 'Auto-complete current statement with syntax',
           usage: 'Cmd+Shift+Enter (Mac) / Ctrl+Shift+Enter (Win)',
-          example: `# Complete Statement
-Cmd+Shift+Enter (Mac) / Ctrl+Shift+Enter (Win)`,
+          example: '# Complete Statement\nCmd+Shift+Enter (Mac) / Ctrl+Shift+Enter (Win)\n\n# Auto-adds:\n# - Semicolons\n# - Braces and parentheses\n# - Missing syntax elements\n# - Proper indentation\n\n# Examples:\n# if (condition) -> if (condition) {}\n# for (int i = 0) -> for (int i = 0; i < ; i++) {}',
         },
         {
-          command: 'Complete Statement Features',
-          description: 'Statement completion features',
-          usage: 'Complete statement functionality',
-          example: `# Auto-adds:
-# - Semicolons
-# - Braces and parentheses
-# - Missing syntax elements
-# - Proper indentation`,
-        },
-        {
-          command: 'Parameter Info Shortcut',
-          description: 'Show method parameter info',
+          command: 'Parameter Information',
+          description: 'Show method parameter information',
           usage: 'Cmd+P (Mac) / Ctrl+P (Win)',
-          example: `# Parameter Info
-Cmd+P (Mac) / Ctrl+P (Win)`,
+          example: '# Parameter Info\nCmd+P (Mac) / Ctrl+P (Win)\n\n# Shows:\n# - Parameter names\n# - Parameter types\n# - Current parameter highlight\n# - Documentation hints\n\n# Features:\n# - Real-time parameter tracking\n# - Overloaded method variants\n# - Parameter documentation',
         },
         {
-          command: 'Parameter Info Features',
-          description: 'Parameter info features',
-          usage: 'Parameter info functionality',
-          example: `# Shows:
-# - Parameter names
-# - Parameter types
-# - Current parameter highlight
-# - Documentation hints`,
-        },
-        {
-          command: 'Quick Documentation Shortcut',
-          description: 'Show documentation popup',
+          command: 'Quick Documentation',
+          description: 'Show documentation for current symbol',
           usage: 'Cmd+Q (Mac) / Ctrl+Q (Win)',
-          example: `# Quick Documentation
-Cmd+Q (Mac) / Ctrl+Q (Win)`,
+          example: '# Quick Documentation\nCmd+Q (Mac) / Ctrl+Q (Win)\n\n# Displays:\n# - JSDoc/Javadoc\n# - Method signatures\n# - Parameter descriptions\n# - Return value documentation\n\n# Features:\n# - External documentation links\n# - Parameter details\n# - Usage examples\n# - Related symbols',
         },
         {
-          command: 'Quick Documentation Features',
-          description: 'Documentation features',
-          usage: 'Documentation functionality',
-          example: `# Displays:
-# - JSDoc/Javadoc
-# - Method signatures
-# - Parameter descriptions
-# - Return value documentation`,
+          command: 'Quick Definition',
+          description: 'Show definition without navigation',
+          usage: 'Cmd+Shift+I (Mac) / Ctrl+Shift+I (Win)',
+          example: '# Quick Definition\nCmd+Shift+I (Mac) / Ctrl+Shift+I (Win)\n\n# Features:\n# - Show definition in popup\n# - No navigation required\n# - View method implementation\n# - See class declaration\n\n# Usage:\n# - Hover over symbol\n# - Press shortcut to see definition\n# - ESC to close popup',
+        },
+      ],
+    },
+    // INTERMEDIATE LEVEL
+    {
+      title: 'Advanced Navigation',
+      commands: [
+        {
+          command: 'Go to Declaration',
+          description: 'Navigate to symbol definition',
+          usage: 'Cmd+B (Mac) / Ctrl+B (Win)',
+          example: '# Go to Declaration\nCmd+B (Mac) / Ctrl+B (Win)\n\n# Alternative methods:\n# - Ctrl+Click (Mac/Win)\n# - Cmd+Click (Mac)\n\n# Features:\n# - Jump to class/method definition\n# - Navigate to variable declaration\n# - Follow imports and includes\n# - Cross-language navigation',
+        },
+        {
+          command: 'Go to Implementation',
+          description: 'Navigate to interface implementations',
+          usage: 'Cmd+Alt+B (Mac) / Ctrl+Alt+B (Win)',
+          example: '# Go to Implementation\nCmd+Alt+B (Mac) / Ctrl+Alt+B (Win)\n\n# Shows:\n# - Class implementations of interface\n# - Method overrides\n# - Multiple implementations available\n\n# Features:\n# - Choose from multiple implementations\n# - Navigate to concrete classes\n# - Method override navigation',
+        },
+        {
+          command: 'Go to Super Method',
+          description: 'Navigate to parent class or overridden method',
+          usage: 'Cmd+U (Mac) / Ctrl+U (Win)',
+          example: '# Go to Super Method\nCmd+U (Mac) / Ctrl+U (Win)\n\n# Navigates to:\n# - Parent class\n# - Overridden method\n# - Interface method\n# - Super constructor\n\n# Features:\n# - Jump up inheritance hierarchy\n# - Navigate to method being overridden\n# - Works with classes and methods',
+        },
+        {
+          command: 'Navigate Back/Forward',
+          description: 'Navigate through navigation history',
+          usage: 'Cmd+[ (Mac) / Ctrl+Alt+← (Win) - Back\nCmd+] (Mac) / Ctrl+Alt+→ (Win) - Forward',
+          example: '# Navigate History\nCmd+[ (Mac) / Ctrl+Alt+← (Win) - Back\nCmd+] (Mac) / Ctrl+Alt+→ (Win) - Forward\n\n# Features:\n# - Maintains navigation stack\n# - Works across files and symbols\n# - Similar to browser navigation\n# - Unlimited history depth',
+        },
+        {
+          command: 'Last Edit Location',
+          description: 'Jump to last cursor edit position',
+          usage: 'Cmd+Shift+Backspace (Mac) / Ctrl+Shift+Backspace (Win)',
+          example: '# Last Edit Location\nCmd+Shift+Backspace (Mac) / Ctrl+Shift+Backspace (Win)\n\n# Features:\n# - Quickly return to where you were editing\n# - Maintains edit history across sessions\n# - Works across all open files\n# - Multiple edit positions tracked',
+        },
+        {
+          command: 'File Structure Popup',
+          description: 'Navigate within current file structure',
+          usage: 'Cmd+F12 (Mac) / Ctrl+F12 (Win)',
+          example: '# File Structure\nCmd+F12 (Mac) / Ctrl+F12 (Win)\n\n# Shows:\n# - Class methods and fields\n# - File structure hierarchy\n# - Navigate to any symbol\n\n# Features:\n# - Quick navigation in file\n# - Filter by typing\n# - Shows inheritance structure\n# - Navigate with arrow keys',
         },
       ],
     },
@@ -653,268 +224,34 @@ Cmd+Q (Mac) / Ctrl+Q (Win)`,
       title: 'Refactoring Basics',
       commands: [
         {
-          command: 'Refactor This Shortcut',
-          description: 'Show available refactorings',
+          command: 'Refactor This',
+          description: 'Show available refactorings for current context',
           usage: 'Ctrl+T (Mac) / Ctrl+Alt+Shift+T (Win)',
-          example: `# Refactor This
-Ctrl+T (Mac) / Ctrl+Alt+Shift+T (Win)`,
+          example: '# Refactor This\nCtrl+T (Mac) / Ctrl+Alt+Shift+T (Win)\n\n# Available refactorings:\n# - Rename\n# - Extract Method/Variable/Constant/Field/Parameter\n# - Inline\n# - Change Signature\n# - Pull/Push Members\n# - Introduce Parameter Object\n\n# Features:\n# - Context-aware suggestions\n# - Safe refactoring\n# - Preview changes',
         },
         {
-          command: 'Refactor This Options',
-          description: 'Available refactoring options',
-          usage: 'Refactoring types',
-          example: `# Available refactorings:
-# - Rename
-# - Extract Method/Variable/Constant
-# - Inline
-# - Change Signature
-# - Pull/Push Members`,
-        },
-        {
-          command: 'Rename Shortcut',
-          description: 'Rename symbol across project',
+          command: 'Rename Refactoring',
+          description: 'Rename symbol across entire project',
           usage: 'Shift+F6',
-          example: `# Rename
-Shift+F6`,
+          example: '# Rename\nShift+F6\n\n# Renames:\n# - Variables and methods\n# - Classes and files\n# - Packages and modules\n# - All references automatically\n\n# Features:\n# - Safe rename with validation\n# - Preview all changes\n# - Rename in comments and strings\n# - Update imports and references',
         },
         {
-          command: 'Rename Features',
-          description: 'Rename refactoring features',
-          usage: 'Rename functionality',
-          example: `# Renames:
-# - Variables and methods
-# - Classes and files
-# - Packages and modules
-# - All references automatically`,
-        },
-        {
-          command: 'Extract Method Shortcut',
-          description: 'Extract code to method',
+          command: 'Extract Method',
+          description: 'Extract selected code to a new method',
           usage: 'Cmd+Alt+M (Mac) / Ctrl+Alt+M (Win)',
-          example: `# Extract Method
-Cmd+Alt+M (Mac) / Ctrl+Alt+M (Win)`,
+          example: '# Extract Method\nCmd+Alt+M (Mac) / Ctrl+Alt+M (Win)\n\n# Process:\n# 1. Select code to extract\n# 2. Press shortcut\n# 3. Enter method name\n# 4. Configure parameters\n# 5. Choose visibility\n\n# Features:\n# - Automatic parameter detection\n# - Return type inference\n# - Exception handling\n# - Code optimization',
         },
         {
-          command: 'Extract Method Process',
-          description: 'Method extraction process',
-          usage: 'Extract method steps',
-          example: `# Process:
-# 1. Select code to extract
-# 2. Press shortcut
-# 3. Enter method name
-# 4. Configure parameters`,
-        },
-        {
-          command: 'Extract Variable Shortcut',
-          description: 'Extract expression to variable',
+          command: 'Extract Variable',
+          description: 'Extract expression to a variable',
           usage: 'Cmd+Alt+V (Mac) / Ctrl+Alt+V (Win)',
-          example: `# Extract Variable
-Cmd+Alt+V (Mac) / Ctrl+Alt+V (Win)`,
+          example: '# Extract Variable\nCmd+Alt+V (Mac) / Ctrl+Alt+V (Win)\n\n# Creates:\n# - Local variables\n# - Constants (optionally)\n# - Proper type inference\n# - Appropriate naming\n\n# Features:\n# - Smart type detection\n# - Replace all occurrences\n# - Proper scope determination\n# - Variable naming suggestions',
         },
         {
-          command: 'Extract Variable Features',
-          description: 'Variable extraction features',
-          usage: 'Extract variable functionality',
-          example: `# Creates:
-# - Local variables
-# - Constants (optionally)
-# - Proper type inference`,
-        },
-        {
-          command: 'Inline Shortcut',
-          description: 'Inline variable/method',
+          command: 'Inline Refactoring',
+          description: 'Inline variable or method usage',
           usage: 'Cmd+Alt+N (Mac) / Ctrl+Alt+N (Win)',
-          example: `# Inline
-Cmd+Alt+N (Mac) / Ctrl+Alt+N (Win)`,
-        },
-        {
-          command: 'Inline Features',
-          description: 'Inline refactoring features',
-          usage: 'Inline functionality',
-          example: `# Inlines:
-# - Variables
-# - Methods
-# - Constants
-# - Parameters`,
-        },
-      ],
-    },
-    {
-      title: 'Advanced Refactoring',
-      commands: [
-        {
-          command: 'Extract Constant Shortcut',
-          description: 'Extract value to constant',
-          usage: 'Cmd+Alt+C (Mac) / Ctrl+Alt+C (Win)',
-          example: `# Extract Constant
-Cmd+Alt+C (Mac) / Ctrl+Alt+C (Win)`,
-        },
-        {
-          command: 'Extract Constant Features',
-          description: 'Constant extraction features',
-          usage: 'Extract constant functionality',
-          example: `# Features:
-# - Creates static final fields
-# - Replaces all occurrences
-# - Suggests appropriate scope`,
-        },
-        {
-          command: 'Extract Field Shortcut',
-          description: 'Extract to class field',
-          usage: 'Cmd+Alt+F (Mac) / Ctrl+Alt+F (Win)',
-          example: `# Extract Field
-Cmd+Alt+F (Mac) / Ctrl+Alt+F (Win)`,
-        },
-        {
-          command: 'Extract Field Features',
-          description: 'Field extraction features',
-          usage: 'Extract field functionality',
-          example: `# Creates:
-# - Instance fields
-# - Static fields (optionally)
-# - Proper encapsulation`,
-        },
-        {
-          command: 'Extract Parameter Shortcut',
-          description: 'Extract to method parameter',
-          usage: 'Cmd+Alt+P (Mac) / Ctrl+Alt+P (Win)',
-          example: `# Extract Parameter
-Cmd+Alt+P (Mac) / Ctrl+Alt+P (Win)`,
-        },
-        {
-          command: 'Extract Parameter Features',
-          description: 'Parameter extraction features',
-          usage: 'Extract parameter functionality',
-          example: `# Features:
-# - Adds parameter to method signature
-# - Updates all call sites
-# - Handles default values`,
-        },
-        {
-          command: 'Change Signature Shortcut',
-          description: 'Modify method signature',
-          usage: 'Cmd+F6 (Mac) / Ctrl+F6 (Win)',
-          example: `# Change Signature
-Cmd+F6 (Mac) / Ctrl+F6 (Win)`,
-        },
-        {
-          command: 'Change Signature Features',
-          description: 'Signature modification features',
-          usage: 'Change signature functionality',
-          example: `# Can modify:
-# - Parameter names and types
-# - Return type
-# - Parameter order
-# - Add/remove parameters`,
-        },
-        {
-          command: 'Move Shortcut',
-          description: 'Move class/method to different location',
-          usage: 'F6',
-          example: `# Move
-F6`,
-        },
-        {
-          command: 'Move Features',
-          description: 'Move refactoring features',
-          usage: 'Move functionality',
-          example: `# Can move:
-# - Classes to different packages
-# - Methods to different classes
-# - Files to different directories`,
-        },
-      ],
-    },
-    {
-      title: 'Search and Replace Advanced',
-      commands: [
-        {
-          command: 'Find in Path Shortcut',
-          description: 'Search across entire project',
-          usage: 'Cmd+Shift+F (Mac) / Ctrl+Shift+F (Win)',
-          example: `# Find in Path
-Cmd+Shift+F (Mac) / Ctrl+Shift+F (Win)`,
-        },
-        {
-          command: 'Find in Path File Masks',
-          description: 'Search with file masks',
-          usage: 'Find options',
-          example: `# - File masks (*.java, *.js)`,
-        },
-        {
-          command: 'Find in Path Scope',
-          description: 'Search with scope limits',
-          usage: 'Find options',
-          example: `# - Scope (Project, Module, Directory)`,
-        },
-        {
-          command: 'Find in Path Options',
-          description: 'Search with additional options',
-          usage: 'Find options',
-          example: `# - Case sensitivity
-# - Whole word
-# - Regular expressions`,
-        },
-        {
-          command: 'Replace in Path Shortcut',
-          description: 'Replace across entire project',
-          usage: 'Cmd+Shift+R (Mac) / Ctrl+Shift+R (Win)',
-          example: `# Replace in Path
-Cmd+Shift+R (Mac) / Ctrl+Shift+R (Win)`,
-        },
-        {
-          command: 'Replace in Path Features',
-          description: 'Replace features',
-          usage: 'Replace functionality',
-          example: `# Features:
-# - Preview changes
-# - Replace all or individual
-# - Context preview
-# - Safe replace with refactoring`,
-        },
-        {
-          command: 'Find Usages Shortcut',
-          description: 'Find all symbol usages',
-          usage: 'Cmd+Alt+F7 (Mac) / Alt+F7 (Win)',
-          example: `# Find Usages
-Cmd+Alt+F7 (Mac) / Alt+F7 (Win)`,
-        },
-        {
-          command: 'Find Usages Features',
-          description: 'Usage finding features',
-          usage: 'Find usages functionality',
-          example: `# Shows:
-# - All usages in project
-# - Grouped by file
-# - Navigate to each usage`,
-        },
-        {
-          command: 'Structural Search Menu',
-          description: 'Access structural search',
-          usage: 'Edit > Find > Search Structurally',
-          example: `# Structural Search`,
-        },
-        {
-          command: 'Structural Search Patterns',
-          description: 'Search by code patterns',
-          usage: 'Structural search concept',
-          example: `# Search by patterns, not text`,
-        },
-        {
-          command: 'Structural Search Example',
-          description: 'Example structural search',
-          usage: 'For loop pattern',
-          example: `# Example: find all for loops
-# for($type$ $var$ : $collection$) { $stmt$ }`,
-        },
-        {
-          command: 'Structural Search Templates',
-          description: 'Common pattern templates',
-          usage: 'Structural search templates',
-          example: `# Templates for common patterns:
-# - Method calls
-# - Class declarations
-# - Exception handling`,
+          example: '# Inline\nCmd+Alt+N (Mac) / Ctrl+Alt+N (Win)\n\n# Inlines:\n# - Variables\n# - Methods\n# - Constants\n# - Parameters\n\n# Features:\n# - Remove unused declarations\n# - Replace all usages\n# - Safe inline validation\n# - Code optimization',
         },
       ],
     },
@@ -922,77 +259,117 @@ Cmd+Alt+F7 (Mac) / Alt+F7 (Win)`,
       title: 'Multi-Cursor and Advanced Selection',
       commands: [
         {
-          command: 'Column Selection Mouse',
-          description: 'Select with mouse',
-          usage: 'Alt+Shift+Drag',
-          example: `# Column Selection
-Alt+Shift+Drag - Select with mouse`,
+          command: 'Column Selection Mode',
+          description: 'Select vertical blocks of text',
+          usage: 'Alt+Shift+Drag (Mouse) or Cmd+Shift+8 (Mac)',
+          example: '# Column Selection\nAlt+Shift+Drag - Select with mouse\nCmd+Shift+8 (Mac) - Toggle column mode\n\n# Useful for:\n# - Editing similar code patterns\n# - Changing variable names\n# - Reformatting data\n# - Multi-line editing\n\n# Features:\n# - Vertical selection\n# - Multiple cursors\n# - Independent editing\n# - Rectangular selection',
         },
         {
-          command: 'Column Selection Toggle',
-          description: 'Toggle column mode',
-          usage: 'Cmd+Shift+8 (Mac)',
-          example: `Cmd+Shift+8 (Mac) - Toggle column mode`,
-        },
-        {
-          command: 'Column Selection Uses',
-          description: 'Column selection use cases',
-          usage: 'Column selection applications',
-          example: `# Useful for:
-# - Editing similar code patterns
-# - Changing variable names
-# - Reformatting data`,
-        },
-        {
-          command: 'Add Selection Shortcut',
-          description: 'Multi-select next occurrence',
+          command: 'Add Selection for Next Occurrence',
+          description: 'Add cursor at next occurrence of current word',
           usage: 'Ctrl+G (Mac) / Alt+J (Win)',
-          example: `# Add Selection
-Ctrl+G (Mac) / Alt+J (Win)`,
+          example: '# Add Selection for Next Occurrence\nCtrl+G (Mac) / Alt+J (Win)\n\n# Features:\n# - Multi-cursor editing\n# - Select similar code\n# - Batch editing\n# - Pattern matching\n\n# Usage:\n# 1. Place cursor on word\n# 2. Press shortcut to select next\n# 3. Repeat for more occurrences\n# 4. Edit all simultaneously',
         },
         {
-          command: 'Add Selection Features',
-          description: 'Multi-selection features',
-          usage: 'Add selection functionality',
-          example: `# Features:
-# - Selects next occurrence
-# - Builds multi-cursor
-# - Works with any word`,
+          command: 'Add Selection for All Occurrences',
+          description: 'Select all occurrences of current word',
+          usage: 'Cmd+Ctrl+G (Mac) / Ctrl+Shift+Alt+J (Win)',
+          example: '# Add Selection for All Occurrences\nCmd+Ctrl+G (Mac) / Ctrl+Shift+Alt+J (Win)\n\n# Features:\n# - Select all matches instantly\n# - Global multi-cursor editing\n# - Pattern-based selection\n# - Efficient bulk editing',
         },
         {
-          command: 'Select All Occurrences Shortcut',
-          description: 'Select all matching words',
-          usage: 'Ctrl+Cmd+G (Mac) / Ctrl+Alt+Shift+J (Win)',
-          example: `# Select All
-Ctrl+Cmd+G (Mac) / Ctrl+Alt+Shift+J (Win)`,
+          command: 'Unselect Previous Occurrence',
+          description: 'Remove previous selection occurrence',
+          usage: 'Cmd+Alt+G (Mac) / Alt+Shift+J (Win)',
+          example: '# Unselect Previous Occurrence\nCmd+Alt+G (Mac) / Alt+Shift+J (Win)\n\n# Features:\n# - Remove last selection\n# - Undo multi-cursor addition\n# - Fine-tune selection\n# - Maintain other selections',
+        },
+      ],
+    },
+    {
+      title: 'Search and Replace Advanced',
+      commands: [
+        {
+          command: 'Find in Path',
+          description: 'Search across entire project',
+          usage: 'Cmd+Shift+F (Mac) / Ctrl+Shift+F (Win)',
+          example: '# Find in Path\nCmd+Shift+F (Mac) / Ctrl+Shift+F (Win)\n\n# Search options:\n# - File masks (*.java, *.js)\n# - Scope (Project, Module, Directory)\n# - Case sensitivity\n# - Whole word\n# - Regular expressions\n\n# Features:\n# - Preview results\n# - Group by file\n# - Context display\n# - Replace in path',
         },
         {
-          command: 'Select All Features',
-          description: 'Select all features',
-          usage: 'Select all functionality',
-          example: `# Selects all matches in file
-# Creates multiple cursors
-# Great for bulk edits`,
+          command: 'Replace in Path',
+          description: 'Replace across entire project',
+          usage: 'Cmd+Shift+R (Mac) / Ctrl+Shift+R (Win)',
+          example: '# Replace in Path\nCmd+Shift+R (Mac) / Ctrl+Shift+R (Win)\n\n# Features:\n# - Preview changes\n# - Replace all or individual\n# - Context preview\n# - Safe replace with refactoring\n\n# Options:\n# - Replace all matches\n# - Skip specific files\n# - Confirm each replacement\n# - Backup before replace',
         },
         {
-          command: 'Extend Selection Shortcut',
-          description: 'Expand selection intelligently',
-          usage: 'Cmd+W (Mac) / Ctrl+W (Win)',
-          example: `# Selection Control
-Cmd+W (Mac) / Ctrl+W (Win) - Extend`,
+          command: 'Find Usages',
+          description: 'Find all usages of symbol in project',
+          usage: 'Cmd+Alt+F7 (Mac) / Alt+F7 (Win)',
+          example: '# Find Usages\nCmd+Alt+F7 (Mac) / Alt+F7 (Win)\n\n# Shows:\n# - All usages in project\n# - Grouped by file\n# - Navigate to each usage\n# - Usage types (read/write)\n\n# Features:\n# - Filter by usage type\n# - Group by package/module\n# - Show line numbers\n# - Direct navigation',
         },
         {
-          command: 'Shrink Selection Shortcut',
-          description: 'Shrink selection intelligently',
-          usage: 'Cmd+Shift+W (Mac) / Ctrl+Shift+W (Win)',
-          example: `Cmd+Shift+W (Mac) / Ctrl+Shift+W (Win) - Shrink`,
+          command: 'Show Usages in Current File',
+          description: 'Highlight all usages in current file',
+          usage: 'Cmd+F7 (Mac) / Ctrl+F7 (Win)',
+          example: '# Show Usages in Current File\nCmd+F7 (Mac) / Ctrl+F7 (Win)\n\n# Features:\n# - Highlight all usages\n# - Navigate with F3/Shift+F3\n# - Show usage count\n# - Clear highlighting with ESC',
         },
         {
-          command: 'Selection Hierarchy',
-          description: 'Selection expansion levels',
-          usage: 'Selection levels',
-          example: `# Selection hierarchy:
-# Word → Line → Block → Method → Class`,
+          command: 'Structural Search and Replace',
+          description: 'Search by code patterns, not just text',
+          usage: 'Edit > Find > Search Structurally',
+          example: '# Structural Search\nEdit > Find > Search Structurally\n\n# Search by patterns, not text\n\n# Example: find all for loops\n# for($type$ $var$ : $collection$) { $stmt$ }\n\n# Templates for common patterns:\n# - Method calls\n# - Class declarations\n# - Exception handling\n# - Variable assignments\n\n# Features:\n# - Pattern-based search\n# - Variable placeholders\n# - Structural replacement\n# - Code template library',
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Advanced Refactoring',
+      commands: [
+        {
+          command: 'Extract Constant',
+          description: 'Extract value to a constant',
+          usage: 'Cmd+Alt+C (Mac) / Ctrl+Alt+C (Win)',
+          example: '# Extract Constant\nCmd+Alt+C (Mac) / Ctrl+Alt+C (Win)\n\n# Features:\n# - Creates static final fields\n# - Replaces all occurrences\n# - Suggests appropriate scope\n# - Proper naming conventions\n\n# Options:\n# - Private/public/protected\n# - Static vs instance\n# - Final modifier\n# - Initialize in declaration',
+        },
+        {
+          command: 'Extract Field',
+          description: 'Extract expression to class field',
+          usage: 'Cmd+Alt+F (Mac) / Ctrl+Alt+F (Win)',
+          example: '# Extract Field\nCmd+Alt+F (Mac) / Ctrl+Alt+F (Win)\n\n# Creates:\n# - Instance fields\n# - Static fields (optionally)\n# - Proper encapsulation\n# - Initialization in constructor\n\n# Features:\n# - Smart field placement\n# - Constructor parameterization\n# - Getter/setter generation\n# - Access modifier selection',
+        },
+        {
+          command: 'Extract Parameter',
+          description: 'Extract expression to method parameter',
+          usage: 'Cmd+Alt+P (Mac) / Ctrl+Alt+P (Win)',
+          example: '# Extract Parameter\nCmd+Alt+P (Mac) / Ctrl+Alt+P (Win)\n\n# Features:\n# - Adds parameter to method signature\n# - Updates all call sites\n# - Handles default values\n# - Parameter type inference\n\n# Options:\n# - Parameter name\n# - Parameter type\n# - Default value\n# - Update call sites',
+        },
+        {
+          command: 'Change Signature',
+          description: 'Modify method signature safely',
+          usage: 'Cmd+F6 (Mac) / Ctrl+F6 (Win)',
+          example: '# Change Signature\nCmd+F6 (Mac) / Ctrl+F6 (Win)\n\n# Can modify:\n# - Parameter names and types\n# - Return type\n# - Parameter order\n# - Add/remove parameters\n\n# Features:\n# - Updates all call sites\n# - Parameter propagation\n# - Default value handling\n# - Refactoring preview',
+        },
+        {
+          command: 'Move Class or Member',
+          description: 'Move to different package or class',
+          usage: 'F6',
+          example: '# Move\nF6\n\n# Can move:\n# - Classes to different packages\n# - Methods to different classes\n# - Files to different directories\n# - Static members to other classes\n\n# Features:\n# - Package refactoring\n# - Import updates\n# - Reference updates\n# - Visibility adjustment',
+        },
+        {
+          command: 'Pull Members Up/Push Down',
+          description: 'Move class members in inheritance hierarchy',
+          usage: 'Refactor > Pull Members Up / Push Members Down',
+          example: '# Pull Members Up\nRefactor > Pull Members Up\n\n# Push Members Down\nRefactor > Push Members Down\n\n# Features:\n# - Move to parent/child class\n# - Maintain inheritance\n# - Update references\n# - Preserve functionality\n\n# Use cases:\n# - Extract common functionality\n# - Specialize child classes\n# - Refactor inheritance\n# - Improve code organization',
+        },
+        {
+          command: 'Extract Interface/Supertype',
+          description: 'Extract common interface from class',
+          usage: 'Refactor > Extract Interface / Extract Supertype',
+          example: '# Extract Interface\nRefactor > Extract Interface\n\n# Features:\n# - Create interface from class\n# - Select methods to include\n# - Update class to implement\n# - Choose interface name\n\n# Extract Supertype:\n# - Create abstract class\n# - Move common methods\n# - Maintain inheritance\n# - Refactor hierarchy',
+        },
+        {
+          command: 'Encapsulate Fields',
+          description: 'Generate getters and setters with field protection',
+          usage: 'Refactor > Encapsulate Fields',
+          example: '# Encapsulate Fields\nRefactor > Encapsulate Fields\n\n# Features:\n# - Generate getters/setters\n# - Make fields private\n# - Update field access\n# - Choose access level\n\n# Options:\n# - Getter/setter generation\n# - Field visibility\n# - Access methods\n# - Update existing usages',
         },
       ],
     },
@@ -1000,635 +377,256 @@ Cmd+W (Mac) / Ctrl+W (Win) - Extend`,
       title: 'Debugging Advanced',
       commands: [
         {
-          command: 'Conditional Breakpoints Setup',
-          description: 'Create conditional breakpoints',
-          usage: 'Right-click breakpoint > Edit Breakpoint',
-          example: `# Conditional Breakpoints
-# Set conditions like:
-# - x > 100
-# - str.equals("test")
-# - i % 10 == 0`,
+          command: 'Debug Configuration',
+          description: 'Create and manage debug configurations',
+          usage: 'Run > Edit Configurations',
+          example: '# Debug Configuration\nRun > Edit Configurations\n\n# Configuration types:\n# - Application (Java main)\n# - JUnit/TestNG tests\n# - Remote JVM Debug\n# - JavaScript/Node.js\n# - Python scripts\n# - Docker containers\n\n# Settings:\n# - Main class/script\n# - Program arguments\n# - VM options\n# - Environment variables\n# - Working directory',
         },
         {
-          command: 'Breakpoint Types',
-          description: 'Different breakpoint types',
-          usage: 'Breakpoint categories',
-          example: `# Types:
-# - Condition breakpoints
-# - Log breakpoints (no pause)
-# - Exception breakpoints`,
+          command: 'Breakpoint Management',
+          description: 'Advanced breakpoint features',
+          usage: 'Click gutter or Run > View Breakpoints',
+          example: '# Breakpoint Types\n# - Line breakpoints (click gutter)\n# - Method breakpoints\n# - Exception breakpoints\n# - Field watchpoints\n# - Conditional breakpoints\n\n# Breakpoint Features:\n# - Conditions (right-click > Condition)\n# - Hit count (stop after N hits)\n# - Disable/enable\n# - Grouping\n# - Export/import breakpoints',
         },
         {
-          command: 'Evaluate Expression Shortcut',
-          description: 'Execute code in debugger',
-          usage: 'Alt+F8',
-          example: `# Evaluate Expression
-Alt+F8`,
+          command: 'Debug Navigation',
+          description: 'Navigate during debugging',
+          usage: 'F8 (Step Over), F7 (Step Into), Shift+F8 (Step Out), F9 (Resume)',
+          example: '# Debug Navigation\nF8 - Step Over (next line)\nF7 - Step Into (method call)\nShift+F8 - Step Out (current method)\nF9 - Resume Program\n\n# Additional:\n# Alt+F9 - Run to Cursor\n# Alt+F8 - Evaluate Expression\n# F9 - Resume Program\n# Ctrl+F2 - Stop Debug Session',
         },
         {
-          command: 'Evaluate Expression Features',
-          description: 'Expression evaluation features',
-          usage: 'Evaluate functionality',
-          example: `# Can:
-# - Execute any code
-# - Inspect variables
-# - Modify values
-# - Call methods
-# - Create new objects`,
+          command: 'Variable Inspection',
+          description: 'Inspect and modify variables during debug',
+          usage: 'Variables window during debug',
+          example: '# Variable Inspection\n# - Variables window shows current scope\n# - Expand objects to see fields\n# - Modify values in-place\n# - Watch expressions\n# - Evaluate expressions\n\n# Features:\n# - Real-time value updates\n# - Object inspection\n# - Array/collection viewing\n# - Custom object views\n# - Value modification',
         },
         {
-          command: 'Step Into',
-          description: 'Step into method calls',
-          usage: 'F7',
-          example: `# Debug Navigation
-F7 - Step Into (enter method)`,
+          command: 'Evaluate Expression',
+          description: 'Execute expressions during debugging',
+          usage: 'Alt+F8 during debug',
+          example: '# Evaluate Expression\nAlt+F8 during debug\n\n# Features:\n# - Execute any valid expression\n# - Access current variables\n# - Call methods\n# - Modify state\n# - Test conditions\n\n# Uses:\n# - Test bug fixes\n# - Inspect complex objects\n# - Try different values\n# - Debug complex logic',
         },
         {
-          command: 'Step Over',
-          description: 'Step over current line',
-          usage: 'F8',
-          example: `F8 - Step Over (execute line)`,
-        },
-        {
-          command: 'Step Out',
-          description: 'Step out of current method',
-          usage: 'Shift+F8',
-          example: `Shift+F8 - Step Out (exit method)`,
-        },
-        {
-          command: 'Force Step Into',
-          description: 'Force step into method',
-          usage: 'Alt+Shift+F7',
-          example: `# Advanced:
-# - Force Step Into (Alt+Shift+F7)`,
-        },
-        {
-          command: 'Run to Cursor',
-          description: 'Run to cursor position',
-          usage: 'Alt+F9',
-          example: `# - Run to Cursor (Alt+F9)`,
-        },
-        {
-          command: 'Smart Step Into',
-          description: 'Smart step into lambda',
-          usage: 'Shift+F7',
-          example: `# - Smart Step Into (Shift+F7)`,
-        },
-        {
-          command: 'Watch Expressions Setup',
-          description: 'Add watch expressions',
-          usage: 'Debug tool window > Watches tab',
-          example: `# Watch Expressions
-# Add expressions to monitor:`,
-        },
-        {
-          command: 'Watch Expression Types',
-          description: 'Types of watch expressions',
-          usage: 'Watch expression categories',
-          example: `# - Variables
-# - Method calls
-# - Complex expressions
-# - Field access`,
-        },
-        {
-          command: 'Watch Expression Updates',
-          description: 'Watch expression behavior',
-          usage: 'Watch functionality',
-          example: `# Updates during debugging`,
+          command: 'Remote Debugging',
+          description: 'Debug applications running remotely',
+          usage: 'Run > Edit Configurations > Remote',
+          example: '# Remote Debugging\nRun > Edit Configurations > Remote\n\n# Setup:\n# 1. Configure remote JVM debug\n# 2. Set host and port\n# 3. Start remote app with debug flags\n# 4. Connect from IDE\n\n# Java Remote Debug:\n# -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005\n\n# Features:\n# - Debug production code\n# - Container debugging\n# - Cloud application debug\n# - Microservices debugging',
         },
       ],
     },
     {
-      title: 'Version Control Advanced',
+      title: 'Version Control Integration',
       commands: [
         {
-          command: 'Git Commit Shortcut',
-          description: 'Commit changes',
-          usage: 'Cmd+K',
-          example: `# Git Operations
-# - Commit (Cmd+K)`,
+          command: 'Git Integration Basics',
+          description: 'Git version control operations',
+          usage: 'VCS menu or Git tool window',
+          example: '# Git Operations\n# - Commit (Cmd+K / Ctrl+K)\n# - Push (Cmd+Shift+K / Ctrl+Shift+K)\n# - Pull (Cmd+T / Ctrl+T)\n# - Merge (Ctrl+Shift+A > Git > Merge)\n\n# Git Tool Window:\n# - Log view (commit history)\n# - Console (git command output)\n# - Branches (branch management)\n# - Local Changes (staging area)',
         },
         {
-          command: 'Git Push Shortcut',
-          description: 'Push changes',
-          usage: 'Cmd+Shift+K',
-          example: `# - Push (Cmd+Shift+K)`,
+          command: 'Commit and Push',
+          description: 'Commit changes and push to remote',
+          usage: 'Cmd+K (Mac) / Ctrl+K (Win) for commit',
+          example: '# Commit Changes\nCmd+K (Mac) / Ctrl+K (Win)\n\n# Commit Features:\n# - Stage/unstage files\n# - Write commit message\n# - Code analysis before commit\n# - Auto-format on commit\n\n# Push Changes\nCmd+Shift+K (Mac) / Ctrl+Shift+K (Win)\n\n# Features:\n# - Push to remote repository\n# - Force push option\n# - Branch selection\n# - Push tags',
         },
         {
-          command: 'Git Pull Shortcut',
-          description: 'Pull changes',
-          usage: 'Cmd+T',
-          example: `# - Pull (Cmd+T)`,
+          command: 'Branch Management',
+          description: 'Create, switch, and manage branches',
+          usage: 'Git tool window > Branches',
+          example: '# Branch Operations\n# - New Branch (right-click > New Branch)\n# - Checkout (double-click branch)\n# - Delete Branch (right-click > Delete)\n# - Merge (right-click > Merge)\n\n# Branch Features:\n# - Branch comparison\n# - Cherry-pick commits\n# - Rebase branches\n# - Stash changes\n\n# Quick Checkout:\n# Ctrl+Shift+A > Git > Checkout',
         },
         {
-          command: 'Git Branch Management',
-          description: 'Manage branches',
-          usage: 'Git tool window',
-          example: `# - Branch management`,
+          command: 'Diff and Merge',
+          description: 'Compare changes and resolve conflicts',
+          usage: 'Annotate > Show Diff or merge conflicts',
+          example: '# View Diff\n# - Click file in Local Changes\n# - Right-click > Show Diff\n# - Compare with any version\n\n# Merge Conflicts:\n# - Automatic conflict detection\n# - Three-way merge view\n# - Accept/Reject changes\n# - Resolve conflicts manually\n\n# Features:\n# - Side-by-side comparison\n# - Unified diff view\n# - Ignore whitespace\n# - Diff by revision',
         },
         {
-          command: 'Git Merge Conflicts',
-          description: 'Resolve merge conflicts',
-          usage: 'Git conflict resolution',
-          example: `# - Merge conflicts`,
-        },
-        {
-          command: 'Git Stash Changes',
-          description: 'Stash uncommitted changes',
-          usage: 'Git stash operations',
-          example: `# - Stash changes`,
-        },
-        {
-          command: 'Git Interactive Rebase',
-          description: 'Interactive rebase operations',
-          usage: 'Git rebase features',
-          example: `# - Interactive rebase`,
-        },
-        {
-          command: 'Git Annotate Menu',
-          description: 'Access git annotate',
-          usage: 'Right-click > Git > Annotate',
-          example: `# Git Annotate`,
-        },
-        {
-          command: 'Git Annotate Features',
-          description: 'Annotate information',
-          usage: 'Git annotate data',
-          example: `# Shows:
-# - Who wrote each line
-# - When it was last modified
-# - Commit message
-# - Branch information`,
-        },
-        {
-          command: 'Shelve Changes Menu',
-          description: 'Access shelve changes',
-          usage: 'Git > Shelve Changes',
-          example: `# Shelve Changes`,
-        },
-        {
-          command: 'Shelve Changes Features',
-          description: 'Shelve functionality',
-          usage: 'Shelve operations',
-          example: `# - Store uncommitted changes
-# - Apply later when needed
-# - Manage multiple shelves
-# - Compare with current version`,
-        },
-        {
-          command: 'Cherry-Pick Menu',
-          description: 'Access cherry-pick',
-          usage: 'Git > Cherry-Pick',
-          example: `# Cherry-Pick`,
-        },
-        {
-          command: 'Cherry-Pick Features',
-          description: 'Cherry-pick functionality',
-          usage: 'Cherry-pick operations',
-          example: `# - Apply commits from other branches
-# - Select specific commits
-# - Resolve conflicts if needed
-# - Maintain commit history`,
+          command: 'Git History and Blame',
+          description: 'View commit history and code annotations',
+          usage: 'Git tool window > Log or Annotate',
+          example: '# Git History\nGit tool window > Log\n\n# Features:\n# - Commit timeline\n# - Branch graph\n# - Commit details\n# - File history\n\n# Git Blame\nAnnotate > Annotate\n\n# Features:\n# - Line-by-line authorship\n# - Commit information\n# - Navigate to commits\n# - Track code changes',
         },
       ],
     },
     {
-      title: 'Database Tools (Ultimate Edition)',
+      title: 'Build Tools and Run Configurations',
       commands: [
         {
-          command: 'Database Explorer Access',
-          description: 'Open database explorer',
-          usage: 'View > Tool Windows > Database',
-          example: `# Database Features`,
+          command: 'Run Configuration Management',
+          description: 'Create and manage run configurations',
+          usage: 'Run > Edit Configurations',
+          example: '# Run Configuration\nRun > Edit Configurations\n\n# Configuration Types:\n# - Application (Java main)\n# - JUnit/TestNG tests\n# - Maven/Gradle tasks\n# - JavaScript/Node.js\n# - Python scripts\n# - Docker containers\n\n# Settings:\n# - Main class/script\n# - Program arguments\n# - VM options\n# - Environment variables\n# - Working directory\n# - Before/after launch tasks',
         },
         {
-          command: 'Database Connect',
-          description: 'Connect to databases',
-          usage: 'Database connection setup',
-          example: `# - Connect to databases`,
+          command: 'Maven Integration',
+          description: 'Maven build tool integration',
+          usage: 'Maven tool window',
+          example: '# Maven Tool Window\n# - Lifecycle (clean, compile, test, package)\n# - Dependencies (manage dependencies)\n# - Plugins (configure plugins)\n# - Profiles (activate profiles)\n\n# Maven Features:\n# - Auto-import dependencies\n# - Download sources/javadoc\n# - Run Maven goals\n# - Dependency analysis\n\n# Quick Actions:\n# - Double-click lifecycle phase\n# - Right-click for more options\n# - Reload projects (F5)',
         },
         {
-          command: 'Database Browse',
-          description: 'Browse database schemas',
-          usage: 'Database exploration',
-          example: `# - Browse schemas and tables`,
+          command: 'Gradle Integration',
+          description: 'Gradle build tool integration',
+          usage: 'Gradle tool window',
+          example: '# Gradle Tool Window\n# - Tasks (run Gradle tasks)\n# - Dependencies (view dependencies)\n# - Projects (project structure)\n\n# Gradle Features:\n# - Task execution\n# - Dependency management\n# - Build script editing\n# - Custom tasks\n\n# Quick Actions:\n# - Double-click task to run\n# - Refresh projects\n# - Toggle offline mode\n# - Daemon status',
         },
         {
-          command: 'Database Edit Data',
-          description: 'Edit table data',
-          usage: 'Data editing',
-          example: `# - Edit table data`,
+          command: 'Build Automation',
+          description: 'Automate build processes',
+          usage: 'Settings > Build Tools',
+          example: '# Build Automation\nSettings > Build Tools\n\n# Features:\n# - Auto-build on save\n# - Compile on the fly\n# - Build error highlighting\n# - External tool integration\n\n# Configuration:\n# - Compiler settings\n# - Build process order\n# - Output directories\n# - Resource processing\n\n# Integration:\n# - Maven/Gradle\n# - Ant\n# - External build tools\n# - Custom build scripts',
+        },
+      ],
+    },
+    // EXPERT LEVEL
+    {
+      title: 'Database Integration',
+      commands: [
+        {
+          command: 'Database Connection Setup',
+          description: 'Configure database connections',
+          usage: 'Database tool window > Add Data Source',
+          example: '# Database Connection\nDatabase tool window > Add Data Source\n\n# Supported Databases:\n# - MySQL, PostgreSQL\n# - Oracle, SQL Server\n# - SQLite, H2\n# - MongoDB, Redis\n\n# Connection Settings:\n# - Host and port\n# - Database name\n# - Username/password\n# - SSL configuration\n# - SSH tunnel\n\n# Features:\n# - Connection testing\n# - Driver management\n# - Connection pooling\n# - SSL certificates',
         },
         {
-          command: 'Database Run Queries',
-          description: 'Execute SQL queries',
-          usage: 'Query execution',
-          example: `# - Run SQL queries`,
+          command: 'SQL Query Execution',
+          description: 'Write and execute SQL queries',
+          usage: 'Console in Database tool window',
+          example: '# SQL Console\nDatabase tool window > New Console\n\n# Features:\n# - Syntax highlighting\n# - Code completion\n# - Query formatting\n# - Execute statements\n# - Batch execution\n\n# SQL Support:\n# - All major SQL dialects\n# - Stored procedures\n# - Functions and triggers\n# - PL/SQL, T-SQL\n\n# Query Tools:\n# - Explain plan\n# - Query profiling\n# - Result export\n# - Query history',
         },
         {
-          command: 'Database Export Import',
-          description: 'Export and import data',
-          usage: 'Data operations',
-          example: `# - Export/import data`,
+          command: 'Database Object Management',
+          description: 'Manage tables, indexes, and schemas',
+          usage: 'Database tool tree',
+          example: '# Database Objects\nDatabase tool window > Expand database\n\n# Object Types:\n# - Tables, Views\n# - Indexes, Constraints\n# - Procedures, Functions\n# - Triggers, Sequences\n\n# Operations:\n# - Create/modify tables\n# - Add/drop columns\n# - Create indexes\n# - Edit data directly\n\n# Features:\n# - Visual table editor\n# - Data import/export\n# - Schema comparison\n# - DDL generation',
         },
         {
-          command: 'SQL Console Access',
-          description: 'Open SQL console',
-          usage: 'Right-click table > Console',
-          example: `# SQL Console`,
-        },
-        {
-          command: 'SQL Console Features',
-          description: 'SQL console capabilities',
-          usage: 'SQL console functionality',
-          example: `# - Syntax highlighting
-# - Code completion
-# - Query execution
-# - Results viewing
-# - Export results`,
-        },
-        {
-          command: 'Data Editor Access',
-          description: 'Open data editor',
-          usage: 'Double-click table',
-          example: `# Data Editor`,
-        },
-        {
-          command: 'Data Editor Features',
-          description: 'Data editor capabilities',
-          usage: 'Data editing functionality',
-          example: `# - Edit cells directly
-# - Add/delete rows
-# - Filter and sort
-# - Copy/paste data
-# - Mass updates`,
+          command: 'Data Import and Export',
+          description: 'Transfer data between databases and files',
+          usage: 'Right-click table > Import/Export',
+          example: '# Data Export\nRight-click table > Export Data\n\n# Export Formats:\n# - CSV, TSV\n# - Excel (XLSX)\n# - JSON, XML\n# - SQL scripts\n\n# Data Import\nRight-click table > Import Data\n\n# Import Formats:\n# - CSV, Excel\n# - JSON, XML\n# - SQL dumps\n# - Database transfer\n\n# Features:\n# - Format mapping\n# - Data type conversion\n# - Batch processing\n# - Error handling',
         },
       ],
     },
     {
-      title: 'Performance and Optimization',
+      title: 'Performance Profiling',
       commands: [
-        {
-          command: 'Performance Profiling Access',
-          description: 'Access performance profiler',
-          usage: 'Run > Profiler',
-          example: `# Profiler Features`,
-        },
         {
           command: 'CPU Profiling',
-          description: 'Profile CPU usage',
-          usage: 'CPU profiling features',
-          example: `# - CPU profiling`,
+          description: 'Analyze CPU performance and bottlenecks',
+          usage: 'Run > Profile or View > Tool Windows > Profiler',
+          example: '# CPU Profiler\nRun > Profile > [Application]\n\n# Profiling Features:\n# - Method execution time\n# - Call tree analysis\n# - Hot spot detection\n# - Flame graphs\n\n# Analysis Tools:\n# - Method timing\n# - Call hierarchy\n# - Sampling vs instrumentation\n# - Thread analysis\n\n# Usage:\n# 1. Create profile configuration\n# 2. Run with profiling\n# 3. Analyze results\n# 4. Identify bottlenecks',
         },
         {
           command: 'Memory Profiling',
-          description: 'Profile memory usage',
-          usage: 'Memory profiling features',
-          example: `# - Memory usage`,
+          description: 'Analyze memory usage and leaks',
+          usage: 'Run > Profile with Memory Settings',
+          example: '# Memory Profiler\nRun > Profile > Memory Settings\n\n# Memory Analysis:\n# - Heap dump analysis\n# - Object allocation\n# - Garbage collection\n# - Memory leaks\n\n# Tools:\n# - Heap snapshots\n# - Object reference chains\n# - GC roots analysis\n# - Memory allocation tracking\n\n# Features:\n# - Live objects view\n# - Class histogram\n# - Dominator tree\n# - Leak detection',
         },
         {
-          command: 'Method Timing',
-          description: 'Profile method execution time',
-          usage: 'Timing analysis',
-          example: `# - Method timing`,
-        },
-        {
-          command: 'Call Tree Analysis',
-          description: 'Analyze call tree',
-          usage: 'Call tree features',
-          example: `# - Call tree analysis`,
-        },
-        {
-          command: 'Hotspot Identification',
-          description: 'Identify performance hotspots',
-          usage: 'Hotspot detection',
-          example: `# - Hotspot identification`,
-        },
-        {
-          command: 'Memory View Access',
-          description: 'Access memory view',
-          usage: 'Debug tool window > Memory',
-          example: `# Memory Analysis`,
-        },
-        {
-          command: 'Heap Inspection',
-          description: 'Inspect heap memory',
-          usage: 'Heap analysis',
-          example: `# - Heap inspection`,
-        },
-        {
-          command: 'Object Counting',
-          description: 'Count objects in memory',
-          usage: 'Object counting',
-          example: `# - Object counting`,
-        },
-        {
-          command: 'Garbage Collection',
-          description: 'Monitor garbage collection',
-          usage: 'GC monitoring',
-          example: `# - Garbage collection`,
-        },
-        {
-          command: 'Memory Leaks Detection',
-          description: 'Detect memory leaks',
-          usage: 'Leak detection',
-          example: `# - Memory leaks detection`,
-        },
-        {
-          command: 'Object References',
-          description: 'Analyze object references',
-          usage: 'Reference analysis',
-          example: `# - Object references`,
-        },
-        {
-          command: 'Code Analysis Access',
-          description: 'Access code analysis',
-          usage: 'Code > Inspect Code',
-          example: `# Code Inspection`,
-        },
-        {
-          command: 'Full Project Analysis',
-          description: 'Run complete project analysis',
-          usage: 'Project-wide inspection',
-          example: `# - Run full project analysis`,
-        },
-        {
-          command: 'Find Potential Issues',
-          description: 'Identify code issues',
-          usage: 'Issue detection',
-          example: `# - Find potential issues`,
-        },
-        {
-          command: 'Code Quality Metrics',
-          description: 'Analyze code quality',
-          usage: 'Quality metrics',
-          example: `# - Code quality metrics`,
-        },
-        {
-          command: 'Security Vulnerabilities',
-          description: 'Find security issues',
-          usage: 'Security analysis',
-          example: `# - Security vulnerabilities`,
-        },
-        {
-          command: 'Performance Issues',
-          description: 'Find performance problems',
-          usage: 'Performance analysis',
-          example: `# - Performance issues`,
+          command: 'Thread Debugging',
+          description: 'Analyze thread behavior and concurrency',
+          usage: 'Debug > Thread View or Profiler',
+          example: '# Thread Analysis\nDebug > Thread View\n\n# Thread Features:\n# - Thread state monitoring\n# - Deadlock detection\n# - Race condition analysis\n# - Synchronization issues\n\n# Tools:\n# - Thread dump analysis\n# - Lock contention\n# - Thread timeline\n# - Concurrent execution\n\n# Uses:\n# - Debug concurrency issues\n# - Optimize threading\n# - Analyze performance\n# - Fix deadlocks',
         },
       ],
     },
     {
-      title: 'Customization and Productivity',
+      title: 'Code Quality and Analysis',
       commands: [
         {
-          command: 'Live Templates Access',
-          description: 'Access live templates settings',
-          usage: 'Settings > Editor > Live Templates',
-          example: `# Live Templates`,
+          command: 'Code Inspections',
+          description: 'Static code analysis and quality checks',
+          usage: 'Code > Inspect Code or Settings > Editor > Inspections',
+          example: '# Code Inspections\nCode > Inspect Code\n\n# Inspection Categories:\n# - Probable bugs\n# - Performance issues\n# - Security vulnerabilities\n# - Code style violations\n# - Internationalization\n# - Unused code\n\n# Features:\n# - Real-time analysis\n# - Batch inspection\n# - Custom inspection profiles\n# - Severity levels\n\n# Usage:\n# 1. Select inspection scope\n# 2. Choose inspection profile\n# 3. Run inspection\n# 4. Review results\n# 5. Fix issues',
         },
         {
-          command: 'Live Templates Uses',
-          description: 'Live template applications',
-          usage: 'Template usage',
-          example: `# Create shortcuts for:
-# - Common code patterns
-# - Boilerplate code
-# - Method signatures
-# - Class structures`,
+          command: 'Code Coverage',
+          description: 'Measure test coverage of code',
+          usage: 'Run > Run with Coverage',
+          example: '# Code Coverage\nRun > Run with Coverage\n\n# Coverage Metrics:\n# - Line coverage\n# - Branch coverage\n# - Method coverage\n# - Class coverage\n\n# Features:\n# - Visual coverage highlighting\n# - Coverage reports\n# - Coverage thresholds\n# - Historical tracking\n\n# Usage:\n# 1. Run tests with coverage\n# 2. Review coverage results\n# 3. Identify uncovered code\n# 4. Add tests for gaps\n# 5. Monitor coverage trends',
         },
         {
-          command: 'Live Templates Example',
-          description: 'Example live template',
-          usage: 'Template example',
-          example: `# Example: psvm -> public static void main`,
+          command: 'Duplicate Code Detection',
+          description: 'Find duplicated code fragments',
+          usage: 'Code > Locate Duplicates',
+          example: '# Duplicate Detection\nCode > Locate Duplicates\n\n# Analysis Scope:\n# - Current file\n# - Current package\n# - Entire project\n# - Custom scope\n\n# Features:\n# - Structural similarity\n# - Parameterized duplicates\n# - Configuration options\n# - Refactoring suggestions\n\n# Benefits:\n# - Code deduplication\n# - Extract common code\n# - Improve maintainability\n# - Reduce code size',
         },
         {
-          command: 'File Templates Access',
-          description: 'Access file templates settings',
+          command: 'Dependency Analysis',
+          description: 'Analyze project dependencies and structure',
+          usage: 'Analyze > Dependencies',
+          example: '# Dependency Analysis\nAnalyze > Dependencies\n\n# Analysis Types:\n# - Module dependencies\n# - Package dependencies\n# - Class dependencies\n# - Circular dependencies\n\n# Features:\n# - Dependency graph\n# - Unused dependencies\n# - Dependency cycles\n# - Impact analysis\n\n# Uses:\n# - Refactoring planning\n# - Module design\n# - Architecture analysis\n# - Dependency cleanup',
+        },
+      ],
+    },
+    {
+      title: 'Advanced Customization',
+      commands: [
+        {
+          command: 'Custom File Templates',
+          description: 'Create custom file and code templates',
           usage: 'Settings > Editor > File and Code Templates',
-          example: `# File Templates`,
+          example: '# File Templates\nSettings > Editor > File and Code Templates\n\n# Template Types:\n# - Files (new file templates)\n# - Includes (reusable fragments)\n# - Code Templates (live templates)\n\n# Template Variables:\n# ${NAME} - File name\n# ${PACKAGE_NAME} - Package\n# ${USER} - Current user\n# ${DATE} - Current date\n# ${TIME} - Current time\n\n# Examples:\n# - Class templates\n# - Interface templates\n# - Test class templates\n# - Configuration files',
         },
         {
-          command: 'File Templates Customization',
-          description: 'Customize file templates',
-          usage: 'Template customization',
-          example: `# Customize:
-# - Class templates
-# - Interface templates
-# - File headers
-# - Copyright notices
-# - Package comments`,
+          command: 'Live Templates',
+          description: 'Create code snippets and abbreviations',
+          usage: 'Settings > Editor > Live Templates',
+          example: '# Live Templates\nSettings > Editor > Live Templates\n\n# Template Features:\n# - Abbreviation expansion\n# - Variables and expressions\n# - Context-aware activation\n# - Custom template groups\n\n# Built-in Examples:\n# - sout -> System.out.println()\n# - fori -> for loop\n# - psfs -> public static final String\n# - thr -> throw new\n\n# Custom Templates:\n# - Create your own abbreviations\n# - Define template context\n# - Add editable variables\n# - Set expansion keys',
         },
         {
-          command: 'Keymap Customization Access',
-          description: 'Access keymap settings',
+          command: 'Custom Keymaps',
+          description: 'Create personalized keyboard shortcuts',
           usage: 'Settings > Keymap',
-          example: `# Keymap Customization`,
+          example: '# Custom Keymaps\nSettings > Keymap\n\n# Keymap Features:\n# - Duplicate existing keymaps\n# - Modify shortcuts\n# - Create custom keymaps\n# - Export/import keymaps\n\n# Popular Keymaps:\n# - Default (JetBrains)\n# - Visual Studio\n# - Eclipse\n# - NetBeans\n# - macOS System Shortcuts\n\n# Customization:\n# - Find action by name\n# - Assign multiple shortcuts\n# - Configure conflicts\n# - Reset to defaults',
         },
         {
-          command: 'Keymap Features',
-          description: 'Keymap customization features',
-          usage: 'Keymap functionality',
-          example: `# - Modify existing shortcuts
-# - Add new key bindings
-# - Create custom keymaps
-# - Import/export keymaps`,
-        },
-        {
-          command: 'Scratch Files Shortcut',
-          description: 'Create scratch files',
-          usage: 'Cmd+Shift+N',
-          example: `# Productivity Features`,
-        },
-        {
-          command: 'Multiple Carets',
-          description: 'Use multiple cursors',
-          usage: 'Multi-cursor editing',
-          example: `# - Multiple carets`,
-        },
-        {
-          command: 'Intentions Shortcut',
-          description: 'Access intention actions',
-          usage: 'Alt+Enter',
-          example: `# - Intentions (Alt+Enter)`,
-        },
-        {
-          command: 'Postfix Completion',
-          description: 'Use postfix completion',
-          usage: 'Postfix templates',
-          example: `# - Postfix completion`,
-        },
-        {
-          command: 'Surround with Templates',
-          description: 'Surround code with templates',
-          usage: 'Surround templates',
-          example: `# - Surround with templates`,
-        },
-        {
-          command: 'Bookmarks Toggle',
-          description: 'Toggle bookmarks',
-          usage: 'F11',
-          example: `# - Bookmarks (F11/F3)`,
-        },
-        {
-          command: 'Bookmarks Navigation',
-          description: 'Navigate bookmarks',
-          usage: 'F3',
-          example: `# - Bookmarks (F11/F3)`,
+          command: 'Color Scheme Customization',
+          description: 'Create custom editor color schemes',
+          usage: 'Settings > Editor > Color Scheme',
+          example: '# Color Schemes\nSettings > Editor > Color Scheme\n\n# Customization Options:\n# - Syntax highlighting\n# - Editor colors\n# - Console colors\n# - Darcula/Light themes\n\n# Color Elements:\n# - Keywords, strings, comments\n# - Method/variable names\n# - Error/warning highlighting\n# - Selection and caret\n\n# Features:\n# - Import/export schemes\n# - Share with community\n# - Plugin color schemes\n# - High contrast themes',
         },
       ],
     },
     {
-      title: 'IDE-Specific Features',
+      title: 'Productivity Tips and Workflows',
       commands: [
         {
-          command: 'IntelliJ IDEA Spring Boot',
-          description: 'Spring Boot integration',
-          usage: 'IntelliJ IDEA features',
-          example: `# IntelliJ IDEA Features
-# - Spring Boot integration`,
+          command: 'Essential Shortcuts',
+          description: 'Must-know shortcuts for productivity',
+          usage: 'Keyboard combinations',
+          example: '# Essential Shortcuts\n\n# Navigation:\n# Double Shift - Search Everywhere\n# Cmd+Shift+A (Mac) / Ctrl+Shift+A (Win) - Find Action\n# Cmd+E (Mac) / Ctrl+E (Win) - Recent Files\n# Cmd+O (Mac) / Ctrl+N (Win) - Go to Class\n\n# Editing:\n# Cmd+D (Mac) / Ctrl+D (Win) - Duplicate Line\n# Cmd+/ (Mac) / Ctrl+/ (Win) - Comment Line\n# Alt+Enter - Show Intention Actions\n\n# Refactoring:\n# Shift+F6 - Rename\n# Cmd+Alt+M (Mac) / Ctrl+Alt+M (Win) - Extract Method\n# F6 - Move',
         },
         {
-          command: 'IntelliJ IDEA Maven Gradle',
-          description: 'Build tool support',
-          usage: 'Build tool integration',
-          example: `# - Maven/Gradle support`,
+          command: 'Intention Actions',
+          description: 'Quick fixes and code improvements',
+          usage: 'Alt+Enter or click light bulb',
+          example: '# Intention Actions\nAlt+Enter or click light bulb\n\n# Common Actions:\n# - Import missing classes\n# - Implement methods\n# - Create local variable\n# - Add exception handling\n# - Optimize imports\n# - Convert to lambda\n\n# Features:\n# - Context-aware suggestions\n# - Quick fixes for errors\n# - Code improvements\n# - Refactoring suggestions\n\n# Usage:\n# - Click on error/warning\n# - Press Alt+Enter\n# - Choose action from list',
         },
         {
-          command: 'IntelliJ IDEA Java EE',
-          description: 'Java EE support',
-          usage: 'Enterprise framework support',
-          example: `# - Java EE support`,
+          command: 'Code Generation',
+          description: 'Generate code automatically',
+          usage: 'Code > Generate or Cmd+N / Alt+Insert',
+          example: '# Code Generation\nCode > Generate or Cmd+N (Mac) / Alt+Insert (Win)\n\n# Generate Options:\n# - Constructor\n# - Getter/Setter\n# - toString()\n# - equals() and hashCode()\n# - Override methods\n# - Delegate methods\n# - Test methods\n\n# Features:\n# - Smart code generation\n# - Template-based\n# - Language-specific\n# - Customizable templates',
         },
         {
-          command: 'IntelliJ IDEA Android',
-          description: 'Android development',
-          usage: 'Android development tools',
-          example: `# - Android development`,
+          command: 'Quick Switch Scheme',
+          description: 'Quickly change keymaps, themes, and view modes',
+          usage: 'Ctrl+` (backtick)',
+          example: '# Quick Switch Scheme\nCtrl+` (backtick)\n\n# Switch Options:\n# - Keymap (Default, VS Code, etc.)\n# - View Mode (Editor, Distraction Free)\n# - Look and Feel (Theme)\n# - Quick List (custom actions)\n\n# Features:\n# - Fast switching\n# - Temporary changes\n# - Easy experimentation\n# - Productivity boost',
         },
         {
-          command: 'IntelliJ IDEA Kotlin',
-          description: 'Kotlin development',
-          usage: 'Kotlin language support',
-          example: `# - Kotlin development`,
+          command: 'Distraction Free Mode',
+          description: 'Focus mode for coding without distractions',
+          usage: 'View > Appearance > Enter Distraction Free Mode',
+          example: '# Distraction Free Mode\nView > Appearance > Enter Distraction Free Mode\n\n# Features:\n# - Minimal UI\n# - Full screen editing\n# - Centered layout\n# - Tool window auto-hide\n\n# Usage:\n# - Focus on code\n# - Reduce distractions\n# - Improve concentration\n# - Clean workspace\n\n# Exit: ESC or View > Exit Distraction Free Mode',
         },
         {
-          command: 'IntelliJ IDEA Code Coverage',
-          description: 'Code coverage tools',
-          usage: 'Coverage analysis',
-          example: `# - Code coverage`,
-        },
-        {
-          command: 'PyCharm Django Flask',
-          description: 'Web framework integration',
-          usage: 'Python web frameworks',
-          example: `# PyCharm Features
-# - Django/Flask integration`,
-        },
-        {
-          command: 'PyCharm Scientific Tools',
-          description: 'Scientific computing tools',
-          usage: 'Data science integration',
-          example: `# - Scientific tools (NumPy, Pandas)`,
-        },
-        {
-          command: 'PyCharm Virtual Environments',
-          description: 'Virtual environment support',
-          usage: 'Python environment management',
-          example: `# - Virtual environments`,
-        },
-        {
-          command: 'PyCharm Testing Frameworks',
-          description: 'Testing framework support',
-          usage: 'Python testing tools',
-          example: `# - Testing frameworks`,
-        },
-        {
-          command: 'PyCharm Profiling Tools',
-          description: 'Python profiling',
-          usage: 'Performance analysis',
-          example: `# - Profiling tools`,
-        },
-        {
-          command: 'PyCharm Remote Debugging',
-          description: 'Remote debugging capabilities',
-          usage: 'Remote development',
-          example: `# - Remote debugging`,
-        },
-        {
-          command: 'WebStorm Node.js',
-          description: 'Node.js integration',
-          usage: 'JavaScript runtime support',
-          example: `# WebStorm Features
-# - Node.js integration`,
-        },
-        {
-          command: 'WebStorm React Angular Vue',
-          description: 'Frontend framework support',
-          usage: 'JavaScript frameworks',
-          example: `# - React/Angular/Vue support`,
-        },
-        {
-          command: 'WebStorm TypeScript',
-          description: 'TypeScript support',
-          usage: 'TypeScript language support',
-          example: `# - TypeScript`,
-        },
-        {
-          command: 'WebStorm CSS SCSS Sass',
-          description: 'CSS preprocessing support',
-          usage: 'CSS and preprocessors',
-          example: `# - CSS/SCSS/Sass`,
-        },
-        {
-          command: 'WebStorm Build Tools',
-          description: 'Build tool integration',
-          usage: 'JavaScript build tools',
-          example: `# - Build tools (Webpack, npm)`,
-        },
-        {
-          command: 'WebStorm Docker',
-          description: 'Docker integration',
-          usage: 'Container development',
-          example: `# - Docker integration`,
-        },
-        {
-          command: 'Ultimate Database Tools',
-          description: 'Database integration',
-          usage: 'Ultimate database features',
-          example: `# Ultimate Features
-# - Database tools`,
-        },
-        {
-          command: 'Ultimate Profiling Tools',
-          description: 'Performance profiling',
-          usage: 'Ultimate profiling features',
-          example: `# - Profiling tools`,
-        },
-        {
-          command: 'Ultimate JavaScript Debugger',
-          description: 'JavaScript debugging',
-          usage: 'Ultimate debugging features',
-          example: `# - JavaScript debugger`,
-        },
-        {
-          command: 'Ultimate Spring Support',
-          description: 'Spring framework support',
-          usage: 'Enterprise framework features',
-          example: `# - Spring support`,
-        },
-        {
-          command: 'Ultimate Enterprise Frameworks',
-          description: 'Enterprise framework support',
-          usage: 'Enterprise development',
-          example: `# - Enterprise frameworks`,
-        },
-        {
-          command: 'Ultimate Code Review Tools',
-          description: 'Code review features',
-          usage: 'Collaboration tools',
-          example: `# - Code review tools`,
+          command: 'Productivity Plugins',
+          description: 'Essential plugins for enhanced productivity',
+          usage: 'Settings > Plugins',
+          example: '# Essential Productivity Plugins\n\n# Development:\n# - Key Promoter X (shows shortcuts)\n# - Rainbow Brackets (color matching)\n# - String Manipulation (text operations)\n# - .ignore (gitignore support)\n\n# Framework Support:\n# - Lombok (annotation processing)\n# - Spring Assistant (Spring Boot)\n# - Docker (container support)\n# - Kubernetes (K8s support)\n\n# Tools:\n# - GitToolBox (Git enhancements)\n# - Database Navigator (SQL tools)\n# - Markdown Navigator (Markdown support)\n# - RestfulToolkit (REST API)',
         },
       ],
     },

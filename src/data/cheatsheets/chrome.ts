@@ -3,224 +3,590 @@ import { Code } from 'lucide-react';
 export const chromeCheatsheet = {
   id: 'chrome-devtools',
   name: 'Chrome DevTools',
-  description: 'Comprehensive Chrome DevTools guide covering beginner to expert debugging, performance analysis, and web development techniques',
+  description: 'Master Chrome DevTools from basics to expert debugging, performance analysis, and web development (Chrome 120+)',
   icon: Code,
-  color: 'from-blue-500 to-green-500',
-  category: 'programming',
-  tags: ['chrome', 'devtools', 'debugging', 'performance', 'web-development'],
+  colorTheme: 'orange' as const,
   sections: [
+    // BEGINNER LEVEL
     {
       title: 'Getting Started with Chrome DevTools',
       commands: [
         {
-          command: 'What is Chrome DevTools?',
-          description: 'Chrome DevTools is a set of web developer tools built directly into the Google Chrome browser',
-          usage: 'Understanding DevTools capabilities and basic navigation',
-          example: 'Chrome DevTools Overview:\n- Built-in web development and debugging tools\n- Real-time editing of CSS, JavaScript, and DOM\n- Performance analysis and optimization\n- Network monitoring and debugging\n- Security and accessibility testing\n\nKey Components:\n- Elements Panel: DOM and CSS inspection\n- Console Panel: JavaScript debugging and logging\n- Sources Panel: Script debugging and editing\n- Network Panel: Network request monitoring\n- Performance Panel: Runtime performance analysis\n- Memory Panel: Memory usage profiling\n- Application Panel: Storage, service workers, and more\n- Security Panel: Security overview and testing\n\nAccess Methods:\n- Right-click → Inspect\n- Ctrl+Shift+I (Windows/Linux)\n- Cmd+Option+I (Mac)\n- F12 (most platforms)\n- Chrome Menu → More Tools → Developer Tools\n\nPanel Navigation:\n- Ctrl/Cmd + [1-9]: Quick panel switching\n- Ctrl/Cmd + Tab: Cycle through panels\n- Esc: Toggle console drawer\n\nCustomization:\n- Dock to right/left/bottom/undocked\n- Dark/light theme switching\n- Custom panel layouts and shortcuts'
+          command: 'DevTools Overview and Access',
+          description: 'Understanding Chrome DevTools and how to access them',
+          usage: 'Multiple access methods for different workflows',
+          example: '# Chrome DevTools Access Methods\n\n# Keyboard Shortcuts\nCtrl+Shift+I (Windows/Linux)\nCmd+Option+I (Mac)\nF12 (most platforms)\n\n# Context Menu\nRight-click → Inspect\n\n# Chrome Menu\nChrome Menu → More Tools → Developer Tools\n\n# Panel Navigation\nCtrl/Cmd + [1-9]: Quick panel switching\nCtrl/Cmd + Tab: Cycle through panels\nEsc: Toggle console drawer',
         },
         {
-          command: 'Opening and Navigation',
-          description: 'Various ways to open DevTools and navigate between panels',
-          usage: 'Quick access methods and efficient navigation',
-          example: '# Opening DevTools\n\n# Keyboard Shortcuts\nCtrl+Shift+I          # Open DevTools (Windows/Linux)\nCmd+Option+I          # Open DevTools (Mac)\nF12                   # Open DevTools (most platforms)\nCtrl+Shift+J          # Open Console directly\nCmd+Option+J          # Open Console directly (Mac)\n\n# Context Menu\nRight-click → Inspect # Open Elements panel with selected element\n\n# Chrome Menu\nChrome Menu → More Tools → Developer Tools\n\n# Panel Navigation\nCtrl+1, Ctrl+2, ...    # Switch to panel by number\nCtrl+Tab               # Next panel\nCtrl+Shift+Tab         # Previous panel\nEsc                    # Toggle console drawer\nCtrl+Shift+C           # Element selector mode\n\n# Element Inspection\nCtrl+Shift+C           # Enter element selection mode\nClick element          # Inspect clicked element\n\n# Panel Organization\nDrag panel tab         # Reorder panels\nRight-click panel     # Dock options (left/right/bottom/undocked)\nSettings → Preferences → Appearance # Theme and layout\n\n# Quick Access\nCmd+Shift+P (Mac) or Ctrl+Shift+P (Win/Linux) # Command menu\nType panel name        # Quick panel navigation\nType "?"               # Show all shortcuts'
+          command: 'DevTools Key Components',
+          description: 'Essential panels and their purposes',
+          usage: 'Understanding each DevTools panel',
+          example: '# Chrome DevTools Panels\n\n# Elements Panel\nDOM and CSS inspection\nReal-time style editing\nBox model visualization\n\n# Console Panel\nJavaScript debugging and logging\nInteractive programming\nError monitoring\n\n# Sources Panel\nScript debugging and editing\nSource maps\nFile workspace\n\n# Network Panel\nNetwork request monitoring\nPerformance analysis\nResource inspection\n\n# Performance Panel\nRuntime performance analysis\nFlame charts\nMemory profiling\n\n# Memory Panel\nHeap snapshots\nMemory leak detection\nAllocation tracking\n\n# Application Panel\nStorage inspection\nService workers\nProgressive web apps\n\n# Security Panel\nSecurity overview\nCertificate inspection\nMixed content analysis',
         },
         {
-          command: 'Basic Configuration',
-          description: 'Essential DevTools settings and preferences',
-          usage: 'Customizing DevTools for optimal workflow',
-          example: '# Accessing Settings\n\n# Settings Menu\nClick gear icon (top right) OR\nCmd+Shift+P → "Preferences" OR\nF1 (when DevTools is focused)\n\n# Essential Preferences\n\n## Appearance\n- Theme: Light/Dark/System preference\n- Panel layout: Horizontal/Vertical/Auto\n- Show whitespace characters\n- Enable Ctrl+1-9 shortcuts\n\n## Elements\n- Show user agent shadow DOM\n- Show HTML comments\n- Word wrap: On/Off\n- Highlight DOM updates on change\n\n## Console\n- Enable custom formatters\n- Hide network messages\n- Log XMLHTTPRequests\n- Eval on console panel activation\n\n## Sources\n- Enable JavaScript source maps\n- Enable CSS source maps\n- Search in content scripts\n- Autocomplete from history\n\n## Network\n- Preserve log upon navigation\n- Disable cache (while DevTools open)\n- Show request/response bodies\n- Color-code resource types\n\n## Performance\n- Enable advanced paint instrumentation\n- Show FPS meter\n- Show memory usage\n\n## Experiments\nCmd+Shift+P → "Experiments" # Enable cutting-edge features\n\n# Workspace Setup\nRight-click in Sources → Add folder to workspace\nMap local files to network resources\nLive edit local files with auto-save'
-        }
-      ]
+          command: 'Opening DevTools and Navigation',
+          description: 'Quick access methods and efficient panel navigation',
+          usage: 'Keyboard shortcuts and context menu access',
+          example: '# DevTools Navigation Shortcuts\n\n# Panel Switching\nCtrl+1, Ctrl+2, ... (Win/Linux)\nCmd+1, Cmd+2, ... (Mac)\n\n# Panel Navigation\nCtrl+Tab (Win/Linux) / Cmd+Tab (Mac) - Next panel\nCtrl+Shift+Tab (Win/Linux) / Cmd+Shift+Tab (Mac) - Previous panel\n\n# Quick Access\nCtrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac) - Command menu\n\n# Element Inspection\nCtrl+Shift+C (Win/Linux) / Cmd+Shift+C (Mac) - Element selector mode\n\n# Console Access\nCtrl+Shift+J (Win/Linux) / Cmd+Option+J (Mac) - Console directly',
+        },
+        {
+          command: 'Essential Settings and Configuration',
+          description: 'Customizing DevTools for optimal workflow',
+          usage: 'Settings menu and key preferences',
+          example: '# DevTools Settings Access\n\n# Open Settings\nClick gear icon (top right)\nCtrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac) → "Preferences"\nF1 (when DevTools is focused)\n\n# Essential Preferences\n\n## Appearance\n- Theme: Light/Dark/System preference\n- Panel layout: Horizontal/Vertical/Auto\n- Show whitespace characters\n- Enable Ctrl+1-9 shortcuts\n\n## Elements\n- Show user agent shadow DOM\n- Show HTML comments\n- Word wrap: On/Off\n- Highlight DOM updates on change\n\n## Console\n- Enable custom formatters\n- Hide network messages\n- Log XMLHTTPRequests\n- Eval on console panel activation\n\n## Sources\n- Enable JavaScript source maps\n- Enable CSS source maps\n- Search in content scripts\n- Autocomplete from history',
+        },
+        {
+          command: 'Network Settings Configuration',
+          description: 'Network panel specific settings',
+          usage: 'Optimize network monitoring',
+          example: '# Network Panel Settings\n\n# Essential Network Preferences\n- Preserve log upon navigation\n- Disable cache (while DevTools open)\n- Show request/response bodies\n- Color-code resource types\n\n# Performance Settings\n- Enable advanced paint instrumentation\n- Show FPS meter\n- Show memory usage\n\n# Workspace Setup\nRight-click in Sources → Add folder to workspace\nMap local files to network resources\nLive edit local files with auto-save',
+        },
+        {
+          command: 'Command Menu and Quick Actions',
+          description: 'Universal command search for all DevTools features',
+          usage: 'Ctrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac)',
+          example: '# Command Menu Usage\nCtrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac)\n\n# Popular Commands\n- Show Elements Panel\n- Show Console Panel\n- Show Sources Panel\n- Show Network Panel\n- Show Performance Panel\n- Show Memory Panel\n- Show Application Panel\n- Show Security Panel\n\n# Quick Actions\n- Disable JavaScript\n- Enable device toolbar\n- Capture screenshot\n- Clear site data\n- Empty cache and hard reload\n- Emulate CSS media type\n- Apply device metrics\n- Network conditions\n- User agent\n- Geolocation\n- Sensors',
+        },
+      ],
     },
     {
-      title: 'Elements Panel',
+      title: 'Elements Panel Mastery',
       commands: [
         {
-          command: 'DOM Inspection and Selection',
-          description: 'Inspecting and selecting DOM elements efficiently',
-          usage: 'Finding and analyzing page elements',
-          example: '# Element Selection\n\n# Selection Mode\nCtrl+Shift+C           # Enter element selection mode\nClick element          # Select and inspect element\n\n# Navigation in Elements Panel\nArrow keys             # Navigate DOM tree\nRight arrow            # Expand collapsed element\nLeft arrow             # Collapse element\nHome/End               # First/last child\n\n# Element Search\nCtrl+F                 # Search within current panel\nCtrl+Shift+F           # Search across all sources\n\n# DOM Tree Manipulation\nDrag element           # Reorder DOM elements\nDelete key             # Remove selected element\nEnter                  # Edit element as HTML\n\n# Element State Inspection\nRight-click element → Force state\n:hover                 # Force hover state\n:active                # Force active state\n:focus                 # Force focus state\n:visited               # Force visited state\n\n# Breakpoints\nRight-click element → Break on\n- Subtree modifications\n- Attribute modifications\n- Node removal\n\n# Copy Operations\nRight-click element → Copy\n- Copy outerHTML\n- Copy innerHTML\n- Copy selector\n- Copy XPath\n- Copy JS path\n\n# Scroll into View\nRight-click element → Scroll into view\n\n# Element Details\nProperties panel        # View all properties\nEvent Listeners tab     # View attached events\nAccessibility tab      # Accessibility properties\n\n# Computed Styles\nComputed tab           # View computed CSS\nShow inherited         # Include inherited properties\n\n# Box Model Visualization\nDiagram in Styles panel # Visual representation of margin, border, padding, content'
+          command: 'Element Selection Mode',
+          description: 'Enter element selection mode for inspection',
+          usage: 'Ctrl+Shift+C (Win/Linux) / Cmd+Shift+C (Mac)',
+          example: '# Element Selection Mode\n\n# Activate Selection Mode\nCtrl+Shift+C (Win/Linux) / Cmd+Shift+C (Mac)\n\n# Usage\n1. Activate selection mode\n2. Hover over elements to highlight\n3. Click element to inspect\n4. Elements panel opens with selected element\n\n# Selection Tips\n- Hover shows element tooltip\n- Click selects and inspects\n- ESC to exit selection mode',
         },
         {
-          command: 'CSS Editing and Debugging',
-          description: 'Real-time CSS editing and debugging capabilities',
-          usage: 'Modifying styles and understanding CSS cascade',
-          example: '# CSS Editing\n\n# Style Editing\nClick style property    # Edit value\nClick property name     # Edit property\nTab/Shift+Tab          # Navigate between properties\nEnter                   # Apply changes\nEscape                  # Cancel editing\n\n# Adding New Rules\nClick "+" icon          # Add new style rule\n.cls { }               # Class selector\n#id { }                # ID selector\nelement { }            # Element selector\n\n# CSS State Styling\n:hov                    # Toggle hover state\n:act                    # Toggle active state\n:foc                    # Toggle focus state\n\n# Color Editing\nClick color value       # Open color picker\nShift+click color       # Cycle through formats\n\n# Numeric Value Editing\nClick value             # Edit numeric\nArrow up/down          # Increment/decrement by 1\nShift+arrow            # Increment/decrement by 10\nAlt+arrow              # Increment/decrement by 0.1\n\n# CSS Grid and Flexbox\nFlexbox icon            # Visualize flexbox\nGrid icon               # Visualize grid\n\n# Computed Styles\nComputed tab            # View final computed values\nShow all                # Show all properties\n\n# CSS Inheritance\nTrace inheritance chain\nShow inherited          # Include inherited properties\n\n# CSS Debugging\n- Struck-through text: Overridden property\n- Yellow warning: Invalid property\n- Grey text: Inherited property\n\n# CSS Variables\n--variable-name: value;  # CSS custom properties\nvar(--variable-name)     # Usage\n\n# Media Queries\n@media queries visible in Styles panel\nResponsive design testing\n\n# CSS Pseudo-elements\n::before, ::after        # Inspect pseudo-elements\n::first-line, ::first-letter # Text pseudo-elements\n\n# Animation and Transitions\nAnimation panel           # Inspect CSS animations\nTransition panel         # Inspect transitions'
+          command: 'DOM Tree Navigation',
+          description: 'Navigate DOM tree efficiently',
+          usage: 'Arrow keys and keyboard navigation',
+          example: '# DOM Tree Navigation\n\n# Keyboard Navigation\nArrow keys - Navigate DOM tree\nRight arrow - Expand collapsed element\nLeft arrow - Collapse element\nHome/End - First/last child\n\n# Element Search\nCtrl+F - Search within current panel\nCtrl+Shift+F - Search across all sources\n\n# DOM Tree Manipulation\nDrag element - Reorder DOM elements\nDelete key - Remove selected element\nEnter - Edit element as HTML',
         },
         {
-          command: 'Box Model and Layout',
-          description: 'Understanding and debugging element layout and spacing',
-          usage: 'Visualizing margin, border, padding, and content areas',
-          example: '# Box Model Visualization\n\n# Box Model Diagram\nStyles panel → Box model diagram\n- Content: Blue\n- Padding: Green\n- Border: Yellow\n- Margin: Orange\n\n# Interactive Editing\nClick box model area    # Edit corresponding value\nType value + Enter      # Apply change\n\n# Layout Display\nComputed tab → Layout properties\ndisplay: block/inline/flex/grid\nposition: static/relative/absolute/fixed/sticky\n\n# Flexbox Inspector\nFlexbox icon in Elements panel\n- Container properties visualization\n- Item properties display\n- Flex direction, wrap, alignment\n\n# Grid Inspector\nGrid icon in Elements panel\n- Grid lines visualization\n- Grid areas display\n- Track sizing information\n\n# Position Debugging\nPosition sticky/fixed indicators\nZ-index layer visualization\n\n# Overflow Detection\nScroll indicators\nOverflow warnings\n\n# Responsive Design\nDevice toolbar toggle\nResponsive breakpoints testing\nScreen resolution simulation\n\n# Layout Shifts\nLayout shift regions highlighted\nPerformance impact analysis\n\n# Element Dimensions\nHover over element       # Show tooltip with dimensions\nBoundingClientRect     # JavaScript dimension access\n\n# Spacing Issues\nNegative margins detection\nCollapsing margins visualization\n\n# CSS Containment\ncontain property debugging\nLayout containment visualization'
-        }
-      ]
+          command: 'Element State Inspection',
+          description: 'Force element states for debugging',
+          usage: 'Right-click element → Force state',
+          example: '# Element State Inspection\n\n# Force Element States\nRight-click element → Force state\n\n# Available States\n:hover - Force hover state\n:active - Force active state\n:focus - Force focus state\n:visited - Force visited state\n\n# Usage Tips\n- Test hover effects without mouse\n- Debug active button states\n- Inspect focus styles\n- Debug visited link styles',
+        },
+        {
+          command: 'DOM Breakpoints',
+          description: 'Set breakpoints on DOM changes',
+          usage: 'Right-click element → Break on',
+          example: '# DOM Breakpoints\n\n# Set DOM Breakpoints\nRight-click element → Break on\n\n# Breakpoint Types\n- Subtree modifications\n- Attribute modifications\n- Node removal\n\n# Usage\n1. Right-click target element\n2. Select "Break on"\n3. Choose breakpoint type\n4. DevTools pauses when change occurs\n\n# Management\nBreakpoints panel - View all breakpoints\nRight-click breakpoint - Edit/remove',
+        },
+        {
+          command: 'Copy Element Information',
+          description: 'Copy various element data to clipboard',
+          usage: 'Right-click element → Copy',
+          example: '# Copy Element Data\n\n# Copy Options\nRight-click element → Copy\n\n# Available Copies\n- Copy outerHTML\n- Copy innerHTML\n- Copy selector\n- Copy XPath\n- Copy JS path\n\n# Usage Examples\n// Copy selector for querySelector\ndocument.querySelector(".copied-selector")\n\n// Copy XPath for document.evaluate\ndocument.evaluate(copiedXpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)',
+        },
+        {
+          command: 'CSS Style Editing',
+          description: 'Edit CSS properties in real-time',
+          usage: 'Click style property to edit',
+          example: '# CSS Style Editing\n\n# Style Editing\nClick style property - Edit value\nClick property name - Edit property\nTab/Shift+Tab - Navigate between properties\nEnter - Apply changes\nEscape - Cancel editing\n\n# Adding New Rules\nClick "+" icon - Add new style rule\n.cls { } - Class selector\n#id { } - ID selector\nelement { } - Element selector\n\n# CSS State Styling\n:hov - Toggle hover state\n:act - Toggle active state\n:foc - Toggle focus state',
+        },
+        {
+          command: 'Color and Value Editing',
+          description: 'Edit colors and numeric values efficiently',
+          usage: 'Click color value or numeric property',
+          example: '# Color and Value Editing\n\n# Color Editing\nClick color value - Open color picker\nShift+click color - Cycle through formats\n\n# Numeric Value Editing\nClick value - Edit numeric\nArrow up/down - Increment/decrement by 1\nShift+arrow - Increment/decrement by 10\nAlt+arrow - Increment/decrement by 0.1\n\n# Color Formats\nHex: #ff0000\nRGB: rgb(255, 0, 0)\nHSL: hsl(0, 100%, 50%)\nNamed: red',
+        },
+        {
+          command: 'CSS Grid and Flexbox Visualization',
+          description: 'Visualize layout containers and their properties',
+          usage: 'Click grid/flexbox icons in Elements panel',
+          example: '# CSS Layout Visualization\n\n# Flexbox Inspector\nFlexbox icon in Elements panel\n- Container properties visualization\n- Item properties display\n- Flex direction, wrap, alignment\n\n# Grid Inspector\nGrid icon in Elements panel\n- Grid lines visualization\n- Grid areas display\n- Track sizing information\n\n# Usage\n1. Select flexbox/grid container\n2. Click layout icon in Styles panel\n3. Visual overlay shows structure\n4. Hover to highlight areas',
+        },
+        {
+          command: 'Box Model Visualization',
+          description: 'Interactive box model diagram for layout debugging',
+          usage: 'Styles panel → Box model diagram',
+          example: '# Box Model Visualization\n\n# Box Model Diagram\nStyles panel → Box model diagram\n- Content: Blue\n- Padding: Green\n- Border: Yellow\n- Margin: Orange\n\n# Interactive Editing\nClick box model area - Edit corresponding value\nType value + Enter - Apply change\n\n# Layout Properties\nComputed tab → Layout properties\ndisplay: block/inline/flex/grid\nposition: static/relative/absolute/fixed/sticky',
+        },
+        {
+          command: 'Computed Styles Analysis',
+          description: 'View final computed CSS values',
+          usage: 'Computed tab in Styles panel',
+          example: '# Computed Styles\n\n# View Computed Values\nComputed tab - View final computed values\nShow all - Show all properties\n\n# CSS Inheritance\nTrace inheritance chain\nShow inherited - Include inherited properties\n\n# CSS Debugging\n- Struck-through text: Overridden property\n- Yellow warning: Invalid property\n- Grey text: Inherited property\n\n# Usage Tips\n- Filter by property name\n- Show browser default values\n- Trace inheritance path',
+        },
+      ],
     },
     {
-      title: 'Console Panel',
+      title: 'Console Panel Fundamentals',
       commands: [
         {
-          command: 'Console Basics and Logging',
-          description: 'Using the console for debugging and logging',
-          usage: 'JavaScript debugging and interactive programming',
-          example: '# Console Access\n\n# Opening Console\nCtrl+Shift+J          # Console panel (Windows/Linux)\nCmd+Option+J          # Console panel (Mac)\nEsc                   # Toggle console drawer\n\n# Basic Logging\nconsole.log("Hello");  # Simple log\nconsole.error("Error"); # Error message\nconsole.warn("Warning"); # Warning message\nconsole.info("Info");   # Info message\n\n# Advanced Logging\nconsole.table(data);   # Table format\nconsole.group("Group"); # Group messages\nconsole.groupEnd();     # End group\nconsole.time("Timer");  # Start timer\nconsole.timeEnd("Timer"); # End timer\n\n# Variable Inspection\nlet x = 10;           # Declare variable\nx                     # Show value\ndir(x)               # Show object properties\n\n# Expression Evaluation\n2 + 2                # Math operations\nMath.random()        # Function calls\ndocument.title       # Property access\n\n# Console Methods\nconsole.clear();      # Clear console\n$$("selector");      # QuerySelectorAll\n$("selector");        # QuerySelector\n$x("xpath");         # XPath selector\n\n# Console Settings\nFilter input         # Filter console output\nPreserve log         # Keep logs on navigation\nHide network         # Hide network messages\n\n# Console Context\nTop frame             # Main page context\niframe contexts       # Switch between frames\nWorker contexts       # Service worker console\n\n# Console API\nconsole.assert(condition, message); # Conditional logging\nconsole.count(label);  # Counter\nconsole.trace();       # Stack trace\nconsole.profile(label); # CPU profiler\n\n# Console Utilities\nkeys(object);         # Object keys\nvalues(object);       # Object values\ninspect(object);      # Object inspection\n\n# Console Formatting\nconsole.log("%c styled", "color: red; font-size: 20px");\nconsole.log("%s %d", "string", 123); # Format strings'
+          command: 'Console Access and Navigation',
+          description: 'Open console and navigate console features',
+          usage: 'Ctrl+Shift+J (Win/Linux) / Cmd+Option+J (Mac)',
+          example: '# Console Access\n\n# Opening Console\nCtrl+Shift+J (Win/Linux) / Cmd+Option+J (Mac)\nEsc - Toggle console drawer\n\n# Console Navigation\nUp/Down arrows - Navigate command history\nTab - Autocomplete\nCtrl+L - Clear console\n\n# Console Context\nTop frame - Main page context\niframe contexts - Switch between frames\nWorker contexts - Service worker console',
         },
         {
-          command: 'JavaScript Debugging',
-          description: 'Advanced JavaScript debugging techniques',
-          usage: 'Breakpoints, step-through debugging, and error handling',
-          example: '# Breakpoints\n\n# Setting Breakpoints\nSources panel → Click line number\n debugger;             # Code breakpoint\nconsole.debugger();     # Conditional debugger\n\n# Breakpoint Types\n- Line breakpoint: Stop at specific line\n- Conditional breakpoint: Stop when condition true\n- Logpoint: Log message without stopping\n- DOM breakpoint: Stop on DOM changes\n- Event listener breakpoint: Stop on events\n\n# Breakpoint Management\nRight-click breakpoint # Edit conditions\nDisable breakpoint     # Temporarily disable\nDelete breakpoint      # Remove breakpoint\nDeactivate breakpoints # Disable all breakpoints\n\n# Step Debugging\nF8                     # Resume/Pause\nF10                    # Step over\nF11                    # Step into\nShift+F11              # Step out\nCtrl+Shift+F8          # Stop on exceptions\n\n# Call Stack\nCall Stack panel       # View execution stack\nClick frame            # Jump to execution context\nAsync checkbox         # Show async stack traces\n\n# Scope Variables\nScope panel            # View local and global variables\nVariable value editing  # Modify variable values\nWatch expressions      # Monitor specific variables\n\n# Error Handling\nPause on exceptions    # Auto-pause on errors\nBlackbox scripts       # Ignore third-party scripts\nSource maps            # Debug compiled code\n\n# Debugging Techniques\n\n# Object Inspection\ndir(object)           # Detailed object view\nkeys(object)          # Object keys\nvalues(object)        # Object values\n\n# Performance Monitoring\nconsole.time("label"); # Start timing\nconsole.timeEnd("label"); # End timing\n\n# Network Debugging\nmonitorEvents(element); # Monitor DOM events\nunmonitorEvents(element); # Stop monitoring\n\n# Console Debugging\nconsole.assert(condition, message); # Assert with message\nconsole.trace();        # Current stack trace\nconsole.group("label"); # Group related messages'
+          command: 'Basic Console Logging',
+          description: 'Essential logging methods for debugging',
+          usage: 'console methods for different message types',
+          example: '# Basic Console Logging\n\n# Logging Methods\nconsole.log("Hello"); - Simple log\nconsole.error("Error"); - Error message\nconsole.warn("Warning"); - Warning message\nconsole.info("Info"); - Info message\nconsole.debug("Debug"); - Debug message\n\n# Advanced Logging\nconsole.table(data); - Table format\nconsole.group("Group"); - Group messages\nconsole.groupEnd(); - End group\nconsole.time("Timer"); - Start timer\nconsole.timeEnd("Timer"); - End timer',
         },
         {
-          command: 'Console Commands and Utilities',
-          description: 'Built-in console commands and utility functions',
-          usage: 'Power user commands for efficient debugging',
-          example: '# Console Commands\n\n# Query Commands\n$("selector")          # document.querySelector\n$$("selector")         # document.querySelectorAll\n$x("xpath")            # document.evaluate\n\n# Inspection Commands\ndir(object)           # Object properties\ndirxml(node)          # XML tree view\ninspect(object)       # Object inspector\nkeys(object)          # Object keys\nvalues(object)        # Object values\n\n# Event Monitoring\nmonitorEvents(element, [events]) # Monitor DOM events\nunmonitorEvents(element) # Stop monitoring\ngetEventListeners(element) # Show event listeners\n\n# Timing Commands\nconsole.time("label")  # Start timer\nconsole.timeEnd("label") # End timer\nconsole.timeLog("label") # Log current time\n\n# Memory Commands\nprofile(name)          # Start CPU profiling\nprofileEnd(name)       # End CPU profiling\ntakeHeapSnapshot()     # Take heap snapshot\n\n# Debugging Commands\ndebugger               # Force breakpoint\ninspect(element)       # Inspect element in Elements panel\nclear()                # Clear console\n\n# Utility Functions\ncopy(object)          # Copy to clipboard\nqueryObjects(Constructor) # Objects created by constructor\n\n# Console Settings\n$$(".selector").length # Count elements\n$x("//div").length    # Count XPath results\n\n# Advanced Usage\n\n# Chain Commands\n$$(".class").forEach(el => console.log(el));\n\n# Modify Page\ndocument.body.style.backgroundColor = "red";\n\n# Performance Testing\nconsole.time("test");\n// Code to test\nconsole.timeEnd("test");\n\n# Network Analysis\nwindow.performance.getEntriesByType("navigation");\n\n# Storage Inspection\nlocalStorage;         # View local storage\nsessionStorage;        # View session storage\n\n# Cookie Management\ndocument.cookie;       # View cookies\n\n# Console API Extensions\ndebug(fn);             # Debug function calls\nundebug(fn);           # Stop debugging function\nmonitor(fn);           # Monitor function calls\nunmonitor(fn);         # Stop monitoring function'
-        }
-      ]
+          command: 'Variable and Expression Evaluation',
+          description: 'Inspect variables and evaluate expressions',
+          usage: 'Type expressions directly in console',
+          example: '# Variable and Expression Evaluation\n\n# Variable Inspection\nlet x = 10; - Declare variable\nx - Show value\ndir(x) - Show object properties\n\n# Expression Evaluation\n2 + 2 - Math operations\nMath.random() - Function calls\ndocument.title - Property access\n\n# Object Inspection\nkeys(object); - Object keys\nvalues(object); - Object values\ninspect(object); - Object inspection',
+        },
+        {
+          command: 'Console Query Selectors',
+          description: 'Quick DOM querying from console',
+          usage: 'Built-in selector shortcuts',
+          example: '# Console Query Selectors\n\n# Query Commands\n$("selector") - document.querySelector\n$$("selector") - document.querySelectorAll\n$x("xpath") - document.evaluate\n\n# Usage Examples\n$(".button") - First button\n$$(".button") - All buttons\n$x("//div[@class=\'content\']") - XPath selector\n\n# Chain Commands\n$$(".class").forEach(el => console.log(el));',
+        },
+        {
+          command: 'Console Settings and Filtering',
+          description: 'Customize console output and filtering',
+          usage: 'Console panel settings and controls',
+          example: '# Console Settings\n\n# Console Controls\nFilter input - Filter console output\nPreserve log - Keep logs on navigation\nHide network - Hide network messages\n\n# Console Methods\nconsole.clear(); - Clear console\ncopy(object) - Copy to clipboard\n\n# Console Formatting\nconsole.log("%c styled", "color: red; font-size: 20px");\nconsole.log("%s %d", "string", 123); - Format strings',
+        },
+        {
+          command: 'JavaScript Debugging in Console',
+          description: 'Advanced debugging techniques using console',
+          usage: 'Breakpoints and debugging commands',
+          example: '# Console Debugging\n\n# Breakpoints\ndebugger; - Code breakpoint\nconsole.debugger(); - Conditional debugger\n\n# Debugging Commands\nconsole.assert(condition, message); - Conditional logging\nconsole.count(label); - Counter\nconsole.trace(); - Stack trace\nconsole.profile(label); - CPU profiler\n\n# Error Handling\ntry {\n  // Code that might error\n} catch (error) {\n  console.error("Error:", error);\n}',
+        },
+        {
+          command: 'Event Monitoring and Debugging',
+          description: 'Monitor and debug DOM events',
+          usage: 'Event monitoring commands',
+          example: '# Event Monitoring\n\n# Event Commands\nmonitorEvents(element, [events]) - Monitor DOM events\nunmonitorEvents(element) - Stop monitoring\ngetEventListeners(element) - Show event listeners\n\n# Usage Examples\nmonitorEvents(document.body, "click");\ngetEventListeners(document.querySelector(".button"));\n\n# Network Debugging\nmonitorEvents(window, "resize");\nunmonitorEvents(window);',
+        },
+        {
+          command: 'Storage Inspection from Console',
+          description: 'Inspect browser storage via console',
+          usage: 'Access storage APIs directly',
+          example: '# Storage Inspection\n\n# Local Storage\nlocalStorage; - View local storage\nlocalStorage.setItem("key", "value");\nlocalStorage.getItem("key");\nlocalStorage.removeItem("key");\n\n# Session Storage\nsessionStorage; - View session storage\nsessionStorage.setItem("key", "value");\n\n# Cookie Management\ndocument.cookie; - View cookies\ndocument.cookie = "name=value; expires=...; path=/"',
+        },
+      ],
     },
+    // INTERMEDIATE LEVEL
     {
-      title: 'Sources Panel',
+      title: 'Sources Panel Deep Dive',
       commands: [
         {
-          command: 'Source Code Navigation',
-          description: 'Navigating and managing source files in DevTools',
-          usage: 'File management and code exploration',
-          example: '# File Navigation\n\n# File Tree Navigation\nSources panel → File tree\nArrow keys             # Navigate files\nEnter                  # Open file\nRight-click            # File context menu\n\n# Quick File Opening\nCtrl+P (Cmd+P)        # Quick open file dialog\nType filename          # Search files\n:line:column           # Go to specific line\n\n# File Search\nCtrl+Shift+F          # Search across all files\nCtrl+F                 # Search in current file\nCtrl+G                 # Go to line\nCtrl+Shift+G          # Find previous\n\n# File Operations\nRight-click file      # File options\n- Delete               # Delete file\n- Rename               # Rename file\n- Make local copy      # Create local copy\n- Save                 # Save changes\n\n# Workspace Setup\nFilesystem → Add folder # Map local directory\nMap network resources  # Link local files to network\nLive editing           # Auto-save local changes\n\n# Source Maps\nEnable source maps     # Map compiled to source\nOriginal source view   # View original code\n\n# File Types Supported\nJavaScript (.js)\nTypeScript (.ts)\nCSS (.css)\nSCSS/Sass (.scss/.sass)\nHTML (.html)\nImages and other assets\n\n# Code Formatting\nPretty print           # Format minified code\nAuto-indent            # Proper indentation\nSyntax highlighting    # Color-coded syntax\n\n# File History\nRecent files list      # Recently opened files\nFile tabs              # Open file tabs\n\n# Snippets\nNew snippet           # Create code snippet\nRun snippet            # Execute snippet\n\n# Content Scripts\nExtension content scripts\nChrome extension debugging\n\n# Dynamic Content\nEvaluated scripts      # Dynamic code\nInjected scripts       # Browser extensions'
+          command: 'Source File Navigation',
+          description: 'Navigate and manage source files efficiently',
+          usage: 'File tree and search features',
+          example: '# File Navigation\n\n# File Tree Navigation\nSources panel → File tree\nArrow keys - Navigate files\nEnter - Open file\nRight-click - File context menu\n\n# Quick File Opening\nCtrl+P (Win/Linux) / Cmd+P (Mac) - Quick open file dialog\nType filename - Search files\n:line:column - Go to specific line\n\n# File Search\nCtrl+Shift+F (Win/Linux) / Cmd+Option+F (Mac) - Search across all files\nCtrl+F - Search in current file\nCtrl+G - Go to line',
         },
         {
-          command: 'JavaScript Debugging',
-          description: 'Advanced JavaScript debugging in Sources panel',
-          usage: 'Breakpoints, step-through, and code analysis',
-          example: '# Breakpoint Management\n\n# Setting Breakpoints\nClick line number       # Line breakpoint\nRight-click → Add breakpoint # Context menu\nConditional breakpoint  # Break when condition true\nLogpoint               # Log without breaking\n\n# Breakpoint Types\n- Line breakpoint: Stop at specific line\n- Conditional breakpoint: Expression must be true\n- Logpoint: Log message when hit\n- DOM breakpoint: Stop on DOM changes\n- XHR/Fetch breakpoint: Stop on network requests\n- Event listener breakpoint: Stop on specific events\n\n# Breakpoint Controls\nRight-click breakpoint # Edit condition\nDisable breakpoint     # Turn off temporarily\nDelete breakpoint      # Remove breakpoint\nDeactivate all         # Disable all breakpoints\n\n# Step Debugging\nF8                     # Resume script execution\nF10                    # Step over next function\nF11                    # Step into function\nShift+F11              # Step out of current function\nCtrl+Shift+F8          # Pause on exceptions\n\n# Call Stack Analysis\nCall Stack panel       # Function call hierarchy\nAsync checkbox         # Show async stack frames\nBlackbox scripts       # Ignore third-party code\n\n# Variable Inspection\nScope panel            # Local, closure, global variables\nVariable hover         # Quick value preview\nVariable editing       # Modify values during debug\n\n# Watch Expressions\nAdd watch              # Monitor specific expressions\nEdit watch             # Modify watch expression\nDelete watch           # Remove watch\n\n# Debugging Features\n\n# Pretty Print\nPretty print button    # Format minified code\nSource map support     # Map to original source\n\n# Code Coverage\nCoverage tab           # Show code usage\nUnused code highlighting\n\n# JavaScript Features\n\n# Async/Await Debugging\nPromise inspection     # View promise state\nAsync stack traces     # Show async call chains\n\n# Module Debugging\nES6 module support    # Debug import/export\nDynamic imports        # Debug dynamic loading\n\n# Closure Debugging\nClosure inspection     # View closure variables\nScope chain analysis   # Variable resolution\n\n# Exception Handling\nPause on exceptions    # Auto-pause on errors\nCaught/uncaught toggle # Choose exception types\nStack trace analysis   # Error origin tracking'
+          command: 'Source Maps Configuration',
+          description: 'Enable and configure source maps for debugging',
+          usage: 'Settings → Sources → Enable source maps',
+          example: '# Source Maps Setup\n\n# Enable Source Maps\nSettings → Sources\n- Enable JavaScript source maps\n- Enable CSS source maps\n\n# Source Map Benefits\nDebug original source code\nMap compiled to source\nBetter error stack traces\n\n# Source Map Types\nInline source maps - Embedded in files\nExternal source maps - Separate .map files',
+        },
+        {
+          command: 'Code Snippets Creation',
+          description: 'Create and manage reusable code snippets',
+          usage: 'Sources panel → Snippets tab',
+          example: '# Code Snippets\n\n# Create Snippet\nSources panel → Snippets → New snippet\n\n# Snippet Usage\nWrite code in snippet editor\nRight-click → Run or Ctrl+Enter\n\n# Snippet Examples\n// Utility functions\nfunction logElement(selector) {\n  console.log(document.querySelector(selector));\n}\n\n// Test code\ndocument.body.style.backgroundColor = "red";',
+        },
+        {
+          command: 'Workspace Setup and File Mapping',
+          description: 'Map local files to network resources',
+          usage: 'Sources → Filesystem → Add folder',
+          example: '# Workspace Setup\n\n# Add Local Folder\nSources → Filesystem → Add folder\nChoose local directory\n\n# Map Network Resources\nMap local files to network resources\nLive editing with auto-save\n\n# Benefits\nEdit local files directly\nChanges apply immediately\nPersistent file mapping\nVersion control integration',
+        },
+        {
+          command: 'JavaScript Breakpoint Management',
+          description: 'Set and manage various types of breakpoints',
+          usage: 'Click line number or right-click in Sources panel',
+          example: '# Breakpoint Types\n\n# Line Breakpoints\nClick line number - Set breakpoint\nRight-click → Add breakpoint\n\n# Conditional Breakpoints\nRight-click → Add conditional breakpoint\nExpression must be true\n\n# Logpoints\nRight-click → Add logpoint\nLog message without stopping\n\n# Breakpoint Controls\nRight-click breakpoint - Edit condition\nDisable breakpoint - Turn off temporarily\nDelete breakpoint - Remove breakpoint',
+        },
+        {
+          command: 'Step Debugging Controls',
+          description: 'Navigate code execution step by step',
+          usage: 'Debugging toolbar controls',
+          example: '# Step Debugging\n\n# Debugging Controls\nF8 - Resume/Pause\nF10 - Step over\nF11 - Step into\nShift+F11 - Step out\nCtrl+Shift+F8 (Win/Linux) / Cmd+Shift+F8 (Mac) - Stop on exceptions\n\n# Call Stack\nCall Stack panel - View execution stack\nClick frame - Jump to execution context\nAsync checkbox - Show async stack traces',
+        },
+        {
+          command: 'Variable and Scope Inspection',
+          description: 'Inspect and modify variables during debugging',
+          usage: 'Scope panel and variable hover',
+          example: '# Variable Inspection\n\n# Scope Panel\nScope panel - View local and global variables\nVariable hover - Quick value preview\nVariable editing - Modify values during debug\n\n# Watch Expressions\nAdd watch - Monitor specific expressions\nEdit watch - Modify watch expression\nDelete watch - Remove watch\n\n# Variable Types\nLocal variables - Function scope\nClosure variables - Closure scope\nGlobal variables - Window/global scope',
         },
         {
           command: 'Live Editing and Overrides',
-          description: 'Real-time code editing and local file overrides',
-          usage: 'Modifying and persisting code changes',
-          example: '# Live Editing\n\n# Inline Editing\nDouble-click code      # Edit mode\nCtrl+S                 # Save changes\nCtrl+Z                 # Undo\nCtrl+Y                 # Redo\n\n# CSS Live Editing\nStyles panel → Edit    # Real-time CSS changes\nAuto-save              # Changes applied immediately\n\n# JavaScript Live Editing\nSources panel → Edit    # Modify JavaScript\nCtrl+S                 # Apply changes\nPage reload required   # Some changes need reload\n\n# Local Overrides\n\n# Setting Up Overrides\nSources → Overrides → + Select folder for overrides\nChoose local directory # Map to local files\n\n# Creating Overrides\nNetwork panel → Right-click response → Save for overrides\nSources panel → Right-click file → Save for overrides\n\n# Override Management\nEnable/disable overrides # Toggle override usage\nClear overrides        # Remove all overrides\n\n# Override Workflow\n1. Find resource to override\n2. Save local copy\n3. Edit local file\n4. Changes apply immediately\n\n# File Mapping\nMap network to local   # Link server files to local\nWorkspace setup       # Persistent file mapping\n\n# Auto-save Settings\nAuto-save enabled      # Changes saved automatically\nManual save option     # Ctrl+S to save\n\n# Limitations\n\n# JavaScript Overrides\nFunction changes require reload\nClass definitions need reload\n\n# CSS Overrides\nImmediate application\nNo reload required\n\n# HTML Overrides\nRequires page reload\nDynamic content may reset\n\n# Best Practices\n\n# Development Workflow\n1. Set up local workspace\n2. Enable overrides\n3. Edit files locally\n4. Test changes immediately\n5. Commit changes to version control\n\n# Override Types\nCSS overrides          # Style modifications\nJavaScript overrides   # Script changes\nHTML overrides         # Structure changes\nAsset overrides        # Images, fonts, etc.'
-        }
-      ]
+          description: 'Edit code in real-time with persistent changes',
+          usage: 'Sources panel → Overrides',
+          example: '# Live Editing\n\n# Inline Editing\nDouble-click code - Edit mode\nCtrl+S (Win/Linux) / Cmd+S (Mac) - Save changes\nCtrl+Z - Undo\nCtrl+Y - Redo\n\n# Local Overrides\nSources → Overrides → + Select folder\nNetwork panel → Right-click response → Save for overrides\n\n# Override Benefits\nChanges persist across reloads\nEdit local files instead of network\nAuto-save changes immediately',
+        },
+      ],
     },
     {
-      title: 'Network Panel',
+      title: 'Network Panel Mastery',
       commands: [
         {
           command: 'Network Request Monitoring',
-          description: 'Monitoring and analyzing network requests',
-          usage: 'Understanding network performance and debugging',
-          example: '# Network Panel Access\n\n# Opening Network Panel\nCtrl+Shift+I → Network tab\nCmd+Option+I → Network tab\n\n# Recording Network Activity\nRecord button (red dot) # Start/stop recording\nAuto-refresh on navigation # Automatic recording\n\n# Request Filtering\nFilter input box      # Filter requests\n- URL filtering       # Filter by URL\n- Type filtering      # Filter by resource type\n- Status filtering    # Filter by status code\n\n# Resource Types\n- XHR/Fetch           # AJAX requests\n- JS                  # JavaScript files\n- CSS                 # Stylesheets\n- Img                 # Images\n- Media               # Video/audio\n- Font                # Web fonts\n- Doc                 # Documents\n- WS                  # WebSockets\n- Manifest            # Web app manifest\n\n# Request Details\n\n# Request Overview\nName                  # Resource name\nStatus                # HTTP status code\nType                  # Resource type\nInitiator             # What triggered request\nSize                  # Response size\nTime                  # Request duration\n\n# Timing Breakdown\nWaterfall view        # Visual timeline\nQueueing              # Time in queue\nStalled               # Time before request\nRequest start         # Request sent time\nResponse time         # Time to first byte\nContent download      # Download time\n\n# Request Headers\nHeaders tab           # View all headers\nRequest headers       # Sent headers\nResponse headers      # Received headers\n\n# Response Analysis\nPreview tab           # Rendered response\nResponse tab          # Raw response data\nInitiator tab         # Call stack\nTiming tab            # Detailed timing\n\n# Network Conditions\nThrottling dropdown   # Simulate network speeds\n- No throttling       # Full speed\n- Slow 3G             # 3G simulation\n- Fast 3G             # Faster 3G\n- Custom              # Custom settings\n\n# Advanced Features\n\n# Export HAR Data\nRight-click → Save as HAR # Export request data\nImport HAR            # Load saved data\n\n# Block Requests\nRight-click → Block URL pattern # Block specific requests\n\n# Clear Network Data\nClear button (🚫)     # Clear all requests\nPreserve log checkbox # Keep logs on navigation'
+          description: 'Monitor and analyze network requests',
+          usage: 'Network panel recording and filtering',
+          example: '# Network Monitoring\n\n# Start Recording\nRecord button (red dot) - Start/stop recording\nAuto-refresh on navigation - Automatic recording\n\n# Request Filtering\nFilter input box - Filter requests\nURL filtering - Filter by URL\nType filtering - Filter by resource type\nStatus filtering - Filter by status code\n\n# Resource Types\n- XHR/Fetch - AJAX requests\n- JS - JavaScript files\n- CSS - Stylesheets\n- Img - Images\n- Media - Video/audio',
         },
         {
-          command: 'Performance Analysis',
-          description: 'Analyzing network performance and optimization',
-          usage: 'Identifying bottlenecks and improving load times',
-          example: '# Performance Metrics\n\n# Key Performance Indicators\n- Total page weight    # All resources size\n- Number of requests   # Total HTTP requests\n- Load time           # Page load duration\n- DOMContentLoaded   # DOM ready time\n- Load event          # Full page load time\n\n# Waterfall Analysis\n\n# Request Timing\nQueueing phase       # Browser queue time\nDNS lookup           # Domain resolution\nTCP connection       # Connection establishment\nSSL handshake        # Secure connection setup\nRequest sent         # Request transmission\nWaiting (TTFB)      # Server response time\nContent download     # Resource download time\n\n# Optimization Opportunities\n\n# Resource Optimization\n- Minify CSS/JS       # Reduce file sizes\n- Optimize images     # Compress images\n- Enable compression  # Gzip/Brotli\n- Use CDN            # Content delivery network\n\n# Caching Strategy\n- Cache headers       # Proper cache control\n- Service workers     # Offline caching\n- Browser caching     # Leverage browser cache\n\n# Request Optimization\n- Reduce HTTP requests # Combine resources\n- Use HTTP/2         # Multiplexing\n- Preload critical resources # Priority loading\n- Lazy loading       # Load on demand\n\n# Network Throttling Testing\n\n# Simulate Conditions\nSlow 3G               # 500 Kbps, 400ms latency\nFast 3G               # 1 Mbps, 200ms latency\nOffline               # No network connection\n\n# Custom Throttling\nDownload speed       # Set download limit\nUpload speed         # Set upload limit\nLatency              # Set round-trip time\n\n# Performance Budgets\n\n# Setting Budgets\nTotal size limit     # Maximum page weight\nRequest count limit  # Maximum requests\nResource type limits # Specific resource limits\n\n# Budget Monitoring\nBudget warnings      # Exceeded limits\nPerformance scoring  # Page performance rating\n\n# Advanced Analysis\n\n# Critical Path Rendering\nCritical resources   # Essential for render\nRender-blocking resources # Optimize loading order\n\n# Resource Hints\nPreload              # Load resources early\nPrefetch             # Load for future use\nPreconnect           # Establish connections early\n\n# Network Error Debugging\nFailed requests      # Identify network issues\nTimeout analysis     # Slow request detection\nRetry strategies     # Handle failures gracefully'
+          command: 'Request Analysis and Inspection',
+          description: 'Detailed analysis of individual requests',
+          usage: 'Click request to view details',
+          example: '# Request Details\n\n# Request Overview\nName - Resource name\nStatus - HTTP status code\nType - Resource type\nInitiator - What triggered request\nSize - Response size\nTime - Request duration\n\n# Request Headers\nHeaders tab - View all headers\nRequest headers - Sent headers\nResponse headers - Received headers\n\n# Response Analysis\nPreview tab - Rendered response\nResponse tab - Raw response data\nInitiator tab - Call stack\nTiming tab - Detailed timing',
+        },
+        {
+          command: 'Network Performance Analysis',
+          description: 'Analyze network performance and bottlenecks',
+          usage: 'Waterfall view and timing breakdown',
+          example: '# Performance Analysis\n\n# Timing Breakdown\nWaterfall view - Visual timeline\nQueueing - Time in queue\nStalled - Time before request\nRequest start - Request sent time\nResponse time - Time to first byte\nContent download - Download time\n\n# Performance Metrics\nTotal page weight - All resources size\nNumber of requests - Total HTTP requests\nLoad time - Page load duration\nDOMContentLoaded - DOM ready time\nLoad event - Full page load time',
+        },
+        {
+          command: 'Network Conditions Simulation',
+          description: 'Simulate different network conditions',
+          usage: 'Throttling dropdown in Network panel',
+          example: '# Network Simulation\n\n# Throttling Options\nNo throttling - Full speed\nSlow 3G - 3G simulation\nFast 3G - Faster 3G\nCustom - Custom settings\n\n# Custom Throttling\nDownload speed - Set download limit\nUpload speed - Set upload limit\nLatency - Set round-trip time\n\n# Testing Scenarios\nOffline testing - No network\nMobile simulation - 3G/4G speeds\nPoor connection - High latency',
         },
         {
           command: 'Advanced Network Debugging',
-          description: 'Advanced network debugging and troubleshooting',
-          usage: 'Deep network analysis and problem solving',
-          example: '# Advanced Request Analysis\n\n# Request Details Inspection\n\n# Headers Analysis\nRequest headers       # Debug request parameters\nResponse headers      # Analyze server response\nCORS headers          # Cross-origin issues\nCache headers        # Caching behavior\nAuthentication       # Security headers\n\n# Response Analysis\nContent-Type         # Response format\nContent-Encoding     # Compression used\nContent-Length       # Response size\nETag                 # Cache validation\nLast-Modified        # Cache timestamp\n\n# WebSocket Debugging\n\n# WebSocket Monitoring\nWS tab                # WebSocket connections\nFrames view           # Message history\nSend/Receive filters  # Filter messages\n\n# WebSocket Analysis\nConnection status     # Connected/disconnected\nProtocol version      # WebSocket version\nMessage types         # Text/binary messages\n\n# Service Worker Debugging\n\n# Service Worker Panel\nService Workers tab   # SW registration status\nOffline mode         # Test offline behavior\nSync events          # Background sync\n\n# Cache Storage\nCache Storage tab    # View cached resources\nCache inspection     # Cache contents\nCache deletion       # Clear specific caches\n\n# HTTP/2 Debugging\n\n# HTTP/2 Features\nStream ID            # HTTP/2 stream identification\nPriority             # Resource priority\nServer push          # Pushed resources\n\n# Protocol Analysis\nHTTP version          # Protocol used\nConnection reuse      # Connection efficiency\nMultiplexing         # Concurrent requests\n\n# Security Analysis\n\n# Certificate Details\nSecurity tab          # Connection security\nCertificate info      # SSL/TLS details\nProtocol version      # TLS version\nCipher suite         # Encryption method\n\n# Mixed Content\nMixed content warnings # HTTP/HTTPS issues\nInsecure resources   # Identify security risks\n\n# Advanced Troubleshooting\n\n# Network Errors\nDNS failures         # Domain resolution issues\nConnection timeouts  # Network connectivity\nSSL errors           # Certificate problems\n\n# Performance Issues\nSlow requests        # Identify bottlenecks\nLarge resources      # Optimize file sizes\nBlocking requests    # Critical path analysis\n\n# Debugging Tools\n\n# Console API\nconsole.log(network) # Log network info\nPerformance API      # Measure performance\nNavigation API       # Page timing data\n\n# Programmatic Access\nfetch() debugging    # Debug fetch requests\nXMLHttpRequest       # Debug AJAX calls\nBeacon API           # Debug analytics'
-        }
-      ]
+          description: 'Deep network analysis and troubleshooting',
+          usage: 'Advanced network features and tools',
+          example: '# Advanced Network Features\n\n# Export HAR Data\nRight-click → Save as HAR\nImport HAR files\n\n# Request Blocking\nBlock specific URLs\nPattern matching\n\n# WebSockets\nWS tab - WebSocket connections\nFrames view - Message history\nSend/Receive filters - Filter messages\n\n# Service Workers\nService Workers tab - SW registration status\nOffline mode - Test offline behavior',
+        },
+      ],
     },
     {
-      title: 'Performance Panel',
+      title: 'Performance Panel Expert Guide',
       commands: [
         {
-          command: 'Performance Recording',
-          description: 'Recording and analyzing runtime performance',
-          usage: 'Capturing detailed performance metrics',
-          example: '# Performance Recording\n\n# Starting Recording\nPerformance panel → Record button (circle)\nRecord reload button   # Record page reload\n\n# Recording Process\n1. Click Record (red circle)\n2. Interact with page\n3. Click Stop (square)\n4. Analyze results\n\n# Recording Types\n- Page load            # Initial page load performance\n- User interactions     # Click, scroll, typing\n- Animations           # CSS/JS animations\n- Network requests     # Resource loading\n\n# Recording Controls\nRecord button          # Start/stop recording\nClear button           # Clear recording\nLoad button            # Load saved profile\nSave button            # Export recording\n\n# Recording Settings\n- Capture screenshots  # Visual timeline\n- Disable JavaScript samples # Reduce overhead\n- Network throttling   # Simulate conditions\n- CPU throttling       # Limit CPU usage\n\n# Performance Metrics\n\n# Key Metrics\n- FPS                  # Frames per second\n- CPU usage            # Processor utilization\n- NET                  # Network activity\n- HEAP                 # Memory usage\n\n# Timeline View\nMain thread           # JavaScript execution\nCompositor thread     # Rendering work\nRaster thread         # Drawing operations\nGPU                   # GPU activity\n\n# Advanced Recording\n\n# Custom Recording\nCmd+Shift+P → "Performance"\nEnable advanced settings\n\n# Recording Categories\n- Loading             # Resource loading\n- Scripting           # JavaScript execution\n- Rendering           # Paint and layout\n- Painting            # Compositing\n- System              # Browser internals\n\n# Recording Analysis\n\n# Flame Chart\nFunction execution    # Visual call hierarchy\nSelf time             # Function execution time\nTotal time            # Including child calls\n\n# Bottom-Up View\nAggregated data       # Function summary\nHeavy functions       # Performance bottlenecks\n\n# Call Tree\nHierarchical view    # Execution flow\nFunction relationships # Caller/callee analysis'
+          command: 'Performance Recording Setup',
+          description: 'Configure and start performance recordings',
+          usage: 'Performance panel → Record button',
+          example: '# Performance Recording\n\n# Start Recording\nPerformance panel → Record button (circle)\nRecord reload button - Record page reload\n\n# Recording Process\n1. Click Record (red circle)\n2. Interact with page\n3. Click Stop (square)\n4. Analyze results\n\n# Recording Settings\nCapture screenshots - Visual timeline\nDisable JavaScript samples - Reduce overhead\nNetwork throttling - Simulate conditions\nCPU throttling - Limit CPU usage',
         },
         {
-          command: 'Runtime Performance Analysis',
-          description: 'Analyzing JavaScript execution and rendering performance',
-          usage: 'Identifying performance bottlenecks and optimization opportunities',
-          example: '# Performance Analysis\n\n# Main Thread Analysis\n\n# JavaScript Execution\nLong tasks             # Identify blocking operations\nFunction timing        # Measure function performance\nCall stack analysis    # Understand execution flow\n\n# Rendering Performance\n\n# Layout and Paint\nLayout shifts          # Unwanted element movement\nPaint time             # Rendering duration\nComposite operations  # Layer management\n\n# FPS Monitoring\nFrames per second     # Smoothness indicator\nFrame drops           # Performance issues\nJank detection        # Stuttering analysis\n\n# Memory Performance\n\n# Heap Usage\nMemory allocation     # Track memory usage\nGarbage collection    # GC timing and impact\nMemory leaks          # Identify unreleased memory\n\n# Performance Bottlenecks\n\n# Common Issues\n- Long-running scripts # Block main thread\n- Excessive DOM nodes # Slow rendering\n- Large images         # Slow loading\n- Inefficient CSS     # Slow styling\n\n# Optimization Strategies\n\n# JavaScript Optimization\n- Code splitting       # Load code on demand\n- Lazy loading         # Defer non-critical code\n- Web Workers         # Offload main thread\n- RequestIdleCallback  # Schedule low-priority work\n\n# Rendering Optimization\n- CSS containment     # Limit layout scope\n- will-change         # Hint for animations\n- Transform3d         # Hardware acceleration\n- Virtual scrolling   # Large lists optimization\n\n# Network Optimization\n- Resource bundling   # Reduce HTTP requests\n- Minification        # Reduce file sizes\n- Compression         # Reduce transfer size\n- CDN usage           # Faster delivery\n\n# Advanced Analysis\n\n# Performance Audits\nLighthouse integration # Automated performance testing\nPerformance scoring   # Overall performance rating\nOptimization suggestions # Specific recommendations\n\n# Custom Metrics\nPerformance marks     # Custom timing points\nPerformance measures  # Duration measurements\nUser timing API       # Application-specific metrics\n\n# Real User Monitoring\nPerformanceObserver   # Monitor performance metrics\nNavigation timing     # Page load metrics\nResource timing       # Resource-specific metrics'
+          command: 'Performance Metrics Analysis',
+          description: 'Analyze key performance indicators',
+          usage: 'Performance metrics and timing analysis',
+          example: '# Performance Metrics\n\n# Key Metrics\nFPS - Frames per second\nCPU usage - Processor utilization\nNET - Network activity\nHEAP - Memory usage\n\n# Timeline View\nMain thread - JavaScript execution\nCompositor thread - Rendering work\nRaster thread - Drawing operations\nGPU - GPU activity\n\n# Performance Indicators\nLong tasks - Identify blocking operations\nLayout shifts - Unwanted element movement\nPaint time - Rendering duration',
         },
         {
-          command: 'Memory Profiling',
-          description: 'Memory usage analysis and leak detection',
-          usage: 'Understanding memory allocation and identifying leaks',
-          example: '# Memory Profiling\n\n# Heap Snapshot\n\n# Taking Snapshots\nMemory panel → Heap snapshot\nTake snapshot button    # Capture current memory\n\n# Snapshot Types\n- Heap snapshot        # Current memory state\n- Comparison snapshot   # Compare two states\n- Allocation timeline   # Track allocations over time\n\n# Snapshot Analysis\n\n# Object Analysis\nObjects                # All allocated objects\nConstructor names       # Object types\nRetained size          # Memory kept by object\nShallow size           # Object direct size\n\n# Memory Leak Detection\n\n# Comparison Analysis\nTake baseline snapshot  # Initial state\nPerform actions        # Execute code\nTake comparison snapshot # Compare states\n\n# Leak Indicators\n- Growing heap size    # Memory not released\n- Detached DOM nodes   # Unreferenced elements\n- Event listeners      # Unremoved listeners\n- Closures             # Unreleased variables\n\n# Retainers Analysis\nRetainer paths         # What keeps objects alive\nReference chains       # Object relationships\nMemory retention       # Why memory not freed\n\n# Memory Optimization\n\n# Best Practices\n- Remove event listeners # Prevent memory leaks\n- Clear intervals/timeouts # Release timers\n- Nullify references    # Help garbage collection\n- WeakMap/WeakSet      # Weak references\n\n# Garbage Collection\n\n# GC Process\nMark and sweep        # GC algorithm\nGenerational GC       # Different object generations\nGC timing             # When GC occurs\n\n# GC Optimization\n- Object pooling       # Reuse objects\n- Avoid allocations    # Reduce GC pressure\n- Immediate cleanup    # Prompt memory release\n\n# Advanced Memory Tools\n\n# Allocation Timeline\nTrack allocations      # Real-time allocation monitoring\nAllocation sites       # Where objects created\nAllocation sizes       # Memory usage patterns\n\n# Memory Dashboard\nLive memory usage      # Real-time monitoring\nMemory trends         # Usage over time\nPerformance impact    # Memory vs performance\n\n# Console Memory API\nperformance.memory     # Browser memory info\nmemory.usedJSHeapSize  # Current heap usage\nmemory.totalJSHeapSize # Total heap size'
-        }
-      ]
+          command: 'Flame Chart Analysis',
+          description: 'Analyze function execution with flame charts',
+          usage: 'Flame chart view in Performance panel',
+          example: '# Flame Chart Analysis\n\n# Flame Chart Features\nFunction execution - Visual call hierarchy\nSelf time - Function execution time\nTotal time - Including child calls\n\n# Analysis Techniques\nWide bars - Long execution time\nDeep stacks - Complex call chains\nHot functions - Performance bottlenecks\n\n# Navigation\nZoom in/out - Scroll or use controls\nClick function - Jump to source\nSearch functions - Filter by name',
+        },
+        {
+          command: 'Memory Profiling Basics',
+          description: 'Profile memory usage and detect leaks',
+          usage: 'Memory panel → Heap snapshot',
+          example: '# Memory Profiling\n\n# Heap Snapshots\nMemory panel → Heap snapshot\nTake snapshot button - Capture current memory\n\n# Snapshot Types\nHeap snapshot - Current memory state\nComparison snapshot - Compare two states\nAllocation timeline - Track allocations over time\n\n# Memory Analysis\nObjects - All allocated objects\nConstructor names - Object types\nRetained size - Memory kept by object\nShallow size - Object direct size',
+        },
+        {
+          command: 'Memory Leak Detection',
+          description: 'Identify and fix memory leaks',
+          usage: 'Comparison snapshots and analysis',
+          example: '# Memory Leak Detection\n\n# Comparison Analysis\nTake baseline snapshot - Initial state\nPerform actions - Execute code\nTake comparison snapshot - Compare states\n\n# Leak Indicators\nGrowing heap size - Memory not released\nDetached DOM nodes - Unreferenced elements\nEvent listeners - Unremoved listeners\nClosures - Unreleased variables\n\n# Retainers Analysis\nRetainer paths - What keeps objects alive\nReference chains - Object relationships\nMemory retention - Why memory not freed',
+        },
+      ],
+    },
+    // ADVANCED LEVEL
+    {
+      title: 'Application Panel Deep Dive',
+      commands: [
+        {
+          command: 'Local Storage Inspection',
+          description: 'Inspect and manage localStorage data',
+          usage: 'Application → Local Storage',
+          example: '# Local Storage\n\n# Access Local Storage\nApplication → Local Storage\nView key-value pairs\n\n# Storage Operations\nEdit values directly\nAdd/remove items\nClear storage\n\n# Storage API\nlocalStorage.setItem("key", "value");\nlocalStorage.getItem("key");\nlocalStorage.removeItem("key");\nlocalStorage.clear();',
+        },
+        {
+          command: 'Session Storage Management',
+          description: 'Work with session-specific storage',
+          usage: 'Application → Session Storage',
+          example: '# Session Storage\n\n# Access Session Storage\nApplication → Session Storage\nTab-specific storage\n\n# Storage Characteristics\nSession-lifetime data\n5-10 MB limit\nString-only values\n\n# Storage API\nsessionStorage.setItem("key", "value");\nsessionStorage.getItem("key");\nsessionStorage.removeItem("key");',
+        },
+        {
+          command: 'Cookie Inspection and Management',
+          description: 'Inspect, edit, and manage cookies',
+          usage: 'Application → Cookies',
+          example: '# Cookie Management\n\n# Cookie Inspection\nApplication → Cookies\nView all cookies\n\n# Cookie Operations\nEdit cookie values\nAdd new cookies\nDelete cookies\n\n# Cookie Properties\nName/Value - Cookie data\nDomain/Path - Scope restrictions\nExpires/Max-Age - Lifetime\nSecure/HttpOnly - Security flags',
+        },
+        {
+          command: 'IndexedDB Database Inspection',
+          description: 'Inspect and query IndexedDB databases',
+          usage: 'Application → IndexedDB',
+          example: '# IndexedDB\n\n# Database Inspection\nApplication → IndexedDB\nDatabase browsing\n\n# Database Operations\nObject store viewing\nData editing\nQuery execution\n\n# IndexedDB Features\nNoSQL database\nLarge storage capacity\nTransaction support\nIndex-based queries',
+        },
+        {
+          command: 'Service Worker Debugging',
+          description: 'Debug service workers and offline functionality',
+          usage: 'Application → Service Workers',
+          example: '# Service Workers\n\n# Service Worker Panel\nApplication → Service Workers\nRegistration status\nActive worker\nWaiting worker\n\n# Service Worker Lifecycle\nRegistering - Initial registration\nInstalled - Download complete\nActivating - Becoming active\nActivated - Controlling pages\nRedundant - Replaced by new version',
+        },
+        {
+          command: 'Cache Storage Inspection',
+          description: 'Inspect service worker caches',
+          usage: 'Application → Cache Storage',
+          example: '# Cache Storage\n\n# Cache Inspection\nApplication → Cache Storage\nService worker caches\n\n# Cache Operations\nCache inspection\nCache contents\nCache management\n\n# Cache Strategies\nCache-first strategy\nNetwork-first strategy\nStale while revalidate\nBackground updates',
+        },
+        {
+          command: 'Progressive Web App Analysis',
+          description: 'Analyze PWA manifest and features',
+          usage: 'Application → Manifest',
+          example: '# PWA Analysis\n\n# Web App Manifest\nApplication → Manifest\nManifest validation\nIcon inspection\nDisplay properties\n\n# PWA Features\nService worker integration\nOffline functionality\nApp-like experience\nInstall capabilities\n\n# Manifest Properties\nname/short_name - App names\nicons - App icons\ndisplay - Display mode\nstart_url - App start URL',
+        },
+      ],
     },
     {
-      title: 'Application Panel',
+      title: 'Advanced Debugging Techniques',
       commands: [
         {
-          command: 'Storage Inspection',
-          description: 'Inspecting and managing browser storage',
-          usage: 'Local storage, session storage, cookies, and more',
-          example: '# Storage Types\n\n# Local Storage\nApplication → Local Storage\n- Key-value pairs\n- Persistent across sessions\n- 5-10 MB limit\n- String-only values\n\n# Session Storage\nApplication → Session Storage\n- Key-value pairs\n- Cleared on tab close\n- 5-10 MB limit\n- String-only values\n\n# Cookies\nApplication → Cookies\n- Name-value pairs\n- Expiration dates\n- Domain/path restrictions\n- Security flags\n\n# IndexedDB\nApplication → IndexedDB\n- Structured data storage\n- Large data capacity\n- Transaction-based\n- Asynchronous operations\n\n# Cache Storage\nApplication → Cache Storage\n- Service worker caches\n- Request/response pairs\n- Offline functionality\n- Programmatic control\n\n# Storage Operations\n\n# Local Storage\nlocalStorage.setItem("key", "value")\nlocalStorage.getItem("key")\nlocalStorage.removeItem("key")\nlocalStorage.clear()\n\n# Session Storage\nsessionStorage.setItem("key", "value")\nsessionStorage.getItem("key")\nsessionStorage.removeItem("key")\nsessionStorage.clear()\n\n# Cookie Management\ndocument.cookie = "name=value; expires=date; path=path"\ndocument.cookie # Read all cookies\n\n# IndexedDB Operations\nOpen database         # indexedDB.open()\nCreate object store   # createObjectStore()\nAdd data             # add() / put()\nRetrieve data        # get() / getAll()\nDelete data          # delete()\n\n# Storage Inspection\n\n# Data Visualization\nTree view             # Hierarchical data\nTable view            # Tabular format\nJSON view             # Raw data\n\n# Storage Editing\nDouble-click value   # Edit inline\nRight-click menu     # Edit options\nAdd new item         # Create new entry\nDelete item          # Remove entry\n\n# Storage Monitoring\nStorage quota         # Usage limits\nSize indicators      # Current usage\nChange tracking      # Real-time updates\n\n# Advanced Features\n\n# Storage Quotas\nQuota management      # Monitor usage\nStorage estimation    # Predict needs\nQuota exceeded       # Handle limits\n\n# Storage Security\nSecure cookies        # HTTPS only\nHttpOnly cookies      # Server access only\nSameSite cookies      # CSRF protection\n\n# Storage Debugging\nStorage events        # Monitor changes\nError handling        # Catch failures\nMigration strategies  # Data versioning'
+          command: 'Conditional Breakpoints',
+          description: 'Set breakpoints that trigger on specific conditions',
+          usage: 'Right-click line number → Add conditional breakpoint',
+          example: '# Conditional Breakpoints\n\n# Set Conditional Breakpoint\nRight-click line number → Add conditional breakpoint\nExpression must be true\n\n# Condition Examples\nx > 10 - Break when x greater than 10\narray.length === 0 - Break when array empty\nelement.classList.contains(\'active\') - Break when element has class\n\n# Complex Conditions\nuser.isAdmin && user.age >= 18\nresponse.status >= 400\nDate.now() - startTime > 5000',
         },
         {
-          command: 'Service Workers and PWA',
-          description: 'Service worker debugging and Progressive Web App features',
-          usage: 'Offline functionality and PWA development',
-          example: '# Service Worker Panel\n\n# Service Worker Status\nApplication → Service Workers\n- Registration status   # Registered/not registered\n- Activation status    # Activated/not activated\n- Controlling pages    # Which pages are controlled\n\n# Service Worker Lifecycle\n\n# Registration\nnavigator.serviceWorker.register("/sw.js")\n.then(registration => console.log("Registered"))\n.catch(error => console.error("Failed"))\n\n# Installation\ninstall event          # Cache resources\nskipWaiting()          # Force activation\n\n# Activation\nactivate event        # Clean old caches\nclients.claim()        # Take control\n\n# Service Worker Debugging\n\n# Console Access\nClick "inspect" link   # Open SW console\nSW scope              # Debug SW context\n\n# Network Control\nOffline checkbox      # Simulate offline\nBypass for network    # Skip SW for requests\nUpdate on reload      # Force SW update\n\n# Cache Management\nCacheStorage panel     # View cached content\nCache inspection      # Examine cached items\nCache deletion        # Clear specific caches\n\n# PWA Features\n\n# Web App Manifest\nManifest panel         # View manifest data\nInstall prompt        # PWA installation\nStart URL             # App entry point\n\n# Background Sync\nSync panel            # Background sync events\nSync registration     # Register sync events\n\n# Push Notifications\nPush panel            # Push subscription\nPush events           # Handle push messages\n\n# Service Worker Tools\n\n# Update Control\nUpdate button         # Force SW update\nUnregister button     # Remove SW\nOffline mode         # Test offline behavior\n\n# Performance Monitoring\nSW performance        # Measure SW impact\nCache hit rates       # Cache effectiveness\nNetwork usage         # Bandwidth analysis\n\n# Advanced Features\n\n# Cache Strategies\nCache-first           # Serve from cache\nNetwork-first         # Try network first\nStale-while-revalidate # Cache with update\n\n# Background Fetch\nBackground fetch API  # Large downloads\nDownload progress     # Monitor downloads\n\n# Periodic Background Sync\nPeriodic sync API     # Scheduled updates\nSync registration     # Register periodic sync'
+          command: 'Logpoints for Debugging',
+          description: 'Add logging without breaking execution',
+          usage: 'Right-click line number → Add logpoint',
+          example: '# Logpoints\n\n# Add Logpoint\nRight-click line number → Add logpoint\nLog message without stopping\n\n# Logpoint Examples\n"Variable x value: " + x\n"Array length: " + array.length\n"User object: " + JSON.stringify(user)\n\n# Template Literals\n`Current time: ${new Date().toISOString()}`\n`Element class: ${element.className}`\n`API response: ${JSON.stringify(response)}`',
         },
         {
-          command: 'Security and Permissions',
-          description: 'Security analysis and permission management',
-          usage: 'Understanding security features and permissions',
-          example: '# Security Panel\n\n# Security Overview\nSecurity tab           # Overall security status\nConnection security    # HTTPS/SSL status\nPage security         # Security warnings\n\n# Certificate Details\nCertificate viewer     # SSL/TLS certificate\nCertificate chain      # Certificate hierarchy\nCertificate validity   # Expiration and trust\n\n# Security Features\n\n# HTTPS Status\nSecure connection      # HTTPS enabled\nMixed content          # HTTP on HTTPS page\nCertificate errors      # SSL/TLS issues\n\n# Content Security Policy\nCSP headers           # Security policies\nViolation reports      # CSP violations\nPolicy analysis        # Security restrictions\n\n# Permissions\n\n# Permission Management\nApplication → Permissions\n- Notifications        # Push notifications\n- Location             # Geolocation access\n- Camera               # Camera access\n- Microphone           # Microphone access\n- Background sync      # Background operations\n\n# Permission States\n- Granted              # Permission allowed\n- Denied               # Permission blocked\n- Prompt               # Ask user\n\n# Permission API\nnavigator.permissions.query({name: "notifications"})\n.then(result => console.log(result.state))\n\n# Security Headers\n\n# Important Headers\n- X-Frame-Options     # Clickjacking protection\n- X-Content-Type-Options # MIME type sniffing\n- X-XSS-Protection    # XSS protection\n- Strict-Transport-Security # HTTPS enforcement\n- Content-Security-Policy # Content restrictions\n\n# Security Analysis\n\n# Vulnerability Scanning\nSecurity warnings      # Potential issues\nOutdated libraries    # Known vulnerabilities\nInsecure practices    # Security anti-patterns\n\n# Privacy Features\n\n# Tracking Protection\nTracking protection    # Block trackers\nCookie restrictions   # Limit cookie usage\nFingerprinting protection # Prevent identification\n\n# Privacy Settings\nPrivacy controls      # User privacy options\nData collection       # What data is collected\nThird-party access    # External site access\n\n# Advanced Security\n\n# Mixed Content\nMixed content warnings # HTTP resources on HTTPS\nActive/passive mixed   # Different risk levels\nContent upgrade       # Auto-upgrade to HTTPS\n\n# Subresource Integrity\nSRI attributes        # Resource integrity\nHash verification     # Validate resource hashes\n\n# Security Best Practices\n\n# HTTPS Everywhere\nForce HTTPS           # Redirect HTTP to HTTPS\nHSTS headers          # Enforce HTTPS\nCertificate management # Keep certificates valid\n\n# Secure Coding\nInput validation     # Prevent injection\nOutput encoding       # Prevent XSS\nAuthentication        # Secure user access\nAuthorization         # Proper access control'
-        }
-      ]
+          command: 'DOM Mutation Breakpoints',
+          description: 'Break on DOM changes and mutations',
+          usage: 'Right-click element → Break on',
+          example: '# DOM Mutation Breakpoints\n\n# Set DOM Breakpoints\nRight-click element → Break on\n\n# Breakpoint Types\nSubtree modifications - Child changes\nAttribute modifications - Attribute changes\nNode removal - Element deletion\n\n# Usage Scenarios\nDebug dynamic content\nTrack SPA navigation\nMonitor form changes\nDetect unwanted modifications',
+        },
+        {
+          command: 'Event Listener Breakpoints',
+          description: 'Break on specific DOM events',
+          usage: 'Sources panel → Event Listener Breakpoints',
+          example: '# Event Listener Breakpoints\n\n# Event Categories\nMouse events (click, mousedown, etc.)\nKeyboard events (keydown, keyup, etc.)\nTouch events (touchstart, etc.)\nForm events (submit, change, etc.)\n\n# Set Event Breakpoints\nSources panel → Event Listener Breakpoints\nFilter by event type\nEnable specific events\n\n# Common Events\nclick - Mouse clicks\nkeydown - Key presses\nsubmit - Form submissions\nload - Resource loading',
+        },
+        {
+          command: 'XHR/Fetch Request Breakpoints',
+          description: 'Break on network requests',
+          usage: 'Sources panel → XHR/Fetch Breakpoints',
+          example: '# XHR/Fetch Breakpoints\n\n# Request Breakpoints\nSources panel → XHR/Fetch Breakpoints\nBreak on any XHR\nURL pattern matching\n\n# URL Pattern Examples\n*/api/users* - API endpoints\n*.json - JSON requests\n*/debug* - Debug endpoints\n\n# Use Cases\nDebug API calls\nIntercept requests\nModify request data\nTest error handling',
+        },
+        {
+          command: 'Async Function Debugging',
+          description: 'Debug promises and async/await code',
+          usage: 'Async stack traces and promise inspection',
+          example: '# Async Debugging\n\n# Promise Inspection\nPromise state inspection\nAsync stack traces\nAwait debugging\n\n# Async Features\nAsync checkbox - Show async stack frames\nPromise state - Pending/fulfilled/rejected\nStack traces - Show async call chains\n\n# Debugging Techniques\nawait breakpoint - Step through async\nPromise inspection - View state\nError handling - Catch async errors',
+        },
+        {
+          command: 'Blackboxing Scripts',
+          description: 'Ignore third-party code during debugging',
+          usage: 'Sources panel → Blackbox script',
+          example: '# Blackboxing Scripts\n\n# Blackbox Third-party Code\nRight-click script → Blackbox script\nIgnore third-party code\nFramework blackboxing\n\n# Benefits\nSkip library code\nFocus on application code\nCleaner call stacks\nFaster debugging\n\n# Common Blackboxes\njQuery, React, Angular\nLibrary files\nMinified code\nThird-party frameworks',
+        },
+      ],
     },
     {
-      title: 'Advanced Features',
+      title: 'Productivity and Workflow Optimization',
       commands: [
         {
-          command: 'Device Mode and Responsive Design',
-          description: 'Mobile device simulation and responsive design testing',
-          usage: 'Testing across different devices and screen sizes',
-          example: '# Device Mode\n\n# Enabling Device Mode\nToggle device toolbar   # Phone/tablet icon (Ctrl+Shift+M / Cmd+Shift+M)\nResponsive mode        # Custom dimensions\nDevice presets         # Pre-configured devices\n\n# Device Options\n\n# Responsive Design\nCustom dimensions      # Width/height controls\nDevice pixel ratio    # Pixel density setting\nThrottling            # Network/CPU simulation\n\n# Device Presets\niPhone models         # Apple devices\nAndroid devices       # Google devices\niPad/tablet models    # Tablet devices\nCustom devices        # Add your own\n\n# Responsive Testing\n\n# Viewport Testing\nWidth/height input     # Specific dimensions\nAspect ratio lock     # Maintain proportions\nOrientation toggle    # Portrait/landscape\n\n# Touch Simulation\nTouch events          # Simulate touch interactions\nMulti-touch           # Pinch/zoom gestures\nDevice frame          # Visual device frame\n\n# Network Simulation\n\n# Network Throttling\nNo throttling         # Full speed\nSlow 3G              # 500 Kbps, 400ms latency\nFast 3G              # 1 Mbps, 200ms latency\nOffline              # No connection\nCustom settings       # Custom speeds\n\n# CPU Throttling\nNo throttling         # Full CPU power\n4x slowdown          # Simulate slower CPU\n\n# Advanced Features\n\n# Media Queries\n@media breakpoint testing # CSS media query testing\nBreakpoint indicators # Visual breakpoint lines\n\n# Device Features\nDevice pixel ratio    # High-DPI testing\nColor scheme         # Light/dark mode\nReduced motion       # Accessibility testing\n\n# Sensor Simulation\nGeolocation          # GPS coordinates\nOrientation          # Device orientation\nAmbient light        # Light sensor\n\n# User Agent\nDevice user agent    # Mobile browser string\nDesktop mode          # Switch to desktop UA\n\n# Testing Tools\n\n# Ruler Guides\nClick and drag        # Create measurement guides\nGuide positions       # Pixel-perfect alignment\n\n# Zoom Controls\nZoom levels           # Page zoom controls\nFit to width          # Responsive width\n\n# Screenshot\nCapture screenshot   # Device screenshot\nCapture node          # Element screenshot\n\n# Performance Testing\nPerformance metrics   # Mobile performance\nNetwork analysis      # Mobile network conditions\n\n# Best Practices\n\n# Responsive Design\nMobile-first approach # Design for mobile first\nBreakpoint strategy   # Logical breakpoints\nTouch-friendly UI     # Large tap targets\n\n# Performance Optimization\nImage optimization    # Mobile-optimized images\nLazy loading         # Load on demand\nCritical CSS          # Above-the-fold styling'
+          command: 'Essential Keyboard Shortcuts',
+          description: 'Must-know shortcuts for maximum productivity',
+          usage: 'Keyboard combinations for efficiency',
+          example: '# Essential Shortcuts\n\n# Panel Navigation\nCtrl+Shift+I (Win/Linux) / Cmd+Option+I (Mac) - Open DevTools\nCtrl+1-9 (Win/Linux) / Cmd+1-9 (Mac) - Switch to panel\nCtrl+Tab (Win/Linux) / Cmd+Tab (Mac) - Next panel\nEsc - Toggle console drawer\n\n# Element Inspection\nCtrl+Shift+C (Win/Linux) / Cmd+Shift+C (Mac) - Element selector\n\n# Console\nCtrl+Shift+J (Win/Linux) / Cmd+Option+J (Mac) - Console\nCtrl+L - Clear console\n\n# Debugging\nF8 - Resume/Pause\nF10 - Step over\nF11 - Step into\nShift+F11 - Step out',
         },
         {
-          command: 'Extensions and Customization',
-          description: 'DevTools extensions and customization options',
-          usage: 'Extending DevTools functionality and personalizing workflow',
-          example: '# DevTools Extensions\n\n# Installing Extensions\nChrome Web Store → DevTools extensions\nInstall extension      # Add to Chrome\nDevTools authorization # Grant permissions\n\n# Popular Extensions\n\n# React Developer Tools\nReact components       # Component tree inspection\nState and props        # Component data analysis\nPerformance profiling  # React performance\n\n# Vue.js DevTools\nVue components        # Component inspection\nVuex store            # State management\nEvent tracking        # Event debugging\n\n# Redux DevTools\nState inspection      # Redux store analysis\nAction history        # Dispatched actions\nTime travel debugging # State timeline\n\n# Angular DevTools\nRouter navigation     # Route inspection\nComponent tree        # Angular components\nInjector analysis     # Dependency injection\n\n# Custom Extensions\n\n# Extension Development\nDevTools protocol      # Extension API\nPanel creation        # Custom panels\nContext menus         # Custom menu items\n\n# Extension Features\n- Custom panels        # Specialized tools\n- Sidebar tabs         # Additional information\n- Context menus        # Right-click options\n\n# DevTools Customization\n\n# Settings Customization\nSettings → Preferences # Personalize DevTools\nTheme selection       # Light/dark themes\nShortcut customization # Custom hotkeys\n\n# Workspace Setup\nLocal file mapping    # Edit local files\nPersistent workspace # Save file associations\n\n# Panel Organization\nPanel reordering      # Customize layout\nPanel sizing         # Adjust panel widths\nPanel docking        # Position panels\n\n# Custom Shortcuts\n\n# Shortcut Configuration\nSettings → Shortcuts  # View/modify shortcuts\nCustom key bindings   # Personal preferences\nImport/export settings # Share configurations\n\n# Advanced Customization\n\n# Custom Themes\nCustom CSS injection  # Modify appearance\nTheme extensions      # Pre-built themes\n\n# Experimental Features\nExperiments menu      # Enable beta features\nCutting-edge tools    # Latest functionality\n\n# Developer Settings\n\n# Advanced Preferences\nEnable source maps     # Debug compiled code\nDisable cache         # Always fetch fresh\nLog XMLHttpRequests   # Network logging\n\n# Console Settings\nCustom formatters     # Enhanced object display\nEval on activation    # Auto-evaluate code\n\n# Performance Settings\nAdvanced paint instrumentation # Detailed rendering\nShow FPS meter        # Performance overlay\n\n# Workflow Optimization\n\n# Custom Workflows\nCommand menu          # Quick command access\nFavorite panels       # Quick navigation\nRecent files          # Fast file access\n\n# Integration Tools\nVS Code integration   # Editor synchronization\nGit integration      # Version control\n\n# Best Practices\n\n# Extension Management\nEssential extensions  # Core development tools\nPerformance impact    # Monitor extension overhead\nRegular updates       # Keep tools current\n\n# Customization Strategy\nWorkflow analysis     # Identify needs\nGradual adoption     # Implement changes slowly'
+          command: 'Command Menu Mastery',
+          description: 'Universal command search for all features',
+          usage: 'Ctrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac)',
+          example: '# Command Menu Power Usage\nCtrl+Shift+P (Win/Linux) / Cmd+Shift+P (Mac)\n\n# Feature Discovery\nType any DevTools feature name\nSearch by functionality\nDiscover hidden tools\nAccess experimental features\n\n# Quick Actions\nDisable JavaScript\nEnable device toolbar\nCapture screenshot\nClear site data\nEmpty cache and hard reload\nEmulate CSS media type\nApply device metrics\nNetwork conditions\nUser agent\nGeolocation\nSensors',
+        },
+        {
+          command: 'Workspace Customization',
+          description: 'Set up personalized development workspace',
+          usage: 'Settings and workspace configuration',
+          example: '# Workspace Setup\n\n# Local Workspace\nSources → Filesystem → Add folder\nMap local files\nLive editing\n\n# Custom Settings\nSettings → Preferences\nCustom themes\nShortcut customization\nPanel layout\n\n# Workspace Features\nFile mapping\nOverride configuration\nPersistent mapping\nSnippets library',
+        },
+        {
+          command: 'Device Emulation and Testing',
+          description: 'Test across different devices and screen sizes',
+          usage: 'Device toolbar and responsive design testing',
+          example: '# Device Emulation\n\n# Device Toolbar\nToggle device toolbar\nDevice selection\nScreen resolution\n\n# Responsive Design\nViewport resizing\nBreakpoint testing\nMedia query debugging\n\n# Device Simulation\niPhone simulation\nAndroid simulation\nTouch event simulation\n\n# Network Simulation\n3G/4G simulation\nOffline testing\nLatency simulation',
+        },
+        {
+          command: 'Extension Integration',
+          description: 'Enhance DevTools with third-party extensions',
+          usage: 'Chrome Web Store and extension management',
+          example: '# DevTools Extensions\n\n# Popular Extensions\nReact Developer Tools\nVue.js devtools\nAngular DevTools\nRedux DevTools\n\n# Performance Extensions\nLighthouse\nWebPageTest\nPageSpeed Insights\n\n# Debugging Extensions\nJavaScript Errors\nConsole Importer\nCSS Peeper\n\n# Installation\nChrome Web Store\nSide loading\nDevelopment mode',
         },
         {
           command: 'Automation and Scripting',
-          description: 'Automating DevTasks and scripting with DevTools',
-          usage: 'Programmatic control and automation of debugging tasks',
-          example: '# DevTools Protocol\n\n# Protocol Overview\nChrome DevTools Protocol # CDP API\nWebSocket connection   # Real-time communication\nDomain-based API      # Organized functionality\n\n# Protocol Domains\n\n# Runtime Domain\nRuntime.evaluate()     # Execute JavaScript\nRuntime.getProperties() # Object properties\nRuntime.callFunctionOn() # Function calls\n\n# DOM Domain\nDOM.getDocument()      # Get DOM tree\nDOM.querySelector()    # Find elements\nDOM.setAttribute()     # Modify attributes\n\n# Network Domain\nNetwork.enable()        # Enable network tracking\nNetwork.getRequestHeaders() # Request headers\nNetwork.getResponseBody() # Response content\n\n# Automation Libraries\n\n# Puppeteer\nconst puppeteer = require(\'puppeteer\');\nconst browser = await puppeteer.launch();\nconst page = await browser.newPage();\nawait page.goto(\'https://example.com\');\nawait page.screenshot({path: \'example.png\'});\nawait browser.close();\n\n# Playwright\nconst { chromium } = require(\'playwright\');\nconst browser = await chromium.launch();\nconst page = await browser.newPage();\nawait page.goto(\'https://example.com\');\nawait page.screenshot({path: \'example.png\'});\nawait browser.close();\n\n# Custom Scripts\n\n# Performance Monitoring\nperformance.mark(\'start\');\n// Code to measure\nperformance.mark(\'end\');\nperformance.measure(\'duration\', \'start\', \'end\');\n\n# Network Monitoring\nconst observer = new PerformanceObserver((list) => {\n  list.getEntries().forEach((entry) => {\n    console.log(entry.name, entry.duration);\n  });\n});\nobserver.observe({entryTypes: [\'measure\', \'navigation\']});\n\n# Error Tracking\nwindow.addEventListener(\'error\', (e) => {\n  console.error(\'Error tracked:\', e.error);\n});\n\n# Debugging Automation\n\n# Conditional Breakpoints\nif (condition) {\n  debugger; // Break only if condition true\n}\n\n# Logpoints\nconsole.log(`Variable value: ${variable}`);\n\n# Watch Expressions\nsetInterval(() => {\n  console.log(document.title);\n}, 1000);\n\n# Advanced Automation\n\n# Custom Commands\nChrome DevTools Command API\nCustom command registration\nCommand parameter handling\n\n# Data Collection\nPerformance metrics collection\nUser interaction tracking\nError logging and analysis\n\n# Testing Automation\n\n# End-to-End Testing\nAutomated user flows\nForm submission testing\nNavigation testing\n\n# Performance Testing\nLoad time measurement\nResource optimization testing\nMemory leak detection\n\n# Best Practices\n\n# Script Organization\nModular code structure\nReusable functions\nError handling\n\n# Performance Considerations\nEfficient DOM manipulation\nMemory management\nNetwork optimization'
-        }
-      ]
+          description: 'Automate repetitive tasks with scripts',
+          usage: 'Console scripting and automation',
+          example: '# DevTools Automation\n\n# Console Scripting\n// Auto-refresh page\nsetInterval(() => location.reload(), 5000);\n\n// Performance testing\nconsole.time("test");\n// Code to test\nconsole.timeEnd("test");\n\n// DOM manipulation\ndocument.querySelectorAll(".error").forEach(el => el.remove());\n\n# Automation Tools\n// Custom functions\nfunction clearStorage() {\n  localStorage.clear();\n  sessionStorage.clear();\n}\n\n// Batch operations\n$$(".old-class").forEach(el => el.classList.replace("old-class", "new-class"));',
+        },
+      ],
     },
     {
-      title: 'Expert Level Topics',
+      title: 'Memory Panel Deep Dive',
       commands: [
         {
-          command: 'Advanced Debugging Techniques',
-          description: 'Expert-level debugging strategies and problem-solving',
-          usage: 'Complex debugging scenarios and advanced troubleshooting',
-          example: '# Advanced Breakpoints\n\n# Conditional Breakpoints\nif (element.classList.contains(\'active\')) debugger;\nif (array.length > 100) debugger;\nif (performance.now() - startTime > 5000) debugger;\n\n# Logpoints\nconsole.log(`Current value: ${variable}`);\nconsole.trace(\'Function call stack\');\nconsole.table(dataObject);\n\n# DOM Breakpoints\nSubtree modifications   # DOM structure changes\nAttribute modifications # Attribute changes\nNode removal          # Element deletion\n\n# Event Listener Breakpoints\nClick events           # Mouse clicks\nKey events            # Keyboard input\nTimer events          # setTimeout/setInterval\n\n# Memory Debugging\n\n# Memory Leak Detection\n// Take baseline snapshot\n// Perform actions\n// Take comparison snapshot\n// Analyze retained objects\n\n# Heap Analysis\nObject retention paths  # Why objects exist\nMemory allocation sites # Where objects created\nGarbage collection     # GC timing analysis\n\n# Performance Debugging\n\n# Frame Rate Analysis\nrequestAnimationFrame monitoring\nFPS calculation\nFrame drop detection\n\n# Rendering Performance\nLayout thrashing detection\nPaint profiling\nComposite layer analysis\n\n# Network Debugging\n\n# Request Analysis\nWaterfall optimization\nResource prioritization\nCaching strategy analysis\n\n# WebSocket Debugging\nConnection state monitoring\nMessage flow analysis\nPerformance impact\n\n# Advanced Console Techniques\n\n# Custom Console Methods\nconsole.custom = function(data) {\n  console.log(\'Custom format:\', data);\n};\n\n# Table Formatting\nconsole.table(users, [\'name\', \'email\', \'age\']);\n\n# Grouped Logging\nconsole.group(\'Authentication\');\nconsole.log(\'User logged in\');\nconsole.log(\'Session created\');\nconsole.groupEnd();\n\n# CSS Debugging\n\n# Layout Issues\nBox model debugging\nFlexbox visualization\nGrid inspection\n\n# Animation Debugging\nAnimation timeline\nKeyframe inspection\nPerformance analysis\n\n# Accessibility Debugging\n\n# ARIA Inspection\nAccessibility tree\nScreen reader testing\nKeyboard navigation\n\n# Color Contrast\nContrast ratio checking\nColor blindness simulation\nWCAG compliance\n\n# Cross-Browser Debugging\n\n# Browser Differences\nFeature detection\nPolyfill debugging\nCompatibility testing\n\n# Mobile Debugging\nRemote debugging\nDevice-specific issues\nPerformance optimization\n\n# Advanced Troubleshooting\n\n# Systematic Approach\n1. Reproduce issue consistently\n2. Isolate problem area\n3. Use appropriate tools\n4. Verify fix thoroughly\n\n# Debugging Workflow\nIssue identification\nHypothesis formation\nTesting and validation\nSolution implementation\n\n# Problem-Solving Strategies\nDivide and conquer\nBinary search approach\nPattern recognition\nRoot cause analysis'
+          command: 'Heap Snapshot Analysis',
+          description: 'Take and analyze heap snapshots for memory profiling',
+          usage: 'Memory panel → Heap snapshot',
+          example: '# Heap Snapshot Analysis\n\n# Taking Snapshots\nMemory panel → Heap snapshot\nTake snapshot button - Capture current memory\n\n# Snapshot Types\nHeap snapshot - Current memory state\nComparison snapshot - Compare two states\nAllocation timeline - Track allocations over time\n\n# Memory Analysis\nObjects - All allocated objects\nConstructor names - Object types\nRetained size - Memory kept by object\nShallow size - Object direct size',
         },
         {
-          command: 'Performance Optimization',
-          description: 'Advanced performance optimization techniques',
-          usage: 'Maximizing application performance and user experience',
-          example: '# Performance Optimization\n\n# Critical Rendering Path\n\n# Optimize CSS Delivery\n- Inline critical CSS\n- Async load non-critical CSS\n- Minimize render-blocking CSS\n\n# JavaScript Optimization\n- Defer non-critical JS\n- Async load independent scripts\n- Remove unused code\n\n# Resource Loading\n\n# Loading Strategies\nPreload critical resources\nPrefetch likely resources\nLazy load non-critical content\n\n# Resource Optimization\n- Image optimization\n- Font optimization\n- Code minification\n- Compression\n\n# Caching Strategies\n\n# Browser Caching\nCache-Control headers\nETag validation\nService worker caching\n\n# Application Caching\nLocal storage strategies\nIndexedDB for large data\nMemory caching\n\n# Runtime Performance\n\n# JavaScript Performance\n- Avoid layout thrashing\n- Minimize DOM manipulation\n- Use efficient algorithms\n- Optimize loops\n\n# Rendering Performance\n- Use CSS transforms\n- Implement will-change\n- Optimize animations\n- Reduce paint complexity\n\n# Memory Optimization\n\n# Memory Management\n- Avoid memory leaks\n- Use object pooling\n- Implement cleanup\n- Monitor heap usage\n\n# Garbage Collection\n- Minimize object creation\n- Use primitive types\n- Implement weak references\n\n# Network Performance\n\n# Request Optimization\n- Reduce HTTP requests\n- Use HTTP/2\n- Implement CDN\n- Optimize images\n\n# Data Transfer\n- Compression\n- Delta encoding\n- Binary formats\n- Data pagination\n\n# Advanced Techniques\n\n# Web Workers\n- Offload main thread\n- Parallel processing\n- Background computation\n\n# Service Workers\n- Offline functionality\n- Background sync\n- Push notifications\n\n# Performance Monitoring\n\n# Metrics Collection\n- Core Web Vitals\n- Custom metrics\n- User timing\n- Performance budgets\n\n# Optimization Tools\n- Lighthouse audits\n- Performance profiling\n- Memory analysis\n- Network analysis\n\n# Best Practices\n\n# Code Optimization\n- Write efficient algorithms\n- Use appropriate data structures\n- Avoid premature optimization\n- Profile before optimizing\n\n# Resource Management\n- Optimize images and media\n- Minimize bundle size\n- Use appropriate formats\n- Implement lazy loading\n\n# User Experience\n- Prioritize above-the-fold content\n- Implement progressive enhancement\n- Optimize for mobile\n- Ensure accessibility'
+          command: 'Allocation Timeline Profiling',
+          description: 'Track memory allocations over time',
+          usage: 'Memory panel → Allocation instrumentation',
+          example: '# Allocation Timeline\n\n# Start Allocation Profiling\nMemory panel → Allocation instrumentation\nStart recording button\n\n# Analysis Features\nAllocation sites - Where objects created\nAllocation sizes - Memory usage patterns\nAllocation timeline - Time-based allocation tracking\n\n# Usage Scenarios\nMemory leak detection\nAllocation pattern analysis\nPerformance optimization',
         },
         {
-          command: 'Security and Privacy',
-          description: 'Advanced security features and privacy protection',
-          usage: 'Implementing robust security measures and privacy controls',
-          example: '# Security Implementation\n\n# HTTPS Everywhere\n- Force HTTPS redirects\n- Implement HSTS\n- Use secure cookies\n- Certificate management\n\n# Content Security Policy\n- Define CSP headers\n- Whitelist allowed sources\n- Report violations\n- Inline script restrictions\n\n# Input Validation\n- Sanitize user input\n- Validate data types\n- Prevent XSS attacks\n- Implement CSRF protection\n\n# Authentication Security\n\n# Secure Authentication\n- Strong password policies\n- Multi-factor authentication\n- Session management\n- Secure password storage\n\n# Authorization\n- Principle of least privilege\n- Role-based access control\n- API security\n- Resource protection\n\n# Privacy Protection\n\n# Data Privacy\n- Minimize data collection\n- Implement data anonymization\n- Secure data storage\n- Privacy policy compliance\n\n# User Privacy\n- Do Not Track support\n- Privacy controls\n- Data portability\n- Right to be forgotten\n\n# Advanced Security\n\n# Cross-Origin Security\n- CORS configuration\n- Cross-origin messaging\n- PostMessage security\n- Frame protection\n\n# Client-Side Security\n- Secure JavaScript practices\n- Dependency security\n- Code obfuscation\n- Anti-tampering measures\n\n# Network Security\n\n# Secure Communication\n- Certificate pinning\n- Secure WebSocket\n- API authentication\n- Rate limiting\n\n# DDoS Protection\n- Request validation\n- Rate limiting\n- CAPTCHA implementation\n- Traffic analysis\n\n# Security Monitoring\n\n# Threat Detection\n- Anomaly detection\n- Security logging\n- Intrusion detection\n- Vulnerability scanning\n\n# Security Headers\n- X-Frame-Options\n- X-Content-Type-Options\n- X-XSS-Protection\n- Strict-Transport-Security\n\n# Privacy Features\n\n# Tracking Protection\n- Block third-party trackers\n- Privacy-preserving analytics\n- Cookie restrictions\n- Fingerprinting protection\n\n# Secure Storage\n- Encrypted local storage\n- Secure session management\n- Data encryption\n- Key management\n\n# Compliance\n\n# Regulatory Compliance\n- GDPR compliance\n- CCPA compliance\n- Industry standards\n- Security audits\n\n# Best Practices\n\n# Security by Design\n- Secure development lifecycle\n- Threat modeling\n- Security testing\n- Incident response\n\n# Privacy by Design\n- Data minimization\n- Privacy impact assessment\n- User consent management\n- Transparency reporting'
+          command: 'Memory Leak Detection Techniques',
+          description: 'Identify and fix memory leaks using various tools',
+          usage: 'Comparison snapshots and analysis',
+          example: '# Memory Leak Detection\n\n# Comparison Analysis\nTake baseline snapshot - Initial state\nPerform actions - Execute code\nTake comparison snapshot - Compare states\n\n# Leak Indicators\nGrowing heap size - Memory not released\nDetached DOM nodes - Unreferenced elements\nEvent listeners - Unremoved listeners\nClosures - Unreleased variables\n\n# Retainers Analysis\nRetainer paths - What keeps objects alive\nReference chains - Object relationships',
+        },
+      ],
+    },
+    {
+      title: 'Security Panel and Privacy',
+      commands: [
+        {
+          command: 'Security Overview Analysis',
+          description: 'Analyze page security and certificate information',
+          usage: 'Security panel overview',
+          example: '# Security Overview\n\n# Security Panel\nSecurity panel - Connection security overview\n\n# Security Information\nConnection security - HTTPS status\nCertificate details - SSL/TLS info\nOrigin security - Page security assessment\n\n# Security Recommendations\nMixed content warnings - HTTP/HTTPS issues\nInsecure resources - Security risks\nCertificate problems - Invalid certificates',
         },
         {
-          command: 'Future Features and Experimental Tools',
-          description: 'Cutting-edge DevTools features and experimental capabilities',
-          usage: 'Exploring the latest DevTools innovations and upcoming features',
-          example: '# Experimental Features\n\n# Enabling Experiments\nCmd+Shift+P → "Experiments"\nFlag-based features\nBeta functionality\nCutting-edge tools\n\n# Upcoming Features\n\n# AI-Powered Debugging\n- Intelligent error detection\n- Automated bug fixing suggestions\n- Performance optimization recommendations\n- Code completion assistance\n\n# Advanced Visualizations\n- 3D DOM visualization\n- Interactive flame graphs\n- Memory landscape mapping\n- Network topology visualization\n\n# Enhanced Collaboration\n- Live sharing sessions\n- Collaborative debugging\n- Team workspace integration\n- Remote assistance features\n\n# WebAssembly Debugging\n- WASM source mapping\n- Breakpoint support\n- Performance profiling\n- Memory inspection\n\n# Modern Web Features\n\n# Web Components\n- Custom element inspection\n- Shadow DOM debugging\n- CSS part debugging\n- Slot analysis\n\n# Progressive Web Apps\n- Advanced PWA debugging\n- Background sync monitoring\n- Push notification analysis\n- Offline capability testing\n\n# Web3 and Blockchain\n- Web3 provider debugging\n- Smart contract interaction\n- Blockchain transaction monitoring\n- Wallet integration testing\n\n# Performance Innovations\n\n# Predictive Analytics\n- Performance prediction\n- Bottleneck identification\n- Optimization suggestions\n- User experience scoring\n\n# Real-time Monitoring\n- Live performance metrics\n- Real-time user monitoring\n- A/B testing integration\n- Conversion tracking\n\n# Advanced Profiling\n- Micro-benchmarking\n- Energy consumption analysis\n- Thermal profiling\n- Battery impact assessment\n\n# Developer Experience\n\n# Intelligent Assistance\n- Context-aware suggestions\n- Learning mode integration\n- Interactive tutorials\n- Best practice recommendations\n\n# Seamless Integration\n- IDE synchronization\n- Version control integration\n- CI/CD pipeline integration\n- Project management tools\n\n# Customization\n\n# Personalized Workflows\n- Adaptive interface\n- Custom panel creation\n- Workflow automation\n- Personalized shortcuts\n\n# Extension Ecosystem\n- Advanced extension APIs\n- Custom tool development\n- Third-party integrations\n- Marketplace features\n\n# Emerging Technologies\n\n# AR/VR Debugging\n- WebXR debugging tools\n- Performance optimization\n- Interaction testing\n- Device compatibility\n\n# IoT and Edge Computing\n- Remote device debugging\n- Edge node monitoring\n- Sensor data analysis\n- Performance optimization\n\n# Quantum Computing\n- Quantum algorithm debugging\n- Performance analysis\n- Error correction monitoring\n- Hardware simulation\n\n# Future Standards\n\n# Next-Gen Web Standards\n- Early implementation testing\n- Standards compliance checking\n- Migration assistance\n- Compatibility analysis\n\n# Privacy-Enhanced Features\n- Privacy-preserving analytics\n- Secure multi-party computation\n- Zero-knowledge proof debugging\n- Decentralized identity testing\n\n# Best Practices for Adoption\n\n# Gradual Implementation\n- Feature flagging\n- A/B testing\n- User feedback collection\n- Performance monitoring\n\n# Risk Management\n- Backup strategies\n- Rollback procedures\n- Compatibility testing\n- User communication'
-        }
-      ]
-    }
-  ]
+          command: 'Certificate Inspection',
+          description: 'Inspect SSL/TLS certificate details',
+          usage: 'Security panel → Certificate details',
+          example: '# Certificate Inspection\n\n# Certificate Details\nCertificate chain - Certificate hierarchy\nIssuer information - Certificate authority\nValidity period - Expiration dates\nProtocol version - TLS version\nCipher suite - Encryption method\n\n# Certificate Validation\nCertificate transparency - Log verification\nSignature algorithm - Signing method\nPublic key - Encryption key',
+        },
+        {
+          command: 'Mixed Content Analysis',
+          description: 'Identify and fix mixed content security issues',
+          usage: 'Security panel mixed content warnings',
+          example: '# Mixed Content Analysis\n\n# Mixed Content Types\nActive mixed content - Scripts, styles, iframes\nPassive mixed content - Images, audio, video\n\n# Security Risks\nMan-in-the-middle attacks\nData interception\nContent tampering\n\n# Resolution Strategies\nUpgrade to HTTPS resources\nUse protocol-relative URLs\nContent Security Policy (CSP)',
+        },
+      ],
+    },
+    {
+      title: 'Lighthouse and Auditing',
+      commands: [
+        {
+          command: 'Lighthouse Performance Auditing',
+          description: 'Run comprehensive performance audits using Lighthouse',
+          usage: 'Lighthouse panel in DevTools',
+          example: '# Lighthouse Auditing\n\n# Running Lighthouse\nLighthouse panel - Generate report\nCategories: Performance, PWA, Best Practices, SEO, Accessibility\n\n# Performance Metrics\nFirst Contentful Paint (FCP)\nLargest Contentful Paint (LCP)\nFirst Input Delay (FID)\nCumulative Layout Shift (CLS)\nTime to Interactive (TTI)\n\n# Optimization Opportunities\nImage optimization\nJavaScript bundling\nCSS minification\nResource caching',
+        },
+        {
+          command: 'Web Vitals Monitoring',
+          description: 'Monitor Core Web Vitals for user experience',
+          usage: 'Lighthouse and Performance panel',
+          example: '# Core Web Vitals\n\n# LCP - Largest Contentful Paint\nMeasure loading performance\nTarget: < 2.5 seconds\n\n# FID - First Input Delay\nMeasure interactivity\nTarget: < 100 milliseconds\n\n# CLS - Cumulative Layout Shift\nMeasure visual stability\nTarget: < 0.1\n\n# Monitoring Tools\nLighthouse - Lab data\nChrome User Experience Report - Field data\nWeb Vitals Chrome extension - Real user monitoring',
+        },
+        {
+          command: 'Accessibility Auditing',
+          description: 'Audit and improve website accessibility',
+          usage: 'Lighthouse accessibility category',
+          example: '# Accessibility Auditing\n\n# Lighthouse Accessibility\nAccessibility category - Comprehensive audit\n\n# Audit Areas\nColor contrast - Text readability\nKeyboard navigation - Accessibility without mouse\nScreen reader support - ARIA labels and roles\nFocus management - Logical tab order\n\n# Accessibility Tools\nAccessibility panel - Element inspection\nAccessibility tree - DOM accessibility structure\nARIA inspection - ARIA attributes validation',
+        },
+      ],
+    },
+    {
+      title: 'Advanced Console Techniques',
+      commands: [
+        {
+          command: 'Console API Mastery',
+          description: 'Advanced console API methods and techniques',
+          usage: 'Console API reference and advanced methods',
+          example: '# Advanced Console API\n\n# Measurement Methods\nconsole.mark() - Performance mark\nconsole.measure() - Performance measurement\nconsole.timeLog() - Current timer value\n\n# Grouping Methods\nconsole.groupCollapsed() - Collapsed group\nconsole.groupEnd() - End group\nconsole.trace() - Stack trace\n\n# Assertion Methods\nconsole.assert() - Conditional logging\nconsole.clear() - Clear console\nconsole.debug() - Debug message\n\n# Styling Methods\nconsole.log("%c CSS", "style") - Styled output\nconsole.table() - Tabular data display',
+        },
+        {
+          command: 'Console Utilities Reference',
+          description: 'Built-in console utility functions',
+          usage: 'Console utility functions reference',
+          example: '# Console Utilities\n\n# Query Utilities\n$() - document.querySelector\n$$() - document.querySelectorAll\n$x() - XPath selector\n\n# Inspection Utilities\ndir() - Object properties\ndirxml() - XML/HTML tree\ninspect() - Object inspector\nkeys() - Object keys\nvalues() - Object values\n\n# Monitoring Utilities\nmonitorEvents() - Event monitoring\nunmonitorEvents() - Stop monitoring\ngetEventListeners() - Event listeners\n\n# Debugging Utilities\ndebug() - Function debugging\nundebug() - Stop debugging\nmonitor() - Function monitoring\nunmonitor() - Stop monitoring',
+        },
+        {
+          command: 'Console Performance Profiling',
+          description: 'Profile performance directly from console',
+          usage: 'Console profiling methods',
+          example: '# Console Profiling\n\n# CPU Profiling\nconsole.profile("label") - Start profiling\nconsole.profileEnd("label") - End profiling\n\n# Memory Profiling\nconsole.memory - Memory usage info\nconsole.countReset("label") - Reset counter\n\n# Performance Monitoring\nperformance.now() - High resolution timing\nperformance.mark() - Performance mark\nperformance.measure() - Performance measurement\n\n# Custom Profiling\n// Profile function execution\nconsole.profile("functionName");\nfunctionName();\nconsole.profileEnd("functionName");',
+        },
+      ],
+    },
+    {
+      title: 'Device Mode and Mobile Testing',
+      commands: [
+        {
+          command: 'Responsive Design Testing',
+          description: 'Test responsive design across different screen sizes',
+          usage: 'Device toolbar and viewport controls',
+          example: '# Responsive Design Testing\n\n# Device Toolbar\nToggle device toolbar - Enable device mode\nViewport controls - Resize viewport\n\n# Responsive Testing\nViewport resizing - Drag to resize\nBreakpoint testing - Media query testing\nOrientation testing - Portrait/landscape\n\n# Device Presets\niPhone, iPad, Android devices\nCustom device dimensions\nScreen resolution simulation\n\n# Testing Features\nTouch event simulation\nDevice pixel ratio testing\nViewport meta tag testing',
+        },
+        {
+          command: 'Mobile Device Simulation',
+          description: 'Simulate specific mobile devices and capabilities',
+          usage: 'Device toolbar device selection',
+          example: '# Mobile Device Simulation\n\n# Device Selection\nDevice dropdown - Select specific device\nCustom device - Create custom device\n\n# Simulation Features\nTouch events - Touch interaction\nGeolocation - GPS simulation\nDevice orientation - Accelerometer\nUser agent - Mobile browser string\n\n# Network Simulation\n3G/4G network throttling\nOffline mode testing\nLatency simulation\n\n# Testing Scenarios\nMobile UX testing\nTouch gesture testing\nMobile performance testing',
+        },
+        {
+          command: 'Mobile Performance Testing',
+          description: 'Test performance on mobile devices and networks',
+          usage: 'Network throttling and performance tools',
+          example: '# Mobile Performance Testing\n\n# Network Throttling\nSlow 3G - 500 Kbps, 400ms latency\nFast 3G - 1 Mbps, 200ms latency\nCustom throttling - Custom settings\n\n# CPU Throttling\n4x slowdown - Low-end devices\n6x slowdown - Very low-end devices\n\n# Mobile Metrics\nFirst Contentful Paint - Mobile loading\nTime to Interactive - Mobile interactivity\nBattery impact - Power consumption\n\n# Optimization Techniques\nCritical resource prioritization\nLazy loading implementation\nMobile-specific optimizations',
+        },
+      ],
+    },
+    {
+      title: 'WebAssembly and Advanced Debugging',
+      commands: [
+        {
+          command: 'WebAssembly Debugging',
+          description: 'Debug WebAssembly modules in DevTools',
+          usage: 'Sources panel WebAssembly debugging',
+          example: '# WebAssembly Debugging\n\n# WASM Module Inspection\nSources panel - WASM files\nWASM disassembly - View assembly code\nMemory inspection - WASM memory view\n\n# Debugging Features\nBreakpoints in WASM - Set breakpoints\nStep debugging - Step through WASM\nVariable inspection - WASM variables\nCall stack - WASM function calls\n\n# Performance Analysis\nWASM profiling - Performance analysis\nMemory usage - WASM memory tracking\n\n# Development Tools\nEmscripten debugging\nWASM binary toolkit\nBrowser WASM support',
+        },
+        {
+          command: 'JavaScript Engine Internals',
+          description: 'Understanding V8 engine internals and optimization',
+          usage: 'Performance panel and console optimization',
+          example: '# JavaScript Engine Internals\n\n# V8 Optimization\nTurboFan - Optimizing compiler\nIgnition - Interpreter\nOptimization tiers - Optimization levels\n\n# Performance Analysis\nFunction optimization - Optimized functions\nDeoptimization - Why functions deoptimize\nHidden classes - Object shape optimization\n\n# Memory Management\nGarbage collection - GC behavior\nMemory allocation - Object allocation\nMemory leaks - Memory leak patterns\n\n# Debugging Tools\n%OptimizeFunctionOnNextCall() - Manual optimization\n%DeoptimizeFunction() - Manual deoptimization\n%GetOptimizationStatus() - Optimization status',
+        },
+        {
+          command: 'Advanced Profiling Techniques',
+          description: 'Professional profiling methodologies',
+          usage: 'Performance and Memory panels advanced features',
+          example: '# Advanced Profiling\n\n# Performance Profiling\nBottom-up analysis - Function aggregation\nCall tree analysis - Execution flow\nFlame chart analysis - Visual profiling\n\n# Memory Profiling\nHeap comparison - Memory diff\nAllocation tracking - Real-time allocation\nRetainer analysis - Memory retention\n\n# Custom Profiling\nUser timing API - Custom marks\nPerformanceObserver - Performance monitoring\nMutationObserver - DOM change monitoring\n\n# Profiling Workflows\nBaseline measurement - Initial performance\nOptimization iteration - Progressive improvement\nRegression testing - Performance regression',
+        },
+      ],
+    },
+    {
+      title: 'Developer Tools Protocol and Automation',
+      commands: [
+        {
+          command: 'Chrome DevTools Protocol',
+          description: 'Use Chrome DevTools Protocol for automation',
+          usage: 'CDP API and programmatic access',
+          example: '# Chrome DevTools Protocol\n\n# Protocol Overview\nWebSocket connection - CDP communication\nJSON-RPC messages - Protocol messages\nTarget domains - Functional areas\n\n# Common Domains\nRuntime - JavaScript execution\nDebugger - Script debugging\nProfiler - Performance profiling\nMemory - Memory profiling\nNetwork - Network monitoring\n\n# Usage Examples\n// Connect to CDP\nconst ws = new WebSocket("ws://localhost:9222/devtools/page/...");\n\n// Send commands\nws.send(JSON.stringify({\n  id: 1,\n  method: "Runtime.evaluate",\n  params: { expression: "document.title" }\n}));',
+        },
+        {
+          command: 'Puppeteer Integration',
+          description: 'Integrate DevTools with Puppeteer for automation',
+          usage: 'Puppeteer DevTools integration',
+          example: '# Puppeteer DevTools Integration\n\n# Connect to DevTools\nconst browser = await puppeteer.launch();\nconst page = await browser.newPage();\n\n# Enable DevTools\nawait page.evaluateOnNewDocument(() => {\n  // Enable DevTools in page\n});\n\n# Performance Monitoring\nawait page.tracing.start({ path: "trace.json" });\nawait page.goto("https://example.com");\nawait page.tracing.stop();\n\n# Coverage Analysis\nawait Promise.all([\n  page.coverage.startJSCoverage(),\n  page.coverage.startCSSCoverage()\n]);\nawait page.goto("https://example.com");\nconst [jsCoverage, cssCoverage] = await Promise.all([\n  page.coverage.stopJSCoverage(),\n  page.coverage.stopCSSCoverage()\n]);',
+        },
+        {
+          command: 'Custom DevTools Extensions',
+          description: 'Create custom DevTools extensions',
+          usage: 'Extension development and API',
+          example: '# Custom DevTools Extensions\n\n# Extension Structure\nmanifest.json - Extension configuration\nbackground.js - Background script\ndevtools.html - DevTools panel\ndevtools.js - Panel logic\n\n# Extension API\nchrome.devtools.panels - Panel creation\nchrome.devtools.network - Network API\nchrome.devtools.inspectedWindow - Page API\n\n# Panel Creation\nchrome.devtools.panels.create(\n  "My Panel",\n  "icon.png",\n  "panel.html",\n  function(panel) {\n    // Panel created\n  }\n);\n\n# Message Passing\nchrome.runtime.sendMessage({type: "getData"});\nchrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {\n  // Handle messages\n});',
+        },
+      ],
+    },
+  ],
 };
