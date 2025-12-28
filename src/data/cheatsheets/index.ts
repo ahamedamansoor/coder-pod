@@ -50,7 +50,7 @@ export { scssCheatsheet } from './scss';
 export { canvasCheatsheet } from './canvas';
 export { seleniumCheatsheet } from './selenium';
 export { expressCheatsheet } from './express';
-export { edgeDevToolsCheatsheet } from './edge-dev-tools';
+export { edgeCheatsheet } from './edge';
 export { d3Cheatsheet } from './d3';
 
 // Export all cheatsheets as an array
@@ -110,7 +110,7 @@ import { scssCheatsheet } from './scss';
 import { canvasCheatsheet } from './canvas';
 import { seleniumCheatsheet } from './selenium';
 import { expressCheatsheet } from './express';
-import { edgeDevToolsCheatsheet } from './edge-dev-tools';
+import { edgeCheatsheet } from './edge';
 import { d3Cheatsheet } from './d3';
 
 export const allCheatsheets = [
@@ -170,7 +170,7 @@ export const allCheatsheets = [
   canvasCheatsheet,
   seleniumCheatsheet,
   expressCheatsheet,
-  edgeDevToolsCheatsheet,
+  edgeCheatsheet,
   d3Cheatsheet,
 ];
 
@@ -262,7 +262,7 @@ export const cheatsheetCategories = [
       chromeCheatsheet,
       firefoxCheatsheet,
       safariCheatsheet,
-      edgeDevToolsCheatsheet,
+      edgeCheatsheet,
     ],
   },
   {
