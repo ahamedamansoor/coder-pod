@@ -500,8 +500,8 @@ Keep it simple and easy to understand.`;
               "before:translate-x-[-100%] before:transition-transform before:duration-700",
               "hover:before:translate-x-[100%]",
               isTopicComplete 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 border-green-200 hover:border-green-300 hover:shadow-green-100/50" 
-                : "bg-gradient-to-r from-slate-50 to-white text-slate-600 border-slate-200 hover:border-slate-300 hover:shadow-slate-100/50"
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 border-green-200 hover:border-green-300 hover:shadow-green-100/50 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-400 dark:border-green-800/50 dark:hover:border-green-700/50 dark:hover:shadow-green-900/20" 
+                : "bg-gradient-to-r from-slate-50 to-white text-slate-600 border-slate-200 hover:border-slate-300 hover:shadow-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/50 dark:text-slate-300 dark:border-slate-700/50 dark:hover:border-slate-600/50 dark:hover:shadow-slate-900/20"
             )}
           >
             {/* Inner shadow for depth */}
@@ -510,14 +510,14 @@ Keep it simple and easy to understand.`;
             {isTopicComplete ? (
               <>
                 <div className="relative flex-shrink-0">
-                  <svg className="w-4 h-4 transition-all duration-200 group-hover:scale-110 group-hover:text-green-700" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-4 h-4 transition-all duration-200 group-hover:scale-110 group-hover:text-green-700 dark:group-hover:text-green-300" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   {/* Animated success ring */}
-                  <div className="absolute -inset-1.5 border border-green-400 rounded-full opacity-0 group-hover:opacity-40 group-hover:scale-110 transition-all duration-300"></div>
+                  <div className="absolute -inset-1.5 border border-green-400 dark:border-green-600 rounded-full opacity-0 group-hover:opacity-40 group-hover:scale-110 transition-all duration-300"></div>
                   {/* Sparkle effect */}
                   <div className="absolute -top-1 -right-1 w-2 h-2">
-                    <div className="w-full h-full bg-green-400 rounded-full animate-ping"></div>
+                    <div className="w-full h-full bg-green-400 dark:bg-green-600 rounded-full animate-ping"></div>
                   </div>
                 </div>
                 <span className="relative font-semibold">Completed</span>
@@ -531,18 +531,18 @@ Keep it simple and easy to understand.`;
             ) : (
               <>
                 <div className="relative flex-shrink-0">
-                  <svg className="w-4 h-4 transition-all duration-200 group-hover:rotate-90 group-hover:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 transition-all duration-200 group-hover:rotate-90 group-hover:text-slate-700 dark:group-hover:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                   {/* Rotating ring */}
-                  <div className="absolute -inset-1.5 border border-slate-300 rounded-full opacity-0 group-hover:opacity-30 group-hover:rotate-45 transition-all duration-300"></div>
+                  <div className="absolute -inset-1.5 border border-slate-300 dark:border-slate-600 rounded-full opacity-0 group-hover:opacity-30 group-hover:rotate-45 transition-all duration-300"></div>
                   {/* Pending dot */}
-                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <span className="relative font-semibold">Mark as Complete</span>
                 {/* Plus trail */}
                 <div className="absolute -right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </div>

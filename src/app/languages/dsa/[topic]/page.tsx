@@ -14,10 +14,15 @@ import {
 import { useDsaLayout } from '../dsa-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function DsaTopicContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
+
+  if (!topicSlug) {
+    notFound();
+  }
   const { isEditorOpen, setIsEditorOpen } = useDsaLayout();
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
   const ref = useRef<ImperativePanelHandle>(null);

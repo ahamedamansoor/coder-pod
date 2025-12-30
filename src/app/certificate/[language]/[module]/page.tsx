@@ -9,14 +9,15 @@ import { Button } from '@/components/ui/button';
 import { Award, Linkedin, Home } from 'lucide-react';
 import { Logo } from '@/components/shared/layout/logo';
 import Link from 'next/link';
+import { getRouteParam } from '@/lib/params';
 
 export default function CertificatePage() {
   const params = useParams();
   const router = useRouter();
   const { user, isUserLoading } = useUser();
 
-  const language = typeof params.language === 'string' ? params.language : '';
-  const moduleSlug = typeof params.module === 'string' ? params.module : '';
+  const language = getRouteParam(params, 'language') || '';
+  const moduleSlug = getRouteParam(params, 'module') || '';
   
   // Convert slug back to title case
   const moduleName = moduleSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());

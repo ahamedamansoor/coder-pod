@@ -10,10 +10,15 @@ import {
 } from '@/components/ui/resizable';
 import { VueLearningRoadmap } from '@/components/languages/vue/vue-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'vue');
   if (!language) notFound();

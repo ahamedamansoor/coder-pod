@@ -15,11 +15,16 @@ import { useJavascriptLayout } from '../javascript-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
   const { isEditorOpen, setIsEditorOpen } = useJavascriptLayout();
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
   const ref = React.useRef<ImperativePanelHandle>(null);

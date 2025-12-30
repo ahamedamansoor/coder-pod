@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
+import { getRouteParam } from '@/lib/params';
 
 export default function CollaborativeInterviewRoomPage() {
     const params = useParams();
@@ -21,7 +22,7 @@ export default function CollaborativeInterviewRoomPage() {
     const { signOut } = useSupabaseAuth();
     const featureDisabled = !featureFlags.collaborativeInterview;
 
-    const roomCode = params.roomCode as string;
+    const roomCode = getRouteParam(params, 'roomCode') || '';
 
     const [session, setSession] = useState<InterviewSession | null>(null);
     const [isLoading, setIsLoading] = useState(true);

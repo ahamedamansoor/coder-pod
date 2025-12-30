@@ -12,6 +12,7 @@ import { TypeScriptLayoutProvider, useTypeScriptLayout } from './typescript-layo
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { getRouteParam } from '@/lib/params';
 
 function TypeScriptTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -38,7 +39,8 @@ function TypeScriptTopicLayoutContent({ children }: { children: React.ReactNode 
   if (!language) {
     notFound();
   }
-  const selectedTopic = language.topics.find((t) => t.slug === params.topic);
+  const topicSlug = getRouteParam(params, 'topic');
+  const selectedTopic = language.topics.find((t) => t.slug === topicSlug);
 
   const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'learning-plan';
 

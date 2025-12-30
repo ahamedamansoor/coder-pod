@@ -15,11 +15,16 @@ import React from 'react';
 import { HtmlContentDisplay } from '@/components/languages/html/html-content-display';
 import { HtmlLearningRoadmap } from '@/components/languages/html/html-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
   const { isEditorOpen, setIsEditorOpen } = useHtmlLayout();
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
   const ref = React.useRef<ImperativePanelHandle>(null);

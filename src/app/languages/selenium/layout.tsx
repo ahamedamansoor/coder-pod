@@ -13,6 +13,7 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { SeleniumPlaygroundProvider } from '@/components/languages/selenium/playground/selenium-playground-context';
 import { SeleniumPlaygroundModal } from '@/components/languages/selenium/playground/selenium-playground-modal';
+import { getRouteParam } from '@/lib/params';
 
 function SeleniumTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -39,7 +40,8 @@ function SeleniumTopicLayoutContent({ children }: { children: React.ReactNode })
   if (!language) {
     notFound();
   }
-  const selectedTopic = language.topics.find((t) => t.slug === params.topic);
+  const topicSlug = getRouteParam(params, 'topic');
+  const selectedTopic = language.topics.find((t) => t.slug === topicSlug);
 
   const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'learning-plan';
 

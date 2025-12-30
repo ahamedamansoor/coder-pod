@@ -15,11 +15,16 @@ import React from 'react';
 import { ScssContentDisplay } from '@/components/languages/scss/scss-content-display';
 import { ScssLearningRoadmap } from '@/components/languages/scss/scss-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
   const { isEditorOpen, setIsEditorOpen } = useScssLayout();
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const [editorInitialCode, setEditorInitialCode] = useState<string | undefined>();
   const ref = React.useRef<ImperativePanelHandle>(null);

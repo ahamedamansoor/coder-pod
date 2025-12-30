@@ -11,10 +11,15 @@ import React from 'react';
 import { SeleniumContentDisplay } from '@/components/languages/selenium/selenium-content-display';
 import { SeleniumLearningRoadmap } from '@/components/languages/selenium/selenium-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'selenium');
   if (!language) notFound();

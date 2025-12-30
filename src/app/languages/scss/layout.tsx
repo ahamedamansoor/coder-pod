@@ -14,6 +14,7 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
+import { getRouteParam } from '@/lib/params';
 
 function ScssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
@@ -39,7 +40,8 @@ function ScssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   if (!language) {
     notFound();
   }
-  const selectedTopic = language.topics.find((t) => t.slug === params.topic);
+  const topicSlug = getRouteParam(params, 'topic');
+  const selectedTopic = language.topics.find((t) => t.slug === topicSlug);
 
   const selectedTopicSlug = selectedTopic ? selectedTopic.slug : 'learning-plan';
 

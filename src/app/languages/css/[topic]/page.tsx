@@ -12,10 +12,15 @@ import React from 'react';
 import { CssContentDisplay } from '@/components/languages/css/css-content-display';
 import { CssLearningRoadmap } from '@/components/languages/css/css-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'css');
   if (!language) notFound();

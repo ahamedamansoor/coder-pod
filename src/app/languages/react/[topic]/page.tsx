@@ -14,12 +14,17 @@ import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
 import { useReactPlayground } from '@/components/languages/react/react-playground-context';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
   const playground = useReactPlayground();
   const openWithContent = playground?.openWithContent;
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'react');
   if (!language) notFound();

@@ -12,10 +12,15 @@ import React from 'react';
 import { TailwindContentDisplay } from '@/components/languages/tailwind/tailwind-content-display';
 import { TailwindLearningRoadmap } from '@/components/languages/tailwind/tailwind-learning-roadmap';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
+import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
-  const { topic: topicSlug } = params;
+  const topicSlug = getRouteParam(params, 'topic');
+
+  if (!topicSlug) {
+    notFound();
+  }
 
   const language: Language | undefined = languages.find((lang) => lang.slug === 'tailwind');
   if (!language) notFound();

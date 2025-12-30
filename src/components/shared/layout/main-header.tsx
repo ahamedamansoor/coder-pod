@@ -38,7 +38,7 @@ export function MainHeader({
 }: MainHeaderProps) {
   const { user, userProfile, signOut } = useSupabaseAuth();
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const { showLoader } = useLoading();
   
   const currentLanguageSlug = pathname.split('/')[1] || undefined;
