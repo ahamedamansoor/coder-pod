@@ -1,5 +1,7 @@
+type RouteParams = Record<string, string | string[] | undefined>;
+
 export function getRouteParam(
-  params: Record<string, string | string[]> | null | undefined,
+  params: RouteParams | null | undefined,
   key: string,
 ): string | undefined {
   if (!params) return undefined;

@@ -15,6 +15,8 @@ import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { ReactPlaygroundProvider } from '@/components/shared/playground/react-playground-context';
 import { ReactPlaygroundModal } from '@/components/shared/playground/react-playground-modal';
 import { getRouteParam } from '@/lib/params';
+// Pre-load React playground for instant use
+import '@/components/shared/playground/react-playground-init';
 
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();

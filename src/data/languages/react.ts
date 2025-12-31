@@ -11,6 +11,7 @@ export const react: Language = {
       
       // SECTION 1: GETTING STARTED
       { slug: 'what-is-react', title: 'What is React?', explanation: "React is a library for building user interfaces with components. This topic covers the declarative nature of React, its component-based architecture, and its core philosophy.", category: '1. Getting Started' },
+      { slug: 'what-is-react-component', title: 'What is a React Component?', explanation: "Understand the fundamental building blocks of React applications. Components are reusable, independent pieces of UI that make your code modular and maintainable.", category: '1. Getting Started' },
       { slug: 'installation-and-setup', title: 'Installation & Setup', explanation: "Creating a React app with tools like Create React App and Vite, understanding the basic project structure, and running your first React app.", category: '1. Getting Started' },
       { slug: 'your-first-component', title: 'Your First Component', explanation: "Learn what components are, how to create them, export/import them, nest them, and follow proper naming conventions.", category: '1. Getting Started' },
       { slug: 'writing-jsx', title: 'Writing JSX', explanation: "An introduction to JSX (JavaScript XML), its rules (single root element, close all tags, camelCase attributes), and how to write markup in JavaScript.", category: '1. Getting Started' },
