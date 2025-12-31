@@ -12,8 +12,8 @@ import { ReactLayoutProvider } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
-import { ReactPlaygroundProvider } from '@/components/languages/react/react-playground-context';
-import { ReactPlaygroundModal } from '@/components/languages/react/react-playground-modal';
+import { ReactPlaygroundProvider } from '@/components/shared/playground/react-playground-context';
+import { ReactPlaygroundModal } from '@/components/shared/playground/react-playground-modal';
 import { getRouteParam } from '@/lib/params';
 
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {

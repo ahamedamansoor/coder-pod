@@ -1,935 +1,791 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import {
-  Play,
-  RotateCcw,
-  ChevronLeft,
-  ChevronRight,
-  Target,
-  Sparkles,
-  ArrowRight,
-  Lightbulb,
-  CheckCircle,
-  AlertCircle,
+import { 
+  Target, Lightbulb, CheckCircle, Play, RotateCcw, 
+  ChevronLeft, ChevronRight, Trash2, ArrowRight, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
 
-type Node = { value: number; next: number | null };
-
-type Step = {
-  step: number;
-  list: Node[];
-  dummy: number | null;
-  first: number | null;
-  second: number | null;
-  remove: number | null;
-  currentLine: number;
-  description: string;
-  action: string;
-  vars: { [key: string]: string | undefined };
-};
-
-const steps: Step[] = [
-  {
-    step: 1,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: null,
-    first: null,
-    second: null,
-    remove: null,
-    currentLine: 1,
-    description: '🚀 Function Start: removeNthFromEnd(head, n) called with head pointing to node 1, n = 2.',
-    action: 'init',
-    vars: { head: '1→2→3→4→5', n: '2' },
-  },
-  {
-    step: 2,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: null,
-    first: null,
-    second: null,
-    remove: null,
-    currentLine: 2,
-    description: '🧩 Create Dummy: const dummy = { val: -1, next: head }. Dummy node created with value -1, pointing to head.',
-    action: 'setup',
-    vars: { dummy: '{val: -1, next: 1}', head: '1→2→3→4→5' },
-  },
-  {
-    step: 3,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: -1,
-    second: -1,
-    remove: null,
-    currentLine: 3,
-    description: '📍 Initialize Pointers: let first = dummy, second = dummy. Both pointers start at dummy node.',
-    action: 'setup',
-    vars: { first: 'dummy', second: 'dummy', dummy: 'dummy→1' },
-  },
-  {
-    step: 4,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: -1,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '🔄 For Loop Start: for (let i = 0; i <= n; i++). Initialize i = 0, condition: 0 <= 2 is true.',
-    action: 'loop-start',
-    vars: { i: '0', n: '2', condition: '0 <= 2 = true', first: 'dummy', second: 'dummy' },
-  },
-  {
-    step: 5,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 0,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '➡️ First Move (i=0): first = first.next. first moves from dummy to node 1. Gap: 1 node.',
-    action: 'advance',
-    vars: { i: '0', first: '1', second: 'dummy', gap: '1', 'first.next': '2' },
-  },
-  {
-    step: 6,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 0,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '🔄 Loop Continue: i++ makes i = 1. Check condition: 1 <= 2 is true. Continue loop.',
-    action: 'advance',
-    vars: { i: '1', n: '2', condition: '1 <= 2 = true', first: '1', second: 'dummy' },
-  },
-  {
-    step: 7,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 1,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '➡️ Second Move (i=1): first = first.next. first moves from node 1 to node 2. Gap: 2 nodes.',
-    action: 'advance',
-    vars: { i: '1', first: '2', second: 'dummy', gap: '2', 'first.next': '3' },
-  },
-  {
-    step: 8,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 1,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '🔄 Loop Continue: i++ makes i = 2. Check condition: 2 <= 2 is true. Continue loop.',
-    action: 'advance',
-    vars: { i: '2', n: '2', condition: '2 <= 2 = true', first: '2', second: 'dummy' },
-  },
-  {
-    step: 9,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 2,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '➡️ Third Move (i=2): first = first.next. first moves from node 2 to node 3. Gap: 3 nodes established.',
-    action: 'advance',
-    vars: { i: '2', first: '3', second: 'dummy', gap: '3', 'first.next': '4' },
-  },
-  {
-    step: 10,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 2,
-    second: -1,
-    remove: null,
-    currentLine: 4,
-    description: '🔄 Loop Continue: i++ makes i = 3. Check condition: 3 <= 2 is false. For loop ends.',
-    action: 'loop-end',
-    vars: { i: '3', n: '2', condition: '3 <= 2 = false', first: '3', second: 'dummy' },
-  },
-  {
-    step: 11,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 2,
-    second: -1,
-    remove: null,
-    currentLine: 6,
-    description: '🚶‍♂️ While Loop Start: while (first !== null). Check: first (node 3) !== null is true.',
-    action: 'move-start',
-    vars: { first: '3', second: 'dummy', condition: 'first !== null = true', gap: '3' },
-  },
-  {
-    step: 12,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 3,
-    second: -1,
-    remove: null,
-    currentLine: 7,
-    description: '➡️ First Pointer Move: first = first.next. first moves from node 3 to node 4.',
-    action: 'move',
-    vars: { first: '4', second: 'dummy', 'first.next': '5', gap: '3' },
-  },
-  {
-    step: 13,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 3,
-    second: 0,
-    remove: null,
-    currentLine: 8,
-    description: '➡️ Second Pointer Move: second = second.next. second moves from dummy to node 1.',
-    action: 'move',
-    vars: { first: '4', second: '1', 'second.next': '2', gap: '3' },
-  },
-  {
-    step: 14,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 3,
-    second: 0,
-    remove: null,
-    currentLine: 9,
-    description: '🔄 End While Iteration: } reached. first is at node 4, second at node 1. Gap maintained.',
-    action: 'move',
-    vars: { first: '4', second: '1', gap: '3', condition: 'continue while' },
-  },
-  {
-    step: 15,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 3,
-    second: 0,
-    remove: null,
-    currentLine: 6,
-    description: '🚶‍♂️ While Loop Check: while (first !== null). Check: first (node 4) !== null is true.',
-    action: 'move',
-    vars: { first: '4', second: '1', condition: 'first !== null = true', gap: '3' },
-  },
-  {
-    step: 16,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 4,
-    second: 0,
-    remove: null,
-    currentLine: 7,
-    description: '➡️ First Pointer Move: first = first.next. first moves from node 4 to node 5.',
-    action: 'move',
-    vars: { first: '5', second: '1', 'first.next': 'null', gap: '3' },
-  },
-  {
-    step: 17,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 4,
-    second: 1,
-    remove: null,
-    currentLine: 8,
-    description: '➡️ Second Pointer Move: second = second.next. second moves from node 1 to node 2.',
-    action: 'move',
-    vars: { first: '5', second: '2', 'second.next': '3', gap: '3' },
-  },
-  {
-    step: 18,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 4,
-    second: 1,
-    remove: null,
-    currentLine: 9,
-    description: '🔄 End While Iteration: } reached. first is at node 5, second at node 2. Gap maintained.',
-    action: 'move',
-    vars: { first: '5', second: '2', gap: '3', condition: 'continue while' },
-  },
-  {
-    step: 19,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: 4,
-    second: 1,
-    remove: null,
-    currentLine: 6,
-    description: '🚶‍♂️ While Loop Check: while (first !== null). Check: first (node 5) !== null is true.',
-    action: 'move',
-    vars: { first: '5', second: '2', condition: 'first !== null = true', gap: '3' },
-  },
-  {
-    step: 20,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 1,
-    remove: null,
-    currentLine: 7,
-    description: '➡️ First Pointer Move: first = first.next. first moves from node 5 to null (end of list).',
-    action: 'move',
-    vars: { first: 'null', second: '2', 'first.next': 'null', gap: '3' },
-  },
-  {
-    step: 21,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: null,
-    currentLine: 8,
-    description: '➡️ Second Pointer Move: second = second.next. second moves from node 2 to node 3.',
-    action: 'move',
-    vars: { first: 'null', second: '3', 'second.next': '4', gap: '3' },
-  },
-  {
-    step: 22,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: null,
-    currentLine: 9,
-    description: '🔄 End While Iteration: } reached. first is null, second at node 3. Gap maintained.',
-    action: 'move',
-    vars: { first: 'null', second: '3', gap: '3', condition: 'continue while' },
-  },
-  {
-    step: 23,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: null,
-    currentLine: 6,
-    description: '🛑 While Loop Check: while (first !== null). Check: first (null) !== null is false. Loop ends.',
-    action: 'loop-end',
-    vars: { first: 'null', second: '3', condition: 'first !== null = false', target: 'second.next = 4' },
-  },
-  {
-    step: 24,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: 3,
-    currentLine: 10,
-    description: '📍 Position Found: second is at node 3, second.next is node 4 (target to remove).',
-    action: 'position',
-    vars: { first: 'null', second: '3', 'second.next': '4', target: 'node 4' },
-  },
-  {
-    step: 25,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 3 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: 3,
-    currentLine: 11,
-    description: '✂️ Remove Operation: second.next = second.next.next. Access second.next.next (node 5).',
-    action: 'remove',
-    vars: { second: '3', 'second.next': '4', 'second.next.next': '5', operation: '3.next = 5' },
-  },
-  {
-    step: 26,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 4 },
-      { value: 4, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: 3,
-    currentLine: 11,
-    description: '✂️ Node Removed: Link updated. Node 3 now points to node 5, skipping node 4.',
-    action: 'remove',
-    vars: { second: '3', 'second.next': '5', removed: 'node 4', result: '1→2→3→5' },
-  },
-  {
-    step: 27,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: null,
-    currentLine: 12,
-    description: '✅ Return Statement: return dummy.next. dummy.next points to node 1 (new head).',
-    action: 'return',
-    vars: { dummy: 'dummy', 'dummy.next': '1', result: '1→2→3→5' },
-  },
-  {
-    step: 28,
-    list: [
-      { value: 1, next: 1 },
-      { value: 2, next: 2 },
-      { value: 3, next: 4 },
-      { value: 5, next: null },
-    ],
-    dummy: -1,
-    first: null,
-    second: 2,
-    remove: null,
-    currentLine: 13,
-    description: '🎯 Function Complete: } reached. Successfully removed 2nd node from end. Final list: 1→2→3→5.',
-    action: 'done',
-    vars: { result: '1→2→3→5', removed: 'node 4', complexity: 'O(n) time, O(1) space' },
-  },
-];
-
-const getCodeWithValues = (stepData: Step) => {
-  const getVarValue = (key: string): string => {
-    const value = stepData.vars[key];
-    if (value === undefined) return '';
-    return `${key}: ${value}`;
-  };
-
-  return [
-    {
-      line: 1,
-      code: 'function removeNthFromEnd(head, n) {',
-      active: stepData.currentLine === 1,
-      indent: 0,
-      values: stepData.currentLine === 1 ? `${getVarValue('head')}, ${getVarValue('n')}` : '',
-    },
-    {
-      line: 2,
-      code: '  const dummy = { val: -1, next: head };',
-      active: stepData.currentLine === 2,
-      indent: 1,
-      values: stepData.currentLine === 2 ? getVarValue('dummy') : '',
-    },
-    {
-      line: 3,
-      code: '  let first = dummy, second = dummy;',
-      active: stepData.currentLine === 3,
-      indent: 1,
-      values: stepData.currentLine === 3 ? `${getVarValue('first')}, ${getVarValue('second')}` : '',
-    },
-    {
-      line: 4,
-      code: '  for (let i = 0; i <= n; i++) first = first.next;',
-      active: stepData.currentLine === 4,
-      indent: 1,
-      values: stepData.currentLine === 4 ? `${getVarValue('i')}, ${getVarValue('condition')}, ${getVarValue('first')}, ${getVarValue('gap')}` : '',
-    },
-    {
-      line: 5,
-      code: '  ',
-      active: false,
-      indent: 0,
-      values: '',
-    },
-    {
-      line: 6,
-      code: '  while (first !== null) {',
-      active: stepData.currentLine === 6,
-      indent: 1,
-      values: stepData.currentLine === 6 ? getVarValue('condition') : '',
-    },
-    {
-      line: 7,
-      code: '    first = first.next;',
-      active: stepData.currentLine === 7,
-      indent: 2,
-      values: stepData.currentLine === 7 ? getVarValue('first') : '',
-    },
-    {
-      line: 8,
-      code: '    second = second.next;',
-      active: stepData.currentLine === 8,
-      indent: 2,
-      values: stepData.currentLine === 8 ? getVarValue('second') : '',
-    },
-    {
-      line: 9,
-      code: '  }',
-      active: stepData.currentLine === 9,
-      indent: 1,
-      values: stepData.currentLine === 9 ? `${getVarValue('first')}, ${getVarValue('second')}, ${getVarValue('gap')}` : '',
-    },
-    {
-      line: 10,
-      code: '  ',
-      active: false,
-      indent: 0,
-      values: '',
-    },
-    {
-      line: 11,
-      code: '  second.next = second.next.next;',
-      active: stepData.currentLine === 11,
-      indent: 1,
-      values: stepData.currentLine === 11 ? `${getVarValue('second')}, ${getVarValue('second.next')}, ${getVarValue('second.next.next')}, ${getVarValue('operation')}` : '',
-    },
-    {
-      line: 12,
-      code: '  return dummy.next;',
-      active: stepData.currentLine === 12,
-      indent: 1,
-      values: stepData.currentLine === 12 ? getVarValue('result') : '',
-    },
-    {
-      line: 13,
-      code: '}',
-      active: stepData.currentLine === 13,
-      indent: 0,
-      values: stepData.currentLine === 13 ? `${getVarValue('result')}, ${getVarValue('complexity')}` : '',
-    },
-  ];
-};
-
 export default function LinkedListsRemoveNthNodeFromEnd() {
-  const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal');
 
-  const currentStepData = steps[currentStep];
+  const animationStyles = `
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    @keyframes removeGlow {
+      0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.9); }
+    }
+    @keyframes pointerMove {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
+    }
+    @keyframes nodeRemove {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+      100% { opacity: 0; transform: scale(0); }
+    }
+    @keyframes slideInResult {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .node-pulse { animation: nodePulse 0.8s ease-in-out infinite; }
+    .remove-glow { animation: removeGlow 1.5s ease-in-out infinite; }
+    .pointer-move { animation: pointerMove 1s ease-in-out infinite; }
+    .node-remove { animation: nodeRemove 0.6s ease-out; }
+    .slide-in-result { animation: slideInResult 0.5s ease-out; }
+  `;
 
-  useEffect(() => {
-    if (!isAnimating) return;
-    const speedMap = { slow: 3500, normal: 2500, fast: 1500 };
-    const delay = speedMap[animationSpeed];
-    const timer = setInterval(() => {
-      setCurrentStep((prev) => {
-        if (prev >= steps.length - 1) {
-          setIsAnimating(false);
-          return prev;
-        }
-        return prev + 1;
-      });
-    }, delay);
-    return () => clearInterval(timer);
-  }, [isAnimating, animationSpeed]);
+  // Remove 2nd node from end: 1→2→3→4→5 becomes 1→2→3→5 (remove node 4)
+  const steps = [
+    {
+      step: 1,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: null,
+      first: null,
+      second: null,
+      remove: null,
+      n: 2,
+      currentLine: 1,
+      description: '📋 Problem Understanding: We need to remove the 2nd node from the end of list 1→2→3→4→5. Counting from end: 5(1st), 4(2nd), 3(3rd), 2(4th), 1(5th). Target: Remove node 4.',
+      action: 'problem-understanding'
+    },
+    {
+      step: 2,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: null,
+      first: null,
+      second: null,
+      remove: null,
+      n: 2,
+      currentLine: 1,
+      description: '🎯 Strategy Overview: Use two-pointer technique. First pointer moves n+1 steps ahead, then both move together. When first reaches end, second points before target.',
+      action: 'strategy-overview'
+    },
+    {
+      step: 3,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: null,
+      remove: null,
+      n: 2,
+      currentLine: 2,
+      description: '🏗️ Create Dummy Node: dummy = new ListNode(-1). This dummy node acts as a "virtual head" that simplifies edge cases, especially when we need to remove the actual head node.',
+      action: 'create-dummy'
+    },
+    {
+      step: 4,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: null,
+      remove: null,
+      n: 2,
+      currentLine: 3,
+      description: '🔗 Connect Dummy to Head: dummy.next = head. Now we have: dummy → 1 → 2 → 3 → 4 → 5 → null. This ensures we always have a node before the actual head.',
+      action: 'connect-dummy'
+    },
+    {
+      step: 5,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: -1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 4,
+      description: '📍 Initialize First Pointer: first = dummy. Both pointers start at dummy. First will move ahead to create a gap of n+1 nodes between the two pointers.',
+      action: 'init-first'
+    },
+    {
+      step: 6,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: -1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 5,
+      description: '📍 Initialize Second Pointer: second = dummy. Both pointers now at same position. Gap between them: 0 nodes. We will create a gap of n+1 = 3 nodes.',
+      action: 'init-second'
+    },
+    {
+      step: 7,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: -1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 7,
+      description: '🔄 Setup First Loop: for (let i = 0; i <= n; i++). We need to move first pointer n+1 = 3 times (i = 0, 1, 2) to create the required gap.',
+      action: 'setup-first-loop'
+    },
+    {
+      step: 8,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: -1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 8,
+      description: '🔢 Loop Check (i=0): i <= n? 0 <= 2 = TRUE. Continue loop. We will move first pointer while maintaining the gap calculation.',
+      action: 'loop-check-1'
+    },
+    {
+      step: 9,
+      list: [
+        { value: 1, highlighted: true, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 0,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 8,
+      description: '➡️ Move First (i=0): first = first.next. First moves from dummy to node 1. Gap between first and second: 1 node. Second still at dummy.',
+      action: 'move-first-1'
+    },
+    {
+      step: 10,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 0,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 7,
+      description: '🔢 Loop Check (i=1): i++ makes i = 1. Check: 1 <= 2 = TRUE. Continue loop. Need 2 more moves to reach gap of 3 nodes.',
+      action: 'loop-check-2'
+    },
+    {
+      step: 11,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: true, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 8,
+      description: '➡️ Move First (i=1): first = first.next. First moves to node 2. Gap between first and second: 2 nodes. Getting closer to target gap.',
+      action: 'move-first-2'
+    },
+    {
+      step: 12,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 1,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 7,
+      description: '🔢 Loop Check (i=2): i++ makes i = 2. Check: 2 <= 2 = TRUE. Continue loop. One more move needed to reach gap of 3 nodes.',
+      action: 'loop-check-3'
+    },
+    {
+      step: 13,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: true, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 2,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 8,
+      description: '➡️ Move First (i=2): first = first.next. First moves to node 3. Gap between first and second: 3 nodes. Perfect! First is now n+1 positions ahead.',
+      action: 'move-first-3'
+    },
+    {
+      step: 14,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 2,
+      second: -1,
+      remove: null,
+      n: 2,
+      currentLine: 7,
+      description: '🔢 Loop Check (i=3): i++ makes i = 3. Check: 3 <= 2 = FALSE. Exit first loop. Gap established: first at node 3, second at dummy (3 nodes apart).',
+      action: 'first-loop-complete'
+    },
+    {
+      step: 15,
+      list: [
+        { value: 1, highlighted: true, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: true, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 2,
+      second: 0,
+      remove: null,
+      n: 2,
+      currentLine: 11,
+      description: '🔄 Main Loop Start: while (first !== null). First points to node 3 (not null), so enter loop. We will move both pointers together to maintain the gap.',
+      action: 'main-loop-start'
+    },
+    {
+      step: 16,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 2,
+      second: 0,
+      remove: null,
+      n: 2,
+      currentLine: 12,
+      description: '➡️ Move First Pointer: first = first.next. First moves from node 3 to node 4. Gap will be maintained when second also moves.',
+      action: 'move-first-main-1'
+    },
+    {
+      step: 17,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 3,
+      second: 0,
+      remove: null,
+      n: 2,
+      currentLine: 13,
+      description: '➡️ Move Second Pointer: second = second.next. Second moves from dummy to node 1. Gap maintained: first at node 4, second at node 1 (3 nodes apart).',
+      action: 'move-second-main-1'
+    },
+    {
+      step: 18,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: true, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: true, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 3,
+      second: 1,
+      remove: null,
+      n: 2,
+      currentLine: 11,
+      description: '🔄 Continue Main Loop: First points to node 4 (not null), continue. Both pointers will move together again, maintaining the 3-node gap.',
+      action: 'main-loop-continue-1'
+    },
+    {
+      step: 19,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 3,
+      second: 1,
+      remove: null,
+      n: 2,
+      currentLine: 12,
+      description: '➡️ Move First Pointer: first = first.next. First moves from node 4 to node 5. Getting closer to the end of the list.',
+      action: 'move-first-main-2'
+    },
+    {
+      step: 20,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 4,
+      second: 1,
+      remove: null,
+      n: 2,
+      currentLine: 13,
+      description: '➡️ Move Second Pointer: second = second.next. Second moves from node 1 to node 2. Gap maintained: first at node 5, second at node 2 (3 nodes apart).',
+      action: 'move-second-main-2'
+    },
+    {
+      step: 21,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: true, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 4,
+      second: 2,
+      remove: null,
+      n: 2,
+      currentLine: 11,
+      description: '🔄 Continue Main Loop: First points to node 5 (not null), continue. This is the final iteration before first reaches the end.',
+      action: 'main-loop-continue-2'
+    },
+    {
+      step: 22,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: 4,
+      second: 2,
+      remove: null,
+      n: 2,
+      currentLine: 12,
+      description: '➡️ Move First Pointer: first = first.next. First moves from node 5 to null (end of list). This is the critical moment!',
+      action: 'move-first-main-3'
+    },
+    {
+      step: 23,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: true, processed: false, toRemove: false },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: 2,
+      remove: 3,
+      n: 2,
+      currentLine: 13,
+      description: '➡️ Move Second Pointer: second = second.next. Second moves from node 2 to node 3. Now second.next (node 4) is exactly the node we need to remove!',
+      action: 'move-second-main-3'
+    },
+    {
+      step: 24,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: true },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: 2,
+      remove: 3,
+      n: 2,
+      currentLine: 11,
+      description: '🛑 Main Loop Ends: while (first !== null). First is now null, so exit loop. Perfect positioning: second points to node 3, second.next points to node 4 (target).',
+      action: 'main-loop-end'
+    },
+    {
+      step: 25,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: true },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: 2,
+      remove: 3,
+      n: 2,
+      currentLine: 15,
+      description: '🎯 Target Identification: second points to node 3, so second.next (node 4) is our target. We need to skip node 4 and connect node 3 directly to node 5.',
+      action: 'target-identification'
+    },
+    {
+      step: 26,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: true, processed: false, toRemove: false },
+        { value: 4, highlighted: false, processed: false, toRemove: true },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [],
+      dummy: -1,
+      first: null,
+      second: 2,
+      remove: 3,
+      n: 2,
+      currentLine: 16,
+      description: '🗑️ Remove Operation: second.next = second.next.next. This means: node 3.next = node 4.next (which is node 5). We are essentially "skipping" node 4.',
+      action: 'remove-operation'
+    },
+    {
+      step: 27,
+      list: [
+        { value: 1, highlighted: false, processed: false, toRemove: false },
+        { value: 2, highlighted: false, processed: false, toRemove: false },
+        { value: 3, highlighted: false, processed: true, toRemove: false },
+        { value: 4, highlighted: false, processed: true, toRemove: true },
+        { value: 5, highlighted: false, processed: false, toRemove: false }
+      ],
+      result: [
+        { value: 1, highlighted: false, processed: false },
+        { value: 2, highlighted: false, processed: false },
+        { value: 3, highlighted: false, processed: false },
+        { value: 5, highlighted: false, processed: false }
+      ],
+      dummy: -1,
+      first: null,
+      second: 2,
+      remove: null,
+      n: 2,
+      currentLine: 18,
+      description: '✅ Return Result: return dummy.next. Since dummy.next points to node 1, we return the modified list: 1→2→3→5. Node 4 successfully removed!',
+      action: 'return-result'
+    }
+  ];
 
-  const goToStep = (stepIndex: number) => {
-    if (stepIndex < 0 || stepIndex >= steps.length) return;
-    setCurrentStep(stepIndex);
+  const getCodeWithValues = (stepData: typeof steps[0]) => {
+    const firstVal = stepData.first !== null ? (stepData.first === -1 ? 'dummy' : stepData.list[stepData.first]?.value) : 'null';
+    const secondVal = stepData.second !== null ? (stepData.second === -1 ? 'dummy' : stepData.list[stepData.second]?.value) : 'null';
+    const removeVal = stepData.remove !== null ? stepData.list[stepData.remove]?.value : 'null';
+    const resultCount = stepData.result.length;
+    const dummyVal = stepData.dummy !== null ? (stepData.dummy === -1 ? 'dummy' : stepData.list[stepData.dummy]?.value) : 'null';
+    
+    // Calculate variable values for each step
+    const getVariableValues = () => {
+      switch(stepData.step) {
+        case 1:
+          return 'head = 1→2→3→4→5; n = 2; dummy = null; first = null; second = null';
+        case 2:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = null';
+        case 3:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = dummy; second = null';
+        case 4:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = dummy; second = dummy';
+        case 5:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = dummy; second = dummy; i = 0';
+        case 6:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = dummy; second = dummy; i = 0; 0 ≤ 2 = true';
+        case 7:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 1; second = dummy; i = 0; gap = 1';
+        case 8:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 1; second = dummy; i = 1; 1 ≤ 2 = true';
+        case 9:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 2; second = dummy; i = 1; gap = 2';
+        case 10:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 2; second = dummy; i = 2; 2 ≤ 2 = true';
+        case 11:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 3; second = dummy; i = 2; gap = 3';
+        case 12:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 3; second = dummy; i = 3; 3 ≤ 2 = false';
+        case 13:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 3; second = dummy; first ≠ null = true';
+        case 14:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 4; second = dummy; gap maintained = 3';
+        case 15:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 4; second = 1; gap maintained = 3';
+        case 16:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 4; second = 1; first ≠ null = true';
+        case 17:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 5; second = 2; gap maintained = 3';
+        case 18:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = 5; second = 2; first ≠ null = true';
+        case 19:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; loop ends';
+        case 20:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; second.next = 4 (target)';
+        case 21:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; target = 4; remove = true';
+        case 22:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; 3.next = 5 (skip 4)';
+        case 23:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; result = 1→2→3→5';
+        case 24:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; return = dummy.next = 1→2→3→5';
+        case 25:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; removed = 4; success = true';
+        case 26:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; removed = 4; result = 1→2→3→5';
+        case 27:
+          return 'head = 1→2→3→4→5; n = 2; dummy = -1; dummy.next = 1; first = null; second = 3; removed = 4; return = 1→2→3→5';
+        default:
+          return `head = 1→2→3→4→5; n = ${stepData.n}; dummy = ${dummyVal}; first = ${firstVal}; second = ${secondVal}`;
+      }
+    };
+    
+    const variableValues = getVariableValues();
+    
+    return [
+      { line: 1, code: 'function removeNthFromEnd(head, n) {', active: stepData.currentLine === 1, indent: 0, values: stepData.step >= 1 ? variableValues : '' },
+      { line: 2, code: '  let dummy = new ListNode(-1);', active: stepData.currentLine === 2, indent: 1, values: stepData.step >= 2 ? `dummy = ${dummyVal}; dummy.next = ${stepData.step >= 2 ? '1' : 'null'}` : '' },
+      { line: 3, code: '  dummy.next = head;', active: stepData.currentLine === 3, indent: 1, values: stepData.step >= 3 ? `dummy.next = ${stepData.step >= 3 ? '1' : 'null'}; dummy = ${dummyVal}` : '' },
+      { line: 4, code: '  let first = dummy;', active: stepData.currentLine === 4, indent: 1, values: stepData.step >= 4 ? `first = ${firstVal}; dummy = ${dummyVal}` : '' },
+      { line: 5, code: '  let second = dummy;', active: stepData.currentLine === 5, indent: 1, values: stepData.step >= 5 ? `second = ${secondVal}; first = ${firstVal}` : '' },
+      { line: 6, code: '  ', active: false, indent: 1 },
+      { line: 7, code: '  for (let i = 0; i <= n; i++) {', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `i = ${stepData.step >= 7 && stepData.step <= 12 ? Math.min(stepData.step - 7, 3) : 0}; n = ${stepData.n}; ${stepData.step >= 7 && stepData.step <= 12 ? `${Math.min(stepData.step - 7, 3)} <= ${stepData.n} = ${Math.min(stepData.step - 7, 3) <= stepData.n}` : ''}` : '' },
+      { line: 8, code: '    first = first.next;', active: stepData.currentLine === 8, indent: 2, values: stepData.currentLine === 8 && stepData.step >= 7 && stepData.step <= 11 ? `first = ${firstVal}; gap = ${stepData.step - 6}` : '' },
+      { line: 9, code: '  }', active: false, indent: 1, values: stepData.step >= 12 ? `first loop complete; first = ${firstVal}; gap = ${stepData.n + 1}` : '' },
+      { line: 10, code: '  ', active: false, indent: 1 },
+      { line: 11, code: '  while (first !== null) {', active: stepData.currentLine === 11, indent: 1, values: stepData.currentLine === 11 ? `first = ${firstVal}; first !== null = ${stepData.first !== null}` : '' },
+      { line: 12, code: '    first = first.next;', active: stepData.currentLine === 12, indent: 2, values: stepData.currentLine === 12 ? `first = ${firstVal}; second = ${secondVal}` : '' },
+      { line: 13, code: '    second = second.next;', active: stepData.currentLine === 13, indent: 2, values: stepData.currentLine === 13 ? `second = ${secondVal}; gap maintained = ${stepData.n + 1}` : '' },
+      { line: 14, code: '  }', active: false, indent: 1, values: stepData.step >= 19 ? `loop complete; first = ${firstVal}; second = ${secondVal}` : '' },
+      { line: 15, code: '  ', active: false, indent: 1 },
+      { line: 16, code: '  second.next = second.next.next;', active: stepData.currentLine === 16, indent: 1, values: stepData.currentLine === 16 ? `second.next = ${removeVal}; second.next.next = ${stepData.remove !== null && stepData.remove + 1 < stepData.list.length ? stepData.list[stepData.remove + 1]?.value : 'null'}; removing ${removeVal}` : '' },
+      { line: 17, code: '  ', active: false, indent: 1 },
+      { line: 18, code: '  return dummy.next;', active: stepData.currentLine === 18, indent: 1, values: stepData.currentLine === 18 ? `dummy.next = ${resultCount > 0 ? stepData.result.map(n => n.value).join('→') : '1→2→3→5'}; return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('→') : '1→2→3→5'}` : '' },
+      { line: 19, code: '}', active: false, indent: 0, values: stepData.step >= 27 ? 'function complete; node 4 removed successfully' : '' }
+    ];
   };
 
+  const goToStep = (stepIndex: number) => { setCurrentStep(stepIndex); };
   const handlePlay = () => {
     setIsAnimating(true);
-    setCurrentStep(0);
+    goToStep(0);
+    const speedDelay = animationSpeed === 'slow' ? 3000 : animationSpeed === 'fast' ? 500 : 1500;
+    steps.forEach((_, index) => {
+      setTimeout(() => {
+        if (index < steps.length) goToStep(index);
+        if (index === steps.length - 1) setTimeout(() => setIsAnimating(false), 2000);
+      }, index * speedDelay);
+    });
   };
-
-  const handleReset = () => {
-    setIsAnimating(false);
-    setCurrentStep(0);
-  };
-
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) goToStep(currentStep + 1);
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 0) goToStep(currentStep - 1);
-  };
+  const handleNext = () => { if (currentStep < steps.length - 1) goToStep(currentStep + 1); };
+  const handlePrevious = () => { if (currentStep > 0) goToStep(currentStep - 1); };
+  const handleReset = () => { setIsAnimating(false); goToStep(0); };
+  const currentStepData = steps[currentStep];
+  
+  // Calculate pointer values for display
+  const firstVal = currentStepData.first !== null ? (currentStepData.first === -1 ? 'dummy' : currentStepData.list[currentStepData.first]?.value) : 'null';
+  const secondVal = currentStepData.second !== null ? (currentStepData.second === -1 ? 'dummy' : currentStepData.list[currentStepData.second]?.value) : 'null';
+  const removeVal = currentStepData.remove !== null ? currentStepData.list[currentStepData.remove]?.value : 'null';
 
   return (
     <div className="space-y-8">
-      <PageHeader
-        icon={Sparkles}
-        category="DSA · Linked Lists · Two-Pointer"
-        title="Remove Nth Node from End"
-        description="Two-pointer gap technique with dummy node to remove the Nth node from the end in one pass."
-        colorTheme="blue"
-        badges={[
-          { label: 'Time: O(n)', variant: 'success' },
-          { label: 'Space: O(1)', variant: 'info' },
-          { label: 'Medium', variant: 'default' },
-        ]}
-      />
+      <style>{animationStyles}</style>
+      <PageHeader icon={Trash2} category="DSA · Linked Lists" title="Remove Nth Node From End" description="Remove the nth node from the end of a linked list using two pointers" colorTheme="red" />
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {['Two Pointers', 'Dummy Node', 'Time: O(L)', 'Space: O(1)'].map((badge, index) => (
+          <Badge key={`${badge}-${index}`} variant={index === 0 ? 'secondary' : 'outline'} className="text-sm">{badge}</Badge>
+        ))}
+      </div>
 
-      <Card className="border-blue-200 dark:border-blue-800">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="w-6 h-6 text-blue-600" />
-            Understanding the Problem Visually
-          </CardTitle>
-          <CardDescription>Let's break down what we're looking for with diagrams</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
-            <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
-              <Lightbulb className="w-5 h-5" />
-              What is Remove Nth Node from End?
-            </h4>
-            <div className="space-y-4">
-              <p className="text-slate-700 dark:text-slate-300">
-                Given a linked list, remove the Nth node from the end of the list and return its head.
-              </p>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="p-4 bg-white dark:bg-slate-900 rounded-lg border">
-                  <div className="text-xs font-semibold text-slate-500 mb-2">INPUT</div>
-                  <div className="font-mono text-sm">1→2→3→4→5, n = 2</div>
-                  <div className="text-xs text-slate-500 mt-1">Remove 2nd node from end (node 4)</div>
-                </div>
-                <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-lg border-2 border-green-500">
-                  <div className="text-xs font-semibold text-green-700 dark:text-green-300 mb-2">OUTPUT</div>
-                  <div className="font-mono text-sm">1→2→3→5</div>
-                  <div className="text-xs text-green-600 mt-1">Node 4 removed</div>
-                </div>
+      <Card className="border-slate-200 dark:border-slate-800">
+        <CardHeader><CardTitle className="flex items-center gap-2"><Lightbulb className="w-6 h-6 text-amber-600" />What You'll Learn</CardTitle></CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              { title: 'Two Pointer Technique', desc: 'Use fast and slow pointers with n+1 gap' },
+              { title: 'Dummy Node Strategy', desc: 'Handle edge cases like removing head' },
+              { title: 'Single Pass Solution', desc: 'Find and remove target in one traversal' },
+              { title: 'Pointer Manipulation', desc: 'Skip target node by updating next pointer' }
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
+                <div><p className="font-medium">{item.title}</p><p className="text-sm text-muted-foreground">{item.desc}</p></div>
               </div>
-            </div>
+            ))}
           </div>
-
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 p-6 rounded-xl border-2 border-purple-200 dark:border-purple-700">
-            <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-4">
-              Comparing Different Cases
-            </h4>
-            <div className="space-y-4">
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-lg border-l-4 border-green-500">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-green-700 dark:text-green-300">Valid Case Example</span>
-                      <span className="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/40 rounded">Valid ✓</span>
-                    </div>
-                    <div className="text-xs text-slate-600 dark:text-slate-400">
-                      List: 1→2→3, n = 1. Remove last node (3). Result: 1→2
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-lg border-l-4 border-red-500">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-600 mt-1" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-red-700 dark:text-red-300">Edge Case Example</span>
-                      <span className="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/40 rounded">Edge ⚠️</span>
-                    </div>
-                    <div className="text-xs text-red-600 dark:text-red-400">
-                      List: 1→2, n = 2. Remove head node (1). Result: 2
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-blue-50 dark:from-blue-950/30 dark:to-blue-950/30 p-6 rounded-xl border-2">
-            <h4 className="font-bold mb-4 flex items-center gap-2">
-              <ArrowRight className="w-5 h-5" />
-              How the Algorithm Works
-            </h4>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
-                <div className="flex-1">
-                  <div className="font-semibold mb-2">Create Dummy Node</div>
-                  <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border">
-                    <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Explanation:</div>
-                    <div className="text-sm">Add dummy before head to handle edge cases where head needs to be removed.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
-                <div className="flex-1">
-                  <div className="font-semibold mb-2">Create Gap</div>
-                  <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border">
-                    <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Explanation:</div>
-                    <div className="text-sm">Move first pointer n+1 steps ahead to create a gap of n+1 between first and second.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
-                <div className="flex-1">
-                  <div className="font-semibold mb-2">Move Together</div>
-                  <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border">
-                    <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Explanation:</div>
-                    <div className="text-sm">Move both pointers until first reaches end. Second will be just before target.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
-                <div className="flex-1">
-                  <div className="font-semibold mb-2">Remove Node</div>
-                  <div className="p-3 bg-white dark:bg-slate-900 rounded-lg border">
-                    <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Explanation:</div>
-                    <div className="text-sm">Skip the target node by connecting second.next to second.next.next.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Alert className="border-orange-200 dark:border-orange-700">
-            <AlertCircle className="h-5 w-5 text-orange-600" />
-            <AlertTitle>Important Concepts</AlertTitle>
-            <AlertDescription className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-orange-600 font-bold">•</span>
-                <span>Two-pointer gap technique maintains fixed distance between pointers</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-orange-600 font-bold">•</span>
-                <span>Dummy node eliminates edge case handling for head removal</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-orange-600 font-bold">•</span>
-                <span>Single pass: O(n) time, O(1) space complexity</span>
-              </div>
-            </AlertDescription>
-          </Alert>
         </CardContent>
       </Card>
 
-      <Card className="border-blue-200 dark:border-blue-800">
+      <Card>
+        <CardHeader><CardTitle className="flex items-center gap-2"><Target className="w-6 h-6 text-red-600" />The Problem</CardTitle><CardDescription>Removing nth node from end using two pointers</CardDescription></CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-base">Given the <strong>head</strong> of a linked list, remove the <strong>nth</strong> node from the end of the list and return its head. Can you do this in <strong>one pass</strong>?</p>
+          
+          <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-xl border-2 border-red-200 dark:border-red-700">
+            <h4 className="font-bold text-red-900 dark:text-red-100 mb-4 flex items-center gap-2"><Trash2 className="w-5 h-5" /> Example</h4>
+            <div className="space-y-4">
+              <div className="p-4 bg-white dark:bg-slate-950 rounded-lg border border-red-300">
+                <p className="text-sm font-semibold text-red-700 dark:text-red-300 mb-2">Input List:</p>
+                <div className="font-mono text-sm text-center mb-2">1 → 2 → 3 → 4 → 5</div>
+                <p className="text-xs text-center text-slate-600 dark:text-slate-400">n = 2 (remove 2nd from end)</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="p-3 bg-red-100 dark:bg-red-900/40 rounded-full">
+                  <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
+                </div>
+              </div>
+              <div className="p-4 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 rounded-lg border-2 border-red-500">
+                <p className="text-sm font-semibold text-red-700 dark:text-red-300 mb-3">Output (after removal):</p>
+                <div className="font-mono text-sm text-center mb-2">1 → 2 → 3 → 5</div>
+                <p className="text-xs text-center text-red-600 dark:text-red-400">Node 4 (2nd from end) removed</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
+            <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-4">💡 Two Pointer Strategy</h4>
+            <div className="space-y-3 text-sm text-blue-800 dark:text-blue-200">
+              <p><strong>1. Create dummy node</strong> pointing to head (handles edge cases)</p>
+              <p><strong>2. Move first pointer</strong> n+1 positions ahead</p>
+              <p><strong>3. Move both pointers</strong> until first reaches end</p>
+              <p><strong>4. Second pointer</strong> now points before target node</p>
+              <p><strong>5. Skip target node</strong> by updating second.next</p>
+              <p><strong>6. Return dummy.next</strong> as the new head</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-red-200 dark:border-red-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/40">
-              <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/40">
+              <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
-            Step-by-Step Animation
+            Removal Animation: Step-by-Step
           </CardTitle>
-          <CardDescription>Watch how the algorithm works</CardDescription>
+          <CardDescription>Watch how two pointers find and remove the target node</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center justify-center gap-3">
-            <Button
-              onClick={handlePlay}
-              disabled={isAnimating}
-              className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700"
-            >
-              <Play className="w-4 h-4 mr-2" />
-              {isAnimating ? 'Playing...' : 'Play Animation'}
-            </Button>
-            <Button onClick={handleReset} disabled={isAnimating} variant="outline">
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Reset
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mr-2">Speed:</span>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="speed"
-                value="slow"
-                checked={animationSpeed === 'slow'}
-                onChange={(e) => setAnimationSpeed(e.target.value as 'slow')}
-                disabled={isAnimating}
-                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-400">Slow</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="speed"
-                value="normal"
-                checked={animationSpeed === 'normal'}
-                onChange={(e) => setAnimationSpeed(e.target.value as 'normal')}
-                disabled={isAnimating}
-                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-400">Normal</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="speed"
-                value="fast"
-                checked={animationSpeed === 'fast'}
-                onChange={(e) => setAnimationSpeed(e.target.value as 'fast')}
-                disabled={isAnimating}
-                className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-400">Fast</span>
-            </label>
-          </div>
-
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              onClick={handlePrevious}
-              disabled={currentStep === 0 || isAnimating}
-              variant="outline"
-              size="lg"
-            >
-              <ChevronLeft className="w-4 h-4 mr-2" />
-              Previous
-            </Button>
-            <div className="px-6 py-2 bg-gradient-to-r from-blue-100 to-blue-100 dark:from-blue-900/40 dark:to-blue-900/40 rounded-lg border-2 border-blue-300 dark:border-blue-700">
-              <span className="text-sm font-bold text-blue-900 dark:text-blue-100">
-                Step {currentStep + 1} / {steps.length}
-              </span>
+        <CardContent>
+          <div className="mb-6 p-4 bg-gradient-to-r from-slate-100 to-gray-100 dark:from-slate-800 dark:to-gray-800 rounded-lg border-2 border-slate-300 dark:border-slate-700">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Button onClick={handlePlay} disabled={isAnimating} className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white"><Play className="w-4 h-4 mr-2" />{isAnimating ? 'Playing...' : 'Play Animation'}</Button>
+              <Button onClick={handleReset} disabled={isAnimating} variant="outline" className="border-red-300 dark:border-red-700"><RotateCcw className="w-4 h-4 mr-2" />Reset</Button>
             </div>
-            <Button
-              onClick={handleNext}
-              disabled={currentStep === steps.length - 1 || isAnimating}
-              variant="outline"
-              size="lg"
-            >
-              Next
-              <ChevronRight className="w-4 h-4 ml-2" />
-            </Button>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="text-sm font-medium text-red-900 dark:text-red-100">Speed:</span>
+            {(['slow', 'normal', 'fast'] as const).map((speed) => (
+              <label key={speed} className="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="speed" value={speed} checked={animationSpeed === speed} onChange={(e) => setAnimationSpeed(e.target.value as 'slow' | 'normal' | 'fast')} disabled={isAnimating} className="w-4 h-4 text-red-600 focus:ring-red-500" />
+                <span className="text-sm text-slate-600 dark:text-slate-400 capitalize">{speed}</span>
+              </label>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <Button onClick={handlePrevious} disabled={currentStep === 0 || isAnimating} variant="outline" size="lg"><ChevronLeft className="w-4 h-4 mr-2" />Previous</Button>
+            <div className="px-6 py-2 bg-gradient-to-r from-red-100 to-orange-100 dark:from-red-900/40 dark:to-orange-900/40 rounded-lg border-2 border-red-300 dark:border-red-700">
+              <span className="text-sm font-bold text-red-900 dark:text-red-100">Step {currentStep + 1} / {steps.length}</span>
+            </div>
+            <Button onClick={handleNext} disabled={currentStep === steps.length - 1 || isAnimating} variant="outline" size="lg">Next<ChevronRight className="w-4 h-4 ml-2" /></Button>
           </div>
 
           {currentStep >= 0 && (
@@ -937,52 +793,35 @@ export default function LinkedListsRemoveNthNodeFromEnd() {
               <div className="flex items-center justify-between px-3 py-1.5 bg-slate-100 dark:bg-slate-800 border-b">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600" />
-                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600" />
-                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600" />
+                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600"></div>
+                    <div className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-600"></div>
                   </div>
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400 ml-2">algorithm.js</span>
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-400 ml-2">removeNthFromEnd.js</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                  <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
                   <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Running</span>
                 </div>
               </div>
-
-              <div className="p-3 font-mono text-xs leading-tight overflow-x-auto max-h-96 overflow-y-auto">
-                {getCodeWithValues(currentStepData).map((line) => (
-                  <div
-                    key={line.line}
-                    className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${
-                      line.active ? 'bg-blue-50 dark:bg-blue-900/20 border-l-2 border-blue-400 dark:border-blue-500' : ''
-                    }`}
-                  >
-                    <span
-                      className={`select-none w-6 text-right flex-shrink-0 ${
-                        line.active ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-slate-400 dark:text-slate-600'
-                      }`}
-                    >
-                      {line.line}
-                    </span>
+              <div className="p-3 font-mono text-[13px] leading-relaxed overflow-x-auto">
+                {getCodeWithValues(currentStepData).map((lineData) => (
+                  <div key={lineData.line} className={`flex items-center gap-3 py-0.5 px-2 -mx-2 rounded transition-all duration-300 ${lineData.active ? 'bg-red-50 dark:bg-red-900/20 border-l-2 border-red-400 dark:border-red-500' : ''}`}>
+                    <span className={`select-none w-6 text-right flex-shrink-0 ${lineData.active ? 'text-red-600 dark:text-red-400 font-semibold' : 'text-slate-400 dark:text-slate-600'}`}>{lineData.line}</span>
                     <code className="flex-1 text-slate-700 dark:text-slate-300">
-                      <span style={{ marginLeft: `${line.indent * 16}px` }}>{line.code}</span>
-                      {line.active && line.values && (
-                        <span className="ml-3 text-blue-600 dark:text-blue-400 font-semibold">{line.values}</span>
-                      )}
+                      <span style={{ marginLeft: `${lineData.indent * 16}px` }}>{lineData.code}</span>
+                      {lineData.values && <span className="ml-3 text-red-600 dark:text-red-400 font-semibold">// {lineData.values}</span>}
                     </code>
                   </div>
                 ))}
               </div>
-
               <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-3 py-2">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex gap-4">
-                    {Object.entries(currentStepData.vars).map(([key, value]) => (
-                      <div key={key} className="flex items-center gap-1.5">
-                        <span className="text-slate-500 dark:text-slate-400">{key}:</span>
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">{String(value)}</span>
-                      </div>
-                    ))}
+                    <div className="flex items-center gap-1.5"><span className="text-slate-500 dark:text-slate-400">first:</span><span className="font-semibold text-blue-600 dark:text-blue-400">{firstVal}</span></div>
+                    <div className="flex items-center gap-1.5"><span className="text-slate-500 dark:text-slate-400">second:</span><span className="font-semibold text-green-600 dark:text-green-400">{secondVal}</span></div>
+                    <div className="flex items-center gap-1.5"><span className="text-slate-500 dark:text-slate-400">n:</span><span className="font-semibold text-purple-600 dark:text-purple-400">{currentStepData.n}</span></div>
+                    {currentStepData.remove !== null && <div className="flex items-center gap-1.5"><span className="text-slate-500 dark:text-slate-400">remove:</span><span className="font-semibold text-red-600 dark:text-red-400">{removeVal}</span></div>}
                   </div>
                 </div>
               </div>
@@ -990,34 +829,44 @@ export default function LinkedListsRemoveNthNodeFromEnd() {
           )}
 
           {currentStep >= 0 && (
-            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-green-300 dark:border-green-700 shadow-sm">
+            <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 border-red-300 dark:border-red-700 shadow-sm mb-6">
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-full bg-green-600">
-                    <CheckCircle className="w-6 h-6 text-white" />
-                  </div>
+                  <div className="p-2.5 rounded-full bg-red-600"><CheckCircle className="w-6 h-6 text-white" /></div>
                   <div>
-                    <div className="text-xs font-semibold text-green-700 dark:text-green-400 uppercase tracking-wide">
-                      Step {currentStepData.step} of {steps.length}
-                    </div>
-                    <div className="text-sm font-medium text-green-900 dark:text-green-100 mt-0.5">
-                      {currentStepData.action === 'init' && '🚀 Initialization'}
-                      {currentStepData.action === 'setup' && '🧩 Setup'}
-                      {currentStepData.action === 'loop-start' && '🔄 Loop Iteration'}
-                      {currentStepData.action === 'advance' && '➡️ Advancing'}
-                      {currentStepData.action === 'move-start' && '🚶‍♂️ Move Phase'}
-                      {currentStepData.action === 'move' && '➡️ Moving'}
-                      {currentStepData.action === 'loop-end' && '🛑 Loop End'}
-                      {currentStepData.action === 'position' && '📍 Position Found'}
-                      {currentStepData.action === 'remove' && '✂️ Removing'}
-                      {currentStepData.action === 'return' && '✅ Return'}
-                      {currentStepData.action === 'done' && '🎯 Complete'}
+                    <div className="text-xs font-semibold text-red-700 dark:text-red-400 uppercase tracking-wide">Step {currentStepData.step} of {steps.length}</div>
+                    <div className="text-sm font-medium text-red-900 dark:text-red-100 mt-0.5">
+                      {currentStepData.action === 'problem-understanding' && '📋 Problem Understanding'}
+                      {currentStepData.action === 'strategy-overview' && '🎯 Strategy Overview'}
+                      {currentStepData.action === 'create-dummy' && '🏗️ Create Dummy Node'}
+                      {currentStepData.action === 'connect-dummy' && '🔗 Connect Dummy to Head'}
+                      {currentStepData.action === 'init-first' && '📍 Initialize First Pointer'}
+                      {currentStepData.action === 'init-second' && '📍 Initialize Second Pointer'}
+                      {currentStepData.action === 'setup-first-loop' && '🔄 Setup First Loop'}
+                      {currentStepData.action === 'loop-check-1' && '🔢 Loop Check (i=0)'}
+                      {currentStepData.action === 'move-first-1' && '➡️ Move First (i=0)'}
+                      {currentStepData.action === 'loop-check-2' && '🔢 Loop Check (i=1)'}
+                      {currentStepData.action === 'move-first-2' && '➡️ Move First (i=1)'}
+                      {currentStepData.action === 'loop-check-3' && '🔢 Loop Check (i=2)'}
+                      {currentStepData.action === 'move-first-3' && '➡️ Move First (i=2)'}
+                      {currentStepData.action === 'first-loop-complete' && '✅ First Loop Complete'}
+                      {currentStepData.action === 'main-loop-start' && '🔄 Main Loop Start'}
+                      {currentStepData.action === 'move-first-main-1' && '➡️ Move First Pointer (1)'}
+                      {currentStepData.action === 'move-second-main-1' && '➡️ Move Second Pointer (1)'}
+                      {currentStepData.action === 'main-loop-continue-1' && '🔄 Continue Main Loop (1)'}
+                      {currentStepData.action === 'move-first-main-2' && '➡️ Move First Pointer (2)'}
+                      {currentStepData.action === 'move-second-main-2' && '➡️ Move Second Pointer (2)'}
+                      {currentStepData.action === 'main-loop-continue-2' && '🔄 Continue Main Loop (2)'}
+                      {currentStepData.action === 'move-first-main-3' && '➡️ Move First Pointer (3)'}
+                      {currentStepData.action === 'move-second-main-3' && '➡️ Move Second Pointer (3)'}
+                      {currentStepData.action === 'main-loop-end' && '🛑 Main Loop End'}
+                      {currentStepData.action === 'target-identification' && '🎯 Target Identification'}
+                      {currentStepData.action === 'remove-operation' && '🗑️ Remove Operation'}
+                      {currentStepData.action === 'return-result' && '✅ Return Result'}
                     </div>
                   </div>
                 </div>
-                <p className="text-base leading-relaxed text-green-900 dark:text-green-50 pl-14">
-                  {currentStepData.description}
-                </p>
+                <p className="text-base leading-relaxed text-red-900 dark:text-red-50 pl-14">{currentStepData.description}</p>
               </div>
             </div>
           )}
@@ -1025,80 +874,158 @@ export default function LinkedListsRemoveNthNodeFromEnd() {
           {currentStep >= 0 && (
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-medium text-blue-900 dark:text-blue-100">Visual Representation:</p>
-                <div className="flex items-center gap-3 text-xs">
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">first</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 bg-emerald-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">second</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-3 h-3 bg-red-500 rounded-full" />
-                    <span className="text-slate-600 dark:text-slate-400">remove</span>
-                  </div>
+                <p className="text-sm font-medium text-red-900 dark:text-red-100">List Visualization:</p>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-xs border-blue-400 text-blue-600">Original: 5 nodes</Badge>
+                  <Badge variant="outline" className="text-xs border-green-400 text-green-600">Result: {currentStepData.result.length || 4} nodes</Badge>
                 </div>
               </div>
-
-              <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
-                <div className="flex items-center justify-center gap-2">
-                  {currentStepData.dummy === -1 && (
-                    <div className="relative">
-                      <div className="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
-                        <div className="text-sm font-semibold text-slate-600 dark:text-slate-400">dummy</div>
-                        <div className="text-[11px] text-slate-500 dark:text-slate-400">next: 1</div>
-                      </div>
-                    </div>
-                  )}
-                  {currentStepData.list.map((node, idx) => {
-                    const isFirst = currentStepData.first === idx;
-                    const isSecond = currentStepData.second === idx;
-                    const isRemove = currentStepData.remove === idx;
-                    return (
-                      <div key={idx} className="relative">
-                        <div
-                          className={`px-3 py-2 rounded-lg border ${
-                            isRemove
-                              ? 'border-red-400 bg-red-50 dark:bg-red-900/20'
-                              : 'border-slate-200 dark:border-slate-700'
-                          }`}
-                        >
-                          <div className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                            {node.value}
+              
+              <div className="space-y-8 px-8 py-12 bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-950 rounded-xl border-2 border-slate-200 dark:border-slate-700 overflow-x-auto">
+                
+                {/* Original List */}
+                <div className="space-y-2">
+                  <div className="text-sm font-bold text-slate-700 dark:text-slate-300 text-center">Original List</div>
+                  <div className="flex items-center justify-center gap-3 min-w-max relative">
+                    <div className="text-xs font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded border border-slate-400">HEAD</div>
+                    <ArrowRight className="w-4 h-4 text-slate-400" />
+                    {currentStepData.dummy !== null && (
+                      <>
+                        <div className="flex items-center gap-3 relative">
+                          <div className={`flex border-2 rounded-lg overflow-hidden shadow-md transition-all duration-500 ${currentStepData.first === -1 || currentStepData.second === -1 ? 'scale-110 ring-4 ring-yellow-200 dark:ring-yellow-900' : ''} border-yellow-300 dark:border-yellow-600`}>
+                            <div className="px-3 py-2 border-r-2 bg-yellow-100 dark:bg-yellow-900 border-yellow-500">
+                              <div className="text-lg font-bold text-yellow-900 dark:text-yellow-100">-1</div>
+                            </div>
+                            <div className="px-3 py-2 flex items-center bg-yellow-200 dark:bg-yellow-800">
+                              <ArrowRight className="w-4 h-4 text-yellow-900 dark:text-yellow-100" />
+                            </div>
                           </div>
-                          <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                            next: {node.next ?? 'null'}
+                          {currentStepData.first === -1 && (
+                            <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                              <div className="flex flex-col items-center">
+                                <div className="text-lg mb-1 pointer-move">👇</div>
+                                <div className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/80 px-3 py-1.5 rounded border-2 border-blue-500 whitespace-nowrap shadow-lg">first</div>
+                                <div className="w-0.5 h-12 bg-gradient-to-b from-blue-500 to-blue-300 mt-2"></div>
+                                <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-blue-500 -mt-1"></div>
+                              </div>
+                            </div>
+                          )}
+                          {currentStepData.second === -1 && (
+                            <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                              <div className="flex flex-col items-center">
+                                <div className="text-lg mb-1 pointer-move">👇</div>
+                                <div className="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/80 px-3 py-1.5 rounded border-2 border-green-500 whitespace-nowrap shadow-lg">second</div>
+                                <div className="w-0.5 h-12 bg-gradient-to-b from-green-500 to-green-300 mt-2"></div>
+                                <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-green-500 -mt-1"></div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-slate-400" />
+                      </>
+                    )}
+                    {currentStepData.list.map((node, index) => (
+                      <div key={index} className="flex items-center gap-3 relative">
+                        {currentStepData.first === index && (
+                          <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                            <div className="flex flex-col items-center">
+                              <div className="text-lg mb-1 pointer-move">👇</div>
+                              <div className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/80 px-3 py-1.5 rounded border-2 border-blue-500 whitespace-nowrap shadow-lg">first</div>
+                              <div className="w-0.5 h-12 bg-gradient-to-b from-blue-500 to-blue-300 mt-2"></div>
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-blue-500 -mt-1"></div>
+                            </div>
+                          </div>
+                        )}
+                        {currentStepData.second === index && (
+                          <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                            <div className="flex flex-col items-center">
+                              <div className="text-lg mb-1 pointer-move">👇</div>
+                              <div className="text-xs font-bold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/80 px-3 py-1.5 rounded border-2 border-green-500 whitespace-nowrap shadow-lg">second</div>
+                              <div className="w-0.5 h-12 bg-gradient-to-b from-green-500 to-green-300 mt-2"></div>
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-green-500 -mt-1"></div>
+                            </div>
+                          </div>
+                        )}
+                        {currentStepData.remove === index && (
+                          <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                            <div className="flex flex-col items-center">
+                              <div className="text-lg mb-1 pointer-move">🗑️</div>
+                              <div className="text-xs font-bold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/80 px-3 py-1.5 rounded border-2 border-red-500 whitespace-nowrap shadow-lg remove-glow">REMOVE</div>
+                              <div className="w-0.5 h-12 bg-gradient-to-b from-red-500 to-red-300 mt-2"></div>
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-red-500 -mt-1"></div>
+                            </div>
+                          </div>
+                        )}
+                        <div className={`flex border-2 rounded-lg overflow-hidden shadow-md transition-all duration-500 ${
+                          node.toRemove ? 'border-red-500 dark:border-red-400 remove-glow' : 
+                          node.highlighted ? 'scale-110 ring-4 ring-blue-200 dark:ring-blue-900 node-pulse' : 
+                          node.processed ? 'border-slate-300 dark:border-slate-600' : 'border-slate-300 dark:border-slate-600'
+                        } ${node.toRemove ? 'node-remove' : ''}`}>
+                          <div className={`px-4 py-2 border-r-2 transition-colors ${
+                            node.toRemove ? 'bg-red-100 dark:bg-red-900 border-red-500' :
+                            node.highlighted ? 'bg-blue-100 dark:bg-blue-900 border-blue-500' :
+                            node.processed ? 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600' : 'bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600'
+                          }`}>
+                            <div className={`text-xl font-bold ${
+                              node.toRemove ? 'text-red-900 dark:text-red-100' :
+                              node.highlighted ? 'text-blue-900 dark:text-blue-100' :
+                              node.processed ? 'text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'
+                            }`}>{node.value}</div>
+                          </div>
+                          <div className={`px-3 py-2 flex items-center ${
+                            node.toRemove ? 'bg-red-200 dark:bg-red-800' :
+                            node.highlighted ? 'bg-blue-200 dark:bg-blue-800' :
+                            node.processed ? 'bg-slate-200 dark:bg-slate-700' : 'bg-slate-100 dark:bg-slate-700'
+                          }`}>
+                            <ArrowRight className={`w-4 h-4 ${
+                              node.toRemove ? 'text-red-900 dark:text-red-100' :
+                              node.highlighted ? 'text-blue-900 dark:text-blue-100' :
+                              node.processed ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'
+                            }`} />
                           </div>
                         </div>
-                        {isFirst && (
-                          <span className="absolute -top-2 left-2 text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40">
-                            first
-                          </span>
-                        )}
-                        {isSecond && (
-                          <span className="absolute -top-2 right-2 text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40">
-                            second
-                          </span>
-                        )}
-                        {isRemove && (
-                          <span className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-[10px] px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-900/40">
-                            remove
-                          </span>
-                        )}
-                        {idx < currentStepData.list.length - 1 && node.next !== null && (
-                          <div className="absolute top-1/2 -right-2 transform -translate-y-1/2 text-slate-400">
-                            →
-                          </div>
-                        )}
                       </div>
-                    );
-                  })}
+                    ))}
+                    <div className="text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded border border-slate-400">null</div>
+                  </div>
                 </div>
+
+                {/* Result List */}
+                {currentStepData.result.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="text-sm font-bold text-green-700 dark:text-green-300 text-center">Result List</div>
+                    <div className="flex items-center justify-center gap-3 min-w-max">
+                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded border border-slate-400">HEAD</div>
+                      <ArrowRight className="w-4 h-4 text-slate-400" />
+                      {currentStepData.result.map((node, index) => (
+                        <div key={index} className="flex items-center gap-3">
+                          <div className="flex border-2 rounded-lg overflow-hidden shadow-md transition-all duration-500 border-green-500 dark:border-green-400 slide-in-result">
+                            <div className="px-4 py-2 border-r-2 bg-green-100 dark:bg-green-900 border-green-500">
+                              <div className="text-xl font-bold text-green-900 dark:text-green-100">{node.value}</div>
+                            </div>
+                            <div className="px-3 py-2 flex items-center bg-green-200 dark:bg-green-800">
+                              <ArrowRight className="w-4 h-4 text-green-900 dark:text-green-100" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      <div className="text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded border border-slate-400">null</div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
+
+          <div className="flex items-center gap-3">
+            <Alert className="border-orange-200 dark:border-orange-700">
+              <AlertCircle className="h-5 w-5 text-orange-600" />
+              <AlertTitle>Key Insight</AlertTitle>
+              <AlertDescription>
+                The two-pointer technique creates a gap of n+1 nodes between first and second pointers. When first reaches the end, second points exactly before the node to remove!
+              </AlertDescription>
+            </Alert>
+          </div>
         </CardContent>
       </Card>
     </div>

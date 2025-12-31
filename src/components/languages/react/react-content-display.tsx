@@ -4,7 +4,7 @@ import type { Language, Topic } from '@/data/languages';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useReactPlayground } from './react-playground-context';
+import { useReactPlayground } from '@/components/shared/playground/react-playground-context';
 
 // Lazy load all the topic components
 const WhatIsReact = lazy(() => import('./topics/what-is-react'));
@@ -202,11 +202,10 @@ export function ReactContentDisplay({
   topic: Topic, 
   language: Language, 
 }) {
-  const reactPlayground = useReactPlayground();
-  const openWithContent = reactPlayground?.openWithContent;
+  const { openPlayground } = useReactPlayground();
   
   const handleOpenEditor = (code: string) => {
-    openWithContent?.(code);
+    openPlayground({ jsx: code, css: '' });
   };
   
   const CustomTopicComponent = topicComponentMap[topic.slug];

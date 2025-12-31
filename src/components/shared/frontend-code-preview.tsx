@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Copy, Check, ChevronRight, Eye, Play, Code2, EyeOff } from 'lucide-react';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
-import { useReactPlayground } from '@/components/languages/react/react-playground-context';
+import { useReactPlayground } from '@/components/shared/playground/react-playground-context';
 import { useAngularPlayground } from '@/components/shared/playground/angular-playground-context';
 import { compileScss } from '@/lib/scss-compiler';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -197,12 +197,9 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
   // Get playground contexts
   const { openWithContent } = useWebPlayground();
-  
-  // Get React playground context (will be undefined in HTML/CSS/JS pages, which is fine)
-  const reactPlayground = useReactPlayground();
-  const openReactPlaygroundWithContent = reactPlayground?.openWithContent;
-  
-  
+  const { openPlayground: openReactPlayground } = useReactPlayground();
+  const openReactPlaygroundWithContent = (jsx: string, css?: string) =>
+    openReactPlayground({ jsx, css: css || '' });
   const { openPlayground: openAngularPlayground } = useAngularPlayground();
 
   // Compile SCSS to CSS if needed

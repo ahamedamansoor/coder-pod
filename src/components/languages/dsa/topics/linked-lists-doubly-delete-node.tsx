@@ -7,11 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
   Target, Lightbulb, CheckCircle, Play, RotateCcw, 
-  ChevronLeft, ChevronRight, Trash2, ArrowRight, AlertCircle
+  ChevronLeft, ChevronRight, Trash2, ArrowRight, ArrowLeft, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/generic-page-header';
 
-export default function LinkedListsDeleteNode() {
+export default function LinkedListsDoublyDeleteNode() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [animationSpeed, setAnimationSpeed] = useState<'slow' | 'normal' | 'fast'>('normal');
@@ -46,56 +46,30 @@ export default function LinkedListsDeleteNode() {
     .slide-in-result { animation: slideInResult 0.5s ease-out; }
   `;
 
-  type DeleteNodeListNode = {
-    value: number;
-    highlighted: boolean;
-    processed: boolean;
-    toDelete: boolean;
-  };
-
-  type DeleteNodeResultNode = {
-    value: number;
-    highlighted: boolean;
-    processed: boolean;
-  };
-
-  type DeleteNodeStep = {
-    step: number;
-    list: DeleteNodeListNode[];
-    result: DeleteNodeResultNode[];
-    head: number | null;
-    temp?: number | null;
-    current?: number | null;
-    target?: number | null;
-    currentLine: number;
-    description: string;
-    action: string;
-  };
-
-  // Delete at beginning: 10→20→30→40 becomes 20→30→40 (delete node 10)
-  const beginningSteps: DeleteNodeStep[] = [
+  // Delete at beginning: 10↔20↔30↔40 becomes 20↔30↔40 (delete node 10)
+  const beginningSteps: DoublyDeleteStep[] = [
     {
       step: 1,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       temp: null,
       currentLine: 1,
-      description: '📋 Problem Setup: Delete the first node from list 10→20→30→40. Target: Remove node 10, result should be 20→30→40.',
+      description: '📋 Problem Setup: Delete the first node from doubly linked list 10↔20↔30↔40. Target: Remove node 10, result should be 20↔30↔40.',
       action: 'init'
     },
     {
       step: 2,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
@@ -107,10 +81,10 @@ export default function LinkedListsDeleteNode() {
     {
       step: 3,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: true, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
@@ -122,10 +96,10 @@ export default function LinkedListsDeleteNode() {
     {
       step: 4,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: null, next: 2, highlighted: true, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 1,
@@ -137,66 +111,81 @@ export default function LinkedListsDeleteNode() {
     {
       step: 5,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: true },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: null, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 1,
       temp: 0,
       currentLine: 5,
-      description: '🗑️ Delete Node: // delete temp. Node 10 is now disconnected and can be garbage collected.',
-      action: 'delete-node'
+      description: '🔗 Update New Head Prev: head.prev = null. Set new head\'s prev pointer to null since it\'s now the first node.',
+      action: 'update-head-prev'
     },
     {
       step: 6,
       list: [
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: true },
+        { value: 20, prev: null, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
+      ],
+      result: [],
+      head: 1,
+      temp: 0,
+      currentLine: 6,
+      description: '🗑️ Delete Node: // delete temp. Node 10 is now disconnected from both sides and can be garbage collected.',
+      action: 'delete-node'
+    },
+    {
+      step: 7,
+      list: [
+        { value: 20, prev: null, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [
-        { value: 20, highlighted: false, processed: false },
-        { value: 30, highlighted: false, processed: false },
-        { value: 40, highlighted: false, processed: false }
+        { value: 20, prev: null, next: 1, highlighted: false, processed: false },
+        { value: 30, prev: 0, next: 2, highlighted: false, processed: false },
+        { value: 40, prev: 1, next: null, highlighted: false, processed: false }
       ],
       head: 0,
       temp: null,
-      currentLine: 6,
-      description: '✅ Return Result: return head. Returns the modified list: 20→30→40. Successfully deleted first node in O(1) time!',
+      currentLine: 7,
+      description: '✅ Return Result: return head. Returns the modified list: 20↔30↔40. Successfully deleted first node in O(1) time!',
       action: 'return-result'
     }
   ];
 
-  // Delete at end: 10→20→30→40 becomes 10→20→30 (delete node 40)
-  const endSteps: DeleteNodeStep[] = [
+  // Delete at end: 10↔20↔30↔40 becomes 10↔20↔30 (delete node 40)
+  const endSteps: DoublyDeleteStep[] = [
     {
       step: 1,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: null,
+      tail: null,
       currentLine: 1,
-      description: '📋 Problem Setup: Delete the last node from list 10→20→30→40. Target: Remove node 40, result should be 10→20→30.',
+      description: '📋 Problem Setup: Delete the last node from doubly linked list 10↔20↔30↔40. Target: Remove node 40, result should be 10↔20↔30.',
       action: 'init'
     },
     {
       step: 2,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: null,
+      tail: null,
       currentLine: 2,
       description: '🔍 Null Check: if (head === null) return null. List is not empty, so we can proceed with deletion.',
       action: 'null-check'
@@ -204,153 +193,93 @@ export default function LinkedListsDeleteNode() {
     {
       step: 3,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: true, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: 0,
+      tail: 3,
       currentLine: 3,
-      description: '📍 Initialize Current: let current = head. Start traversal from head (node 10) to find the second-to-last node.',
-      action: 'init-current'
+      description: '🔍 Find Tail: In doubly linked list with tail pointer, we can directly access last node. tail points to node 40.',
+      action: 'find-tail'
     },
     {
       step: 4,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: true, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: 0,
+      tail: 3,
       currentLine: 4,
-      description: '🔄 Loop Check: while (current.next.next !== null). current.next.next points to node 30 (not null), so continue loop.',
-      action: 'loop-check-1'
+      description: '🔗 Update Prev Node: tail.prev.next = null. Set node 30\'s next pointer to null, disconnecting node 40.',
+      action: 'update-prev-next'
     },
     {
       step: 5,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: null, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: true }
       ],
       result: [],
       head: 0,
-      current: 1,
+      tail: 2,
       currentLine: 5,
-      description: '➡️ Move Current: current = current.next. Move from node 10 to node 20. Still not at second-to-last position.',
-      action: 'move-current-1'
+      description: '🔗 Update Tail: tail = tail.prev. Move tail pointer from node 40 to node 30. New tail is now node 30.',
+      action: 'update-tail'
     },
     {
       step: 6,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
-      ],
-      result: [],
-      head: 0,
-      current: 1,
-      currentLine: 4,
-      description: '🔄 Loop Check: while (current.next.next !== null). current.next.next points to node 40 (not null), so continue loop.',
-      action: 'loop-check-2'
-    },
-    {
-      step: 7,
-      list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: true, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
-      ],
-      result: [],
-      head: 0,
-      current: 2,
-      currentLine: 5,
-      description: '➡️ Move Current: current = current.next. Move from node 20 to node 30. Now at second-to-last position!',
-      action: 'move-current-2'
-    },
-    {
-      step: 8,
-      list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: true, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
-      ],
-      result: [],
-      head: 0,
-      current: 2,
-      currentLine: 4,
-      description: '🛑 Loop Ends: while (current.next.next !== null). current.next.next is now null, so exit loop. Current is at node 30.',
-      action: 'loop-end'
-    },
-    {
-      step: 9,
-      list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: true }
-      ],
-      result: [],
-      head: 0,
-      current: 2,
-      currentLine: 6,
-      description: '🔗 Disconnect Last: current.next = null. Set node 30\'s next pointer to null, disconnecting node 40.',
-      action: 'disconnect-last'
-    },
-    {
-      step: 10,
-      list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [
-        { value: 10, highlighted: false, processed: false },
-        { value: 20, highlighted: false, processed: false },
-        { value: 30, highlighted: false, processed: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false },
+        { value: 30, prev: 1, next: null, highlighted: false, processed: false }
       ],
       head: 0,
-      current: null,
-      currentLine: 7,
-      description: '✅ Return Result: return head. Returns the modified list: 10→20→30. Successfully deleted last node in O(n) time!',
+      tail: null,
+      currentLine: 6,
+      description: '✅ Return Result: return head. Returns the modified list: 10↔20↔30. Successfully deleted last node in O(1) time with tail pointer!',
       action: 'return-result'
     }
   ];
 
-  // Delete middle node: 10→20→30→40 becomes 10→20→40 (delete node 30)
-  const middleSteps: DeleteNodeStep[] = [
+  // Delete middle node: 10↔20↔30↔40 becomes 10↔20↔40 (delete node 30)
+  const middleSteps: DoublyDeleteStep[] = [
     {
       step: 1,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       current: null,
       target: 30,
       currentLine: 1,
-      description: '📋 Problem Setup: Delete node with value 30 from list 10→20→30→40. Target: Remove node 30, result should be 10→20→40.',
+      description: '📋 Problem Setup: Delete node with value 30 from doubly linked list 10↔20↔30↔40. Target: Remove node 30, result should be 10↔20↔40.',
       action: 'init'
     },
     {
       step: 2,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
@@ -363,138 +292,169 @@ export default function LinkedListsDeleteNode() {
     {
       step: 3,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: true, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       current: 0,
       target: 30,
       currentLine: 3,
-      description: '📍 Initialize Current: let current = head. Start traversal from head (node 10) to find the node before target.',
+      description: '📍 Initialize Current: let current = head. Start traversal from head (node 10) to find the target node.',
       action: 'init-current'
     },
     {
       step: 4,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: true, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       current: 0,
       target: 30,
       currentLine: 4,
-      description: '🔍 Check Next: while (current.next !== null). current.next points to node 20, not null, so continue loop.',
+      description: '🔍 Check Next: while (current !== null && current.data !== target). current.data (10) ≠ target (30), continue loop.',
       action: 'loop-check-1'
     },
     {
       step: 5,
       list: [
-        { value: 10, highlighted: true, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
-      ],
-      result: [],
-      head: 0,
-      current: 0,
-      target: 30,
-      currentLine: 5,
-      description: '🎯 Target Check: if (current.next.data === target). current.next.data (20) ≠ target (30), keep searching.',
-      action: 'target-check-1'
-    },
-    {
-      step: 6,
-      list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: true, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       current: 1,
       target: 30,
-      currentLine: 6,
+      currentLine: 5,
       description: '➡️ Move Current: current = current.next. Move from node 10 to node 20. Getting closer to target.',
       action: 'move-current-1'
     },
     {
-      step: 7,
+      step: 6,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: true, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
       current: 1,
       target: 30,
       currentLine: 4,
-      description: '🔍 Check Next: while (current.next !== null). current.next points to node 30, not null, so continue loop.',
+      description: '🔍 Check Next: while (current !== null && current.data !== target). current.data (20) ≠ target (30), continue loop.',
       action: 'loop-check-2'
+    },
+    {
+      step: 7,
+      list: [
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: true, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
+      ],
+      result: [],
+      head: 0,
+      current: 2,
+      target: 30,
+      currentLine: 5,
+      description: '➡️ Move Current: current = current.next. Move from node 20 to node 30. Now at target node!',
+      action: 'move-current-2'
     },
     {
       step: 8,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: false },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: true, processed: false, toDelete: false },
+        { value: 40, prev: 2, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: 1,
+      current: 2,
       target: 30,
-      currentLine: 5,
-      description: '🎯 Target Found: if (current.next.data === target). current.next.data (30) === target (30)! Target found!',
+      currentLine: 6,
+      description: '🎯 Target Found: current.data (30) === target (30)! Found the node to delete.',
       action: 'target-found'
     },
     {
       step: 9,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: true, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: false, toDelete: true },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 2, highlighted: true, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: false, toDelete: true },
+        { value: 40, prev: 2, next: null, highlighted: true, processed: false, toDelete: false }
       ],
       result: [],
       head: 0,
-      current: 1,
+      current: 2,
       target: 30,
-      currentLine: 6,
-      description: '🔗 Bypass Target: current.next = current.next.next. Node 20\'s next now points to node 40, skipping node 30.',
-      action: 'bypass-target'
+      currentLine: 7,
+      description: '🔗 Update Neighbors: current.prev.next = current.next AND current.next.prev = current.prev. Connect node 20 to node 40, bypassing node 30.',
+      action: 'update-neighbors'
     },
     {
       step: 10,
       list: [
-        { value: 10, highlighted: false, processed: false, toDelete: false },
-        { value: 20, highlighted: false, processed: false, toDelete: false },
-        { value: 30, highlighted: false, processed: true, toDelete: true },
-        { value: 40, highlighted: false, processed: false, toDelete: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false, toDelete: false },
+        { value: 20, prev: 0, next: 3, highlighted: false, processed: false, toDelete: false },
+        { value: 30, prev: 1, next: 3, highlighted: false, processed: true, toDelete: true },
+        { value: 40, prev: 1, next: null, highlighted: false, processed: false, toDelete: false }
       ],
       result: [
-        { value: 10, highlighted: false, processed: false },
-        { value: 20, highlighted: false, processed: false },
-        { value: 40, highlighted: false, processed: false }
+        { value: 10, prev: null, next: 1, highlighted: false, processed: false },
+        { value: 20, prev: 0, next: 2, highlighted: false, processed: false },
+        { value: 40, prev: 1, next: null, highlighted: false, processed: false }
       ],
       head: 0,
       current: null,
       target: 30,
-      currentLine: 7,
-      description: '✅ Return Result: return head. Returns the modified list: 10→20→40. Successfully deleted middle node in O(n) time!',
+      currentLine: 8,
+      description: '✅ Return Result: return head. Returns the modified list: 10↔20↔40. Successfully deleted middle node in O(n) time (search) + O(1) deletion!',
       action: 'return-result'
     }
   ];
 
-  const getSteps = (): DeleteNodeStep[] => {
+  type DoublyDeleteNode = {
+    value: number;
+    prev: number | null;
+    next: number | null;
+    highlighted: boolean;
+    processed: boolean;
+    toDelete: boolean;
+  };
+
+  type DoublyDeleteResultNode = {
+    value: number;
+    prev: number | null;
+    next: number | null;
+    highlighted: boolean;
+    processed: boolean;
+  };
+
+  type DoublyDeleteStep = {
+    step: number;
+    list: DoublyDeleteNode[];
+    result: DoublyDeleteResultNode[];
+    head: number | null;
+    tail?: number | null;
+    temp?: number | null;
+    current?: number | null;
+    target?: number | null;
+    currentLine: number;
+    description: string;
+    action: string;
+  };
+
+  const getSteps = (): DoublyDeleteStep[] => {
     switch(deleteType) {
       case 'beginning': return beginningSteps;
       case 'end': return endSteps;
@@ -506,14 +466,16 @@ export default function LinkedListsDeleteNode() {
   const steps = getSteps();
   const currentStepData = steps[currentStep];
 
-  const getCodeWithValues = (stepData: DeleteNodeStep) => {
+  const getCodeWithValues = (stepData: DoublyDeleteStep) => {
     const headIndex = stepData.head ?? null;
     const tempIndex = stepData.temp ?? null;
     const currentIndex = stepData.current ?? null;
+    const tailIndex = stepData.tail ?? null;
     const targetVal = stepData.target ?? null;
     const headVal = headIndex !== null ? stepData.list[headIndex]?.value ?? null : null;
     const tempVal = tempIndex !== null ? stepData.list[tempIndex]?.value ?? null : null;
     const currentVal = currentIndex !== null ? stepData.list[currentIndex]?.value ?? null : null;
+    const tailVal = tailIndex !== null ? stepData.list[tailIndex]?.value ?? null : null;
     const resultCount = stepData.result.length;
 
     const formatVal = (val: number | null) => (val ?? 'null');
@@ -527,69 +489,63 @@ export default function LinkedListsDeleteNode() {
       if (deleteType === 'beginning') {
         switch(stepData.step) {
           case 1:
-            return 'head = 10→20→30→40; temp = null; return = null';
+            return 'head = 10↔20↔30↔40; temp = null; return = null';
           case 2:
-            return 'head = 10→20→30→40; head !== null = true; temp = null';
+            return 'head = 10↔20↔30↔40; head !== null = true; temp = null';
           case 3:
-            return 'head = 10→20→30→40; temp = 10; temp.next = 20';
+            return 'head = 10↔20↔30↔40; temp = 10; temp.prev = null; temp.next = 20';
           case 4:
-            return 'head = 20→30→40; temp = 10; head = temp.next';
+            return 'head = 20↔30↔40; temp = 10; head = temp.next';
           case 5:
-            return 'head = 20→30→40; temp = 10; temp deleted';
+            return 'head = 20↔30↔40; temp = 10; head.prev = null';
           case 6:
-            return 'head = 20→30→40; temp = null; return = 20→30→40';
+            return 'head = 20↔30↔40; temp = 10; temp deleted';
+          case 7:
+            return 'head = 20↔30↔40; temp = null; return = 20↔30↔40';
           default:
-            return `head = ${formatVal(headVal)}→...; temp = ${formatVal(tempVal)}`;
+            return `head = ${formatVal(headVal)}↔...; temp = ${formatVal(tempVal)}`;
         }
       } else if (deleteType === 'end') {
         switch(stepData.step) {
           case 1:
-            return 'head = 10→20→30→40; current = null; return = null';
+            return 'head = 10↔20↔30↔40; tail = null; return = null';
           case 2:
-            return 'head = 10→20→30→40; head !== null = true; current = null';
+            return 'head = 10↔20↔30↔40; head ≠ null = true; tail = null';
           case 3:
-            return 'head = 10→20→30→40; current = 10; current.next = 20';
+            return 'head = 10↔20↔30↔40; tail = 40; tail.prev = 30';
           case 4:
-            return 'head = 10→20→30→40; current = 10; current.next.next = 30 ≠ null';
+            return 'head = 10↔20↔30↔40; tail = 40; tail.prev.next = null';
           case 5:
-            return 'head = 10→20→30→40; current = 20; current.next = 30';
+            return 'head = 10↔20↔30↔40; tail = 30; tail.prev = 20';
           case 6:
-            return 'head = 10→20→30→40; current = 20; current.next.next = 40 ≠ null';
-          case 7:
-            return 'head = 10→20→30→40; current = 30; current.next = 40';
-          case 8:
-            return 'head = 10→20→30→40; current = 30; current.next.next = null; exit loop';
-          case 9:
-            return 'head = 10→20→30→40; current = 30; current.next = null; 40 disconnected';
-          case 10:
-            return 'head = 10→20→30; current = null; return = 10→20→30';
+            return 'head = 10↔20↔30; tail = null; return = 10↔20↔30';
           default:
-            return `head = ${formatVal(headVal)}→...; current = ${formatVal(currentVal)}`;
+            return `head = ${formatVal(headVal)}↔...; tail = ${formatVal(tailVal)}`;
         }
       } else {
         switch(stepData.step) {
           case 1:
-            return 'head = 10→20→30→40; current = null; target = 30';
+            return 'head = 10↔20↔30↔40; current = null; target = 30';
           case 2:
-            return 'head = 10→20→30→40; head.data = 10 ≠ 30; current = null';
+            return 'head = 10↔20↔30↔40; head.data = 10 ≠ 30; current = null';
           case 3:
-            return 'head = 10→20→30→40; current = 10; current.next = 20';
+            return 'head = 10↔20↔30↔40; current = 10; current.prev = null; current.next = 20';
           case 4:
-            return 'head = 10→20→30→40; current = 10; current.next ≠ null = true';
+            return 'head = 10↔20↔30↔40; current = 10; current.data ≠ 30; continue';
           case 5:
-            return 'head = 10→20→30→40; current = 10; current.next.data = 20 ≠ 30';
+            return 'head = 10↔20↔30↔40; current = 20; current.prev = 10; current.next = 30';
           case 6:
-            return 'head = 10→20→30→40; current = 20; current.next = 30';
+            return 'head = 10↔20↔30↔40; current = 20; current.data ≠ 30; continue';
           case 7:
-            return 'head = 10→20→30→40; current = 20; current.next ≠ null = true';
+            return 'head = 10↔20↔30↔40; current = 30; current.prev = 20; current.next = 40';
           case 8:
-            return 'head = 10→20→30→40; current = 20; current.next.data = 30 = target; found!';
+            return 'head = 10↔20↔30↔40; current = 30; current.data = 30 = target; found!';
           case 9:
-            return 'head = 10→20→30→40; current = 20; current.next = 40; 30 bypassed';
+            return 'head = 10↔20↔30↔40; current = 30; 20.next = 40; 40.prev = 20; 30 bypassed';
           case 10:
-            return 'head = 10→20→40; current = null; return = 10→20→40';
+            return 'head = 10↔20↔40; current = null; return = 10↔20↔40';
           default:
-            return `head = ${formatVal(headVal)}→...; current = ${formatVal(currentVal)}; target = ${formatVal(targetVal)}`;
+            return `head = ${formatVal(headVal)}↔...; current = ${formatVal(currentVal)}; target = ${formatVal(targetVal)}`;
         }
       }
     };
@@ -602,38 +558,36 @@ export default function LinkedListsDeleteNode() {
         { line: 2, code: '  if (head === null) return null;', active: stepData.currentLine === 2, indent: 1, values: stepData.currentLine === 2 ? `head !== null = ${stepData.head !== null}` : '' },
         { line: 3, code: '  const temp = head;', active: stepData.currentLine === 3, indent: 1, values: stepData.currentLine === 3 ? `temp = ${formatVal(tempVal)}` : '' },
         { line: 4, code: '  head = head.next;', active: stepData.currentLine === 4, indent: 1, values: stepData.currentLine === 4 ? `head = ${formatVal(headVal)}` : '' },
-        { line: 5, code: '  // delete temp', active: stepData.currentLine === 5, indent: 1, values: stepData.currentLine === 5 ? `temp = ${formatVal(tempVal)} deleted` : '' },
-        { line: 6, code: '  return head;', active: stepData.currentLine === 6, indent: 1, values: stepData.currentLine === 6 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('→') : '20→30→40'}` : '' },
-        { line: 7, code: '}', active: false, indent: 0, values: stepData.step >= 6 ? 'O(1) time complexity' : '' }
+        { line: 5, code: '  head.prev = null;', active: stepData.currentLine === 5, indent: 1, values: stepData.currentLine === 5 ? `head.prev = null` : '' },
+        { line: 6, code: '  // delete temp', active: stepData.currentLine === 6, indent: 1, values: stepData.currentLine === 6 ? `temp = ${formatVal(tempVal)} deleted` : '' },
+        { line: 7, code: '  return head;', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('↔') : '20↔30↔40'}` : '' },
+        { line: 8, code: '}', active: false, indent: 0, values: stepData.step >= 7 ? 'O(1) time complexity' : '' }
       ];
     } else if (deleteType === 'end') {
       return [
-        { line: 1, code: 'function deleteAtEnd(head) {', active: stepData.currentLine === 1, indent: 0, values: stepData.step >= 1 ? variableValues : '' },
+        { line: 1, code: 'function deleteAtEnd(head, tail) {', active: stepData.currentLine === 1, indent: 0, values: stepData.step >= 1 ? variableValues : '' },
         { line: 2, code: '  if (head === null) return null;', active: stepData.currentLine === 2, indent: 1, values: stepData.currentLine === 2 ? `head !== null = ${stepData.head !== null}` : '' },
-        { line: 3, code: '  let current = head;', active: stepData.currentLine === 3, indent: 1, values: stepData.currentLine === 3 ? `current = ${formatVal(currentVal)}` : '' },
-        { line: 4, code: '  while (current.next.next !== null) {', active: stepData.currentLine === 4, indent: 1, values: stepData.currentLine === 4 ? `current.next.next = ${currentIndex !== null && currentIndex + 2 < stepData.list.length ? getListVal(currentIndex + 2) : 'null'}` : '' },
-        { line: 5, code: '    current = current.next;', active: stepData.currentLine === 5, indent: 2, values: stepData.currentLine === 5 ? `current = ${formatVal(currentVal)}` : '' },
-        { line: 6, code: '  }', active: false, indent: 1, values: stepData.step >= 8 ? 'found second-to-last node' : '' },
-        { line: 7, code: '  current.next = null;', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `current.next = null` : '' },
-        { line: 8, code: '  return head;', active: stepData.currentLine === 8, indent: 1, values: stepData.currentLine === 8 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('→') : '10→20→30'}` : '' },
-        { line: 9, code: '}', active: false, indent: 0, values: stepData.step >= 10 ? 'O(n) time complexity' : '' }
+        { line: 3, code: '  const lastNode = tail;', active: stepData.currentLine === 3, indent: 1, values: stepData.currentLine === 3 ? `lastNode = ${formatVal(tailVal)}` : '' },
+        { line: 4, code: '  lastNode.prev.next = null;', active: stepData.currentLine === 4, indent: 1, values: stepData.currentLine === 4 ? `lastNode.prev.next = null` : '' },
+        { line: 5, code: '  tail = lastNode.prev;', active: stepData.currentLine === 5, indent: 1, values: stepData.currentLine === 5 ? `tail = ${formatVal(tailVal)}` : '' },
+        { line: 6, code: '  // delete lastNode', active: stepData.currentLine === 6, indent: 1, values: stepData.currentLine === 6 ? `lastNode = ${formatVal(tailVal)} deleted` : '' },
+        { line: 7, code: '  return head;', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('↔') : '10↔20↔30'}` : '' },
+        { line: 8, code: '}', active: false, indent: 0, values: stepData.step >= 6 ? 'O(1) time with tail pointer' : '' }
       ];
     } else {
       return [
         { line: 1, code: 'function deleteByValue(head, target) {', active: stepData.currentLine === 1, indent: 0, values: stepData.step >= 1 ? variableValues : '' },
-        { line: 2, code: '  if (head.data === target) {', active: stepData.currentLine === 2, indent: 1, values: stepData.currentLine === 2 ? `head.data = ${formatVal(headVal)} ≠ ${formatVal(targetVal)}` : '' },
-        { line: 3, code: '    return deleteAtBeginning(head);', active: false, indent: 2, values: '' },
-        { line: 4, code: '  }', active: false, indent: 1, values: '' },
-        { line: 5, code: '  let current = head;', active: stepData.currentLine === 3, indent: 1, values: stepData.currentLine === 3 ? `current = ${formatVal(currentVal)}` : '' },
-        { line: 6, code: '  while (current.next !== null) {', active: stepData.currentLine === 4, indent: 1, values: stepData.currentLine === 4 ? `current.next ≠ null = true` : '' },
-        { line: 7, code: '    if (current.next.data === target) {', active: stepData.currentLine === 5, indent: 2, values: stepData.currentLine === 5 ? `current.next.data = ${currentIndex !== null && currentIndex + 1 < stepData.list.length ? getListVal(currentIndex + 1) : 'null'}` : '' },
-        { line: 8, code: '      current.next = current.next.next;', active: stepData.currentLine === 6, indent: 3, values: stepData.currentLine === 6 ? `current.next = ${currentIndex !== null && currentIndex + 2 < stepData.list.length ? getListVal(currentIndex + 2) : 'null'}` : '' },
-        { line: 9, code: '      return head;', active: stepData.currentLine === 7, indent: 3, values: stepData.currentLine === 7 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('→') : '10→20→40'}` : '' },
-        { line: 10, code: '    }', active: false, indent: 2, values: '' },
-        { line: 11, code: '    current = current.next;', active: false, indent: 2, values: '' },
-        { line: 12, code: '  }', active: false, indent: 1, values: '' },
-        { line: 13, code: '  return head;', active: false, indent: 1, values: '' },
-        { line: 14, code: '}', active: false, indent: 0, values: stepData.step >= 10 ? 'O(n) time complexity' : '' }
+        { line: 2, code: '  if (head === null) return null;', active: stepData.currentLine === 2, indent: 1, values: stepData.currentLine === 2 ? `head !== null = ${stepData.head !== null}` : '' },
+        { line: 3, code: '  let current = head;', active: stepData.currentLine === 3, indent: 1, values: stepData.currentLine === 3 ? `current = ${formatVal(currentVal)}` : '' },
+        { line: 4, code: '  while (current !== null && current.data !== target) {', active: stepData.currentLine === 4, indent: 1, values: stepData.currentLine === 4 ? `current.data ≠ ${formatVal(targetVal)}` : '' },
+        { line: 5, code: '    current = current.next;', active: stepData.currentLine === 5, indent: 2, values: stepData.currentLine === 5 ? `current = ${formatVal(currentVal)}` : '' },
+        { line: 6, code: '  }', active: false, indent: 1, values: stepData.step >= 7 ? 'found target node' : '' },
+        { line: 7, code: '  if (current === null) return head;', active: false, indent: 1, values: '' },
+        { line: 8, code: '  current.prev.next = current.next;', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `current.prev.next = ${currentIndex !== null && currentIndex + 1 < stepData.list.length ? getListVal(currentIndex + 1) : 'null'}` : '' },
+        { line: 9, code: '  current.next.prev = current.prev;', active: stepData.currentLine === 7, indent: 1, values: stepData.currentLine === 7 ? `current.next.prev = ${currentIndex !== null && currentIndex - 1 >= 0 ? getListVal(currentIndex - 1) : 'null'}` : '' },
+        { line: 10, code: '  // delete current', active: false, indent: 1, values: '' },
+        { line: 11, code: '  return head;', active: stepData.currentLine === 8, indent: 1, values: stepData.currentLine === 8 ? `return = ${resultCount > 0 ? stepData.result.map(n => n.value).join('↔') : '10↔20↔40'}` : '' },
+        { line: 12, code: '}', active: false, indent: 0, values: stepData.step >= 10 ? 'O(n) search + O(1) deletion' : '' }
       ];
     }
   };
@@ -663,9 +617,9 @@ export default function LinkedListsDeleteNode() {
   return (
     <div className="space-y-8">
       <style>{animationStyles}</style>
-      <PageHeader icon={Trash2} category="DSA · Linked Lists" title="Delete Node in O(1) Time" description="Master deletion operations in linked lists with detailed step-by-step animations" colorTheme="red" />
+      <PageHeader icon={Trash2} category="DSA · Linked Lists" title="Delete Node in O(1) Time" description="Master deletion operations in doubly linked lists with detailed step-by-step animations" colorTheme="red" />
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {deleteType === 'beginning' ? ['O(1) Time', 'Head Update', 'Space: O(1)'] : deleteType === 'end' ? ['O(n) Time', 'Traversal', 'Space: O(1)'] : ['O(n) Time', 'Search & Bypass', 'Space: O(1)'].map((badge, index) => (
+        {deleteType === 'beginning' ? ['O(1) Time', 'Head Update', 'Space: O(1)'] : deleteType === 'end' ? ['O(1) Time', 'Tail Pointer', 'Space: O(1)'] : ['O(n) Search', 'O(1) Delete', 'Space: O(1)'].map((badge, index) => (
           <Badge key={`${badge}-${index}`} variant={index === 0 ? 'secondary' : 'outline'} className="text-sm">{badge}</Badge>
         ))}
       </div>
@@ -675,9 +629,9 @@ export default function LinkedListsDeleteNode() {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { title: 'Pointer Manipulation', desc: 'Update pointers to bypass nodes' },
-              { title: 'Edge Case Handling', desc: 'Handle empty list and single node' },
-              { title: 'Time Complexity', desc: 'O(1) for beginning, O(n) for others' }
+              { title: 'Bidirectional Pointers', desc: 'Update both prev and next pointers' },
+              { title: 'Tail Pointer Advantage', desc: 'O(1) deletion at end with tail' },
+              { title: 'Memory Management', desc: 'Proper disconnection from both sides' }
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
@@ -689,27 +643,27 @@ export default function LinkedListsDeleteNode() {
       </Card>
 
       <Card>
-        <CardHeader><CardTitle className="flex items-center gap-2"><Target className="w-6 h-6 text-red-600" />The Problem</CardTitle><CardDescription>Deleting nodes from linked lists efficiently</CardDescription></CardHeader>
+        <CardHeader><CardTitle className="flex items-center gap-2"><Target className="w-6 h-6 text-red-600" />The Problem</CardTitle><CardDescription>Deleting nodes from doubly linked lists efficiently</CardDescription></CardHeader>
         <CardContent className="space-y-6">
-          <p className="text-base">Given the <strong>head</strong> of a linked list, delete nodes at different positions with optimal time complexity.</p>
+          <p className="text-base">Given the <strong>head</strong> of a doubly linked list, delete nodes at different positions with optimal time complexity. Doubly linked lists have both <strong>prev</strong> and <strong>next</strong> pointers.</p>
           
           <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/30 dark:to-orange-950/30 p-6 rounded-xl border-2 border-red-200 dark:border-red-700">
             <h4 className="font-bold text-red-900 dark:text-red-100 mb-4 flex items-center gap-2"><Trash2 className="w-5 h-5" /> Three Deletion Types</h4>
             <div className="space-y-4">
               <div className="p-4 bg-white dark:bg-slate-950 rounded-lg border border-red-300">
                 <p className="text-sm font-semibold text-red-700 dark:text-red-300 mb-2">Delete at Beginning: O(1)</p>
-                <div className="font-mono text-sm text-center mb-2">10 → 20 → 30 → 40</div>
-                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 10 → 20 → 30 → 40</p>
+                <div className="font-mono text-sm text-center mb-2">null ↔ 10 ↔ 20 ↔ 30 ↔ 40</div>
+                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 10 → null ↔ 20 ↔ 30 ↔ 40</p>
               </div>
               <div className="p-4 bg-white dark:bg-slate-950 rounded-lg border border-orange-300">
-                <p className="text-sm font-semibold text-orange-700 dark:text-orange-300 mb-2">Delete at End: O(n)</p>
-                <div className="font-mono text-sm text-center mb-2">10 → 20 → 30 → 40</div>
-                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 40 → 10 → 20 → 30</p>
+                <p className="text-sm font-semibold text-orange-700 dark:text-orange-300 mb-2">Delete at End: O(1) with tail</p>
+                <div className="font-mono text-sm text-center mb-2">10 ↔ 20 ↔ 30 ↔ 40 ↔ null</div>
+                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 40 → 10 ↔ 20 ↔ 30 ↔ null</p>
               </div>
               <div className="p-4 bg-white dark:bg-slate-950 rounded-lg border border-pink-300">
-                <p className="text-sm font-semibold text-pink-700 dark:text-pink-300 mb-2">Delete by Value: O(n)</p>
-                <div className="font-mono text-sm text-center mb-2">10 → 20 → 30 → 40</div>
-                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 30 → 10 → 20 → 40</p>
+                <p className="text-sm font-semibold text-pink-700 dark:text-pink-300 mb-2">Delete by Value: O(n) + O(1)</p>
+                <div className="font-mono text-sm text-center mb-2">10 ↔ 20 ↔ 30 ↔ 40</div>
+                <p className="text-xs text-center text-slate-600 dark:text-slate-400">Delete node 30 → 10 ↔ 20 ↔ 40</p>
               </div>
             </div>
           </div>
@@ -724,7 +678,7 @@ export default function LinkedListsDeleteNode() {
             </div>
             Deletion Animation: Step-by-Step
           </CardTitle>
-          <CardDescription>Watch how different deletion operations work</CardDescription>
+          <CardDescription>Watch how different deletion operations work in doubly linked lists</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="mb-6 p-4 bg-gradient-to-r from-slate-100 to-gray-100 dark:from-slate-800 dark:to-gray-800 rounded-lg border-2 border-slate-300 dark:border-slate-700">
@@ -741,14 +695,14 @@ export default function LinkedListsDeleteNode() {
                 variant={deleteType === 'end' ? 'default' : 'outline'}
                 className={deleteType === 'end' ? 'bg-orange-600 hover:bg-orange-700' : ''}
               >
-                Delete at End (O(n))
+                Delete at End (O(1) with tail)
               </Button>
               <Button 
                 onClick={() => handleTypeChange('middle')}
                 variant={deleteType === 'middle' ? 'default' : 'outline'}
                 className={deleteType === 'middle' ? 'bg-pink-600 hover:bg-pink-700' : ''}
               >
-                Delete by Value (O(n))
+                Delete by Value (O(n) + O(1))
               </Button>
             </div>
           </div>
@@ -822,15 +776,17 @@ export default function LinkedListsDeleteNode() {
                       {currentStepData.action === 'store-temp' && '📍 Store Reference'}
                       {currentStepData.action === 'init-current' && '📍 Initialize Current'}
                       {currentStepData.action === 'update-head' && '🔗 Update Head'}
+                      {currentStepData.action === 'update-head-prev' && '🔗 Update Head Prev'}
+                      {currentStepData.action === 'find-tail' && '🔍 Find Tail'}
+                      {currentStepData.action === 'update-prev-next' && '🔗 Update Prev Next'}
+                      {currentStepData.action === 'update-tail' && '🔗 Update Tail'}
                       {currentStepData.action === 'loop-check-1' && '🔄 Loop Check (1)'}
                       {currentStepData.action === 'loop-check-2' && '🔄 Loop Check (2)'}
                       {currentStepData.action === 'target-check-1' && '🎯 Target Check (1)'}
                       {currentStepData.action === 'target-found' && '🎯 Target Found'}
                       {currentStepData.action === 'move-current-1' && '➡️ Move Current (1)'}
                       {currentStepData.action === 'move-current-2' && '➡️ Move Current (2)'}
-                      {currentStepData.action === 'loop-end' && '🛑 Loop Ends'}
-                      {currentStepData.action === 'disconnect-last' && '🔗 Disconnect Last'}
-                      {currentStepData.action === 'bypass-target' && '🔗 Bypass Target'}
+                      {currentStepData.action === 'update-neighbors' && '🔗 Update Neighbors'}
                       {currentStepData.action === 'delete-node' && '🗑️ Delete Node'}
                       {currentStepData.action === 'return-result' && '✅ Return Result'}
                     </div>
@@ -844,7 +800,7 @@ export default function LinkedListsDeleteNode() {
           {currentStep >= 0 && (
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-medium text-red-900 dark:text-red-100">List Visualization:</p>
+                <p className="text-sm font-medium text-red-900 dark:text-red-100">Doubly Linked List Visualization:</p>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-xs border-blue-400 text-blue-600">Original: 4 nodes</Badge>
                   <Badge variant="outline" className="text-xs border-green-400 text-green-600">Result: {currentStepData.result.length || 3} nodes</Badge>
@@ -881,6 +837,16 @@ export default function LinkedListsDeleteNode() {
                             </div>
                           </div>
                         )}
+                        {(deleteType === 'end' && currentStepData.tail === index) && (
+                          <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
+                            <div className="flex flex-col items-center">
+                              <div className="text-lg mb-1 pointer-move">👇</div>
+                              <div className="text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/80 px-3 py-1.5 rounded border-2 border-purple-500 whitespace-nowrap shadow-lg">tail</div>
+                              <div className="w-0.5 h-12 bg-gradient-to-b from-purple-500 to-purple-300 mt-2"></div>
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-purple-500 -mt-1"></div>
+                            </div>
+                          </div>
+                        )}
                         {node.toDelete && (
                           <div className="absolute z-10" style={{ left: '50%', top: '-70px', transform: 'translateX(-50%)' }}>
                             <div className="flex flex-col items-center">
@@ -896,6 +862,17 @@ export default function LinkedListsDeleteNode() {
                           node.highlighted ? 'scale-110 ring-4 ring-blue-200 dark:ring-blue-900 node-pulse' : 
                           node.processed ? 'border-slate-300 dark:border-slate-600' : 'border-slate-300 dark:border-slate-600'
                         } ${node.toDelete ? 'node-delete' : ''}`}>
+                          <div className={`px-2 py-2 border-r-2 transition-colors ${
+                            node.toDelete ? 'bg-red-100 dark:bg-red-900 border-red-500' :
+                            node.highlighted ? 'bg-blue-100 dark:bg-blue-900 border-blue-500' :
+                            node.processed ? 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600' : 'bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600'
+                          }`}>
+                            <ArrowLeft className={`w-3 h-3 ${
+                              node.toDelete ? 'text-red-900 dark:text-red-100' :
+                              node.highlighted ? 'text-blue-900 dark:text-blue-100' :
+                              node.processed ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'
+                            }`} />
+                          </div>
                           <div className={`px-4 py-2 border-r-2 transition-colors ${
                             node.toDelete ? 'bg-red-100 dark:bg-red-900 border-red-500' :
                             node.highlighted ? 'bg-blue-100 dark:bg-blue-900 border-blue-500' :
@@ -907,12 +884,12 @@ export default function LinkedListsDeleteNode() {
                               node.processed ? 'text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'
                             }`}>{node.value}</div>
                           </div>
-                          <div className={`px-3 py-2 flex items-center ${
+                          <div className={`px-2 py-2 flex items-center ${
                             node.toDelete ? 'bg-red-200 dark:bg-red-800' :
                             node.highlighted ? 'bg-blue-200 dark:bg-blue-800' :
                             node.processed ? 'bg-slate-200 dark:bg-slate-700' : 'bg-slate-100 dark:bg-slate-700'
                           }`}>
-                            <ArrowRight className={`w-4 h-4 ${
+                            <ArrowRight className={`w-3 h-3 ${
                               node.toDelete ? 'text-red-900 dark:text-red-100' :
                               node.highlighted ? 'text-blue-900 dark:text-blue-100' :
                               node.processed ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'
@@ -935,11 +912,14 @@ export default function LinkedListsDeleteNode() {
                       {currentStepData.result.map((node, index) => (
                         <div key={index} className="flex items-center gap-3">
                           <div className="flex border-2 rounded-lg overflow-hidden shadow-md transition-all duration-500 border-green-500 dark:border-green-400 slide-in-result">
+                            <div className="px-2 py-2 border-r-2 bg-green-100 dark:bg-green-900 border-green-500">
+                              <ArrowLeft className="w-3 h-3 text-green-900 dark:text-green-100" />
+                            </div>
                             <div className="px-4 py-2 border-r-2 bg-green-100 dark:bg-green-900 border-green-500">
                               <div className="text-xl font-bold text-green-900 dark:text-green-100">{node.value}</div>
                             </div>
-                            <div className="px-3 py-2 flex items-center bg-green-200 dark:bg-green-800">
-                              <ArrowRight className="w-4 h-4 text-green-900 dark:text-green-100" />
+                            <div className="px-2 py-2 flex items-center bg-green-200 dark:bg-green-800">
+                              <ArrowRight className="w-3 h-3 text-green-900 dark:text-green-100" />
                             </div>
                           </div>
                         </div>
@@ -958,10 +938,10 @@ export default function LinkedListsDeleteNode() {
               <AlertTitle>Key Insight</AlertTitle>
               <AlertDescription>
                 {deleteType === 'beginning' 
-                  ? 'Deleting at the beginning is O(1) because we only need to update the head pointer.'
+                  ? 'Doubly linked lists allow O(1) deletion at beginning by updating head and head.prev.'
                   : deleteType === 'end'
-                  ? 'Deleting at the end is O(n) because we must traverse to find the second-to-last node.'
-                  : 'Deleting by value is O(n) because we must search for the target node first.'
+                  ? 'With tail pointer, doubly linked lists achieve O(1) deletion at end - impossible in singly linked lists!'
+                  : 'Delete by value requires O(n) search but deletion itself is O(1) due to bidirectional pointers.'
                 }
               </AlertDescription>
             </Alert>

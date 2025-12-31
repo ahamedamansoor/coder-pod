@@ -1,11 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+
+interface ConsoleLog {
+  method: 'log' | 'error' | 'warn' | 'info';
+  args: any[];
+}
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from '@/components/ui/dialog';
 import {
   ResizablePanelGroup,
@@ -16,7 +22,7 @@ import Editor from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import {
   Code, Terminal, Play, RefreshCw, X, Loader2,
-  FileCode, Palette, Eye, Trash2, Settings2, Zap
+  FileCode, Eye, Trash2, Settings2, Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -26,41 +32,70 @@ import { Badge } from '@/components/ui/badge';
 
 const defaultJsx = `function App() {
   const [count, setCount] = React.useState(0);
-  const [name, setName] = React.useState('React');
+  
+  const containerStyle = {
+    minHeight: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    fontFamily: 'Arial, sans-serif'
+  };
+  
+  const cardStyle = {
+    background: 'white',
+    padding: '2rem',
+    borderRadius: '16px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+    textAlign: 'center',
+    minWidth: '300px'
+  };
+  
+  const titleStyle = {
+    color: '#333',
+    marginBottom: '1rem',
+    fontSize: '1.5rem'
+  };
+  
+  const countStyle = {
+    fontSize: '3rem',
+    fontWeight: 'bold',
+    color: '#667eea',
+    marginBottom: '2rem'
+  };
+  
+  const buttonStyle = {
+    background: '#10b981',
+    color: 'white',
+    border: 'none',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '8px',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    margin: '0 0.5rem',
+    transition: 'background-color 0.2s'
+  };
 
-  return (
-    <div className="app">
-      <div className="card">
-        <h1>Hello, {name}! 👋</h1>
-        <p className="subtitle">Welcome to React Playground</p>
-        
-        <div className="counter">
-          <button onClick={() => setCount(count - 1)}>-</button>
-          <span className="count">{count}</span>
-          <button onClick={() => setCount(count + 1)}>+</button>
-        </div>
-
-        <div className="input-group">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-          />
-        </div>
-
-        <div className="info">
-          <p>✨ Edit the code to see live updates!</p>
-          <p>🎨 Modify the CSS for custom styling</p>
-        </div>
-      </div>
-    </div>
+  return React.createElement('div', { style: containerStyle },
+    React.createElement('div', { style: cardStyle },
+      React.createElement('h1', { style: titleStyle }, 'React Test Counter'),
+      React.createElement('div', { style: countStyle }, count.toString()),
+      React.createElement('button', {
+        style: buttonStyle,
+        onClick: () => setCount(count - 1)
+      }, '-'),
+      React.createElement('button', {
+        style: buttonStyle,
+        onClick: () => setCount(count + 1)
+      }, '+')
+    )
   );
 }
 
-// Render the app
-ReactDOM.render(<App />, document.getElementById('root'));
-`;
+console.log('React Playground: Rendering test component...');
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+console.log('React Playground: Test component rendered successfully!');`;
 
 const defaultCss = `* {
   margin: 0;
@@ -172,18 +207,11 @@ h1 {
 }
 `;
 
-interface ConsoleLog {
-  type: 'log' | 'error' | 'warn' | 'info';
-  message: string;
-  timestamp: number;
-}
-
 export function ReactPlaygroundModal() {
   const { isOpen, playgroundData, closePlayground } = useReactPlayground();
   const { theme } = useTheme();
   
   const [jsxCode, setJsxCode] = useState(defaultJsx);
-  const [cssCode, setCssCode] = useState(defaultCss);
   const [compiledJs, setCompiledJs] = useState('');
   const [consoleOutput, setConsoleOutput] = useState<ConsoleLog[]>([]);
   const [isCompiling, setIsCompiling] = useState(false);
@@ -192,10 +220,11 @@ export function ReactPlaygroundModal() {
   const [autoRun, setAutoRun] = useState(true);
   const [visiblePanels, setVisiblePanels] = useState({
     jsx: true,
-    css: true,
     preview: true,
     console: true,
   });
+
+  const getErrorMessage = (error: unknown) => error instanceof Error ? error.message : String(error);
   
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const autoRunTimeoutRef = useRef<NodeJS.Timeout>();
@@ -207,8 +236,7 @@ export function ReactPlaygroundModal() {
   useEffect(() => {
     if (isOpen && playgroundData) {
       setJsxCode(playgroundData.jsx || defaultJsx);
-      setCssCode(playgroundData.css || defaultCss);
-      setConsoleOutput([]);
+            setConsoleOutput([]);
       setCompileError(null);
       hasInitialRunRef.current = false;
     }
@@ -223,122 +251,460 @@ export function ReactPlaygroundModal() {
     };
   }, []);
 
-  const addConsoleLog = useCallback((type: ConsoleLog['type'], ...args: unknown[]) => {
-    const message = args.map(arg => 
-      typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-    ).join(' ');
-    
+  const addConsoleLog = useCallback((method: ConsoleLog['method'], ...args: unknown[]) => {
     setConsoleOutput(prev => [...prev, {
-      type,
-      message,
-      timestamp: Date.now(),
+      method,
+      args,
     }]);
   }, []);
 
   const compileJSX = useCallback(async (code: string) => {
-    setIsCompiling(true);
-    setCompileError(null);
-
     try {
-      // Load Babel standalone if not already loaded
-      if (typeof window !== 'undefined' && !(window as any).Babel) {
-        await new Promise((resolve, reject) => {
+      setIsCompiling(true);
+      console.log('🔧 React Playground: Starting compilation...');
+      
+      // Check if code already uses React.createElement (no compilation needed)
+      const usesReactCreateElement = code.includes('React.createElement') || code.includes('ReactDOM.createRoot');
+      
+      if (usesReactCreateElement) {
+        console.log('✅ React Playground: Code already uses React.createElement, no compilation needed');
+        setCompiledJs(code);
+        setIsCompiling(false);
+        return code;
+      }
+      
+      // Load Babel if not already loaded with retry mechanism
+      if (typeof window === 'undefined' || !(window as any).Babel) {
+        console.log('📦 React Playground: Loading Babel...');
+        const loadBabel = () => new Promise<void>((resolve, reject) => {
           const script = document.createElement('script');
           script.src = 'https://unpkg.com/@babel/standalone@7.23.5/babel.min.js';
-          script.onload = resolve;
-          script.onerror = reject;
+          script.onload = () => {
+            // Give Babel a moment to initialize
+            setTimeout(() => {
+              if ((window as any).Babel && (window as any).Babel.transform) {
+                console.log('✅ React Playground: Babel loaded successfully');
+                resolve();
+              } else {
+                reject(new Error('Babel loaded but transform method not available'));
+              }
+            }, 100);
+          };
+          script.onerror = () => reject(new Error('Failed to load Babel script'));
           document.head.appendChild(script);
         });
-      }
 
-      // Compile JSX to JavaScript
+        // Try loading Babel with retries
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (attempts < maxAttempts) {
+          try {
+            await loadBabel();
+            break; // Success, exit retry loop
+          } catch (error) {
+            attempts++;
+            const errorMessage = getErrorMessage(error);
+            console.log(`⚠️ React Playground: Babel load attempt ${attempts} failed, retrying... ${errorMessage}`);
+            if (attempts >= maxAttempts) {
+              throw new Error(`Failed to load Babel after ${maxAttempts} attempts: ${errorMessage}`);
+            }
+            // Wait before retry
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      }
+      
+      // Final check if Babel is available and has transform method
+      if (!(window as any).Babel || !(window as any).Babel.transform) {
+        throw new Error('Babel is not available or not loaded properly');
+      }
+      
+      console.log('🔄 React Playground: Compiling JSX with Babel...');
+      
+      // Compile JSX to JavaScript with comprehensive presets
       const result = (window as any).Babel.transform(code, {
-        presets: ['react'],
+        presets: [
+          ['react', { runtime: 'automatic' }],
+          ['env', { targets: { browsers: ['last 2 versions'] } }]
+        ],
+        plugins: [],
         filename: 'app.jsx',
+        sourceMaps: false,
+        babelrc: false,
       });
 
+      console.log('✅ React Playground: JSX compiled successfully');
+      console.log('📏 Compiled code length:', result.code.length);
+      
       setCompiledJs(result.code);
       setIsCompiling(false);
       return result.code;
-    } catch (error: any) {
-      setCompileError(error.message);
-      setIsCompiling(false);
-      addConsoleLog('error', 'Compilation Error:', error.message);
-      return null;
+    } catch (error) {
+      const errorMessage = getErrorMessage(error);
+      console.warn('⚠️ React Playground: Babel compilation failed, using original code:', errorMessage);
+      
+      // If compilation fails, try to use the original code directly
+      // This allows pure React.createElement code to work without Babel
+      try {
+        console.log('🔄 React Playground: Attempting to use original code directly...');
+        
+        // Check if the code looks like valid JavaScript
+        if (code.includes('function') || code.includes('const') || code.includes('React')) {
+          console.log('✅ React Playground: Using original code (appears to be valid JavaScript)');
+          setCompiledJs(code);
+          setIsCompiling(false);
+          addConsoleLog('warn', 'Using original code without JSX compilation');
+          return code;
+        } else {
+          throw new Error('Code does not appear to be valid JavaScript');
+        }
+      } catch (fallbackError) {
+        const fallbackMessage = getErrorMessage(fallbackError);
+        console.error('❌ React Playground: Both compilation and fallback failed');
+        setCompileError(`Compilation failed: ${errorMessage}. Original code also failed: ${fallbackMessage}`);
+        setIsCompiling(false);
+        addConsoleLog('error', 'Compilation Error:', errorMessage);
+        return null;
+      }
     }
   }, [addConsoleLog]);
 
   const runCode = useCallback(async () => {
-    if (!iframeRef.current) return;
+    if (!iframeRef.current) {
+      console.error('❌ React Playground: No iframe reference');
+      return false;
+    }
 
+    console.log('🚀 React Playground: Starting code execution...');
     setConsoleOutput([]);
     setHasChanges(false);
 
-    // Compile JSX
-    const compiled = await compileJSX(jsxCode);
-    if (!compiled) return;
+    // Try to compile JSX, but fall back to direct execution if compilation fails
+    let compiled = jsxCode;
+    let useCompiled = false;
+    
+    console.log('📝 React Playground: Attempting JSX compilation...');
+    try {
+      const compiledCode = await compileJSX(jsxCode);
+      if (compiledCode) {
+        compiled = compiledCode;
+        useCompiled = true;
+        console.log('✅ React Playground: JSX compiled successfully');
+        console.log('🔍 Compiled code length:', compiled.length);
+      } else {
+        console.log('⚠️ React Playground: Compilation failed, using original code');
+      }
+    } catch (error) {
+      console.log('⚠️ React Playground: Compilation error, using original code:', getErrorMessage(error));
+    }
 
     // Create iframe content
     const iframeDoc = iframeRef.current.contentDocument;
-    if (!iframeDoc) return;
+    if (!iframeDoc) {
+      console.error('❌ React Playground: Could not access iframe document');
+      return false;
+    }
 
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <style>${cssCode}</style>
-          <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-          <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-        </head>
-        <body>
-          <div id="root"></div>
-          <script>
-            // Capture console output
-            const originalConsole = {
-              log: console.log,
-              error: console.error,
-              warn: console.warn,
-              info: console.info,
-            };
-
-            ['log', 'error', 'warn', 'info'].forEach(method => {
-              console[method] = (...args) => {
-                originalConsole[method](...args);
-                window.parent.postMessage({
-                  type: 'console',
-                  method: method,
-                  args: args.map(arg => {
-                    try {
-                      return typeof arg === 'object' ? JSON.stringify(arg) : String(arg);
-                    } catch {
-                      return String(arg);
-                    }
-                  })
-                }, '*');
-              };
-            });
-
-            // Capture errors
-            window.onerror = (message, source, lineno, colno, error) => {
-              console.error(\`Error: \${message} at line \${lineno}\`);
-              return true;
-            };
-
-            try {
-              ${compiled}
-            } catch (error) {
-              console.error('Runtime Error:', error.message);
+    console.log('🎨 React Playground: Creating iframe content...');
+    console.log('📝 React Playground: Using', useCompiled ? 'compiled' : 'original', 'code');
+    
+    const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+    .loading { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 1.2rem;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .error { 
+      padding: 20px; 
+      color: #333; 
+      background: #fee2e2; 
+      border: 1px solid #fecaca;
+      border-radius: 8px; 
+      margin: 20px;
+    }
+    .error h3 { color: #dc2626; margin-bottom: 0.5rem; }
+    .error pre { 
+      background: #f3f4f6; 
+      padding: 1rem; 
+      border-radius: 4px; 
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="loading">
+    <div class="spinner"></div>
+    <div id="loading-text">Loading React Playground...</div>
+  </div>
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  
+  <script>
+    // Update loading text immediately
+    document.getElementById('loading-text').textContent = 'Loading React libraries...';
+    
+    (function() {
+      console.log('React Playground: Iframe initialized');
+      
+      // Enhanced React library detection
+      function checkReactLibraries() {
+        if (typeof React === 'undefined') {
+          console.error('React library not loaded!');
+          return { loaded: false, error: 'React library failed to load' };
+        }
+        
+        if (typeof ReactDOM === 'undefined') {
+          console.error('ReactDOM library not loaded!');
+          return { loaded: false, error: 'ReactDOM library failed to load' };
+        }
+        
+        // Check for essential React functions
+        if (typeof React.createElement !== 'function') {
+          console.error('React.createElement not available!');
+          return { loaded: false, error: 'React.createElement not available' };
+        }
+        
+        if (typeof ReactDOM.createRoot !== 'function') {
+          console.error('ReactDOM.createRoot not available!');
+          return { loaded: false, error: 'ReactDOM.createRoot not available' };
+        }
+        
+        return { loaded: true };
+      }
+      
+      // Wait for scripts to load with progressive checking
+      function waitForReact() {
+        return new Promise((resolve, reject) => {
+          let attempts = 0;
+          const maxAttempts = 30;
+          
+          function check() {
+            attempts++;
+            const status = checkReactLibraries();
+            
+            if (status.loaded) {
+              console.log('React and ReactDOM loaded successfully');
+              console.log('React version:', React.version);
+              console.log('Execution mode: ${useCompiled ? 'Compiled JSX' : 'Direct React.createElement'}');
+              resolve();
+            } else if (attempts >= maxAttempts) {
+              console.error('Failed to load React libraries after', maxAttempts, 'attempts');
+              reject(new Error(status.error));
+            } else {
+              console.log('Waiting for React libraries... attempt', attempts);
+              // Update loading text
+              document.getElementById('loading-text').textContent = 'Loading React libraries... (' + attempts + '/' + maxAttempts + ')';
+              setTimeout(check, 100);
             }
-          </script>
-        </body>
-      </html>
-    `;
+          }
+          
+          check();
+        });
+      }
+      
+      // Enhanced console capture
+      function setupConsoleCapture() {
+        const originalConsole = {
+          log: console.log,
+          error: console.error,
+          warn: console.warn,
+          info: console.info,
+        };
 
+        ['log', 'error', 'warn', 'info'].forEach(method => {
+          console[method] = (...args) => {
+            originalConsole[method](...args);
+            try {
+              window.parent.postMessage({
+                type: 'console',
+                method: method,
+                args: args.map(arg => {
+                  if (arg === null) return 'null';
+                  if (arg === undefined) return 'undefined';
+                  try {
+                    return typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg);
+                  } catch {
+                    return '[Object]';
+                  }
+                })
+              }, '*');
+            } catch (e) {
+              originalConsole.error('Failed to post message:', e);
+            }
+          };
+        });
+      }
+      
+      // Enhanced error handling
+      function setupErrorHandling() {
+        window.onerror = (message, source, lineno, colno, error) => {
+          console.error('Error:', message, 'at line', lineno, ':', colno);
+          if (error && error.stack) {
+            console.error('Stack trace:', error.stack);
+          }
+          return true;
+        };
+        
+        window.addEventListener('unhandledrejection', (event) => {
+          console.error('Unhandled promise rejection:', event.reason);
+        });
+      }
+      
+      // Main execution
+      async function executeUserCode() {
+        try {
+          console.log('Setting up console capture...');
+          setupConsoleCapture();
+          setupErrorHandling();
+          
+          // Update loading text
+          document.getElementById('loading-text').textContent = 'Waiting for React libraries...';
+          
+          console.log('Waiting for React libraries...');
+          await waitForReact();
+          
+          // Update loading text
+          document.getElementById('loading-text').textContent = 'Executing React code...';
+          
+          console.log('React Playground: Executing user code...');
+          console.log('Code length: ${compiled.length} characters');
+          
+          // Clear loading indicator IMMEDIATELY before executing code
+          const rootElement = document.getElementById('root');
+          console.log('Clearing loading indicator...');
+          console.log('Before clear - className:', rootElement.className, 'innerHTML length:', rootElement.innerHTML.length);
+          
+          // Force clear with multiple methods
+          rootElement.className = '';
+          rootElement.classList.remove('loading');
+          rootElement.innerHTML = '';
+          rootElement.style.display = '';
+          rootElement.style.visibility = '';
+          
+          console.log('After clear - className:', rootElement.className, 'innerHTML length:', rootElement.innerHTML.length);
+          
+          // Additional force clear after a tiny delay
+          setTimeout(() => {
+            const checkRoot = document.getElementById('root');
+            if (checkRoot) {
+              checkRoot.className = '';
+              checkRoot.classList.remove('loading');
+              console.log('Double-check clear - className:', checkRoot.className);
+            }
+          }, 10);
+          
+          // Execute user code with timeout
+          console.log('Executing user code...');
+          
+          // Add a wrapper to catch any synchronous errors
+          try {
+            (function() {
+              ${compiled}
+            })();
+            console.log('React Playground: Code executed successfully');
+            
+            // Double-check loading is hidden and notify parent
+            setTimeout(() => {
+              const checkRoot = document.getElementById('root');
+              if (checkRoot && checkRoot.className === 'loading') {
+                console.warn('Forcing loading indicator to hide after execution');
+                checkRoot.className = '';
+              }
+              window.parent.postMessage({ type: 'execution-complete' }, '*');
+            }, 100);
+            
+          } catch (syncError) {
+            throw syncError;
+          }
+          
+          // Check if something was rendered after a delay
+          setTimeout(() => {
+            const rootEl = document.getElementById('root');
+            if (rootEl && rootEl.children.length === 0) {
+              console.warn('Warning: No elements rendered to root. Make sure your code calls ReactDOM.createRoot().render()');
+              // Show a helpful message
+              rootEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;"><h3>No Render Output</h3><p>Make sure your code calls ReactDOM.createRoot(document.getElementById("root")).render(yourComponent)</p></div>';
+            }
+          }, 2000);
+          
+        } catch (error) {
+          console.error('React Playground: Runtime Error:', error.message);
+          console.error('Stack:', error.stack);
+          
+          const rootElement = document.getElementById('root');
+          rootElement.className = 'error';
+          rootElement.innerHTML = '<h3>Runtime Error</h3><pre>' + error.message + '</pre><p>Check the console for more details and stack trace.</p>';
+          
+          // Notify parent of error
+          window.parent.postMessage({ type: 'execution-error', error: error.message }, '*');
+        }
+      }
+      
+      // Start execution immediately
+      executeUserCode();
+      
+      // Multiple fallbacks: Force hide loading at different intervals
+      setTimeout(() => {
+        const rootEl = document.getElementById('root');
+        if (rootEl) {
+          console.log('5-second fallback: Checking loading state');
+          if (rootEl.className === 'loading') {
+            console.warn('5-second fallback: Force hiding loading indicator');
+            rootEl.className = '';
+            rootEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;"><h3>Loading Timeout</h3><p>The React component took too long to load. Please check the console for errors.</p></div>';
+          }
+        }
+      }, 5000);
+      
+      setTimeout(() => {
+        const rootEl = document.getElementById('root');
+        if (rootEl && rootEl.className === 'loading') {
+          console.warn('10-second fallback: Force hiding loading indicator');
+          rootEl.className = '';
+          rootEl.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;"><h3>Loading Timeout</h3><p>The React component took too long to load. Please check the console for errors.</p></div>';
+        }
+      }, 10000);
+    })();
+  </script>
+</body>
+</html>`;
+
+    console.log('📝 React Playground: Writing content to iframe...');
     iframeDoc.open();
     iframeDoc.write(htmlContent);
     iframeDoc.close();
-  }, [jsxCode, cssCode, compileJSX]);
+    console.log('✅ React Playground: Code execution completed');
+    return true;
+  }, [jsxCode, compileJSX]);
 
   // Listen for console messages from iframe
   useEffect(() => {
@@ -352,16 +718,31 @@ export function ReactPlaygroundModal() {
     return () => window.removeEventListener('message', handleMessage);
   }, [addConsoleLog]);
 
-  // Initial run when modal opens
+  // Initial run when modal opens - work exactly like refresh button
   useEffect(() => {
-    if (isOpen && jsxCode && cssCode && !hasInitialRunRef.current) {
-      const timeout = setTimeout(() => {
-        runCode();
-        hasInitialRunRef.current = true;
-      }, 100);
+    if (isOpen && jsxCode && !hasInitialRunRef.current) {
+      console.log('🚀 React Playground: Modal opened, running code immediately...');
+      
+      // Run immediately just like the refresh button
+      const executeInitialRun = async () => {
+        try {
+          const success = await runCode();
+          if (success) {
+            hasInitialRunRef.current = true;
+            console.log('✅ React Playground: Initial run completed successfully');
+          } else {
+            console.error('❌ React Playground: Initial run failed');
+          }
+        } catch (error) {
+          console.error('❌ React Playground: Initial run error:', error);
+        }
+      };
+      
+      // Small delay to ensure iframe is ready, then run immediately
+      const timeout = setTimeout(executeInitialRun, 50);
       return () => clearTimeout(timeout);
     }
-  }, [isOpen, jsxCode, cssCode, runCode]);
+  }, [isOpen, jsxCode, runCode]);
 
   // Auto-run on code change
   useEffect(() => {
@@ -383,11 +764,10 @@ export function ReactPlaygroundModal() {
         clearTimeout(autoRunTimeoutRef.current);
       }
     };
-  }, [jsxCode, cssCode, autoRun, runCode]);
+  }, [jsxCode, autoRun, runCode]);
 
   const handleReset = () => {
     setJsxCode(defaultJsx);
-    setCssCode(defaultCss);
     setConsoleOutput([]);
     setCompileError(null);
   };
@@ -400,131 +780,178 @@ export function ReactPlaygroundModal() {
     setConsoleOutput([]);
   };
 
+  const getLogColor = (method: string) => {
+    switch (method) {
+      case 'error':
+        return 'text-red-400 bg-red-950/20';
+      case 'warn':
+        return 'text-yellow-400 bg-yellow-950/20';
+      case 'info':
+        return 'text-blue-400 bg-blue-950/20';
+      case 'log':
+      default:
+        return 'text-slate-300 bg-slate-800/50';
+    }
+  };
+
+  const renderLogMessage = (msg: any) => {
+    if (typeof msg === 'object' && msg !== null) {
+      return JSON.stringify(msg, null, 2);
+    }
+    return String(msg);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closePlayground()}>
-      <DialogContent className="max-w-[95vw] w-[95vw] h-[90vh] p-0 gap-0">
-        <DialogHeader className="px-6 py-4 border-b">
-          <div className="flex items-center justify-between">
+      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0" showCloseButton={false}>
+        {/* Clean, Structured Header matching Web Playground */}
+        <DialogHeader className="px-6 pt-6 pb-4 border-b bg-gradient-to-r from-cyan-50/30 to-blue-50/30 dark:from-cyan-950/20 dark:to-blue-950/20 flex-row items-center justify-between">
+          <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600">
-                <Code className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-md">
+                <Code className="h-6 w-6 text-white" />
               </div>
               <div>
-                <DialogTitle className="text-xl font-bold">React Playground</DialogTitle>
-                <p className="text-sm text-muted-foreground">Build React components with live preview</p>
+                <DialogTitle className="text-2xl">React Playground</DialogTitle>
+                <p className="text-sm text-muted-foreground mt-1">Build React components with live preview</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2">
-              {/* Auto-run toggle */}
-              <Button
-                variant={autoRun ? "default" : "outline"}
-                size="sm"
-                onClick={() => setAutoRun(!autoRun)}
-                className="gap-2"
-              >
-                <Zap className={cn("w-4 h-4", autoRun && "text-yellow-300")} />
-                Auto-run
-              </Button>
-
-              {/* Manual Run button (shows when auto-run is off and there are changes) */}
-              {!autoRun && hasChanges && (
-                <Button
-                  onClick={runCode}
-                  size="sm"
-                  className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
-                  disabled={isCompiling}
-                >
-                  {isCompiling ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <>
-                      <Play className="w-4 h-4" />
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                      </span>
-                    </>
-                  )}
-                </Button>
-              )}
-
-              <Button variant="outline" size="sm" onClick={handleReset}>
-                <RefreshCw className="w-4 h-4" />
-              </Button>
+            {/* Language Badges */}
+            <div className="flex items-center gap-1.5">
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-cyan-50 border-cyan-200 text-cyan-700 dark:bg-cyan-950/30 dark:border-cyan-800 dark:text-cyan-400">
+                React
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-400">
+                JSX
+              </Badge>
             </div>
           </div>
-
-          {/* Panel toggles */}
-          <div className="flex items-center gap-2 mt-4">
-            <span className="text-xs text-muted-foreground mr-2">Panels:</span>
+          
+          <div className="flex items-center gap-3">
+            {/* Clean Square Panel Toggles */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Panels</span>
+              <div className="flex gap-1.5">
+                <button
+                  onClick={() => togglePanel('jsx')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.jsx 
+                      ? 'bg-cyan-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="JSX"
+                >
+                  <FileCode className="h-4 w-4" />
+                  {visiblePanels.jsx && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                                <button
+                  onClick={() => togglePanel('preview')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.preview 
+                      ? 'bg-emerald-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="Preview"
+                >
+                  <Eye className="h-4 w-4" />
+                  {visiblePanels.preview && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('console')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.console 
+                      ? 'bg-purple-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="Console"
+                >
+                  <Terminal className="h-4 w-4" />
+                  {visiblePanels.console && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            {/* Auto-run Toggle */}
+            <button
+              onClick={() => setAutoRun(!autoRun)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${
+                autoRun
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white shadow-lg'
+                  : 'border-cyan-200 dark:border-cyan-800 hover:bg-cyan-50 dark:hover:bg-cyan-950/20 border'
+              }`}
+              title={autoRun ? 'Auto-run enabled - Click to disable' : 'Manual run - Click to enable auto-run'}
+            >
+              <RefreshCw className={`h-4 w-4 ${autoRun ? 'animate-spin' : ''}`} />
+              <span>{autoRun ? 'Auto-run' : 'Manual'}</span>
+            </button>
+            
+            {/* Run Button */}
+            {!autoRun && (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={runCode}
+                className="h-10 px-4 text-xs font-semibold gap-2 bg-gradient-to-br from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 relative"
+                disabled={isCompiling}
+              >
+                {isCompiling ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Play className="h-4 w-4" />
+                )}
+                Run Code
+                {hasChanges && !isCompiling && (
+                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white animate-pulse" />
+                )}
+              </Button>
+            )}
+            
+            {autoRun && hasChanges && (
+              <Badge variant="secondary" className="text-xs px-3 py-1 animate-pulse font-medium">
+                ⚡ Running...
+              </Badge>
+            )}
+            
+            {/* Clear Console */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={clearConsole} 
+              className="h-8 text-xs gap-1.5"
+              title="Clear console"
+            >
+              <Trash2 className="h-3 w-3" />
+            </Button>
+            
+            <div className="h-4 w-px bg-border" />
+            
+            {/* Reset Button */}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => togglePanel('jsx')}
-              className={cn(
-                "relative w-9 h-9 flex items-center justify-center rounded transition-all",
-                visiblePanels.jsx
-                  ? 'bg-cyan-500 text-white shadow-sm'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-              )}
+              onClick={handleReset}
+              className="h-8 text-xs gap-1.5"
+              title="Reset to default code"
             >
-              <FileCode className="h-4 w-4" />
-              {visiblePanels.jsx && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
-              )}
+              <RefreshCw className="h-3 w-3" />
             </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => togglePanel('css')}
-              className={cn(
-                "relative w-9 h-9 flex items-center justify-center rounded transition-all",
-                visiblePanels.css
-                  ? 'bg-blue-500 text-white shadow-sm'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-              )}
-            >
-              <Palette className="h-4 w-4" />
-              {visiblePanels.css && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
-              )}
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => togglePanel('preview')}
-              className={cn(
-                "relative w-9 h-9 flex items-center justify-center rounded transition-all",
-                visiblePanels.preview
-                  ? 'bg-emerald-500 text-white shadow-sm'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-              )}
-            >
-              <Eye className="h-4 w-4" />
-              {visiblePanels.preview && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
-              )}
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => togglePanel('console')}
-              className={cn(
-                "relative w-9 h-9 flex items-center justify-center rounded transition-all",
-                visiblePanels.console
-                  ? 'bg-purple-500 text-white shadow-sm'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted'
-              )}
-            >
-              <Terminal className="h-4 w-4" />
-              {visiblePanels.console && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
-              )}
-            </Button>
+            
+            {/* Close Button */}
+            <DialogClose asChild>
+              <button
+                className="h-8 w-8 rounded-lg bg-muted/50 hover:bg-muted flex items-center justify-center transition-colors"
+                title="Close playground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </DialogClose>
           </div>
         </DialogHeader>
 
@@ -533,70 +960,40 @@ export function ReactPlaygroundModal() {
             {/* JSX Editor */}
             {visiblePanels.jsx && (
               <>
-                <ResizablePanel defaultSize={25} minSize={15}>
+                <ResizablePanel defaultSize={40} minSize={25}>
                   <div className="h-full flex flex-col bg-muted/30">
                     <div className="flex items-center justify-between px-4 py-2 border-b bg-cyan-500/10">
                       <div className="flex items-center gap-2">
                         <FileCode className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                         <span className="text-sm font-semibold text-cyan-700 dark:text-cyan-300">JSX</span>
                       </div>
-                      <Badge variant="secondary" className="text-xs">React</Badge>
+                      <Badge variant="secondary" className="text-xs bg-cyan-100 text-cyan-700 dark:bg-cyan-950/30 dark:text-cyan-400">React</Badge>
                     </div>
-                    <Editor
-                      height="100%"
-                      language="javascript"
-                      value={jsxCode}
-                      onChange={(value) => setJsxCode(value || '')}
-                      theme={editorTheme}
-                      options={{
-                        minimap: { enabled: false },
-                        fontSize: 13,
-                        lineNumbers: 'on',
-                        scrollBeyondLastLine: false,
-                        automaticLayout: true,
-                        tabSize: 2,
-                        wordWrap: 'on',
-                      }}
-                    />
+                    <div className="flex-1 bg-white dark:bg-slate-900">
+                      <Editor
+                        height="100%"
+                        language="javascript"
+                        value={jsxCode}
+                        onChange={(value) => setJsxCode(value || '')}
+                        theme={editorTheme}
+                        options={{
+                          minimap: { enabled: false },
+                          fontSize: 13,
+                          lineNumbers: 'on',
+                          scrollBeyondLastLine: false,
+                          automaticLayout: true,
+                          tabSize: 2,
+                          wordWrap: 'on',
+                        }}
+                      />
+                    </div>
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
               </>
             )}
 
-            {/* CSS Editor */}
-            {visiblePanels.css && (
-              <>
-                <ResizablePanel defaultSize={20} minSize={15}>
-                  <div className="h-full flex flex-col bg-muted/30">
-                    <div className="flex items-center justify-between px-4 py-2 border-b bg-blue-500/10">
-                      <div className="flex items-center gap-2">
-                        <Palette className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                        <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">CSS</span>
-                      </div>
-                    </div>
-                    <Editor
-                      height="100%"
-                      language="css"
-                      value={cssCode}
-                      onChange={(value) => setCssCode(value || '')}
-                      theme={editorTheme}
-                      options={{
-                        minimap: { enabled: false },
-                        fontSize: 13,
-                        lineNumbers: 'on',
-                        scrollBeyondLastLine: false,
-                        automaticLayout: true,
-                        tabSize: 2,
-                        wordWrap: 'on',
-                      }}
-                    />
-                  </div>
-                </ResizablePanel>
-                <ResizableHandle withHandle />
-              </>
-            )}
-
+            
             {/* Preview */}
             {visiblePanels.preview && (
               <>
@@ -607,12 +1004,19 @@ export function ReactPlaygroundModal() {
                         <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                         <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Preview</span>
                       </div>
-                      {isCompiling && (
-                        <Badge variant="secondary" className="gap-1">
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                          Compiling...
-                        </Badge>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {isCompiling && (
+                          <Badge variant="secondary" className="gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                            Compiling...
+                          </Badge>
+                        )}
+                        {!isCompiling && !compileError && (
+                          <Badge variant="secondary" className="gap-1 bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400">
+                            ✓ Ready
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                     <div className="flex-1 bg-white dark:bg-slate-900 overflow-auto">
                       {compileError ? (
@@ -627,12 +1031,31 @@ export function ReactPlaygroundModal() {
                           </div>
                         </div>
                       ) : (
-                        <iframe
-                          ref={iframeRef}
-                          className="w-full h-full border-0"
-                          title="React Preview"
-                          sandbox="allow-scripts"
-                        />
+                        <div className="relative w-full h-full">
+                          {!isCompiling && !compiledJs && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                              <div className="text-center">
+                                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-emerald-500" />
+                                <p className="text-sm text-gray-600 dark:text-gray-400">Initializing React preview...</p>
+                              </div>
+                            </div>
+                          )}
+                          <iframe
+                            ref={iframeRef}
+                            className="w-full h-full border-0"
+                            title="React Preview"
+                            sandbox="allow-scripts allow-same-origin"
+                            onLoad={() => {
+                              if (!hasInitialRunRef.current && isOpen) {
+                                runCode().then((success) => {
+                                  if (success) {
+                                    hasInitialRunRef.current = true;
+                                  }
+                                });
+                              }
+                            }}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -649,7 +1072,7 @@ export function ReactPlaygroundModal() {
                     <div className="flex items-center gap-2">
                       <Terminal className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                       <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Console</span>
-                      <Badge variant="secondary" className="text-xs">{consoleOutput.length}</Badge>
+                      <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400">{consoleOutput.length}</Badge>
                     </div>
                     <Button
                       variant="ghost"
@@ -662,24 +1085,28 @@ export function ReactPlaygroundModal() {
                   </div>
                   <ScrollArea className="flex-1 bg-slate-950 dark:bg-slate-950">
                     <div className="p-3 space-y-1 font-mono text-xs">
-                      {consoleOutput.length === 0 ? (
+                      {!consoleOutput || consoleOutput.length === 0 ? (
                         <p className="text-slate-500 italic">Console output will appear here...</p>
                       ) : (
                         consoleOutput.map((log, index) => (
                           <div
                             key={index}
                             className={cn(
-                              "py-1 px-2 rounded",
-                              log.type === 'error' && "text-red-400 bg-red-950/30",
-                              log.type === 'warn' && "text-yellow-400 bg-yellow-950/30",
-                              log.type === 'info' && "text-blue-400 bg-blue-950/30",
-                              log.type === 'log' && "text-emerald-400"
+                              "flex items-start gap-2 py-0.5 px-2 rounded",
+                              getLogColor(log.method)
                             )}
                           >
-                            <span className="text-slate-500 mr-2">
-                              [{log.type}]
+                            <span className="text-xs text-slate-500">
+                              [{new Date().toLocaleTimeString()}]
                             </span>
-                            {log.message}
+                            <span className="flex-1 break-all">
+                              {log.args && log.args.map((arg, i) => (
+                                <span key={i}>
+                                  {i > 0 && " "}
+                                  {renderLogMessage(arg)}
+                                </span>
+                              ))}
+                            </span>
                           </div>
                         ))
                       )}

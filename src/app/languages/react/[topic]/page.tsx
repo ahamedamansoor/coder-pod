@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, Suspense } from 'react';
+import { Suspense } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { languages, type Language, type Topic } from '@/data/languages';
 import { ReactContentDisplay } from '@/components/languages/react/react-content-display';
@@ -13,15 +13,11 @@ import { useReactLayout } from '../react-layout-context';
 import { ImperativePanelHandle } from 'react-resizable-panels';
 import React from 'react';
 import { InteractiveLoading } from '@/components/shared/interactive-loading';
-import { useReactPlayground } from '@/components/languages/react/react-playground-context';
 import { getRouteParam } from '@/lib/params';
 
 function TopicPageContent() {
   const params = useParams();
   const topicSlug = getRouteParam(params, 'topic');
-  const playground = useReactPlayground();
-  const openWithContent = playground?.openWithContent;
-
   if (!topicSlug) {
     notFound();
   }
@@ -31,13 +27,6 @@ function TopicPageContent() {
 
   const selectedTopic: Topic | undefined = language.topics.find((t) => t.slug === topicSlug);
   if (!selectedTopic) notFound();
-
-  const handleOpenEditor = useCallback((code?: string) => {
-    if (code && openWithContent) {
-      openWithContent(code);
-    }
-  }, [openWithContent]);
-  
   const isLearningPlanTopic = selectedTopic.slug === 'learning-plan';
 
   return (

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { featureFlags } from '@/config/feature-flags';
+import PlaygroundShowcase from './playground-showcase';
 
 interface FeatureCard {
     title: string;
@@ -245,6 +246,9 @@ export function FeaturesShowcase() {
                         <FeatureCardComponent key={feature.title} feature={feature} />
                     ))}
                 </div>
+
+                {/* Playground Showcase */}
+                <PlaygroundShowcase />
             </div>
         </section>
     );

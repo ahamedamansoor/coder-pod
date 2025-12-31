@@ -27,7 +27,7 @@ export const languages: Language[] = [
     { ...tailwind, enabled: true },
     { ...javascript, enabled: true },
     { ...typescript, enabled: false },
-    { ...react, enabled: false },
+    { ...react, enabled: true },
     { ...vue, enabled: false },
     { ...nextjs, enabled: false },
     { ...angular, enabled: false },

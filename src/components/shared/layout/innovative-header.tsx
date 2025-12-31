@@ -90,7 +90,7 @@ export function InnovativeHeader({
     { href: '/learning-paths', label: 'Learn', icon: Code, page: 'learning', requiresAuth: false, description: 'Curated learning path content' },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
     { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
-    { href: '/ai-interview', label: 'AI Practice', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
+    { href: '/ai-interview', label: 'AI practice(Beta)', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
     { href: '/collaborative-interview', label: 'Live Interview', icon: Users, page: 'collaborative-interview', requiresAuth: true, description: 'Real-time coding with partner' },
     { href: '/notes', label: 'My Notes', icon: StickyNote, page: 'notes', requiresAuth: true, description: 'Your saved notes' },
     { href: '/discover', label: 'Explore', icon: Sparkles, page: 'discover', requiresAuth: false, description: 'Discover new content' },

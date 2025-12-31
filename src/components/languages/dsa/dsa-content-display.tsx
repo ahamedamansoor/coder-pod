@@ -78,6 +78,9 @@ const LinkedListsIntroduction = lazy(() => import('./topics/linked-lists-introdu
 const LinkedListsTypes = lazy(() => import('./topics/linked-lists-types'));
 const InsertNode = lazy(() => import('./topics/linked-lists-insert-node'));
 const DeleteNode = lazy(() => import('./topics/linked-lists-delete-node'));
+const DoublyDeleteNode = lazy(() => import('./topics/linked-lists-doubly-delete-node'));
+const DoublyReverseList = lazy(() => import('./topics/linked-lists-doubly-reverse-list'));
+const LRUCacheDesign = lazy(() => import('./topics/lru-cache-design'));
 const FindMiddle = lazy(() => import('./topics/linked-lists-find-middle'));
 const NthNodeFromEnd = lazy(() => import('./topics/linked-lists-nth-node-from-end'));
 const SearchElement = lazy(() => import('./topics/linked-lists-search-element'));
@@ -91,6 +94,7 @@ const DetectCycle = lazy(() => import('./topics/linked-lists-dsa-advanced-techni
 const FindCycleStart = lazy(() => import('./topics/linked-lists-dsa-advanced-techniques-find-cycle-start-point'));
 const IntersectionOfTwoLinkedLists = lazy(() => import('./topics/linked-lists-dsa-advanced-techniques-intersection-of-two-linked-lists'));
 const RemoveNthNodeFromEnd = lazy(() => import('./topics/linked-lists-remove-nth-node-from-end'));
+const AddTwoNumbers = lazy(() => import('./topics/linked-lists-add-two-numbers'));
 
 // Map topic slugs to their components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -166,6 +170,9 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'linked-lists-dsa-introduction-types-of-linked-lists': LinkedListsTypes,
   'linked-lists-dsa-basic-operations-insert-node-at-beginning-end-middle': InsertNode,
   'linked-lists-dsa-basic-operations-delete-a-node': DeleteNode,
+  'linked-lists-dsa-doubly-linked-lists-delete-node-in-o-1-time': DoublyDeleteNode,
+  'linked-lists-dsa-doubly-linked-lists-reverse-doubly-linked-list': DoublyReverseList,
+  'linked-lists-dsa-doubly-linked-lists-lru-cache-design': LRUCacheDesign,
   'linked-lists-dsa-basic-operations-find-middle-of-linked-list': FindMiddle,
   'linked-lists-dsa-basic-operations-nth-node-from-end': NthNodeFromEnd,
   'linked-lists-dsa-basic-operations-search-for-element': SearchElement,
@@ -179,6 +186,7 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'linked-lists-dsa-advanced-techniques-find-cycle-start-point': FindCycleStart,
   'linked-lists-dsa-advanced-techniques-intersection-of-two-linked-lists': IntersectionOfTwoLinkedLists,
   'linked-lists-dsa-advanced-techniques-remove-nth-node-from-end': RemoveNthNodeFromEnd,
+  'linked-lists-dsa-advanced-techniques-add-two-numbers-linked-list-representation': AddTwoNumbers,
 };
 
 function LoadingSkeleton() {

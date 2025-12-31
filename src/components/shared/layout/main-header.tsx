@@ -21,7 +21,29 @@ import { LanguageSwitcher } from './language-switcher';
 import Link from 'next/link';
 import { useLoading } from '@/hooks/use-loading';
 import { enabledLanguages as languages } from '@/data/languages';
-import { ReactPlaygroundModal } from '@/components/languages/react/react-playground-modal';
+import { ReactPlaygroundModal } from '@/components/shared/playground/react-playground-modal';
+import { useReactPlayground } from '@/components/shared/playground/react-playground-context';
+
+const reactPlaygroundSample = {
+  jsx: `function App() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div style={{ padding: '2rem', textAlign: 'center', fontFamily: 'sans-serif' }}>
+      <h2>🎯 Quick React Playground</h2>
+      <p>Edit the code and hit Run to see changes.</p>
+      <div style={{ fontSize: '2rem', margin: '1rem 0' }}>{count}</div>
+      <button onClick={() => setCount(count + 1)} style={{ padding: '0.5rem 1.25rem', borderRadius: '9999px', border: 'none', background: '#4f46e5', color: 'white' }}>
+        Increment
+      </button>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);`,
+  css: `body { background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); }`,
+};
 
 interface MainHeaderProps {
   onToggleEditor: () => void;
@@ -40,6 +62,7 @@ export function MainHeader({
   const router = useRouter();
   const pathname = usePathname() || '';
   const { showLoader } = useLoading();
+  const { openPlayground: openReactPlayground } = useReactPlayground();
   
   const currentLanguageSlug = pathname.split('/')[1] || undefined;
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
@@ -52,6 +75,10 @@ export function MainHeader({
   
   const handleSignIn = () => {
     router.push('/login');
+  };
+
+  const handleOpenReactPlayground = () => {
+    openReactPlayground(reactPlaygroundSample);
   };
 
   const getInitials = (name?: string | null) => {
@@ -80,12 +107,16 @@ export function MainHeader({
       </div>
       <div className="flex items-center gap-4">
         {currentLanguage?.slug === 'react' ? (
-          <ReactPlaygroundModal>
-            <Button className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200">
+          <>
+            <Button
+              onClick={handleOpenReactPlayground}
+              className="rounded-full border border-blue-200/70 bg-white/80 text-blue-700 shadow-sm hover:shadow-md hover:bg-white transition-all dark:border-blue-900/40 dark:bg-slate-900/70 dark:text-blue-200"
+            >
               <ToyBrick className="mr-2 h-4 w-4" />
               React Playground
             </Button>
-          </ReactPlaygroundModal>
+            <ReactPlaygroundModal />
+          </>
         ) : (
           showWebPlaygroundButton && (
             <WebPlaygroundModal initialLanguage={currentLanguageSlug}>

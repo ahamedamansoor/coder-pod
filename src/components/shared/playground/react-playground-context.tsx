@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface ReactPlaygroundData {
   jsx: string;
-  css: string;
+  css?: string;
 }
 
 interface ReactPlaygroundContextType {
@@ -21,8 +21,10 @@ export function ReactPlaygroundProvider({ children }: { children: ReactNode }) {
   const [playgroundData, setPlaygroundData] = useState<ReactPlaygroundData | null>(null);
 
   const openPlayground = (data: ReactPlaygroundData) => {
+    console.log('🚀 React Playground Context: Opening playground with data:', data);
     setPlaygroundData(data);
     setIsOpen(true);
+    console.log('✅ React Playground Context: Playground opened, isOpen set to true');
   };
 
   const closePlayground = () => {

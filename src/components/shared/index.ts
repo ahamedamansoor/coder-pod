@@ -16,7 +16,6 @@ export { AIAnswerDisplay } from './ai-answer-display';
 export { default as InterviewSimulator } from './interview-simulator';
 export { FirebaseErrorListener } from './FirebaseErrorListener';
 export { MotivationalLoader } from './motivational-loader';
-export { AutoGuestAuth } from './auto-guest-auth';
 export { FeatureGateModal } from './feature-gate-modal';
 
 // Layout components
@@ -25,10 +24,8 @@ export { InnovativeHeader } from './layout/innovative-header';
 // Reusable code display components
 export { CodeSnippetWithOutput } from './code-snippet-with-output';
 export { CodeSnippet } from './code-snippet';
-export { SmartCodeSnippet } from './smart-code-snippet';
 export { InteractivePlayground } from './interactive-playground';
 export { FrontendCodePreview } from './frontend-code-preview';
-export { InteractiveReactPlayground } from './interactive-react-playground';
 
 // Playground components
 export { ReactPlaygroundModal } from './playground/react-playground-modal';

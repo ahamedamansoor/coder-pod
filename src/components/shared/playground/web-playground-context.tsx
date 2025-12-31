@@ -24,7 +24,16 @@ interface WebPlaygroundContextType {
   openWithContent: (html: string, css: string, js: string, focusedPanel?: 'html' | 'css' | 'js' | string, config?: { visiblePanels?: ('html' | 'css' | 'js' | 'preview' | 'console')[] }) => void;
 }
 
-const WebPlaygroundContext = createContext<WebPlaygroundContextType | undefined>(undefined);
+const defaultWebPlaygroundContext: WebPlaygroundContextType = {
+  open: false,
+  setOpen: () => {},
+  content: { html: '', css: '', js: '' },
+  setContent: () => {},
+  defaultFocusedPanel: null,
+  openWithContent: () => {},
+};
+
+const WebPlaygroundContext = createContext<WebPlaygroundContextType>(defaultWebPlaygroundContext);
 
 export const WebPlaygroundProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(false);
@@ -101,8 +110,6 @@ ${htmlContent}
 
 export const useWebPlayground = () => {
   const context = useContext(WebPlaygroundContext);
-  if (context === undefined) {
-    throw new Error('useWebPlayground must be used within a WebPlaygroundProvider');
-  }
-  return context;
+  // Gracefully fall back to no-op context when provider is absent
+  return context || defaultWebPlaygroundContext;
 };
