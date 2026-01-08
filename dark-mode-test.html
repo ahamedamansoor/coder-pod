@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Test for Component Playground</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            background: #f8fafc;
+            color: #1e293b;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Dark mode support for common elements */
+        .dark body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .dark a { color: #60a5fa; }
+        .dark a:visited { color: #a78bfa; }
+        .dark button:not([style*="background"]) {
+            background: #3b82f6;
+            color: white;
+        }
+        .dark input, .dark textarea, .dark select {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: #475569;
+        }
+        
+        .test-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .dark .test-card {
+            background: #1e293b;
+            border-color: #475569;
+        }
+    </style>
+    <script>
+        // Simulate the theme detection logic from our implementation
+        (function() {
+            // Function to update theme
+            function updateTheme() {
+                // Check if parent has dark mode, fallback to system preference
+                const isDark = window.parent.document.documentElement.classList.contains('dark') || 
+                             window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+                console.log('Theme updated:', isDark ? 'dark' : 'light');
+            }
+            
+            // Initial theme setup
+            updateTheme();
+            
+            // Listen for theme changes in parent
+            if (window.parent.MutationObserver) {
+                const observer = new window.parent.MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            updateTheme();
+                        }
+                    });
+                });
+                
+                observer.observe(window.parent.document.documentElement, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+            }
+            
+            // Also listen for system preference changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+            
+            // Manual toggle for testing
+            window.toggleTheme = function() {
+                document.documentElement.classList.toggle('dark');
+                updateTheme();
+            };
+        })();
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Dark Mode Test - Component Playground</h1>
+        
+        <div class="test-card">
+            <h2 class="text-xl font-semibold mb-4">React Component with Inline Styles</h2>
+            <div style="
+                padding: 2rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border-radius: 16px;
+                text-align: center;
+                font-family: Arial, sans-serif;
+                max-width: 400px;
+                margin: 2rem auto;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2)
+            ">
+                <h2>🎉 Welcome to Components!</h2>
+                <p>This is a reusable piece of UI</p>
+                <p>You can use it anywhere in your app!</p>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h2 class="text-xl font-semibold mb-4">HTML Elements with CSS Classes</h2>
+            <p class="mb-4">These elements should respond to dark mode:</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Input Field:</label>
+                    <input type="text" placeholder="Type something..." class="w-full px-3 py-2 border rounded-md">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Textarea:</label>
+                    <textarea placeholder="Type something longer..." class="w-full px-3 py-2 border rounded-md" rows="3"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">Select:</label>
+                    <select class="w-full px-3 py-2 border rounded-md">
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                    </select>
+                </div>
+                
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Primary Button
+                    </button>
+                    <button class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                        Secondary Button
+                    </button>
+                </div>
+                
+                <div>
+                    <a href="#" class="text-blue-500 hover:text-blue-600 underline">This is a link</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h2 class="text-xl font-semibold mb-4">Theme Information</h2>
+            <div id="theme-info" class="space-y-2">
+                <p><strong>Current Theme:</strong> <span id="current-theme">Loading...</span></p>
+                <p><strong>System Preference:</strong> <span id="system-theme">Loading...</span></p>
+                <p><strong>Parent Dark Class:</strong> <span id="parent-dark">Loading...</span></p>
+            </div>
+            
+            <button onclick="window.toggleTheme()" class="mt-4 px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                Toggle Dark Mode (for testing)
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function updateThemeInfo() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const parentDark = window.parent.document.documentElement.classList.contains('dark');
+            
+            document.getElementById('current-theme').textContent = isDark ? 'Dark' : 'Light';
+            document.getElementById('system-theme').textContent = systemDark ? 'Dark' : 'Light';
+            document.getElementById('parent-dark').textContent = parentDark ? 'Yes' : 'No';
+        }
+        
+        // Update theme info every second
+        setInterval(updateThemeInfo, 1000);
+        updateThemeInfo();
+    </script>
+</body>
+</html>
