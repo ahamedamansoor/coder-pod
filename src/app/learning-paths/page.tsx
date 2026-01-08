@@ -13,7 +13,7 @@ import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useUser } from '@/hooks/use-auth-compat';
 import { unifiedCompletionService } from '@/services/unified-completion.service';
 
-type Filter = 'all' | 'frontend' | 'backend' | 'testing' | 'algorithms';
+type Filter = 'all' | 'frontend' | 'backend' | 'testing';
 
 // Accent gradients for cards
 const accentMap: Record<string, string> = {
@@ -43,13 +43,13 @@ function LearningPathsPageContent() {
     const [completionData, setCompletionData] = useState<{ [language: string]: string[] }>({});
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'dsa', 'selenium']), []);
-    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind', 'react'];
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium']), []);
+    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind'];
     const backendLanguages: string[] = [];
     const testingLanguages: string[] = ['selenium'];
-    const algorithmLanguages = ['dsa'];
+    const algorithmLanguages: string[] = [];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'dsa', 'selenium']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium']), []);
 
     // Load completion data from unified service
     useEffect(() => {
@@ -88,7 +88,6 @@ function LearningPathsPageContent() {
             if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
             if (filter === 'backend') return backendLanguages.includes(lang.slug);
             if (filter === 'testing') return testingLanguages.includes(lang.slug);
-            if (filter === 'algorithms') return algorithmLanguages.includes(lang.slug);
             return true;
         });
     }, [filter, searchQuery, allowedSlugs]);
@@ -143,7 +142,6 @@ function LearningPathsPageContent() {
                                     { id: 'frontend', label: 'Frontend' },
                                     { id: 'backend', label: 'Backend' },
                                     { id: 'testing', label: 'Testing' },
-                                    { id: 'algorithms', label: 'Algorithms' },
                                 ].map((option) => (
                                     <button
                                         key={option.id}
