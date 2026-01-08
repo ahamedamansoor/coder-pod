@@ -38,11 +38,12 @@ export function ApiSetupComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="API Setup"
         description="Learn how to set up API testing infrastructure step by step"
         icon={Server}
+        category="Selenium · API Testing"
         colorTheme="blue"
         badges={[
           { label: 'API Testing', variant: 'secondary' },

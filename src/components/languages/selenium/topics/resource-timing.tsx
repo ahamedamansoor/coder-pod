@@ -190,11 +190,12 @@ export default function ResourceTimingComponent() {
   const totalDuration = Math.max(...filteredResources.map(r => r.startTime + r.duration));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 dark:from-slate-900 dark:to-green-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Resource Timing"
         description="Master the Resource Timing API to analyze resource loading performance, create detailed waterfall charts, and optimize web application asset delivery with comprehensive timing data"
         icon={BarChart3}
+        category="Selenium · Performance Testing"
         colorTheme="green"
         badges={[
           { label: 'Resource Timing', variant: 'secondary' },

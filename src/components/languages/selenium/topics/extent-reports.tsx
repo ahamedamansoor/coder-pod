@@ -49,11 +49,12 @@ export function ExtentReportsComponent() {
   const [activeTab, setActiveTab] = useState<'java' | 'python' | 'javascript'>('java');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-indigo-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Extent Reports"
         description="Master comprehensive test reporting with Extent Reports framework to create beautiful, interactive HTML reports with rich visualizations and detailed test insights"
         icon={BarChart3}
+        category="Selenium · Test Reporting"
         colorTheme="indigo"
         badges={[
           { label: 'Extent Reports', variant: 'secondary' },

@@ -209,6 +209,7 @@ export function MobileEmulationComponent() {
         title="Mobile Emulation"
         description="Master mobile device emulation for testing responsive designs and mobile web applications"
         icon={Smartphone}
+        category="Selenium · Mobile Testing"
         colorTheme="teal"
         badges={[
           { label: 'Device Emulation', variant: 'secondary' },

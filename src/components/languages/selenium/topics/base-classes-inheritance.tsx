@@ -40,11 +40,12 @@ export function BaseClassesInheritanceComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-rose-50 dark:from-slate-900 dark:to-rose-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Base Classes and Inheritance"
         description="Master the art of creating reusable base classes and implementing inheritance hierarchies to build maintainable and scalable test automation frameworks"
         icon={Package}
+        category="Selenium · Design Patterns"
         colorTheme="rose"
         badges={[
           { label: 'Inheritance', variant: 'secondary' },

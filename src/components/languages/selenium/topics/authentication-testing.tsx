@@ -368,6 +368,7 @@ async function testAuthenticationSecurity(driver, loginUrl) {
         title="Authentication Testing"
         description="Comprehensive authentication and authorization security testing with Selenium"
         icon={Shield}
+        category="Selenium · Security Testing"
         colorTheme="purple"
       />
 

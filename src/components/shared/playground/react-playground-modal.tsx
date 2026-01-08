@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useReactPlayground } from './react-playground-context';
 
 interface ConsoleLog {
-  method: 'log' | 'error' | 'warn' | 'info';
-  args: any[];
-  timestamp: number;
+  type: 'log' | 'error' | 'warn' | 'info';
+  message: any[];
+  timestamp: string;
 }
 
 import {
@@ -21,18 +21,17 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from '@/components/ui/resizable';
-import Editor from '@monaco-editor/react';
+import Editor, { Monaco } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import {
   Code, Terminal, Play, RefreshCw, X, Loader2,
-  FileCode, Eye, Trash2, Zap
+  FileCode, Eye, Trash2, Palette
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-// Default interactive example
 const defaultExample = `function InteractiveCounter() {
   const [count, setCount] = React.useState(0);
   
@@ -40,7 +39,6 @@ const defaultExample = `function InteractiveCounter() {
   const decrement = () => setCount(Math.max(0, count - 1));
   const reset = () => setCount(0);
   
-  // Inline styles for the component
   const containerStyle = {
     padding: '2rem',
     textAlign: 'center',
@@ -88,8 +86,7 @@ const defaultExample = `function InteractiveCounter() {
   const decrementStyle = {
     ...buttonStyle,
     background: count > 0 ? '#ff6b6b' : '#ccc',
-    color: 'white',
-    transform: 'scale(1)'
+    color: 'white'
   };
   
   const resetStyle = {
@@ -136,733 +133,761 @@ const defaultExample = `function InteractiveCounter() {
   );
 }
 
-// Render the component to the DOM
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<InteractiveCounter />);`;
 
+const consoleScript = `
+  const originalLog = console.log;
+  const originalError = console.error;
+  const originalWarn = console.warn;
+  const originalInfo = console.info;
+  
+  const postMessage = (type, args) => {
+    window.parent.postMessage({
+      source: 'react-playground',
+      type: type,
+      message: args.map(arg => {
+        if (arg instanceof Error) {
+          return { type: 'Error', message: arg.message, stack: arg.stack };
+        }
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.parse(JSON.stringify(arg, null, 2));
+          } catch(e) {
+            return '[Object]';
+          }
+        }
+        return arg;
+      })
+    }, '*');
+  };
+
+  console.log = function(...args) {
+    originalLog.apply(console, args);
+    postMessage('log', args);
+  };
+  console.error = function(...args) {
+    originalError.apply(console, args);
+    postMessage('error', args);
+  };
+  console.warn = function(...args) {
+    originalWarn.apply(console, args);
+    postMessage('warn', args);
+  };
+  console.info = function(...args) {
+    originalInfo.apply(console, args);
+    postMessage('info', args);
+  };
+
+  window.addEventListener('error', function(e) {
+    postMessage('error', [e.message + (e.lineno ? ' (line ' + e.lineno + ')' : '')]);
+  });
+`;
+
 export function ReactPlaygroundModal() {
   const { isOpen, playgroundData, closePlayground } = useReactPlayground();
+  console.log('🎮 React Playground Modal: State update:', {
+    isOpen,
+    hasData: !!playgroundData,
+    dataLength: playgroundData?.jsx.length || 0
+  });
   const [jsxCode, setJsxCode] = useState(defaultExample);
-  const [consoleOutput, setConsoleOutput] = useState<ConsoleLog[]>([]);
+  const [cssCode, setCssCode] = useState('');
+  const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
-  const [autoRun, setAutoRun] = useState(true);
+  const [autoRun, setAutoRun] = useState(false);
+  const [outputSrc, setOutputSrc] = useState('about:blank');
+  const [iframeKey, setIframeKey] = useState(0);
   const [visiblePanels, setVisiblePanels] = useState({
     editor: true,
+    css: false,
     preview: true,
-    console: true,
+    console: false,
   });
-
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const autoRunTimeoutRef = useRef<NodeJS.Timeout>();
-  const hasInitialRunRef = useRef(false);
-  const { theme } = useTheme();
 
-  // Initialize with playground data when modal opens
+  const hasInitialRunRef = useRef(false);
+  const monacoRef = useRef<Monaco | null>(null);
+  const { theme } = useTheme();
+  const [editorTheme, setEditorTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
+
+  // Configure Monaco editor for React/JSX support
+  const handleEditorWillMount = (monaco: Monaco) => {
+    monacoRef.current = monaco;
+    
+    // Configure JavaScript/TypeScript compiler options for JSX
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+      target: monaco.languages.typescript.ScriptTarget.Latest,
+      allowNonTsExtensions: true,
+      moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+      module: monaco.languages.typescript.ModuleKind.CommonJS,
+      noEmit: true,
+      esModuleInterop: true,
+      jsx: monaco.languages.typescript.JsxEmit.React,
+      reactNamespace: 'React',
+      allowJs: true,
+      typeRoots: ['node_modules/@types'],
+    });
+
+    monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: false,
+      noSyntaxValidation: false,
+    });
+
+    // Add React type definitions for autocomplete
+    const reactTypes = `
+      declare namespace React {
+        type ReactNode = string | number | boolean | null | undefined | ReactElement | ReactFragment | ReactPortal;
+        type ReactElement = { type: any; props: any; key: any };
+        type ReactFragment = {} | ReactNode[];
+        type ReactPortal = { key: any; children: ReactNode };
+        type FC<P = {}> = (props: P) => ReactElement | null;
+        type Component<P = {}, S = {}> = { props: P; state: S; render(): ReactNode; setState(s: Partial<S>): void };
+        type CSSProperties = { [key: string]: string | number };
+        type MouseEvent<T = Element> = { target: T; currentTarget: T; preventDefault(): void; stopPropagation(): void };
+        type ChangeEvent<T = Element> = { target: T & { value: string }; currentTarget: T };
+        type FormEvent<T = Element> = { target: T; preventDefault(): void };
+        type KeyboardEvent<T = Element> = { key: string; code: string; target: T };
+        type RefObject<T> = { current: T | null };
+        type MutableRefObject<T> = { current: T };
+        type Dispatch<A> = (action: A) => void;
+        type SetStateAction<S> = S | ((prevState: S) => S);
+        
+        function useState<T>(initialState: T | (() => T)): [T, Dispatch<SetStateAction<T>>];
+        function useEffect(effect: () => void | (() => void), deps?: any[]): void;
+        function useCallback<T extends (...args: any[]) => any>(callback: T, deps: any[]): T;
+        function useMemo<T>(factory: () => T, deps: any[]): T;
+        function useRef<T>(initialValue: T): MutableRefObject<T>;
+        function useRef<T>(initialValue: T | null): RefObject<T>;
+        function useContext<T>(context: React.Context<T>): T;
+        function useReducer<R extends (state: any, action: any) => any>(reducer: R, initialState: any): [any, Dispatch<any>];
+        function useLayoutEffect(effect: () => void | (() => void), deps?: any[]): void;
+        function useImperativeHandle<T>(ref: any, init: () => T, deps?: any[]): void;
+        function useDebugValue<T>(value: T): void;
+        function useId(): string;
+        function useTransition(): [boolean, (callback: () => void) => void];
+        function useDeferredValue<T>(value: T): T;
+        function useSyncExternalStore<T>(subscribe: (callback: () => void) => () => void, getSnapshot: () => T): T;
+        function useInsertionEffect(effect: () => void | (() => void), deps?: any[]): void;
+        
+        function createContext<T>(defaultValue: T): Context<T>;
+        function createElement(type: any, props?: any, ...children: any[]): ReactElement;
+        function cloneElement(element: ReactElement, props?: any, ...children: any[]): ReactElement;
+        function createRef<T>(): RefObject<T>;
+        function forwardRef<T, P>(render: (props: P, ref: any) => ReactElement | null): FC<P>;
+        function memo<P>(component: FC<P>): FC<P>;
+        function lazy<T extends FC<any>>(factory: () => Promise<{ default: T }>): T;
+        function startTransition(callback: () => void): void;
+        
+        interface Context<T> { Provider: FC<{ value: T; children?: ReactNode }>; Consumer: FC<{ children: (value: T) => ReactNode }> }
+        const Fragment: FC<{ children?: ReactNode }>;
+        const Suspense: FC<{ fallback?: ReactNode; children?: ReactNode }>;
+        const StrictMode: FC<{ children?: ReactNode }>;
+        const Profiler: FC<{ id: string; onRender: (...args: any[]) => void; children?: ReactNode }>;
+      }
+      
+      declare namespace ReactDOM {
+        function createRoot(container: Element | null): { render(element: React.ReactNode): void; unmount(): void };
+        function render(element: React.ReactNode, container: Element | null): void;
+        function hydrate(element: React.ReactNode, container: Element | null): void;
+        function unmountComponentAtNode(container: Element): boolean;
+        function createPortal(children: React.ReactNode, container: Element): React.ReactPortal;
+        function flushSync<T>(fn: () => T): T;
+      }
+      
+      declare const React: typeof React;
+      declare const ReactDOM: typeof ReactDOM;
+    `;
+
+    monaco.languages.typescript.javascriptDefaults.addExtraLib(reactTypes, 'react.d.ts');
+  };
+
+  useEffect(() => {
+    setEditorTheme(theme === 'dark' ? 'dark' : 'light');
+  }, [theme]);
+
+  // Send theme message to iframe
+  const sendThemeToIframe = useCallback(() => {
+    if (iframeRef.current) {
+      const isDark = theme === 'dark';
+      console.log('🎨 [React Playground] Sending theme to iframe:', isDark);
+      iframeRef.current.contentWindow?.postMessage({
+        type: 'theme-change',
+        isDark: isDark
+      }, '*');
+    }
+  }, [theme]);
+
+  // Send theme when iframe loads and when theme changes
+  useEffect(() => {
+    if (isOpen) {
+      // Send initial theme after a short delay
+      const timeout = setTimeout(sendThemeToIframe, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen, sendThemeToIframe]);
+
+  useEffect(() => {
+    if (isOpen) {
+      sendThemeToIframe();
+    }
+  }, [theme, isOpen, sendThemeToIframe]);
+
   useEffect(() => {
     if (isOpen && playgroundData?.jsx) {
+      console.log('🎮 React Playground Modal: Setting playground data:', {
+        jsxLength: playgroundData.jsx.length,
+        cssLength: playgroundData.css?.length || 0,
+        jsxPreview: playgroundData.jsx.substring(0, 100) + '...'
+      });
       setJsxCode(playgroundData.jsx);
-      setConsoleOutput([]);
+      setCssCode(playgroundData.css || '');
+      setConsoleLogs([]);
       hasInitialRunRef.current = false;
+      // Don't set hasChanges on initial load to prevent auto-run issues
+      setHasChanges(false);
     }
   }, [isOpen, playgroundData]);
 
-  // Clear timeout on unmount
   useEffect(() => {
-    return () => {
-      if (autoRunTimeoutRef.current) {
-        clearTimeout(autoRunTimeoutRef.current);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.source === 'react-playground') {
+        const { type, message } = event.data;
+        setConsoleLogs((prev) => [
+          ...prev,
+          { type, message, timestamp: new Date().toLocaleTimeString() },
+        ]);
       }
     };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // Add console log with timestamp
-  const addConsoleLog = useCallback((method: ConsoleLog['method'], ...args: unknown[]) => {
-    setConsoleOutput(prev => [...prev, {
-      method,
-      args,
-      timestamp: Date.now()
+  const runCode = useCallback(() => {
+    setConsoleLogs([{
+      type: 'info',
+      message: ['🚀 Compiling and running React code...'],
+      timestamp: new Date().toLocaleTimeString()
     }]);
-  }, []);
-
-  // Simple JSX transformation as primary method (no external Babel dependency)
-  const compileJSX = useCallback(async (code: string): Promise<string> => {
-    try {
-      console.log('🔧 Starting JSX compilation...');
-      
-      // Check if code contains JSX
-      const hasJSX = /<[^>]*>/.test(code) || code.includes('React.Fragment') || code.includes('<>');
-      
-      if (!hasJSX) {
-        console.log('✅ No JSX detected, using code as-is');
-        return code; // Return as-is if no JSX
-      }
-
-      console.log('⚙️ Transforming JSX to React.createElement...');
-      
-      // Use our built-in JSX transformation
-      const transformedCode = transformJSXToReact(code);
-      
-      console.log('✅ JSX transformation completed');
-      return transformedCode;
-    } catch (error) {
-      console.error('❌ JSX compilation failed:', error);
-      throw new Error(`Compilation failed: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  }, []);
-
-  // Enhanced JSX transformation function
-  const transformJSXToReact = (code: string): string => {
-    console.log('🔄 Applying JSX to React.createElement transformation...');
     
-    let transformedCode = code;
-    
-    // Step 1: Transform JSX elements with props and children
-    transformedCode = transformedCode.replace(
-      /<(\w+)([^>]*?)>([\s\S]*?)<\/\1>/g,
-      (match, tagName, props, children) => {
-        console.log(`Transforming <${tagName}> element`);
-        
-        // Parse props
-        let propsObj = 'null';
-        if (props.trim()) {
-          // Simple prop parsing (basic implementation)
-          const propMatches = props.match(/(\w+)=\{([^}]+)\}|(\w+)="([^"]*)"/g);
-          if (propMatches) {
-            const propsArray: string[] = [];
-            propMatches.forEach((prop: string | null) => {
-              if (prop && prop.includes('{')) {
-                const [, key, value] = prop.match(/(\w+)=\{([^}]+)\}/) || [];
-                if (key && value) propsArray.push(`${key}: ${value}`);
-              } else if (prop) {
-                const [, key, value] = prop.match(/(\w+)="([^"]*)"/) || [];
-                if (key && value) propsArray.push(`${key}: "${value}"`);
-              }
-            });
-            propsObj = propsArray.length > 0 ? `{ ${propsArray.join(', ')} }` : 'null';
-          }
-        }
-        
-        // Handle children recursively
-        let processedChildren = children.trim();
-        if (processedChildren) {
-          // Check if children contain more JSX
-          if (/<[^>]*>/.test(processedChildren)) {
-            processedChildren = transformJSXToReact(processedChildren);
-          }
-          // Wrap text children in quotes
-          if (!processedChildren.includes('React.createElement') && !processedChildren.includes('{') && !processedChildren.includes('"')) {
-            processedChildren = `"${processedChildren}"`;
-          }
-        } else {
-          processedChildren = 'null';
-        }
-        
-        return `React.createElement('${tagName}', ${propsObj}, ${processedChildren})`;
-      }
-    );
-    
-    // Step 2: Transform self-closing tags
-    transformedCode = transformedCode.replace(
-      /<(\w+)([^>]*?)\/>/g,
-      (match, tagName, props) => {
-        console.log(`Transforming self-closing <${tagName}/> element`);
-        
-        let propsObj = 'null';
-        if (props.trim()) {
-          const propMatches = props.match(/(\w+)=\{([^}]+)\}|(\w+)="([^"]*)"/g);
-          if (propMatches) {
-            const propsArray: string[] = [];
-            propMatches.forEach((prop: string | null) => {
-              if (prop && prop.includes('{')) {
-                const [, key, value] = prop.match(/(\w+)=\{([^}]+)\}/) || [];
-                if (key && value) propsArray.push(`${key}: ${value}`);
-              } else if (prop) {
-                const [, key, value] = prop.match(/(\w+)="([^"]*)"/) || [];
-                if (key && value) propsArray.push(`${key}: "${value}"`);
-              }
-            });
-            propsObj = propsArray.length > 0 ? `{ ${propsArray.join(', ')} }` : 'null';
-          }
-        }
-        
-        return `React.createElement('${tagName}', ${propsObj})`;
-      }
-    );
-    
-    // Step 3: Handle React.Fragment
-    transformedCode = transformedCode.replace(
-      /<React.Fragment>([\s\S]*?)<\/React.Fragment>/g,
-      (match, children) => {
-        let processedChildren = children.trim();
-        if (processedChildren && !processedChildren.includes('React.createElement')) {
-          processedChildren = `"${processedChildren}"`;
-        }
-        return `React.createElement(React.Fragment, null, ${processedChildren})`;
-      }
-    );
-    
-    // Step 4: Handle empty fragments <>
-    transformedCode = transformedCode.replace(
-      /<>([\s\S]*?)<\/>/g,
-      (match, children) => {
-        let processedChildren = children.trim();
-        if (processedChildren && !processedChildren.includes('React.createElement')) {
-          processedChildren = `"${processedChildren}"`;
-        }
-        return `React.createElement(React.Fragment, null, ${processedChildren})`;
-      }
-    );
-    
-    // Step 5: Add React import if not present
-    if (!transformedCode.includes('const React') && !transformedCode.includes('import React')) {
-      transformedCode = 'const React = window.React;\n' + transformedCode;
-    }
-    
-    // Step 6: Add ReactDOM import if not present and render call exists
-    if (transformedCode.includes('ReactDOM') && !transformedCode.includes('const ReactDOM') && !transformedCode.includes('import ReactDOM')) {
-      transformedCode = 'const ReactDOM = window.ReactDOM;\n' + transformedCode;
-    }
-    
-    // Step 7: Ensure proper component rendering setup
-    if (!transformedCode.includes('ReactDOM.createRoot') && !transformedCode.includes('ReactDOM.render')) {
-      // If no render call found, add automatic rendering
-      transformedCode += '\n\n// Auto-render the component\nif (typeof document !== "undefined") {\n  try {\n    const root = ReactDOM.createRoot(document.getElementById("root"));\n    root.render(<InteractiveCounter />);\n  } catch (e) {\n    console.error("Auto-render failed:", e);\n  }\n}';
-    }
-    
-    console.log('✅ JSX transformation completed successfully');
-    return transformedCode;
-  };
-
-  // Run code in iframe
-  const runCode = useCallback(async () => {
-    if (!iframeRef.current) {
-      addConsoleLog('error', 'No iframe reference available');
-      return false;
-    }
-
-    console.log('🚀 React Playground: Starting execution...');
-    setConsoleOutput([]);
-    setHasChanges(false);
     setIsRunning(true);
+    setIframeKey(prev => prev + 1);
+    
+    setTimeout(() => {
+      const escapedCode = jsxCode
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$/g, '\\$');
 
-    try {
-      // Compile JSX first
-      console.log('🔧 Compiling JSX code...');
-      const compiledCode = await compileJSX(jsxCode);
-      console.log('✅ JSX compilation successful');
-      
-      // Create iframe HTML with React and user code
-      const iframeHtml = `<!DOCTYPE html>
-<html>
+      // Set initial theme based on current app theme
+      const isDarkTheme = theme === 'dark';
+      const initialBackground = isDarkTheme ? '#0f172a' : '#f8fafc';
+      const initialTextColor = isDarkTheme ? '#f1f5f9' : '#1f2937';
+
+      const iframeHtml = `
+<!DOCTYPE html>
+<html class="${isDarkTheme ? 'dark' : ''}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Set initial theme immediately to prevent flash
+    document.documentElement.className = '${isDarkTheme ? 'dark' : ''}';
+    document.body.style.background = '${initialBackground}';
+    document.body.style.color = '${initialTextColor}';
+    // Add CSS custom properties for better dark mode support
+    document.documentElement.style.setProperty('--background', '${initialBackground}');
+    document.documentElement.style.setProperty('--foreground', '${initialTextColor}');
+  </script>
+  <script>
+    (function() {
+      // Function to update theme based on system preference (fallback)
+      function updateTheme(systemDark) {
+        const isDark = systemDark !== undefined ? systemDark : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        console.log('🎨 [React Playground] Theme update - isDark:', isDark);
+        
+        // Apply dark class to HTML element for CSS selectors to work
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        
+        // Update CSS variables and styles
+        const previewBackground = isDark ? '#0f172a' : '#f8fafc';
+        const textColor = isDark ? '#f1f5f9' : '#1f2937';
+        const mutedTextColor = isDark ? '#e2e8f0' : '#374151';
+        const buttonBg = isDark ? '#1f2937' : '#f3f4f6';
+        const buttonBorder = isDark ? '#374151' : '#d1d5db';
+        const inputBg = isDark ? '#1f2937' : '#ffffff';
+        const errorBg = isDark ? '#7f1d1d' : '#fef2f2';
+        const errorColor = isDark ? '#fca5a5' : '#dc2626';
+        const errorBorder = isDark ? '#7f1d1d' : '#fecaca';
+        
+        // Update CSS custom properties
+        document.documentElement.style.setProperty('--background', previewBackground);
+        document.documentElement.style.setProperty('--foreground', textColor);
+        document.documentElement.style.setProperty('--muted', mutedTextColor);
+        document.documentElement.style.setProperty('--card', isDark ? '#1e293b' : '#ffffff');
+        document.documentElement.style.setProperty('--border', isDark ? '#334155' : '#e2e8f0');
+        
+        // Update body styles immediately
+        document.body.style.setProperty('background', previewBackground, 'important');
+        document.body.style.setProperty('color', textColor, 'important');
+        
+        // Update all text elements
+        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        textElements.forEach(el => el.style.color = textColor);
+        
+        const mutedElements = document.querySelectorAll('p, span, div');
+        mutedElements.forEach(el => {
+          if (!el.closest('button') && !el.closest('input') && !el.closest('textarea') && !el.closest('select')) {
+            el.style.color = mutedTextColor;
+          }
+        });
+        
+        // Update buttons
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(el => {
+          el.style.background = buttonBg;
+          el.style.color = textColor;
+          el.style.border = \`1px solid \${buttonBorder}\`;
+        });
+        
+        // Update inputs
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(el => {
+          el.style.background = inputBg;
+          el.style.color = textColor;
+          el.style.border = \`1px solid \${buttonBorder}\`;
+        });
+        
+        // Update error displays
+        const errorDisplays = document.querySelectorAll('.error-display');
+        errorDisplays.forEach(el => {
+          el.style.background = errorBg;
+          el.style.color = errorColor;
+          const h3 = el.querySelector('h3');
+          if (h3) h3.style.color = errorColor;
+          const pre = el.querySelector('pre');
+          if (pre) {
+            pre.style.background = isDark ? '#450a0a' : '#fef2f2';
+            pre.style.color = errorColor;
+            pre.style.border = \`1px solid \${errorBorder}\`;
+          }
+        });
+      }
+      
+      // Listen for system theme changes
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', (e) => updateTheme(e.matches));
+      
+      // Listen for theme messages from parent
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'theme-change') {
+          console.log('🎨 [React Playground] Received theme message:', event.data.isDark);
+          updateTheme(event.data.isDark);
+        }
+      });
+      
+      // Initial theme setup - use current theme
+      updateTheme(${isDarkTheme});
+    })();
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: system-ui, -apple-system, sans-serif; 
-      background: #f8fafc;
+      background: ${initialBackground} !important;
+      color: ${initialTextColor} !important;
       min-height: 100vh;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    
     #root {
       width: 100%;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    
-    /* Innovative Loading Animation */
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem;
+    .error-display {
+      padding: 2rem;
       text-align: center;
-      animation: fadeInScale 0.6s ease-out;
-    }
-    
-    .loading-logo {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      margin-bottom: 2rem;
-    }
-    
-    .react-atom {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 3px solid #61dafb;
-      border-radius: 50%;
-      animation: rotate 2s linear infinite;
-    }
-    
-    .react-core {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
-      background: #61dafb;
-      border-radius: 50%;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    
-    .react-electron {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: #61dafb;
-      border-radius: 50%;
-      animation: orbit 3s linear infinite;
-    }
-    
-    .react-electron:nth-child(3) {
-      animation-delay: 0s;
-    }
-    
-    .react-electron:nth-child(4) {
-      animation-delay: 1s;
-    }
-    
-    .react-electron:nth-child(5) {
-      animation-delay: 2s;
-    }
-    
-    .loading-text {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 0.5rem;
-      animation: textGlow 2s ease-in-out infinite;
-    }
-    
-    .loading-subtitle {
-      font-size: 1rem;
-      color: #6b7280;
-      margin-bottom: 2rem;
-      animation: fadeIn 1s ease-out 0.3s both;
-    }
-    
-    .loading-dots {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .loading-dot {
-      width: 8px;
-      height: 8px;
-      background: #61dafb;
-      border-radius: 50%;
-      animation: dotBounce 1.4s ease-in-out infinite;
-    }
-    
-    .loading-dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    
-    .loading-dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-    
-    /* Loading Progress Bar */
-    .loading-progress {
-      width: 200px;
-      height: 4px;
-      background: #e5e7eb;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 1.5rem;
-    }
-    
-    .loading-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #61dafb, #4fc3f7);
-      border-radius: 2px;
-      animation: progress 2s ease-in-out infinite;
-    }
-    
-    /* Dark Mode Support */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: #0f172a;
-      }
-      
-      .loading-text {
-        color: #f1f5f9;
-      }
-      
-      .loading-subtitle {
-        color: #94a3b8;
-      }
-      
-      .loading-progress {
-        background: #334155;
-      }
-      
-      .react-atom {
-        border-color: #61dafb;
-        box-shadow: 0 0 20px rgba(97, 218, 251, 0.5);
-      }
-      
-      .react-core {
-        background: #61dafb;
-        box-shadow: 0 0 15px rgba(97, 218, 251, 0.8);
-      }
-      
-      .react-electron {
-        background: #61dafb;
-        box-shadow: 0 0 10px rgba(97, 218, 251, 0.6);
-      }
-      
-      .loading-dot {
-        background: #61dafb;
-        box-shadow: 0 0 8px rgba(97, 218, 251, 0.5);
-      }
-    }
-    
-    /* Animations */
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.2); }
-    }
-    
-    @keyframes orbit {
-      from {
-        transform: rotate(0deg) translateX(30px) rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg) translateX(30px) rotate(-360deg);
-      }
-    }
-    
-    @keyframes textGlow {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-    
-    @keyframes dotBounce {
-      0%, 80%, 100% {
-        transform: scale(0);
-      }
-      40% {
-        transform: scale(1);
-      }
-    }
-    
-    @keyframes progress {
-      0% { width: 0%; }
-      50% { width: 70%; }
-      100% { width: 100%; }
-    }
-    
-    .error {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: system-ui, -apple-system, sans-serif;
       color: #dc2626;
+      font-family: system-ui;
       background: #fef2f2;
     }
+    .error-display h3 {
+      margin-bottom: 1rem;
+      color: #dc2626;
+    }
+    .error-display pre {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: left;
+      overflow: auto;
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 14px;
+      border: 1px solid #fecaca;
+    }
+    /* Enhanced dark mode support for user content */
+    html.dark body {
+      background: #0f172a !important;
+      color: #f1f5f9 !important;
+    }
+    html.dark .error-display {
+      background: #7f1d1d !important;
+      color: #fca5a5 !important;
+    }
+    html.dark .error-display h3 {
+      color: #fca5a5 !important;
+    }
+    html.dark .error-display pre {
+      background: #450a0a !important;
+      color: #fca5a5 !important;
+      border-color: #7f1d1d !important;
+    }
     
-    @media (prefers-color-scheme: dark) {
-      .error {
-        background: #7f1d1d;
-        color: #fca5a5;
+    /* Support for CSS custom properties in user content */
+    :root {
+      --background: ${initialBackground};
+      --foreground: ${initialTextColor};
+      --card: ${isDarkTheme ? '#1e293b' : '#ffffff'};
+      --border: ${isDarkTheme ? '#334155' : '#e2e8f0'};
+      --muted: ${isDarkTheme ? '#e2e8f0' : '#374151'};
+    }
+    
+    html.dark {
+      --background: #0f172a;
+      --foreground: #f1f5f9;
+      --card: #1e293b;
+      --border: #334155;
+      --muted: #e2e8f0;
+    }
+    
+    /* Common dark mode styles for user components */
+    html.dark .card,
+    html.dark .bg-white {
+      background: var(--card) !important;
+      border-color: var(--border) !important;
+    }
+    
+    html.dark .bg-gray-50,
+    html.dark .bg-slate-50 {
+      background: #1e293b !important;
+    }
+    
+    html.dark .text-gray-900,
+    html.dark .text-slate-900 {
+      color: var(--foreground) !important;
+    }
+    
+    html.dark .text-gray-600,
+    html.dark .text-slate-600 {
+      color: var(--muted) !important;
+    }
+    
+    html.dark button:not([style*="background"]) {
+      background: var(--card) !important;
+      color: var(--foreground) !important;
+      border-color: var(--border) !important;
+    }
+    
+    html.dark input,
+    html.dark textarea,
+    html.dark select {
+      background: var(--card) !important;
+      color: var(--foreground) !important;
+      border-color: var(--border) !important;
+    }
+    
+    /* Light mode base styles for iframe */
+    html:not(.dark) {
+      background: ${initialBackground} !important;
+    }
+    
+    html:not(.dark) body {
+      background: ${initialBackground} !important;
+      color: ${initialTextColor} !important;
+    }
+    
+    /* Dark mode base styles for iframe - with maximum specificity */
+    html.dark {
+      background: ${initialBackground} !important;
+    }
+    
+    html.dark body {
+      background: ${initialBackground} !important;
+      color: ${initialTextColor} !important;
+    }
+    
+    /* Override user-provided body styles in dark mode */
+    html.dark #root {
+      background: transparent !important;
+    }
+    
+    /* User-provided CSS with higher specificity */
+    ${cssCode.replace(/([^{}]+)\s*{/g, (match) => {
+      // Don't prefix dark mode selectors since .dark is on html element
+      if (match.trim().startsWith('.dark')) {
+        return match;
       }
+      // Don't prefix body selector since it's outside #root
+      if (match.trim().startsWith('body')) {
+        return match;
+      }
+      // Don't prefix html selector since it's outside #root
+      if (match.trim().startsWith('html')) {
+        return match;
+      }
+      // Prefix all other selectors with #root
+      return '#root ' + match;
+    })}
+    
+    /* Final dark mode overrides to ensure background is applied */
+    html.dark body,
+    html.dark #root,
+    html.dark .container {
+      background: ${initialBackground} !important;
+    }
+    
+    /* Maximum specificity overrides for dark mode */
+    html.dark body,
+    html.dark #root,
+    html.dark #root > *,
+    html.dark #root > div,
+    html.dark #root > div > *,
+    html.dark #root > div > div,
+    html.dark #root > div > div > *,
+    html.dark .container,
+    html.dark .container > *,
+    html.dark .container > div,
+    html.dark .container > div > *,
+    html.dark .container > div > div,
+    html.dark .container > div > div > * {
+      background: ${initialBackground} !important;
+    }
+    
+    /* Force dark background on all elements in dark mode */
+    html.dark * {
+      background-color: ${initialBackground} !important;
+    }
+    
+    /* Restore specific element backgrounds that should be different */
+    html.dark .btn-increment,
+    html.dark .status-panel,
+    html.dark .status-item,
+    html.dark .info-box,
+    html.dark .explanation,
+    html.dark .note {
+      background: revert !important;
+    }
+    
+    /* Comprehensive dark mode text color overrides - but don't override user CSS */
+    html.dark body {
+      color: ${initialTextColor} !important;
+    }
+    
+    /* Only override base text color, don't override user-provided colors */
+    html.dark #root,
+    html.dark .container {
+      /* Don't override text color to allow user CSS */
+    }
+    
+    /* Restore specific text colors that should be different */
+    html.dark .btn-increment,
+    html.dark .btn-increment *,
+    html.dark .status-item.trigger *,
+    html.dark .status-item.render *,
+    html.dark .status-item.commit *,
+    html.dark .count-display strong,
+    html.dark .count-display,
+    html.dark .static-text,
+    html.dark .hint,
+    html.dark .arrow {
+      color: revert !important;
+    }
+    
+    /* Ensure proper contrast for specific elements - but don't override user CSS */
+    html.dark h1,
+    html.dark h2,
+    html.dark h3,
+    html.dark h4,
+    html.dark h5,
+    html.dark h6 {
+      /* Don't override to allow user CSS */
+    }
+    
+    html.dark p,
+    html.dark span,
+    html.dark label,
+    html.dark input {
+      /* Don't override to allow user CSS */
+    }
+    
+    /* Special handling for code elements */
+    html.dark code,
+    html.dark pre {
+      color: #e2e8f0 !important;
     }
   </style>
-</head>
-<body>
-  <div id="root">
-    <div class="loading-container">
-      <div class="loading-logo">
-        <div class="react-atom"></div>
-        <div class="react-core"></div>
-        <div class="react-electron"></div>
-        <div class="react-electron"></div>
-        <div class="react-electron"></div>
-      </div>
-      <div class="loading-text">⚡ React Playground</div>
-      <div class="loading-subtitle">Initializing your development environment...</div>
-      <div class="loading-dots">
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-        <div class="loading-dot"></div>
-      </div>
-      <div class="loading-progress">
-        <div class="loading-progress-bar"></div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- React Libraries -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  
+  <script src="https://unpkg.com/@babel/standalone@7.24.0/babel.min.js"></script>
+  <script>${consoleScript}</script>
+</head>
+<body>
+  <div id="root"></div>
   <script>
-    // Console capture system
     (function() {
-      const originalLog = console.log;
-      const originalError = console.error;
-      const originalWarn = console.warn;
-      const originalInfo = console.info;
-      
-      const postMessage = (type: string, args: any[]) => {
-        window.parent.postMessage({
-          source: 'react-playground',
-          type: type,
-          message: args.map(arg => {
-            if (arg instanceof Error) {
-              return { type: 'Error', message: arg.message, stack: arg.stack };
-            }
-            if (typeof arg === 'object' && arg !== null) {
-              try {
-                return JSON.parse(JSON.stringify(arg, null, 2));
-              } catch(e) {
-                return '[Object]';
-              }
-            }
-            return arg;
-          })
-        }, '*');
-      };
-
-      console.log = function(...args) {
-        originalLog.apply(console, args);
-        postMessage('log', args);
-      };
-      console.error = function(...args) {
-        originalError.apply(console, args);
-        postMessage('error', args);
-      };
-      console.warn = function(...args) {
-        originalWarn.apply(console, args);
-        postMessage('warn', args);
-      };
-      console.info = function(...args) {
-        originalInfo.apply(console, args);
-        postMessage('info', args);
-      };
-
-      window.addEventListener('error', function(e) {
-        postMessage('error', [e.message + (e.lineno ? ' (line ' + e.lineno + ')' : '')]);
-      });
-    })();
-    
-    // Wait for React to be available with better error handling
-    function waitForReact() {
-      return new Promise((resolve, reject) => {
-        let attempts = 0;
-        const maxAttempts = 50; // Increased attempts
-        
-        function check() {
-          attempts++;
-          console.log('Checking for React... attempt ' + attempts);
-          
-          if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined') {
-            console.log('✅ React and ReactDOM loaded successfully');
-            console.log('React version:', React.version);
-            console.log('ReactDOM version:', ReactDOM.version);
-            resolve();
-          } else if (attempts >= maxAttempts) {
-            console.error('❌ Failed to load React libraries after ' + maxAttempts + ' attempts');
-            console.log('React available:', typeof React !== 'undefined');
-            console.log('ReactDOM available:', typeof ReactDOM !== 'undefined');
-            reject(new Error('Failed to load React libraries. Check your internet connection.'));
-          } else {
-            setTimeout(check, 100); // Increased timeout
-          }
+      function waitForLibraries(callback, attempts) {
+        attempts = attempts || 0;
+        if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined' && typeof Babel !== 'undefined') {
+          console.log('✅ React 18 + Babel loaded');
+          console.log('📦 Available: useState, useEffect, useCallback, useMemo, useRef, useContext, useReducer, useId, useTransition, useDeferredValue, Suspense, lazy, memo, forwardRef, createContext, createPortal');
+          callback();
+        } else if (attempts < 50) {
+          setTimeout(function() { waitForLibraries(callback, attempts + 1); }, 100);
+        } else {
+          console.error('❌ Failed to load required libraries');
+          document.getElementById('root').innerHTML = '<div class="error-display"><h3>⚠️ Error</h3><pre>Failed to load React libraries. Check your internet connection.</pre></div>';
         }
-        check();
-      });
-    }
-    
-    // Execute user code with better error handling
-    async function executeUserCode() {
-      try {
-        console.log('🎯 React Playground: Initializing execution...');
-        
-        // Wait for React
-        await waitForReact();
-        
-        // Clear and prepare root
-        const root = document.getElementById('root');
-        root.innerHTML = '';
-        
-        console.log('⚡ React Playground: Executing user code...');
-        
-        // Execute compiled user code with try-catch
+      }
+      
+      waitForLibraries(function() {
         try {
-          ${compiledCode}
-          console.log('🎉 React Playground: Code executed successfully!');
+          var userCode = \`${escapedCode}\`;
           
-          // Verify that something was rendered
+          // Strip all import/export statements (React/ReactDOM are already global)
+          var cleanedCode = userCode
+            .replace(/^\\s*import\\s+[\\s\\S]*?from\\s+['"][^'"]+['"];?\\s*$/gm, '')
+            .replace(/^\\s*import\\s+['"][^'"]+['"];?\\s*$/gm, '')
+            .replace(/^\\s*export\\s+default\\s+/gm, '')
+            .replace(/^\\s*export\\s+\\{[^}]*\\};?\\s*$/gm, '')
+            .replace(/^\\s*export\\s+(const|let|var|function|class)\\s+/gm, '$1 ');
+          
+          // Make all React hooks and utilities available globally on window
+          window.useState = React.useState;
+          window.useEffect = React.useEffect;
+          window.useCallback = React.useCallback;
+          window.useMemo = React.useMemo;
+          window.useRef = React.useRef;
+          window.useContext = React.useContext;
+          window.useReducer = React.useReducer;
+          window.useLayoutEffect = React.useLayoutEffect;
+          window.useImperativeHandle = React.useImperativeHandle;
+          window.useDebugValue = React.useDebugValue;
+          window.useId = React.useId;
+          window.useTransition = React.useTransition;
+          window.useDeferredValue = React.useDeferredValue;
+          window.useSyncExternalStore = React.useSyncExternalStore;
+          window.useInsertionEffect = React.useInsertionEffect;
+          window.createContext = React.createContext;
+          window.createElement = React.createElement;
+          window.cloneElement = React.cloneElement;
+          window.createRef = React.createRef;
+          window.forwardRef = React.forwardRef;
+          window.memo = React.memo;
+          window.lazy = React.lazy;
+          window.Fragment = React.Fragment;
+          window.Suspense = React.Suspense;
+          window.StrictMode = React.StrictMode;
+          window.Profiler = React.Profiler;
+          window.startTransition = React.startTransition;
+          window.Children = React.Children;
+          window.isValidElement = React.isValidElement;
+          window.createRoot = ReactDOM.createRoot;
+          window.createPortal = ReactDOM.createPortal;
+          window.flushSync = ReactDOM.flushSync;
+          
+          var transformedCode = Babel.transform(cleanedCode, {
+            presets: [
+              ['react', { runtime: 'classic' }],
+              ['env', { targets: { browsers: 'last 2 versions' }, modules: false }]
+            ],
+            filename: 'playground.jsx'
+          }).code;
+          
+          console.log('✅ JSX compiled successfully');
+          
+          eval(transformedCode);
+          
+          // Ensure theme is applied after React component renders
           setTimeout(() => {
-            const rootElement = document.getElementById('root');
-            if (rootElement && rootElement.innerHTML.trim() === '') {
-              console.warn('⚠️ Warning: Nothing was rendered to the DOM. Make sure your code includes a ReactDOM.render() or ReactDOM.createRoot().render() call.');
-            } else {
-              console.log('✅ Component successfully rendered to DOM');
+            const isDark = '${isDarkTheme}' === 'true';
+            if (isDark) {
+              document.documentElement.classList.add('dark');
+              document.body.style.background = '${initialBackground}';
+              document.body.style.color = '${initialTextColor}';
             }
+            console.log('🎨 [React Playground] Theme reapplied after render - isDark:', isDark);
           }, 100);
           
-        } catch (codeError) {
-          console.error('❌ User code error:', codeError.message);
-          console.error('Stack trace:', codeError.stack);
-          throw codeError;
+          console.log('🎉 React component rendered!');
+          
+        } catch (error) {
+          console.error('❌ Error:', error.message);
+          if (error.stack) {
+            console.error('Stack:', error.stack.split('\\n').slice(0, 3).join('\\n'));
+          }
+          document.getElementById('root').innerHTML = '<div class="error-display"><h3>⚠️ Compilation Error</h3><pre>' + error.message + '</pre></div>';
         }
-        
-      } catch (error) {
-        console.error('❌ React Playground: Runtime error:', error.message);
-        const root = document.getElementById('root');
-        root.innerHTML = \`
-          <div style="padding: 2rem; text-align: center; color: #dc2626; font-family: system-ui;">
-            <h3 style="margin-bottom: 1rem;">⚠️ Runtime Error</h3>
-            <pre style="background: #fef2f2; padding: 1rem; border-radius: 8px; text-align: left; overflow: auto; max-width: 600px; margin: 0 auto; font-size: 14px;">\${error.message}</pre>
-            <p style="margin-top: 1rem; color: #666; font-size: 14px;">
-              <strong>Common issues:</strong><br>
-              • Make sure to use ReactDOM.createRoot().render()<br>
-              • Check that all React components are properly defined<br>
-              • Verify that all variables are declared before use
-            </p>
-            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">Reload Playground</button>
-          </div>
-        \`;
-      }
-    }
-    
-    // Start execution with timeout
-    setTimeout(executeUserCode, 100);
+      });
+    })();
   </script>
 </body>
 </html>`;
 
-      // Write to iframe
-      const iframeDoc = iframeRef.current.contentDocument;
-      if (!iframeDoc) {
-        throw new Error('Could not access iframe document');
-      }
-
-      iframeDoc.open();
-      iframeDoc.write(iframeHtml);
-      iframeDoc.close();
-      
-      console.log('✅ React Playground: Execution completed');
+      setOutputSrc(`data:text/html;charset=utf-8,${encodeURIComponent(iframeHtml)}`);
+      setHasChanges(false);
       setIsRunning(false);
-      return true;
-      
-    } catch (error) {
-      console.error('❌ React Playground: Execution failed:', error);
-      setIsRunning(false);
-      addConsoleLog('error', error instanceof Error ? error.message : String(error));
-      return false;
-    }
-  }, [jsxCode, compileJSX, addConsoleLog]);
+    }, 50);
+  }, [jsxCode, cssCode]);
 
-  // Listen for console messages from iframe
   useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data.source === 'react-playground') {
-        addConsoleLog(event.data.type, ...event.data.message);
-      }
-    };
+    if (isOpen && !hasInitialRunRef.current) {
+      // Only set hasChanges after initial load
+      setHasChanges(true);
+    }
+  }, [jsxCode, cssCode, isOpen]);
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [addConsoleLog]);
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    if (autoRun && hasChanges) {
+      const timeout = setTimeout(() => {
+        runCode();
+      }, 800);
+      return () => clearTimeout(timeout);
+    }
+  }, [jsxCode, cssCode, autoRun, isOpen, hasChanges, runCode]);
 
-  // Auto-run when modal opens
   useEffect(() => {
     if (isOpen && jsxCode && !hasInitialRunRef.current) {
       const timeout = setTimeout(() => {
-        runCode().then((success) => {
-          if (success) {
-            hasInitialRunRef.current = true;
-          }
-        });
-      }, 500);
+        console.log('🚀 Initial run triggered');
+        runCode();
+        hasInitialRunRef.current = true;
+      }, 500); // Increased delay to ensure everything is loaded
       return () => clearTimeout(timeout);
     }
-  }, [isOpen, jsxCode, runCode]);
+  }, [isOpen, jsxCode, cssCode, runCode]);
 
-  // Auto-run on code change
-  useEffect(() => {
-    if (!hasInitialRunRef.current) return;
-
-    setHasChanges(true);
-
-    if (autoRun) {
-      if (autoRunTimeoutRef.current) {
-        clearTimeout(autoRunTimeoutRef.current);
-      }
-      autoRunTimeoutRef.current = setTimeout(() => {
-        runCode();
-      }, 1000);
-    }
-
-    return () => {
-      if (autoRunTimeoutRef.current) {
-        clearTimeout(autoRunTimeoutRef.current);
-      }
-    };
-  }, [jsxCode, autoRun, runCode]);
-
-  // Toggle panel visibility
   const togglePanel = (panel: keyof typeof visiblePanels) => {
     setVisiblePanels(prev => ({ ...prev, [panel]: !prev[panel] }));
   };
 
-  // Clear console
-  const clearConsole = () => {
-    setConsoleOutput([]);
-  };
-
-  // Get log color based on method
-  const getLogColor = (method: string) => {
-    switch (method) {
-      case 'error':
-        return 'text-red-400 bg-red-950/20 border-red-800/30';
-      case 'warn':
-        return 'text-yellow-400 bg-yellow-950/20 border-yellow-800/30';
-      case 'info':
-        return 'text-blue-400 bg-blue-950/20 border-blue-800/30';
-      case 'log':
-      default:
-        return 'text-slate-300 bg-slate-800/50 border-slate-700/30';
+  const getLogLevelClass = (type: ConsoleLog['type']) => {
+    switch (type) {
+      case 'error': return 'text-destructive';
+      case 'warn': return 'text-yellow-500';
+      case 'info': return 'text-blue-500';
+      default: return 'text-muted-foreground';
     }
   };
 
-  // Format log message for display
   const renderLogMessage = (msg: any) => {
     if (typeof msg === 'object' && msg !== null) {
       return JSON.stringify(msg, null, 2);
@@ -870,40 +895,48 @@ export function ReactPlaygroundModal() {
     return String(msg);
   };
 
-  // Format timestamp
-  const formatTime = (timestamp: number) => {
-    return new Date(timestamp).toLocaleTimeString();
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      closePlayground();
+      hasInitialRunRef.current = false;
+      setVisiblePanels({
+        editor: true,
+        css: true,
+        preview: true,
+        console: true,
+      });
+    }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && closePlayground()}>
-      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0" showCloseButton={false}>
-        {/* Header */}
-        <DialogHeader className="px-6 pt-6 pb-4 border-b bg-gradient-to-r from-blue-50/30 to-purple-50/30 dark:from-blue-950/20 dark:to-purple-950/20 flex-row items-center justify-between">
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] flex flex-col p-0 m-0 gap-0 rounded-none border-0 bg-background dark:bg-background" showCloseButton={false}>
+        <DialogHeader className="px-6 pt-6 pb-4 border-b bg-gradient-to-r from-blue-50/30 to-cyan-50/30 dark:from-blue-950/20 dark:to-cyan-950/20 flex-row items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-md">
                 <Code className="h-6 w-6 text-white" />
               </div>
               <div>
                 <DialogTitle className="text-2xl">React Playground</DialogTitle>
-                <p className="text-sm text-muted-foreground mt-1">Write, edit, and run React code with live preview</p>
+                <p className="text-sm text-muted-foreground mt-1">Live React coding environment with instant preview</p>
               </div>
             </div>
             
-            {/* Language badges */}
             <div className="flex items-center gap-1.5">
               <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/30 dark:border-blue-800 dark:text-blue-400">
-                React
+                React 18
               </Badge>
-              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-purple-50 border-purple-200 text-purple-700 dark:bg-purple-950/30 dark:border-purple-800 dark:text-purple-400">
+              <Badge variant="outline" className="text-[10px] font-normal px-2 py-0.5 bg-cyan-50 border-cyan-200 text-cyan-700 dark:bg-cyan-950/30 dark:border-cyan-800 dark:text-cyan-400">
                 JSX
+              </Badge>
+              <Badge variant={theme === 'dark' ? 'default' : 'secondary'} className="text-[10px] font-normal px-2 py-0.5">
+                {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
               </Badge>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
-            {/* Panel toggles */}
             <div className="flex items-center gap-3">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Panels</span>
               <div className="flex gap-1.5">
@@ -914,10 +947,24 @@ export function ReactPlaygroundModal() {
                       ? 'bg-blue-500 text-white shadow-sm' 
                       : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
                   }`}
-                  title="Code Editor"
+                  title="JSX Editor"
                 >
                   <FileCode className="h-4 w-4" />
                   {visiblePanels.editor && (
+                    <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
+                  )}
+                </button>
+                <button
+                  onClick={() => togglePanel('css')}
+                  className={`relative w-9 h-9 flex items-center justify-center rounded transition-all ${
+                    visiblePanels.css 
+                      ? 'bg-purple-500 text-white shadow-sm' 
+                      : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                  }`}
+                  title="CSS Editor"
+                >
+                  <Palette className="h-4 w-4" />
+                  {visiblePanels.css && (
                     <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full" />
                   )}
                 </button>
@@ -952,12 +999,11 @@ export function ReactPlaygroundModal() {
               </div>
             </div>
             
-            {/* Auto-run toggle */}
             <button
               onClick={() => setAutoRun(!autoRun)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-300 ${
                 autoRun
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg'
                   : 'border-blue-200 dark:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/20 border'
               }`}
               title={autoRun ? 'Auto-run enabled' : 'Manual run - Click to enable auto-run'}
@@ -966,7 +1012,6 @@ export function ReactPlaygroundModal() {
               <span>{autoRun ? 'Auto-run' : 'Manual'}</span>
             </button>
             
-            {/* Run button */}
             {!autoRun && (
               <Button
                 variant="default"
@@ -993,11 +1038,10 @@ export function ReactPlaygroundModal() {
               </Badge>
             )}
             
-            {/* Clear console */}
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={clearConsole} 
+              onClick={() => setConsoleLogs([])} 
               className="h-8 text-xs gap-1.5"
               title="Clear console"
             >
@@ -1006,7 +1050,6 @@ export function ReactPlaygroundModal() {
             
             <div className="h-4 w-px bg-border" />
             
-            {/* Close button */}
             <DialogClose asChild>
               <button
                 className="group relative w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-lg hover:shadow-xl"
@@ -1019,140 +1062,207 @@ export function ReactPlaygroundModal() {
           </div>
         </DialogHeader>
 
-        {/* Main content */}
         <div className="flex-1 overflow-hidden">
-          <ResizablePanelGroup direction="horizontal" className="h-full">
-            {/* Code Editor */}
+          <ResizablePanelGroup direction="horizontal">
             {visiblePanels.editor && (
               <>
-                <ResizablePanel defaultSize={45} minSize={30}>
-                  <div className="h-full flex flex-col bg-muted/30">
-                    <div className="flex items-center justify-between px-4 py-2 border-b bg-blue-500/10">
+                <ResizablePanel defaultSize={40} collapsible minSize={20}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2.5 bg-blue-50 dark:bg-blue-950/20 border-b flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <FileCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                        <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">JSX Editor</span>
+                        <div className="p-1 bg-blue-500 rounded">
+                          <FileCode className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-blue-700 dark:text-blue-300">JSX Editor</span>
                       </div>
-                      <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400">
-                        React Component
+                      <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300">
+                        component.jsx
                       </Badge>
                     </div>
-                    <div className="flex-1 bg-white dark:bg-slate-900">
+                    <div className="flex-1">
                       <Editor
-                        height="100%"
-                        language="javascriptreact"
+                        language="javascript"
                         value={jsxCode}
                         onChange={(value) => setJsxCode(value || '')}
-                        theme={theme === 'dark' ? 'vs-dark' : 'light'}
+                        theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
+                        beforeMount={handleEditorWillMount}
                         options={{
                           minimap: { enabled: false },
-                          fontSize: 14,
+                          wordWrap: 'on',
+                          fontSize: 13,
                           lineNumbers: 'on',
                           scrollBeyondLastLine: false,
                           automaticLayout: true,
-                          tabSize: 2,
-                          wordWrap: 'on',
+                          padding: { top: 12, bottom: 12 },
+                          lineNumbersMinChars: 3,
+                          glyphMargin: false,
                           folding: true,
-                          renderWhitespace: 'selection',
+                          tabSize: 2,
+                          suggestOnTriggerCharacters: true,
+                          quickSuggestions: true,
+                          snippetSuggestions: 'inline',
+                          formatOnPaste: true,
+                          formatOnType: true,
+                          autoClosingBrackets: 'always',
+                          autoClosingQuotes: 'always',
+                          autoIndent: 'full',
+                          bracketPairColorization: { enabled: true },
                         }}
                       />
                     </div>
                   </div>
                 </ResizablePanel>
-                <ResizableHandle withHandle />
+                {visiblePanels.css && <ResizableHandle withHandle />}
               </>
             )}
-
-            {/* Preview */}
-            {visiblePanels.preview && (
+            
+            {visiblePanels.css && (
               <>
-                <ResizablePanel defaultSize={35} minSize={25}>
-                  <div className="h-full flex flex-col bg-muted/30">
-                    <div className="flex items-center justify-between px-4 py-2 border-b bg-emerald-500/10">
+                <ResizablePanel defaultSize={20} collapsible minSize={15}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2.5 bg-purple-50 dark:bg-purple-950/20 border-b flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Live Preview</span>
+                        <div className="p-1 bg-purple-500 rounded">
+                          <Palette className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">CSS Editor</span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        {isRunning && (
-                          <Badge variant="secondary" className="gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-                            <Loader2 className="w-3 h-3 animate-spin" />
-                            Running...
-                          </Badge>
-                        )}
-                        {!isRunning && (
-                          <Badge variant="secondary" className="gap-1 bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400">
-                            ✓ Ready
-                          </Badge>
-                        )}
-                      </div>
+                      <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300">
+                        styles.css
+                      </Badge>
                     </div>
-                    <div className="flex-1 bg-white dark:bg-slate-900">
-                      <iframe
-                        ref={iframeRef}
-                        className="w-full h-full border-0"
-                        title="React Preview"
-                        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                    <div className="flex-1">
+                      <Editor
+                        language="css"
+                        value={cssCode}
+                        onChange={(value) => setCssCode(value || '')}
+                        theme={editorTheme === 'dark' ? 'vs-dark' : 'light'}
+                        options={{
+                          minimap: { enabled: false },
+                          wordWrap: 'on',
+                          fontSize: 13,
+                          lineNumbers: 'on',
+                          scrollBeyondLastLine: false,
+                          automaticLayout: true,
+                          padding: { top: 12, bottom: 12 },
+                          lineNumbersMinChars: 3,
+                          glyphMargin: false,
+                          folding: true,
+                          tabSize: 2,
+                          suggestOnTriggerCharacters: true,
+                          quickSuggestions: true,
+                          snippetSuggestions: 'inline',
+                          formatOnPaste: true,
+                          formatOnType: true,
+                          autoClosingBrackets: 'always',
+                          autoClosingQuotes: 'always',
+                          autoIndent: 'full',
+                          bracketPairColorization: { enabled: true },
+                        }}
                       />
                     </div>
                   </div>
                 </ResizablePanel>
-                <ResizableHandle withHandle />
+                {(visiblePanels.css || visiblePanels.preview || visiblePanels.console) && <ResizableHandle withHandle />}
               </>
             )}
-
-            {/* Console */}
-            {visiblePanels.console && (
-              <ResizablePanel defaultSize={20} minSize={15}>
-                <div className="h-full flex flex-col bg-muted/30">
-                  <div className="flex items-center justify-between px-4 py-2 border-b bg-purple-500/10">
-                    <div className="flex items-center gap-2">
-                      <Terminal className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                      <span className="text-sm font-semibold text-purple-700 dark:text-purple-300">Console</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs bg-purple-100 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400">
-                        {consoleOutput.length} messages
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-slate-900 dark:bg-slate-950">
-                    <ScrollArea className="h-full p-4">
-                      <div className="space-y-2 font-mono text-sm">
-                        {consoleOutput.length === 0 ? (
-                          <div className="text-slate-500 text-center py-8">
-                            <Terminal className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                            Console output will appear here...
-                          </div>
+            
+            {visiblePanels.preview && (
+              <>
+                <ResizablePanel defaultSize={40} minSize={20}>
+                  <div className="h-full flex flex-col">
+                    <div className="px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950/20 border-b flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse shadow-lg shadow-emerald-500/50" />
+                        <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Live Preview</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {isRunning ? (
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
+                            <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                            Running...
+                          </Badge>
                         ) : (
-                          consoleOutput.map((log, index) => (
-                            <div
-                              key={index}
-                              className={cn(
-                                'p-2 rounded border break-all',
-                                getLogColor(log.method)
-                              )}
-                            >
-                              <div className="flex items-start gap-2">
-                                <span className="text-xs font-semibold uppercase opacity-70 min-w-fit">
-                                  {log.method}
-                                </span>
-                                <span className="text-xs opacity-50 ml-auto">
-                                  {formatTime(log.timestamp)}
-                                </span>
-                              </div>
-                              <div className="mt-1 space-y-1">
-                                {log.args.map((arg, argIndex) => (
-                                  <pre key={argIndex} className="whitespace-pre-wrap text-xs">
-                                    {renderLogMessage(arg)}
-                                  </pre>
-                                ))}
-                              </div>
-                            </div>
-                          ))
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
+                            Real-time
+                          </Badge>
                         )}
                       </div>
-                    </ScrollArea>
+                    </div>
+                    <div className={`flex-1 relative ${editorTheme === 'dark' ? 'bg-slate-900' : 'bg-white'}`}>
+                      <iframe
+                        key={iframeKey}
+                        ref={iframeRef}
+                        src={outputSrc}
+                        title="React Preview"
+                        sandbox="allow-scripts allow-modals"
+                        frameBorder="0"
+                        width="100%"
+                        height="100%"
+                        className="absolute inset-0"
+                      />
+                    </div>
                   </div>
+                </ResizablePanel>
+                {visiblePanels.console && <ResizableHandle withHandle />}
+              </>
+            )}
+            
+            {visiblePanels.console && (
+              <ResizablePanel defaultSize={20} collapsible minSize={15}>
+                <div className="h-full flex flex-col">
+                  <div className="px-4 py-2.5 bg-purple-50 dark:bg-purple-950/20 border-b flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1 bg-purple-500 rounded">
+                        <Terminal className="h-3 w-3 text-white" />
+                      </div>
+                      <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">Console</span>
+                      <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300">
+                        {consoleLogs.length} {consoleLogs.length === 1 ? 'msg' : 'msgs'}
+                      </Badge>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setConsoleLogs([])}
+                      className="h-6 text-[10px] px-2 hover:bg-purple-500/20"
+                    >
+                      <Trash2 className="h-3 w-3 mr-1" />
+                      Clear
+                    </Button>
+                  </div>
+                  <ScrollArea className={`flex-1 p-3 ${editorTheme === 'dark' ? 'bg-slate-950' : 'bg-muted/30'}`}>
+                    {consoleLogs.length === 0 ? (
+                      <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                        <div className="text-center">
+                          <Terminal className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p>Console is empty</p>
+                          <p className="text-xs mt-1">Messages will appear here</p>
+                        </div>
+                      </div>
+                    ) : (
+                      consoleLogs.map((log, index) => (
+                        <div 
+                          key={index} 
+                          className={cn(
+                            "flex gap-3 items-start font-mono text-xs border-l-2 pl-3 py-2 mb-2 rounded-r bg-background/50",
+                            log.type === 'error' ? 'border-red-500 bg-red-500/5' : 
+                            log.type === 'warn' ? 'border-yellow-500 bg-yellow-500/5' : 
+                            log.type === 'info' ? 'border-blue-500 bg-blue-500/5' : 
+                            'border-green-500 bg-green-500/5',
+                            getLogLevelClass(log.type)
+                          )}
+                        >
+                          <span className="opacity-70 text-[10px] min-w-[60px]">{log.timestamp}</span>
+                          <div className="flex-1 whitespace-pre-wrap break-words">
+                            {log.message.map((msg, i) => (
+                              <span key={i} className="mr-2">{renderLogMessage(msg)}</span>
+                            ))}
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </ScrollArea>
                 </div>
               </ResizablePanel>
             )}

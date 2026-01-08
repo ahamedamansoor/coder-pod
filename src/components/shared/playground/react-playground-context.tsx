@@ -22,6 +22,10 @@ export function ReactPlaygroundProvider({ children }: { children: ReactNode }) {
 
   const openPlayground = (data: ReactPlaygroundData) => {
     console.log('🚀 React Playground Context: Opening playground with data:', data);
+    console.log('🚀 React Playground Context: Data length:', {
+      jsxLength: data.jsx.length,
+      cssLength: data.css?.length || 0
+    });
     setPlaygroundData(data);
     setIsOpen(true);
     console.log('✅ React Playground Context: Playground opened, isOpen set to true');

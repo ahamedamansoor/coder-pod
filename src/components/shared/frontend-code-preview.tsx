@@ -37,6 +37,8 @@ interface FrontendCodePreviewProps {
   hideTabs?: Array<'html' | 'css' | 'js'>; // Hide specific tabs (useful for HTML-only content)
   onOpenPlayground?: (html: string, css: string, js: string) => void;
   onOpenWebPlayground?: (html: string, css: string, js: string) => void;
+  onOpenReactPlayground?: (jsx: string, css: string) => void;
+  learningContext?: 'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next' | 'general';
 }
 
 export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
@@ -57,6 +59,8 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   hideTabs = [],
   onOpenPlayground,
   onOpenWebPlayground,
+  onOpenReactPlayground,
+  learningContext = 'general',
 }) => {
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -178,10 +182,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     return cleanedHTML;
   };
   
-  // Determine initial tab based on what's provided
-  // Prioritize framework code when available, then HTML for HTML learning content
+  // Determine initial tab based on what's provided and learning context
+  // Prioritize framework code based on learning context
   const getInitialTab = (): 'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next' => {
-    if (hasReact) return 'react';
+    // If we're in React learning context, prioritize React tab
+    if (learningContext === 'react' && hasReact) return 'react';
+    
+    // For other contexts, use original logic
+    if (hasReact) return hasCSS ? 'css' : 'react'; // Show CSS first if both React and CSS exist
     if (hasAngular) return 'angular';
     if (hasVue) return 'vue';
     if (hasNext) return 'next';
@@ -193,7 +201,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showCode, setShowCode] = useState(true); // Show code by default for all content
+  const [showCode, setShowCode] = useState(false); // Hide code by default, show only UI preview
 
   // Get playground contexts
   const { openWithContent } = useWebPlayground();
@@ -333,17 +341,70 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       ? '<script src="https://cdn.tailwindcss.com"></script>' 
       : '';
       
+    // Add React and Babel CDN if React code is provided
+    const reactCDN = react ? `
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    ` : '';
+      
     // If HTML already contains complete document structure, inject theme detection and Tailwind
     if (html.trim().toLowerCase().startsWith('<!doctype')) {
-      // Inject Tailwind CDN and dark mode detection script into the HTML
+      // Inject Tailwind CDN, React CDN and dark mode detection script into the HTML
       const injectedHTML = html.replace(
         '</head>',
         `${tailwindCDN}
+        ${reactCDN}
         <script>
           (function() {
-            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (isDark) {
-              document.documentElement.classList.add('dark');
+            // Function to update theme
+            function updateTheme() {
+              // Check if parent has dark mode, fallback to system preference
+              const parentHasDark = window.parent.document.documentElement.classList.contains('dark');
+              const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              const isDark = parentHasDark || systemPrefersDark;
+              
+              console.log('🎨 [Theme] Parent has dark:', parentHasDark);
+              console.log('🎨 [Theme] System prefers dark:', systemPrefersDark);
+              console.log('🎨 [Theme] Using dark mode:', isDark);
+              
+              if (isDark) {
+                document.documentElement.classList.add('dark');
+                console.log('🎨 [Theme] Applied dark class to iframe');
+              } else {
+                document.documentElement.classList.remove('dark');
+                console.log('🎨 [Theme] Removed dark class from iframe');
+              }
+            }
+            
+            // Initial theme setup with delay to ensure parent is ready
+            setTimeout(updateTheme, 100);
+            
+            // Also try multiple times in case parent is still loading
+            let retryCount = 0;
+            const maxRetries = 5;
+            const retryInterval = setInterval(() => {
+              updateTheme();
+              retryCount++;
+              if (retryCount >= maxRetries) {
+                clearInterval(retryInterval);
+              }
+            }, 200);
+            
+            // Listen for theme changes in parent
+            if (window.parent.MutationObserver) {
+              const observer = new window.parent.MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                  if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    updateTheme();
+                  }
+                });
+              });
+              
+              observer.observe(window.parent.document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+              });
             }
           })();
         </script>
@@ -375,18 +436,16 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     }
     
     /* Dark mode support for common elements */
-    @media (prefers-color-scheme: dark) {
-      a { color: #60a5fa; }
-      a:visited { color: #a78bfa; }
-      button:not([style*="background"]) {
-        background: #3b82f6;
-        color: white;
-      }
-      input, textarea, select {
-        background: #1e293b;
-        color: #e2e8f0;
-        border-color: #475569;
-      }
+    .dark a { color: #60a5fa; }
+    .dark a:visited { color: #a78bfa; }
+    .dark button:not([style*="background"]) {
+      background: #3b82f6;
+      color: white;
+    }
+    .dark input, .dark textarea, .dark select {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-color: #475569;
     }
     `;
     
@@ -396,24 +455,111 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   ${tailwindCDN}
+  ${reactCDN}
   <style>
     ${defaultBodyStyles}
     ${compiledCss}
   </style>
   <script>
     (function() {
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (isDark) {
-        document.documentElement.classList.add('dark');
+      // Function to update theme
+      function updateTheme() {
+        // Check if parent has dark mode, fallback to system preference
+        const parentHasDark = window.parent.document.documentElement.classList.contains('dark');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = parentHasDark || systemPrefersDark;
+        
+        console.log('🎨 [Theme] Parent has dark:', parentHasDark);
+        console.log('🎨 [Theme] System prefers dark:', systemPrefersDark);
+        console.log('🎨 [Theme] Using dark mode:', isDark);
+        
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+          console.log('🎨 [Theme] Applied dark class to iframe');
+        } else {
+          document.documentElement.classList.remove('dark');
+          console.log('🎨 [Theme] Removed dark class from iframe');
+        }
+      }
+      
+      // Initial theme setup with delay to ensure parent is ready
+      setTimeout(updateTheme, 100);
+      
+      // Also try multiple times in case parent is still loading
+      let retryCount = 0;
+      const maxRetries = 5;
+      const retryInterval = setInterval(() => {
+        updateTheme();
+        retryCount++;
+        if (retryCount >= maxRetries) {
+          clearInterval(retryInterval);
+        }
+      }, 200);
+      
+      // Listen for theme changes in parent
+      if (window.parent.MutationObserver) {
+        const observer = new window.parent.MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              updateTheme();
+            }
+          });
+        });
+        
+        observer.observe(window.parent.document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class']
+        });
       }
     })();
   </script>
 </head>
 <body>
   ${html}
+  <div id="react-root"></div>
   <script>
     try {
       ${extractedJS}
+      
+      // Render React component if provided
+      ${react ? `
+        try {
+          // Create a module scope for the React component
+          const moduleExports = {};
+          const module = { exports: moduleExports };
+          
+          // Execute the React component code in module scope
+          const reactCode = \`${react.replace(/`/g, '\\`').replace(/export default/g, 'module.exports =')}\`;
+          const wrappedCode = \`
+            (function(module, exports, require, React, ReactDOM) {
+              \${reactCode}
+            })(module, moduleExports, undefined, React, ReactDOM);
+          \`;
+          
+          eval(wrappedCode);
+          
+          // Get the component from module.exports
+          const Component = module.exports;
+          const root = document.getElementById('react-root');
+          
+          if (root && Component) {
+            // Clear previous content
+            root.innerHTML = '';
+            
+            // Use React 18 createRoot API
+            const reactRoot = ReactDOM.createRoot(root);
+            const reactElement = React.createElement(Component);
+            reactRoot.render(reactElement);
+            
+            console.log('✅ React component rendered successfully with createRoot');
+          } else {
+            console.error('❌ React component not found or root element missing');
+          }
+        } catch(e) {
+          console.error('React rendering error:', e);
+          console.error('React code:', \`${react.replace(/`/g, '\\`')}\`);
+        }
+      ` : ''}
     } catch(e) {
       console.error('Error:', e);
     }
@@ -698,7 +844,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                     HTML
                   </button>
                 )}
-                {!hasFramework && hasCSS && (
+                {hasCSS && (
                   <button
                     onClick={() => setActiveTab('css')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors flex items-center gap-1.5 ${
@@ -797,8 +943,19 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
                       // React Playground
                       if (hasReact && openReactPlaygroundWithContent) {
+                        console.log('🚀 Opening React playground with:', {
+                          hasReact: true,
+                          reactLength: react.length,
+                          cssLength: (compiledCss || extractedCSS).length
+                        });
                         openReactPlaygroundWithContent(react, compiledCss || extractedCSS);
                         return;
+                      } else {
+                        console.log('❌ Cannot open React playground:', {
+                          hasReact,
+                          hasOpenFunction: !!openReactPlaygroundWithContent,
+                          reactLength: react?.length || 0
+                        });
                       }
 
                       // Angular Playground

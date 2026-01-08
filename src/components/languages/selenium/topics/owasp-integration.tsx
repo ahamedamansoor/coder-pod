@@ -507,6 +507,7 @@ class OWASPZAPIntegration {
         title="OWASP Integration"
         description="Integrating OWASP ZAP with Selenium for comprehensive security testing"
         icon={Shield}
+        category="Selenium · Security Testing"
         colorTheme="red"
       />
 

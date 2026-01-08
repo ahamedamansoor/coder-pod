@@ -404,6 +404,7 @@ namespace WindowTabExample
         title="New Window & Tab APIs"
         description="Modern APIs for efficient window and tab management in Selenium 4"
         icon={AppWindow}
+        category="Selenium · Window Management"
         colorTheme="blue"
       />
 

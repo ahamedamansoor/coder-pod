@@ -8,7 +8,7 @@ import { TopicSidebar } from '@/components/shared/topic-sidebar';
 import { languages } from '@/data/languages';
 import { notFound, useParams, useRouter } from 'next/navigation';
 import { ReactProvider } from './react-context';
-import { ReactLayoutProvider } from './react-layout-context';
+import { ReactLayoutProvider, useReactLayout } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
@@ -21,6 +21,7 @@ import '@/components/shared/playground/react-playground-init';
 function ReactTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const router = useRouter();
+  const { isEditorOpen, setIsEditorOpen } = useReactLayout();
   const { hideLoader } = useLoading();
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();

@@ -43,11 +43,12 @@ export function BDDIntroductionComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50 dark:from-slate-900 dark:to-emerald-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="BDD Introduction"
         description="Master the fundamentals of Behavior-Driven Development and learn how it bridges the gap between technical and non-technical team members"
         icon={FileText}
+        category="Selenium · BDD Testing"
         colorTheme="emerald"
         badges={[
           { label: 'BDD', variant: 'secondary' },

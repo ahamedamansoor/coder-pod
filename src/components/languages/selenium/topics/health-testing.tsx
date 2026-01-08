@@ -823,6 +823,7 @@ export default function HealthTesting() {
         title="Healthcare Application Testing"
         description="Master automated testing for healthcare systems with realistic medical workflows, patient management, appointment scheduling, and HIPAA-compliant clinical operations."
         icon={Stethoscope}
+        category="Selenium · Domain Testing"
       />
 
       {/* Health Application Testing Features Overview */}

@@ -41,11 +41,12 @@ export function KeywordDrivenFrameworkComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 dark:from-slate-900 dark:to-green-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Keyword-Driven Framework"
         description="Master the art of creating keyword-driven test automation frameworks that separate test logic from test data and enable non-technical users to create tests"
         icon={FileText}
+        category="Selenium · Design Patterns"
         colorTheme="green"
         badges={[
           { label: 'Keywords', variant: 'secondary' },

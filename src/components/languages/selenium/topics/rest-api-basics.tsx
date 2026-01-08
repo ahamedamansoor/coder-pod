@@ -86,7 +86,7 @@ export function RestApiBasicsComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-cyan-50 dark:from-slate-900 dark:to-cyan-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="REST API Basics"
         description="Master the fundamentals of REST APIs, HTTP methods, status codes, and API architecture to build a solid foundation for API testing"

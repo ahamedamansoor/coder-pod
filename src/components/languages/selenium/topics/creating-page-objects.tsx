@@ -214,7 +214,7 @@ export function CreatingPageObjects() {
         title="Creating Page Objects"
         description="Master the art of creating maintainable and efficient page objects with interactive visualizations"
         icon={Layers}
-        category="Page Object Model"
+        category="Selenium · Page Object Model"
         colorTheme="blue"
       />
 

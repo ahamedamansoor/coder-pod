@@ -222,6 +222,7 @@ export function AppiumIntroductionComponent() {
         title="Appium Mobile Testing"
         description="Master cross-platform mobile automation with Appium - test iOS, Android, and Windows apps with a single codebase"
         icon={Smartphone}
+        category="Selenium · Mobile Testing"
         colorTheme="green"
         badges={[
           { label: 'Mobile Testing', variant: 'secondary' },

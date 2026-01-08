@@ -210,11 +210,12 @@ export function DomManipulation() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="DOM Manipulation"
         description="Modify page elements with JavaScript"
         icon={FileCode}
+        category="Selenium · JavaScript Execution"
       />
 
       <Card>

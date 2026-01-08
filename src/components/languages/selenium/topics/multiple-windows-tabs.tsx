@@ -259,11 +259,12 @@ export function MultipleWindowsTabs() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Multiple Windows & Tabs"
         description="Learn to manage multiple browser windows and tabs"
         icon={Layers}
+        category="Selenium · Window Management"
       />
 
       <Card>

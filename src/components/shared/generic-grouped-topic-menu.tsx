@@ -63,7 +63,7 @@ export function GenericGroupedTopicMenu({
                   {isGroupComplete ? (
                     <Sparkles className="w-4 h-4 text-primary shrink-0 animate-pulse" />
                   ) : (
-                    <Code className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-muted-foreground shrink-0" />
                   )}
                   <p className={cn(
                     "text-sm font-bold transition-colors line-clamp-1",
@@ -152,9 +152,7 @@ export function GenericGroupedTopicMenu({
                               className="w-4 h-4 text-primary" 
                             />
                           ) : (
-                            <Circle 
-                              className="w-3.5 h-3.5 text-muted-foreground/40 group-hover/item:text-muted-foreground/60 transition-all duration-200"
-                            />
+                            <div className="w-3.5 h-3.5 rounded-full border-2 border-muted-foreground/40 group-hover/item:border-muted-foreground/60 transition-all duration-200 shrink-0" />
                           )}
                         </div>
 

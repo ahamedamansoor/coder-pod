@@ -278,11 +278,12 @@ const Cookies = () => {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Cookie Management"
         description="Handle browser cookies in Selenium WebDriver"
         icon={Cookie}
+        category="Selenium · Browser Management"
       />
 
       <Card>

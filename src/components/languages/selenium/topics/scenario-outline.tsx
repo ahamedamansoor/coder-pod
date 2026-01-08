@@ -40,7 +40,7 @@ export function ScenarioOutlineComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-900 dark:to-teal-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Scenario Outline"
         description="Master data-driven testing with Scenario Outline and Examples to run the same scenario multiple times with different data sets"

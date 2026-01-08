@@ -968,6 +968,7 @@ export function EcommerceTesting() {
         title="E-Commerce Testing"
         description="Master the art of automated shopping experiences with cutting-edge testing strategies"
         icon={ShoppingCart}
+        category="Selenium · Domain Testing"
       />
 
       {/* Overview Card */}

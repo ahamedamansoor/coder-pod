@@ -41,11 +41,12 @@ export function HybridFrameworkComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-purple-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Hybrid Framework"
         description="Master the art of combining multiple framework approaches to create flexible, scalable, and maintainable test automation solutions"
         icon={GitBranch}
+        category="Selenium · Design Patterns"
         colorTheme="purple"
         badges={[
           { label: 'Data-Driven', variant: 'secondary' },

@@ -50,11 +50,12 @@ export function AllureReportsComponent() {
   const [activeTab, setActiveTab] = useState<'java' | 'python' | 'javascript'>('java');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-indigo-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Allure Reports"
         description="Master advanced test reporting with Allure framework to create beautiful, interactive HTML reports with rich visualizations and detailed test insights"
         icon={Activity}
+        category="Selenium · Test Reporting"
         colorTheme="purple"
         badges={[
           { label: 'Allure Reports', variant: 'secondary' },

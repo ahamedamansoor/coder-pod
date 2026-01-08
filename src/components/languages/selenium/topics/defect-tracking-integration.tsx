@@ -352,11 +352,12 @@ export default function DefectTrackingIntegrationComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-red-50 dark:from-slate-900 dark:to-red-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Defect Tracking Integration"
         description="Master comprehensive defect tracking integration strategies to automate bug reporting, streamline issue management, and create seamless workflows between test automation and defect tracking systems"
         icon={Bug}
+        category="Selenium · Test Management"
         colorTheme="red"
         badges={[
           { label: 'Defect Tracking', variant: 'secondary' },

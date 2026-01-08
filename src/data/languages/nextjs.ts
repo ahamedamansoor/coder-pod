@@ -6,8 +6,6 @@ export const nextjs: Language = {
   name: 'Next.js',
   topics: [
       { slug: 'learning-plan', title: 'Learning Plan', explanation: 'A structured roadmap for learning Next.js from scratch.' },
-      { slug: 'interview-questions', title: 'Interview Q&A', explanation: 'A curated list of common Next.js interview questions and answers.' },
-      { slug: 'nextjs-version-updates', title: 'Next.js Version Updates', explanation: 'Information about the latest Next.js versions and their new features.' },
       
       // SECTION 1: GETTING STARTED
       { slug: 'what-is-nextjs', title: 'What is Next.js?', explanation: "Next.js is a React framework for building full-stack web applications. Learn about its features, benefits, and why it's the go-to framework for React developers.", category: '1. Getting Started' },

@@ -42,11 +42,12 @@ export function ConfigurationManagementComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 dark:from-slate-900 dark:to-orange-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Configuration Management"
         description="Master the art of managing test configurations, environment settings, and test data to create flexible and maintainable automation frameworks"
         icon={Settings}
+        category="Selenium · Test Architecture"
         colorTheme="orange"
         badges={[
           { label: 'Properties', variant: 'secondary' },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { YouTubeVideosButton } from '@/components/shared/youtube-videos-modal';
 
 type ColorTheme = 
   | 'violet' 
@@ -34,6 +35,8 @@ interface PageHeaderProps {
     label: string;
     variant?: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info';
   }>;
+  showYouTubeVideos?: boolean;
+  topic?: string;
 }
 
 const colorClasses: Record<ColorTheme, {
@@ -197,6 +200,8 @@ const colorClasses: Record<ColorTheme, {
  * - Title: #5B7FFF (logo blue)
  * The colorTheme prop is ignored for consistent branding across all pages.
  * 
+ * Language is automatically extracted from the category string (e.g., "React · Describing the UI" -> "React")
+ * 
  * @example
  * ```tsx
  * import { PageHeader } from '@/components/shared/generic-page-header';
@@ -218,8 +223,13 @@ export function PageHeader({
   description,
   colorTheme = 'blue',
   badges = [],
+  showYouTubeVideos = true,
+  topic,
 }: PageHeaderProps) {
   const colors = colorClasses[colorTheme];
+  
+  // Extract language from category (e.g., "React · Describing the UI" -> "React")
+  const extractedLanguage = category.includes('·') ? category.split('·')[0].trim() : null;
 
   const getBadgeStyle = (
     variant: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info' | undefined
@@ -305,6 +315,13 @@ export function PageHeader({
               </Badge>
             );
           })}
+        </div>
+      )}
+
+      {/* YouTube Videos Button */}
+      {showYouTubeVideos && (
+        <div className="mt-6">
+          <YouTubeVideosButton topic={topic || title} />
         </div>
       )}
     </div>

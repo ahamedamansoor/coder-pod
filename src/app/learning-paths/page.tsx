@@ -43,13 +43,13 @@ function LearningPathsPageContent() {
     const [completionData, setCompletionData] = useState<{ [language: string]: string[] }>({});
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
-    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind'];
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'dsa', 'selenium']), []);
+    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind', 'react'];
     const backendLanguages: string[] = [];
     const testingLanguages: string[] = ['selenium'];
     const algorithmLanguages = ['dsa'];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'dsa', 'selenium']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'dsa', 'selenium']), []);
 
     // Load completion data from unified service
     useEffect(() => {

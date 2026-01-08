@@ -262,7 +262,7 @@ export default function TestPrioritizationComponent() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 dark:from-slate-900 dark:to-orange-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Test Prioritization"
         description="Master strategic test prioritization techniques to maximize testing efficiency, focus on high-impact areas, and optimize resource allocation for comprehensive quality assurance"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { YouTubeVideosButton } from '@/components/shared/youtube-videos-modal';
 
 /**
  * IMPORTANT: All colors are fixed to logo branding and cannot be overridden:
@@ -20,6 +21,8 @@ interface PageHeaderProps {
   headerClassName?: string;
   action?: React.ReactNode;
   centered?: boolean;
+  showYouTubeVideos?: boolean;
+  topic?: string;
 }
 
 export function PageHeader({
@@ -33,6 +36,8 @@ export function PageHeader({
   headerClassName,
   action,
   centered = true,
+  showYouTubeVideos = true,
+  topic,
 }: PageHeaderProps) {
   return (
     <div className={cn(
@@ -80,9 +85,12 @@ export function PageHeader({
               )}
             </div>
           </div>
-          {action && (
-            <div>
+          {(action || showYouTubeVideos) && (
+            <div className="flex items-center gap-2">
               {action}
+              {showYouTubeVideos && topic && (
+                <YouTubeVideosButton topic={topic} />
+              )}
             </div>
           )}
         </div>

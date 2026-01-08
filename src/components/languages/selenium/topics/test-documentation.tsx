@@ -47,7 +47,7 @@ export function TestDocumentationComponent() {
   const [activeTab, setActiveTab] = useState<'java' | 'python' | 'javascript'>('java');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-indigo-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Test Documentation"
         description="Master the art of creating comprehensive test documentation that serves as living knowledge, enabling team collaboration, knowledge transfer, and long-term test maintenance"

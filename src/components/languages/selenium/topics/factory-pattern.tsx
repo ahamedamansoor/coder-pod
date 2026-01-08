@@ -246,6 +246,7 @@ export function FactoryPatternComponent() {
         title="Factory Design Pattern"
         description="Master the Factory pattern for creating objects without specifying their exact classes - perfect for WebDriver management and cross-browser testing"
         icon={Factory}
+        category="Selenium · Design Patterns"
         colorTheme="blue"
         badges={[
           { label: 'Design Pattern', variant: 'secondary' },

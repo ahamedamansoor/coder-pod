@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain, Grid3x3, List } from 'lucide-react';
+import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain, Grid3x3, List, Smartphone, Sparkles } from 'lucide-react';
 import { languages, roleBasedRoadmaps } from '@/data/languages';
 import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
@@ -9,6 +9,8 @@ import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 // Minimal accent colors - just for the thin left border
 const accentColors: Record<string, string> = {

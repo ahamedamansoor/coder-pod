@@ -215,11 +215,12 @@ export function ExpectedConditions() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Expected Conditions"
         description="Predefined conditions for explicit waits in Selenium"
         icon={CheckCircle2}
+        category="Selenium · Wait Strategies"
       />
 
       {/* Introduction */}

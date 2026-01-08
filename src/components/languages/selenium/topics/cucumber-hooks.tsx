@@ -40,11 +40,12 @@ export function CucumberHooksComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 dark:from-slate-900 dark:to-orange-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Cucumber Hooks"
         description="Master Cucumber hooks for managing test lifecycle, setup, teardown, and executing code at specific points during test execution"
         icon={Settings}
+        category="Selenium · BDD Testing"
         colorTheme="orange"
         badges={[
           { label: 'Hooks', variant: 'secondary' },

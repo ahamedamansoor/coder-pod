@@ -227,11 +227,12 @@ export function NestedFrames() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Nested Frames"
         description="Navigate through multiple levels of nested iframes"
         icon={Layers}
+        category="Selenium · Advanced Locators"
       />
 
       <Card>

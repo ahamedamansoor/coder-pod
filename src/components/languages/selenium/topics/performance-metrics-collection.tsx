@@ -125,11 +125,12 @@ export default function PerformanceMetricsCollectionComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Performance Metrics Collection"
         description="Master browser performance monitoring with Selenium and Chrome DevTools Protocol to collect detailed metrics and analyze application performance"
         icon={Activity}
+        category="Selenium · Performance Testing"
         colorTheme="blue"
         badges={[
           { label: 'Performance Metrics', variant: 'secondary' },

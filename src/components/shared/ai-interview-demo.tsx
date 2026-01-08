@@ -16,7 +16,49 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { reactInterviewQuestions } from '@/components/languages/react/topics/react-interview-questions';
+
+const reactInterviewQuestions = [
+  {
+    q: "What is React and why would you use it?",
+    a: "React is a JavaScript library for building user interfaces, particularly web applications with complex, interactive UIs. It's used because it provides a component-based architecture, virtual DOM for performance optimization, unidirectional data flow, and a large ecosystem of tools and libraries.",
+  },
+  {
+    q: "What is the difference between functional components and class components?",
+    a: "Functional components are JavaScript functions that return JSX, are simpler to write and test, and can use hooks for state and lifecycle. Class components are ES6 classes that extend React.Component, use this.state and this.setState for state management, and have lifecycle methods. Functional components are now the recommended approach.",
+  },
+  {
+    q: "What are React Hooks and why were they introduced?",
+    a: "Hooks are functions that let you use state and other React features in functional components. They were introduced to allow functional components to have state, lifecycle methods, and other features that were previously only available in class components, eliminating the need for classes and making code more reusable and composable.",
+  },
+  {
+    q: "Explain the Virtual DOM and how it works.",
+    a: "The Virtual DOM is a JavaScript representation of the real DOM. When state changes, React creates a new Virtual DOM tree, compares it with the previous one (diffing), identifies what has changed, and updates only those parts in the real DOM. This process, called reconciliation, makes React applications more efficient by minimizing direct DOM manipulations.",
+  },
+  {
+    q: "What is JSX and why is it used in React?",
+    a: "JSX (JavaScript XML) is a syntax extension for JavaScript that allows you to write HTML-like code in JavaScript files. It's used because it makes React components more readable and intuitive, provides a familiar syntax for developers, and gets compiled to regular JavaScript function calls like React.createElement().",
+  },
+  {
+    q: "What is the difference between props and state?",
+    a: "Props are read-only data passed from parent to child components, used for component configuration and data flow. State is mutable data managed within a component that can change over time due to user actions or API calls. Props are external and immutable, while state is internal and mutable.",
+  },
+  {
+    q: "What is the purpose of useEffect hook?",
+    a: "The useEffect hook lets you perform side effects in functional components. It serves the same purpose as lifecycle methods in class components (componentDidMount, componentDidUpdate, componentWillUnmount). You can use it for data fetching, subscriptions, DOM manipulations, and other operations that need to run after render.",
+  },
+  {
+    q: "What is controlled vs uncontrolled components?",
+    a: "Controlled components have their form data handled by React state, with value and onChange props managed by React. Uncontrolled components store their own state internally and use refs to access values. Controlled components provide more control and validation, while uncontrolled components are simpler for basic forms.",
+  },
+  {
+    q: "What is React Context and when would you use it?",
+    a: "React Context provides a way to pass data through the component tree without having to pass props down manually at every level. It's used for global data like themes, user authentication, language preferences, or any data that needs to be accessed by many components at different nesting levels.",
+  },
+  {
+    q: "What are React Fragments and why are they useful?",
+    a: "React Fragments let you group multiple elements without adding extra nodes to the DOM. They're useful when you need to return multiple elements from a component but don't want to wrap them in a div or other container element, which can break CSS layouts or add unnecessary DOM nesting.",
+  },
+];
 
 type InterviewQuestion = {
   q: string;

@@ -198,7 +198,7 @@ export function Storage() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Local Storage"
         description="Store and retrieve data in browser storage"

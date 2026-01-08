@@ -272,11 +272,12 @@ const ExplicitWaits = () => {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Explicit Waits"
         description="Precise conditional waiting for specific elements and states"
         icon={Timer}
+        category="Selenium · Wait Strategies"
       />
 
       <Card>

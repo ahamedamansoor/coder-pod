@@ -293,6 +293,7 @@ export function ChromeDevToolsProtocolComponent() {
         title="Chrome DevTools Protocol"
         description="Unlock powerful browser debugging and monitoring capabilities with direct Chrome DevTools Protocol integration in Selenium 4"
         icon={Terminal}
+        category="Selenium · Advanced Protocols"
         colorTheme="orange"
         badges={[
           { label: 'CDP Integration', variant: 'secondary' },

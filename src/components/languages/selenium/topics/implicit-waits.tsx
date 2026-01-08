@@ -212,11 +212,12 @@ const ImplicitWaits = () => {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="Implicit Waits"
         description="Global timeout strategy for automatic element waiting"
         icon={Clock}
+        category="Selenium · Wait Strategies"
       />
 
       <Card>

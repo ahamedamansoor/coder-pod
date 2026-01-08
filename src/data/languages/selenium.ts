@@ -9,7 +9,6 @@ export const selenium: Language = {
     {
       title: 'Learning Plan',
       slug: 'learning-plan',
-      category: 'Overview',
       explanation: 'Complete Selenium WebDriver learning roadmap with all topics organized by category',
     },
 
@@ -17,7 +16,6 @@ export const selenium: Language = {
     {
       title: 'Selenium Playground',
       slug: 'selenium-playground',
-      category: 'Overview',
       explanation: 'Interactive playground for practicing Selenium concepts with visual feedback and real-time examples',
     },
 
@@ -782,12 +780,6 @@ export const selenium: Language = {
     },
 
     // 27. Selenium 4 Features
-    {
-      title: 'Selenium 4 Overview',
-      slug: 'selenium-4-overview',
-      category: '27. Selenium 4 Features',
-      explanation: 'New features and improvements in Selenium 4',
-    },
     {
       title: 'W3C WebDriver Protocol',
       slug: 'w3c-webdriver-protocol',

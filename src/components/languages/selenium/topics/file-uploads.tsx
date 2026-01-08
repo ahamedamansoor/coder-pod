@@ -231,11 +231,12 @@ export function FileUploads() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
       <PageHeader
         title="File Uploads"
         description="Learn to handle file uploads in Selenium WebDriver"
         icon={Upload}
+        category="Selenium · Form Elements"
       />
 
       {/* Introduction */}

@@ -358,6 +358,7 @@ export function NetworkInterceptionComponent() {
         title="Network Interception"
         description="Master advanced network request/response manipulation, blocking, and mocking capabilities in Selenium 4 for complete test control"
         icon={Network}
+        category="Selenium · Advanced Protocols"
         colorTheme="purple"
         badges={[
           { label: 'Request/Response Control', variant: 'secondary' },

@@ -40,11 +40,12 @@ export function DataTablesComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-cyan-50 dark:from-slate-900 dark:to-cyan-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Data Tables"
         description="Master the art of using data tables in Gherkin to handle complex test data, create multiple records, and manage tabular information in your BDD scenarios"
         icon={FileText}
+        category="Selenium · BDD Testing"
         colorTheme="cyan"
         badges={[
           { label: 'Data Tables', variant: 'secondary' },

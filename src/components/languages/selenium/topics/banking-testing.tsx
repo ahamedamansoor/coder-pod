@@ -682,6 +682,7 @@ const BankingTesting: React.FC = () => {
         title="Banking Application Testing"
         description="Master automated testing for financial applications with realistic banking workflows, security validation, and transaction testing across multiple banking platforms."
         icon={Shield}
+        category="Selenium · Domain Testing"
       />
 
       {/* Banking Features Overview */}

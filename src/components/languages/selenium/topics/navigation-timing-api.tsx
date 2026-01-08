@@ -122,11 +122,12 @@ export default function NavigationTimingAPIComponent() {
   let accumulatedTime = 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-purple-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Navigation Timing API"
         description="Master the Navigation Timing API to analyze page load performance, measure critical metrics, and optimize web application loading times with detailed timing breakdowns"
         icon={Clock}
+        category="Selenium · Performance Testing"
         colorTheme="purple"
         badges={[
           { label: 'Navigation Timing', variant: 'secondary' },

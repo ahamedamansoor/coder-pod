@@ -425,6 +425,7 @@ driver.ExecuteScript("console.log('Hello BiDi!');");`
         title="WebDriver BiDi APIs"
         description="Next-generation bidirectional browser automation protocol for enhanced testing and real-time communication"
         icon={ArrowLeftRight}
+        category="Selenium · Advanced Protocols"
         colorTheme="blue"
       />
 

@@ -150,11 +150,12 @@ export default function JMeterIntegrationComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-orange-50 dark:from-slate-900 dark:to-orange-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="JMeter Integration"
         description="Master advanced integration patterns for combining Selenium functional testing with JMeter load testing to create comprehensive performance validation strategies"
         icon={Zap}
+        category="Selenium · Performance Testing"
         colorTheme="orange"
         badges={[
           { label: 'JMeter Integration', variant: 'secondary' },

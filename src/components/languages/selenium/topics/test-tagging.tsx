@@ -246,7 +246,7 @@ export default function TestTaggingComponent() {
   const tagStats = getTagStats();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-purple-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Test Tagging"
         description="Master comprehensive test tagging strategies to organize, categorize, and manage your test suite efficiently with advanced filtering and search capabilities"

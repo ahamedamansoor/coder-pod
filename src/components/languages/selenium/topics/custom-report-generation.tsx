@@ -50,11 +50,12 @@ export function CustomReportGenerationComponent() {
   const [activeTab, setActiveTab] = useState<'java' | 'python' | 'javascript'>('java');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-indigo-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Custom Report Generation"
         description="Master the art of building custom test reporting solutions tailored to your specific needs with advanced data visualization, analytics, and stakeholder communication"
         icon={Activity}
+        category="Selenium · Test Reporting"
         colorTheme="emerald"
         badges={[
           { label: 'Custom Reports', variant: 'secondary' },

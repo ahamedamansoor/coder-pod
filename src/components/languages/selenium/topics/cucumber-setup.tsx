@@ -42,11 +42,12 @@ export function CucumberSetupComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 dark:from-slate-900 dark:to-green-900/20">
+    <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background/20">
       <PageHeader
         title="Cucumber Setup"
         description="Master the complete setup process for Cucumber BDD framework and integrate it with Selenium WebDriver for automated testing"
         icon={Package}
+        category="Selenium · BDD Testing"
         colorTheme="green"
         badges={[
           { label: 'Setup', variant: 'secondary' },
