@@ -279,14 +279,16 @@ function LearningPathsPageContent() {
                                                     <Badge variant="secondary" className="bg-white/70 dark:bg-white/10 text-xs text-slate-700 dark:text-slate-300">
                                                         {focusLabel}
                                                     </Badge>
-                                                    <div className={cn('w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold border-2',
-                                                        !hasTopics && 'border-slate-400 text-slate-500',
-                                                        hasTopics && completionPercentage === 0 && 'border-slate-400 text-slate-500',
-                                                        hasTopics && completionPercentage > 0 && completionPercentage < 100 && 'border-blue-500 text-blue-500',
-                                                        hasTopics && isCompleted && 'border-green-500 text-green-500 bg-green-500/10'
-                                                    )}>
-                                                        {!hasTopics ? '--' : (isCompleted ? <Trophy className="w-5 h-5" /> : `${completionPercentage}%`)}
-                                                    </div>
+                                                    {user && (
+                                                        <div className={cn('w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold border-2',
+                                                            !hasTopics && 'border-slate-400 text-slate-500',
+                                                            hasTopics && completionPercentage === 0 && 'border-slate-400 text-slate-500',
+                                                            hasTopics && completionPercentage > 0 && completionPercentage < 100 && 'border-blue-500 text-blue-500',
+                                                            hasTopics && isCompleted && 'border-green-500 text-green-500 bg-green-500/10'
+                                                        )}>
+                                                            {!hasTopics ? '--' : (isCompleted ? <Trophy className="w-5 h-5" /> : `${completionPercentage}%`)}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 <div>
@@ -294,18 +296,20 @@ function LearningPathsPageContent() {
                                                     <p className="text-xs text-slate-600 dark:text-slate-400">{actualTopicCount} Topics</p>
                                                 </div>
 
-                                                <div className="flex gap-3 text-xs">
-                                                    <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/60 dark:bg-white/[0.06] border border-white/40 dark:border-white/10">
-                                                        <Trophy className="w-3 h-3 text-amber-400" />
-                                                        <span className="text-slate-900 dark:text-white font-medium">
-                                                            {hasTopics ? `${completedCount}/${actualTopicCount}` : '0/—'}
-                                                        </span>
+                                                {user && (
+                                                    <div className="flex gap-3 text-xs">
+                                                        <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/60 dark:bg-white/[0.06] border border-white/40 dark:border-white/10">
+                                                            <Trophy className="w-3 h-3 text-amber-400" />
+                                                            <span className="text-slate-900 dark:text-white font-medium">
+                                                                {hasTopics ? `${completedCount}/${actualTopicCount}` : '0/—'}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/60 dark:bg-white/[0.06] border border-white/40 dark:border-white/10">
+                                                            <Target className="w-3 h-3 text-blue-400" />
+                                                            <span className="text-slate-900 dark:text-white font-medium">{leftCountLabel}</span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex items-center gap-1 px-2 py-1 rounded bg-white/60 dark:bg-white/[0.06] border border-white/40 dark:border-white/10">
-                                                        <Target className="w-3 h-3 text-blue-400" />
-                                                        <span className="text-slate-900 dark:text-white font-medium">{leftCountLabel}</span>
-                                                    </div>
-                                                </div>
+                                                )}
 
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{summary}</p>
 
@@ -322,13 +326,17 @@ function LearningPathsPageContent() {
                                                         ↗
                                                     </span>
                                                     <div className="flex-1">
-                                                        {completionPercentage === 0 ? (
-                                                            <span className="ml-1">{pillText}</span>
-                                                        ) : (
-                                                            <>
-                                                                <span className="opacity-70">Next up:</span>{' '}
+                                                        {user ? (
+                                                            completionPercentage === 0 ? (
                                                                 <span className="ml-1">{pillText}</span>
-                                                            </>
+                                                            ) : (
+                                                                <>
+                                                                    <span className="opacity-70">Next up:</span>{' '}
+                                                                    <span className="ml-1">{pillText}</span>
+                                                                </>
+                                                            )
+                                                        ) : (
+                                                            <span className="ml-1">Start your learning journey</span>
                                                         )}
                                                     </div>
                                                 </div>

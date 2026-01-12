@@ -45,14 +45,14 @@ export default function CertificatePage() {
   const userName = user.displayName || user.email || 'Valued Learner';
 
   return (
-    <div className="min-h-screen bg-muted/40 p-4 sm:p-8 flex flex-col items-center justify-center">
-        <div className="absolute top-4 left-4">
+    <div className="min-h-screen bg-muted/40 flex flex-col">
+        <div className="absolute top-4 left-4 z-10">
             <Button variant="ghost" asChild>
-                <Link href="/dashboard"><Home className="mr-2 h-4 w-4" /> Back to Dashboard</Link>
+                <Link href="/learning-paths"><Home className="mr-2 h-4 w-4" /> Preview Learning Page</Link>
             </Button>
         </div>
-      <Card className="w-full max-w-4xl border-4 border-primary/20 bg-card shadow-2xl">
-        <CardContent className="p-8 sm:p-12">
+      <Card className="flex-1 border-4 border-primary/20 bg-card shadow-2xl rounded-none">
+        <CardContent className="p-8 sm:p-12 h-full">
           <div className="flex flex-col sm:flex-row justify-between items-center pb-8 border-b-2 border-muted">
             <Logo />
             <div className="text-center sm:text-right mt-4 sm:mt-0">
@@ -82,7 +82,7 @@ export default function CertificatePage() {
           </div>
         </CardContent>
       </Card>
-       <div className="mt-8">
+       <div className="p-8 sm:p-8">
             <Button asChild size="lg">
                 <a href={linkedInShareUrl} target="_blank" rel="noopener noreferrer">
                     <Linkedin className="mr-2 h-5 w-5" />

@@ -6,11 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Youtube, Play, Clock, Search, X, Video, BookOpen, FileText, Link as LinkIcon, ExternalLink, Loader2, PlusCircle } from 'lucide-react';
+import { Youtube, Play, Clock, Search, X, Video, BookOpen, FileText, Link as LinkIcon, ExternalLink, Loader2, PlusCircle, Lock, Sparkles } from 'lucide-react';
 import { languages } from '@/data/languages';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/contexts/PlayerContext';
 import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { ServiceFactory } from '@/services';
 import { Note } from '@/types/notes.types';
 import {
@@ -19,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
 
 interface VideoNotesDrawerProps {
   open: boolean;
@@ -43,6 +45,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   const [iframeError, setIframeError] = useState(false);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
   
   // Form states
   const [title, setTitle] = useState('');
@@ -52,13 +55,25 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   const { toast } = useToast();
   const { setContent } = usePlayer();
   const { user } = useUser();
+  const { currentSupabaseClient } = useSupabaseAuth();
   const languageData = languages.find(l => l.slug === languageSlug);
   const fetchInProgressRef = useRef(false);
 
   // Fetch notes from Supabase with caching
   const fetchNotes = async (forceRefresh = false) => {
     if (!user) {
-      setNotes([]);
+      // Load from localStorage for non-authenticated users
+      const localNotes = localStorage.getItem(`notes_${languageSlug}`);
+      if (localNotes) {
+        try {
+          setNotes(JSON.parse(localNotes));
+        } catch (error) {
+          console.error('Error parsing local notes:', error);
+          setNotes([]);
+        }
+      } else {
+        setNotes([]);
+      }
       return;
     }
 
@@ -80,6 +95,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     fetchInProgressRef.current = true;
     setIsLoading(true);
     try {
+      // Only use ServiceFactory for authenticated users
       const notesService = ServiceFactory.getNotesService();
       const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug);
       setNotes(allNotes);
@@ -104,7 +120,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   };
 
   useEffect(() => {
-    if (open && user) {
+    if (open) {
       fetchNotes();
     }
   }, [open, languageSlug, user]);
@@ -139,6 +155,11 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   };
 
   const openAddDialog = () => {
+    if (!user) {
+      // Show sign-in required modal for non-authenticated users
+      setShowSignInModal(true);
+      return;
+    }
     resetForm();
     setIsAddDialogOpen(true);
   };
@@ -162,15 +183,6 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
       return;
     }
 
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to save resources.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsSaving(true);
     try {
       let videoId: string | undefined;
@@ -180,22 +192,47 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         videoId = extractVideoId(url) || undefined;
       }
 
-      const notesService = ServiceFactory.getNotesService();
-      await notesService.createNote(user.uid, {
+      const newNote: Note = {
+        id: Date.now().toString(), // Simple ID for localStorage
         title: title.trim(),
         url: url.trim(),
         type: resourceType,
         videoId,
         language: languageSlug,
-      });
+        createdAt: new Date(),
+        userId: user?.uid || 'local-user',
+      };
+
+      if (user) {
+        // Save to Supabase for authenticated users using current client
+        const notesService = ServiceFactory.getNotesService();
+        await notesService.createNote(user.uid, {
+          title: title.trim(),
+          url: url.trim(),
+          type: resourceType,
+          videoId,
+          language: languageSlug,
+        }, currentSupabaseClient);
+      } else {
+        // Save to localStorage for non-authenticated users - completely bypass ServiceFactory
+        const localNotes = localStorage.getItem(`notes_${languageSlug}`);
+        const existingNotes = localNotes ? JSON.parse(localNotes) : [];
+        existingNotes.push(newNote);
+        localStorage.setItem(`notes_${languageSlug}`, JSON.stringify(existingNotes));
+        
+        // Update local state immediately for non-authenticated users
+        setNotes(existingNotes);
+      }
       
       toast({
         title: "✅ Resource Saved!",
         description: `Your ${resourceType} has been saved successfully.`,
       });
       
-      // Refresh notes list with forced cache refresh
-      await fetchNotes(true);
+      // Only refresh from server for authenticated users
+      if (user) {
+        await fetchNotes(true);
+      }
       
       setIsAddDialogOpen(false);
       resetForm();
@@ -346,7 +383,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                     <>
                       <p className="text-xs text-muted-foreground leading-relaxed mb-4">
                         Found an interesting video, blog, or article?<br />
-                        Add it here for quick access!
+                        Sign in to add resources for quick access!
                       </p>
                       <Button
                         onClick={openAddDialog}
@@ -360,7 +397,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                   )}
                   {searchQuery && (
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      Try adjusting your search or add new resources from the Notes page.
+                      Try adjusting your search or add new resources here.
                     </p>
                   )}
                 </div>
@@ -553,6 +590,61 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
               )}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Sign In Required Modal */}
+      <Dialog open={showSignInModal} onOpenChange={setShowSignInModal}>
+        <DialogContent className="sm:max-w-md">
+          <div className="flex flex-col items-center text-center space-y-6 py-6">
+            {/* Animated lock icon */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-2xl animate-pulse" />
+              <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+                <Lock className="w-10 h-10 text-white" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                Sign In Required
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400">
+                <span className="font-semibold text-blue-600 dark:text-blue-400">Save Resources</span> is available only for signed-in users
+              </p>
+            </div>
+
+            {/* Feature benefits */}
+            <div className="w-full space-y-3 text-left">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30">
+                <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-slate-900 dark:text-white">Save and sync resources</p>
+                  <p className="text-slate-600 dark:text-slate-400">Access across all devices</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30">
+                <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-slate-900 dark:text-white">Organize your learning</p>
+                  <p className="text-slate-600 dark:text-slate-400">Keep everything in one place</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col w-full gap-3 pt-2">
+              <Link href="/login" className="w-full">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                  Sign In to Continue
+                </Button>
+              </Link>
+              <Button variant="ghost" onClick={() => setShowSignInModal(false)} className="w-full">
+                Maybe Later
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </>
