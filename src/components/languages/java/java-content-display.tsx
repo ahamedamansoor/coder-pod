@@ -4,6 +4,7 @@ import type { Language, Topic } from '@/data/languages';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton, CompactLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
 
 // Lazy load all the topic components
 const JavaLearningRoadmap = lazy(() => import('./java-learning-roadmap').then(module => ({ default: module.JavaLearningRoadmap })));
@@ -153,19 +154,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'queue-deque': JavaQueueDeque,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
-
 export function JavaContentDisplay({ 
   topic, 
   language,
@@ -181,7 +169,7 @@ export function JavaContentDisplay({
       topic={topic}
       language={language}
     >
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={<CompactLoadingSkeleton />}>
         {CustomTopicComponent ? <CustomTopicComponent /> : null}
       </Suspense>
     </GenericContentDisplay>

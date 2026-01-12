@@ -7,6 +7,7 @@ import { HelpCircle, BookmarkIcon, CheckCircle } from 'lucide-react';
 import React from 'react';
 import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from './enhanced-loading-skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -680,9 +681,7 @@ Keep it simple and easy to understand.`;
       {isAsking && (
         <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
           <CardContent className="p-6 space-y-2">
-            <Skeleton className="h-4 w-1/3 bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
-            <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
+            <CompactLoadingSkeleton />
           </CardContent>
         </Card>
       )}
