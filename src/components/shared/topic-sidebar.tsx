@@ -30,6 +30,7 @@ import { useRxjs } from '@/app/languages/rxjs/rxjs-context';
 import { useSpringBoot } from '@/app/languages/spring-boot/spring-boot-context';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
 import { useSelenium } from '@/app/languages/selenium/selenium-context';
+import { useGit } from '@/app/languages/git/git-context';
 import { useUser } from '@/hooks/use-auth-compat';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
@@ -97,6 +98,9 @@ function useLanguageContext(language: Language) {
         case 'selenium':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useSelenium();
+        case 'git':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useGit();
         default:
             // Fallback or default context if necessary
             return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
@@ -171,7 +175,7 @@ export function TopicSidebar({
       if (topic.category) {
         group = topic.category;
       }
-    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs') {
+    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'git') {
       // Use category from topic data if available
       if (topic.category) {
         group = topic.category;
@@ -277,18 +281,23 @@ export function TopicSidebar({
     ? ["1. Getting Started", "2. Routing Fundamentals", "3. App Router", "4. Data Fetching", "5. Server Components & Actions", "6. Client Components", "7. Rendering Strategies", "8. Caching & Revalidation", "9. Styling", "10. Optimizations", "11. API Routes", "12. Middleware", "13. Authentication", "14. Internationalization", "15. Testing", "16. Deployment", "17. Configuration", "18. Advanced Patterns", "19. Performance", "20. API Reference"]
     : language.slug === 'selenium'
     ? ["Overview", "1. Getting Started", "2. Browser Configuration", "3. Locator Strategies", "4. Element Interactions", "5. Waits & Synchronization", "6. Browser Navigation", "7. Advanced Interactions", "8. Frames & Alerts", "9. JavaScript Execution", "10. Screenshots & Visual Testing", "11. Cookies & Storage", "12. Test Frameworks Integration", "13. Page Object Model", "14. Data-Driven Testing", "15. Selenium Grid", "16. Handling Special Elements", "17. Error Handling & Debugging", "18. CI/CD Integration", "19. Performance & Optimization", "20. Best Practices", "21. Framework Architecture", "22. BDD & Cucumber Integration", "23. Reporting & Documentation", "24. API & UI Combined Testing", "25. Mobile Web Testing", "26. Advanced Design Patterns", "27. Selenium 4 Features", "28. Security Testing", "29. Accessibility Testing", "30. Performance Testing Integration", "31. Test Management & Organization", "32. Real-World Scenarios", "33. Interview Preparation"]
+    : language.slug === 'git'
+    ? ['1. Git Fundamentals', '2. Branching', '3. Merging', '4. Remote Repositories', '5. GitHub Basics', '6. Collaboration', '7. Undoing Changes', '8. Tagging', '9. Advanced Git', '10. GitHub Features', '11. Workflows', '12. Best Practices', '13. Security', '14. Performance', '15. GUI Tools', '16. Troubleshooting', '17. Enterprise Git', '18. Open Source']
     : [];
 
-  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Selenium, Vue, Next.js, DSA)
-  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa')
+  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Selenium, Vue, Next.js, DSA, Git)
+  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa' || language.slug === 'git')
     ? groupOrder
-        .map(group => ({ title: formatGroupTitle(group), topics: topicsByGroup[group] || [] }))
+        .map(group => ({ 
+          title: formatGroupTitle(group), 
+          topics: Array.isArray(topicsByGroup[group]) ? topicsByGroup[group] : [] 
+        }))
         .filter(group => {
           // Remove "Others" category from Next.js and Vue.js roadmaps
           if ((language.slug === 'nextjs' || language.slug === 'vue') && group.title === 'Others') {
             return false;
           }
-          return group.topics.length > 0;
+          return group.topics && group.topics.length > 0;
         })
     : [];
 

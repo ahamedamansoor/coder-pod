@@ -157,6 +157,17 @@ class UnifiedCompletionService {
     localStorage.setItem(this.SYNC_STATUS_KEY, JSON.stringify(status));
   }
 
+  // Trigger immediate sync of completion data
+  async triggerImmediateSync(supabaseClient?: any): Promise<boolean> {
+    try {
+      const { completionSyncService } = await import('./completion-sync.service');
+      return await completionSyncService.syncToServer(supabaseClient);
+    } catch (error) {
+      console.error('Failed to trigger immediate sync:', error);
+      return false;
+    }
+  }
+
   // Update completion data from server (after successful sync)
   updateFromServer(data: AllCompletionData): void {
     if (typeof window === 'undefined') return;

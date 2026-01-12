@@ -532,6 +532,24 @@ function DashboardMain() {
   const router = useRouter();
   const { showLoader, hideLoader } = useLoading();
 
+  // Handle OAuth callback for Google sign-in
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const email = urlParams.get('email');
+    
+    if (code && email) {
+      // Store email for dynamic client creation
+      localStorage.setItem('last-login-email', email);
+      
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+      
+      // The auth context will handle the rest
+      console.log('OAuth callback handled for email:', email);
+    }
+  }, []);
+
   const handleLogout = async () => {
     try {
       showLoader();

@@ -321,7 +321,7 @@ export function PageHeader({
       {/* YouTube Videos Button */}
       {showYouTubeVideos && (
         <div className="mt-6">
-          <YouTubeVideosButton topic={topic || title} />
+          <YouTubeVideosButton topic={extractedLanguage ? `${title} ${extractedLanguage}` : (topic || title)} />
         </div>
       )}
     </div>

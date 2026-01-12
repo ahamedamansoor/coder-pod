@@ -39,7 +39,6 @@ const categories = [
   { id: 'roles', label: 'Career Paths', icon: Briefcase },
   { id: 'frontend', label: 'Frontend', icon: Code2 },
   { id: 'backend', label: 'Backend', icon: Server },
-  { id: 'algorithms', label: 'DSA', icon: Brain },
   { id: 'testing', label: 'Testing', icon: TestTube },
 ];
 
@@ -47,7 +46,6 @@ const categoryMap: Record<string, string[]> = {
   roles: ['frontend-developer', 'backend-developer'],
   frontend: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs'],
   backend: ['java', 'spring', 'spring-boot'],
-  algorithms: ['dsa'],
   testing: ['playwright'],
 };
 
@@ -71,7 +69,6 @@ export default function RoadmapsPage() {
     'roles': Briefcase,
     'frontend': Code2,
     'backend': Server,
-    'algorithms': Brain,
     'testing': TestTube,
   };
 

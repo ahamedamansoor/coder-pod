@@ -10,7 +10,7 @@ interface CompletionData {
 
 class CompletionSyncService {
   // Sync all completion data to server
-  async syncToServer(): Promise<boolean> {
+  async syncToServer(supabaseClient?: any): Promise<boolean> {
     try {
       const data = unifiedCompletionService.getAllCompletionData();
       const hasChanges = unifiedCompletionService.hasPendingSync();
@@ -20,15 +20,18 @@ class CompletionSyncService {
         return true;
       }
 
+      // Use provided client or default
+      const client = supabaseClient || supabase;
+
       // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      const { data: { user }, error: userError } = await client.auth.getUser();
       if (userError || !user) {
         console.error('User not authenticated:', userError);
         return false;
       }
 
       // Get current user profile
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile, error: profileError } = await client
         .from('users')
         .select('completed_topics')
         .eq('id', user.id)
@@ -47,7 +50,7 @@ class CompletionSyncService {
       };
 
       // Update server
-      const { error: updateError } = await supabase
+      const { error: updateError } = await client
         .from('users')
         .update({ completed_topics: updatedTopics })
         .eq('id', user.id);

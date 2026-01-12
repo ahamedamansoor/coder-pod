@@ -39,7 +39,10 @@ export function GenericGroupedTopicMenu({
 
   // Calculate group progress
   const getGroupProgress = (group: Group) => {
-    const completed = group.topics.filter(t => completedTopics.has(t.slug)).length;
+    if (!group.topics || !Array.isArray(group.topics)) {
+      return { completed: 0, total: 0, percentage: 0 };
+    }
+    const completed = group.topics.filter(t => t && completedTopics.has(t.slug)).length;
     const total = group.topics.length;
     return { completed, total, percentage: total > 0 ? Math.round((completed / total) * 100) : 0 };
   };
@@ -107,11 +110,11 @@ export function GenericGroupedTopicMenu({
 
             {/* Enhanced Topic List */}
             <div className="ml-4 border-l-2 border-border pl-3 space-y-0.5 transition-all duration-300">
-                  {group.topics.map((topic, topicIndex) => {
+                  {group.topics && group.topics.filter(topic => topic).map((topic, topicIndex) => {
                     const isCompleted = completedTopics.has(topic.slug);
                     const isActive = selectedTopicSlug === topic.slug;
                     const truncatedTitle =
-                      topic.title.length > 48 ? `${topic.title.slice(0, 45)}…` : topic.title;
+                      topic.title && topic.title.length > 48 ? `${topic.title.slice(0, 45)}…` : (topic.title || 'Untitled');
                 
                 return (
                   <SidebarMenuItem 

@@ -84,7 +84,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   // Automatically use light/dark theme based on system preference
   const currentIdeTheme = {
     style: systemTheme === 'light' ? vs : vscDarkPlus,
-    bg: systemTheme === 'light' ? '#ffffff' : '#1e1e1e',
+    bg: systemTheme === 'light' ? '#ffffff' : '#0d1117',
     color: systemTheme === 'light' ? '#24292e' : '#d4d4d4',
     borderColor: systemTheme === 'light' ? '#e1e4e8' : '#404040',
     name: systemTheme === 'light' ? 'Light' : 'Dark'

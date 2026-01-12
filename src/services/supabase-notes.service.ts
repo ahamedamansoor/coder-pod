@@ -7,9 +7,10 @@ export class SupabaseNotesService {
   /**
    * Get all notes for a user
    */
-  async getUserNotes(userId: string): Promise<Note[]> {
+  async getUserNotes(userId: string, supabaseClient?: any): Promise<Note[]> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)
@@ -30,9 +31,10 @@ export class SupabaseNotesService {
   /**
    * Get a single note by ID
    */
-  async getNote(noteId: string, userId: string): Promise<Note | null> {
+  async getNote(noteId: string, userId: string, supabaseClient?: any): Promise<Note | null> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('id', noteId)
@@ -58,8 +60,9 @@ export class SupabaseNotesService {
   /**
    * Create a new note
    */
-  async createNote(userId: string, noteData: CreateNoteData): Promise<Note> {
+  async createNote(userId: string, noteData: CreateNoteData, supabaseClient?: any): Promise<Note> {
     try {
+      const client = supabaseClient || supabase;
       const newNote = {
         user_id: userId,
         title: noteData.title,
@@ -72,7 +75,7 @@ export class SupabaseNotesService {
         tags: noteData.tags || [],
       };
 
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from(this.tableName)
         .insert(newNote)
         .select()
@@ -96,9 +99,11 @@ export class SupabaseNotesService {
   async updateNote(
     noteId: string,
     userId: string,
-    updateData: UpdateNoteData
+    updateData: UpdateNoteData,
+    supabaseClient?: any
   ): Promise<void> {
     try {
+      const client = supabaseClient || supabase;
       const updatePayload: any = {};
 
       if (updateData.title !== undefined) updatePayload.title = updateData.title;
@@ -111,7 +116,7 @@ export class SupabaseNotesService {
         updatePayload.content = updateData.content || null;
       if (updateData.tags !== undefined) updatePayload.tags = updateData.tags;
 
-      const { error } = await supabase
+      const { error } = await client
         .from(this.tableName)
         .update(updatePayload)
         .eq('id', noteId)
@@ -130,9 +135,10 @@ export class SupabaseNotesService {
   /**
    * Delete a note
    */
-  async deleteNote(noteId: string, userId: string): Promise<void> {
+  async deleteNote(noteId: string, userId: string, supabaseClient?: any): Promise<void> {
     try {
-      const { error } = await supabase
+      const client = supabaseClient || supabase;
+      const { error } = await client
         .from(this.tableName)
         .delete()
         .eq('id', noteId)
@@ -151,9 +157,10 @@ export class SupabaseNotesService {
   /**
    * Search notes by title or content
    */
-  async searchNotes(userId: string, searchQuery: string): Promise<Note[]> {
+  async searchNotes(userId: string, searchQuery: string, supabaseClient?: any): Promise<Note[]> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)

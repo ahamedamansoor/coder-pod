@@ -28,6 +28,7 @@ const accentMap: Record<string, string> = {
     dsa: 'from-violet-100/80 via-indigo-50/60 to-blue-100/80',
     selenium: 'from-green-100/80 via-emerald-50/60 to-teal-100/80',
     rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
+    git: 'from-orange-100/80 via-red-50/60 to-orange-100/80',
 };
 
 function LearningPathsPageContent() {
@@ -48,6 +49,7 @@ function LearningPathsPageContent() {
     const backendLanguages: string[] = [];
     const testingLanguages: string[] = ['selenium'];
     const algorithmLanguages: string[] = [];
+    const versionControlLanguages: string[] = [];
 
     const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium']), []);
 
@@ -88,6 +90,7 @@ function LearningPathsPageContent() {
             if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
             if (filter === 'backend') return backendLanguages.includes(lang.slug);
             if (filter === 'testing') return testingLanguages.includes(lang.slug);
+            if (filter === 'algorithms') return algorithmLanguages.includes(lang.slug);
             return true;
         });
     }, [filter, searchQuery, allowedSlugs]);

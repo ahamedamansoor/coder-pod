@@ -2,10 +2,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { supabase, createSupabaseClient } from '@/lib/supabase';
 import { UserProfile } from '@/types/user.types';
 import { supabaseUserService } from '@/services/supabase-user.service';
 import { completionSyncService } from '@/services/completion-sync.service';
+import { unifiedCompletionService } from '@/services/unified-completion.service';
+import { localCompletionService } from '@/services/local-completion.service';
+import { notesSyncService } from '@/services/notes-sync.service';
 
 interface AuthContextType {
   user: User | null;
@@ -29,6 +32,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<AuthError | null>(null);
+  const [currentSupabaseClient, setCurrentSupabaseClient] = useState(supabase);
 
   // Fetch user profile from database
   const fetchUserProfile = async (userId: string, authData?: any) => {
@@ -42,13 +46,26 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       setUserProfile(profile);
     } catch (err) {
       console.error('Error fetching user profile:', err);
+      // Don't throw error - allow login to proceed even if profile fetch fails
+      // The profile can be fetched later
     }
   };
 
   // Initialize auth state
   useEffect(() => {
+    // Check for last login email to create appropriate client
+    let clientToUse = currentSupabaseClient;
+    
+    if (typeof window !== 'undefined') {
+      const lastEmail = window.localStorage.getItem('last-login-email');
+      if (lastEmail) {
+        clientToUse = createSupabaseClient(lastEmail);
+        setCurrentSupabaseClient(clientToUse);
+      }
+    }
+
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
+    clientToUse.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
         console.error('Error getting session:', error);
         setError(error);
@@ -58,6 +75,10 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       
       if (session?.user) {
         fetchUserProfile(session.user.id, session.user);
+        // Trigger immediate sync of completion data on login
+        unifiedCompletionService.triggerImmediateSync(clientToUse);
+        // Trigger immediate sync of notes data on login
+        notesSyncService.syncToServer(clientToUse);
       }
       
       setIsLoading(false);
@@ -66,18 +87,37 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = clientToUse.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
+        // Store email for unique storage key generation
+        if (typeof window !== 'undefined' && session.user.email) {
+          window.localStorage.setItem('last-login-email', session.user.email);
+        }
         await fetchUserProfile(session.user.id, session.user);
+        // Trigger sync on auth state changes
+        unifiedCompletionService.triggerImmediateSync(clientToUse);
+        // Trigger notes sync on auth state changes
+        notesSyncService.syncToServer(clientToUse);
       } else {
         setUserProfile(null);
       }
     });
 
-    return () => subscription.unsubscribe();
+    // Set up periodic sync every 30 seconds to keep tabs in sync
+    const syncInterval = setInterval(() => {
+      if (clientToUse && user) {
+        unifiedCompletionService.triggerImmediateSync(clientToUse);
+        notesSyncService.syncToServer(clientToUse);
+      }
+    }, 30000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearInterval(syncInterval);
+    };
   }, []);
 
   // Sign in with Google
@@ -86,7 +126,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     setError(null);
     
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await currentSupabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
@@ -113,7 +153,31 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     setError(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      // Clear any existing local data before signing in as a new user
+      // This prevents data leakage if a previous session wasn't properly cleared
+      unifiedCompletionService.clearAll();
+      localCompletionService.clearAll();
+      notesSyncService.clearAll();
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('bookmarked_tech_news');
+        // Clear interview preferences for common languages
+        const languages = ['html', 'javascript', 'react', 'dsa', 'selenium'];
+        languages.forEach(lang => {
+          localStorage.removeItem(`interview_preferences_${lang}`);
+        });
+      }
+
+      // Store email for unique storage key generation
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('last-login-email', email);
+      }
+
+      // Create user-specific Supabase client
+      const userSupabaseClient = createSupabaseClient(email);
+      setCurrentSupabaseClient(userSupabaseClient);
+
+      const { data, error } = await userSupabaseClient.auth.signInWithPassword({
         email,
         password,
       });
@@ -122,8 +186,29 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
 
       // Check if email is verified
       if (!data.user?.email_confirmed_at) {
-        await supabase.auth.signOut();
+        await userSupabaseClient.auth.signOut();
         throw new Error('Please verify your email before signing in. Check your inbox for the verification link.');
+      }
+
+      // Manually set the session and user since auth state listener might not be ready yet
+      setSession(data.session);
+      setUser(data.user);
+      
+      // Fetch user profile with timeout to prevent hanging
+      if (data.user) {
+        try {
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+          );
+          
+          await Promise.race([
+            fetchUserProfile(data.user.id, data.user),
+            timeoutPromise
+          ]);
+        } catch (profileErr) {
+          console.warn('Profile fetch failed or timed out, but login continues:', profileErr);
+          // Continue with login even if profile fetch fails
+        }
       }
     } catch (err: any) {
       console.error('Email sign-in error:', err);
@@ -198,19 +283,37 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       // Sync completion data before signing out
       if (user) {
         try {
-          await completionSyncService.syncToServer();
+          await completionSyncService.syncToServer(currentSupabaseClient);
+          await notesSyncService.syncToServer(currentSupabaseClient);
         } catch (syncError) {
-          console.warn('Failed to sync completion data on logout:', syncError);
+          console.warn('Failed to sync data on logout:', syncError);
           // Continue with logout even if sync fails
         }
       }
 
-      const { error } = await supabase.auth.signOut();
+      const { error } = await currentSupabaseClient.auth.signOut();
       if (error) throw error;
+      
+      // Clear local data to prevent leakage between users
+      unifiedCompletionService.clearAll();
+      localCompletionService.clearAll();
+      notesSyncService.clearAll();
+      
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('bookmarked_tech_news');
+        // Clear interview preferences for common languages
+        const languages = ['html', 'javascript', 'react', 'dsa', 'selenium'];
+        languages.forEach(lang => {
+          localStorage.removeItem(`interview_preferences_${lang}`);
+        });
+      }
       
       setUser(null);
       setSession(null);
       setUserProfile(null);
+      
+      // Reset to default client
+      setCurrentSupabaseClient(supabase);
     } catch (err: any) {
       console.error('Sign-out error:', err);
       setError(err);

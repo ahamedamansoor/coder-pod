@@ -23,6 +23,7 @@ interface PageHeaderProps {
   centered?: boolean;
   showYouTubeVideos?: boolean;
   topic?: string;
+  category?: string;
 }
 
 export function PageHeader({
@@ -38,7 +39,10 @@ export function PageHeader({
   centered = true,
   showYouTubeVideos = true,
   topic,
+  category,
 }: PageHeaderProps) {
+  // Extract language from category (e.g., "React · Describing the UI" -> "React")
+  const extractedLanguage = category?.includes('·') ? category.split('·')[0].trim() : null;
   return (
     <div className={cn(
       "relative px-4 sm:px-6 lg:px-8 py-8 border-b",
@@ -88,8 +92,8 @@ export function PageHeader({
           {(action || showYouTubeVideos) && (
             <div className="flex items-center gap-2">
               {action}
-              {showYouTubeVideos && topic && (
-                <YouTubeVideosButton topic={topic} />
+              {showYouTubeVideos && (
+                <YouTubeVideosButton topic={extractedLanguage ? `${title} ${extractedLanguage}` : (topic || title)} />
               )}
             </div>
           )}

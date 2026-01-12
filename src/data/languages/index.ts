@@ -16,6 +16,7 @@ import { dsa } from './dsa';
 import { rxjs } from './rxjs';
 import { playwright } from './playwright';
 import { selenium } from './selenium';
+import { git } from './git';
 import { frontendDeveloper } from './frontend-developer';
 import { backendDeveloper } from './backend-developer';
 import type { Language } from './types';
@@ -34,10 +35,11 @@ export const languages: Language[] = [
     { ...java, enabled: false },
     { ...spring, enabled: false },
     { ...springBoot, enabled: false },
-    { ...dsa, enabled: true },
+    { ...dsa, enabled: false },
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
     { ...selenium, enabled: true },
+    { ...git, enabled: false },
 ];
 
 // Filtered list for display (dashboard, dropdowns, etc.)

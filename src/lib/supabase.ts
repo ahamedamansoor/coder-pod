@@ -10,15 +10,25 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Create a single supabase client for interacting with your database and auth
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: true, // Enable session persistence
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    storageKey: 'coder-pod-auth',
-  },
-});
+// Create a dynamic Supabase client factory for concurrent logins
+export const createSupabaseClient = (email?: string) => {
+  // Generate unique storage key per user email
+  const storageKey = email ? 
+    `coder-pod-auth-${email.replace(/[^a-zA-Z0-9]/g, '_')}` : 
+    'coder-pod-auth-default';
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true, // Enable session persistence
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storageKey: storageKey,
+    },
+  });
+};
+
+// Default Supabase client (for initial auth)
+export const supabase = createSupabaseClient();
 
 // Database types for TypeScript
 export interface Database {

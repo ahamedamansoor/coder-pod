@@ -17,13 +17,13 @@ export { default as InterviewSimulator } from './interview-simulator';
 export { FirebaseErrorListener } from './FirebaseErrorListener';
 export { MotivationalLoader } from './motivational-loader';
 export { FeatureGateModal } from './feature-gate-modal';
+export { CodeSnippet } from './code-snippet';
 
 // Layout components
 export { InnovativeHeader } from './layout/innovative-header';
 
 // Reusable code display components
 export { CodeSnippetWithOutput } from './code-snippet-with-output';
-export { CodeSnippet } from './code-snippet';
 export { InteractivePlayground } from './interactive-playground';
 export { FrontendCodePreview } from './frontend-code-preview';
 

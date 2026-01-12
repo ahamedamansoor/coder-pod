@@ -23,7 +23,7 @@ export function LoginPageForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { showLoader } = useLoading();
+  const { showLoader, hideLoader } = useLoading();
 
 
   const handleGoogleSignIn = async () => {
@@ -62,6 +62,7 @@ export function LoginPageForm() {
       });
       
       router.push('/dashboard');
+      hideLoader();
     } catch (error: any) {
       console.error('Email sign-in error:', error);
       
