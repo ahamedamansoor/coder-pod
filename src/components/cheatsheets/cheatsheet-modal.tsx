@@ -253,36 +253,36 @@ export function CheatsheetModal({
         className="max-w-full w-screen h-screen p-0 flex flex-col bg-slate-50 dark:bg-slate-950 border-0 rounded-none"
       >
         {/* Header */}
-        <DialogHeader className="px-6 py-4 border-b flex-shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <div className="flex flex-col gap-4">
+        <DialogHeader className="px-8 py-6 border-b flex-shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
-                  <Icon className="h-5 w-5 text-white" />
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
+                  <Icon className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="text-emerald-600 dark:text-emerald-400">#</span>
                     {title}
                   </DialogTitle>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                     {totalCommands} commands • {filteredSections.length} sections
                   </p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all hover:scale-110 shadow-lg"
+                className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all hover:scale-110 shadow-lg"
               >
-                <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <X className="w-6 h-6 text-slate-600 dark:text-slate-400" />
               </button>
             </div>
 
             {/* Search Input and Advanced Filter */}
-            <div className="flex flex-col gap-3 items-center">
-              <div className="flex gap-2 items-center justify-center w-full">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <div className="flex flex-col gap-4 items-center">
+              <div className="flex gap-3 items-center justify-center w-full">
+                <div className="relative flex-1 max-w-lg">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                   <Input
                     placeholder="Filter commands..."
                     value={filters.searchQuery}
@@ -290,14 +290,14 @@ export function CheatsheetModal({
                       updateFilter('searchQuery', e.target.value);
                       // Keep selected sections when searching - they work together
                     }}
-                    className="pl-9 pr-10 h-10 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20"
+                    className="pl-12 pr-12 h-12 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20 text-base"
                   />
                   {filters.searchQuery && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => updateFilter('searchQuery', '')}
-                      className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                     >
                       <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
                     </Button>
@@ -307,11 +307,11 @@ export function CheatsheetModal({
                   variant="outline"
                   size="sm"
                   onClick={() => setShowTopics(!showTopics)}
-                  className="h-10 px-4 text-xs border-slate-200 dark:border-slate-700 whitespace-nowrap"
+                  className="h-12 px-6 text-sm border-slate-200 dark:border-slate-700 whitespace-nowrap"
                 >
-                  <Filter className="w-3.5 h-3.5 mr-1.5" />
+                  <Filter className="w-4 h-4 mr-2" />
                   {showTopics ? 'Hide Filters' : 'Advanced Filters'}
-                  <span className="ml-1.5 text-[10px] opacity-75">
+                  <span className="ml-2 text-xs opacity-75">
                     ({filters.selectedSections.length > 0 ? filters.selectedSections.length : sections.length})
                   </span>
                 </Button>
@@ -319,8 +319,8 @@ export function CheatsheetModal({
 
               {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
               {showTopics && (
-                <div className="flex flex-wrap items-center justify-center gap-2 animate-in slide-in-from-top-2 duration-200">
-                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">
+                <div className="flex flex-wrap items-center justify-center gap-3 animate-in slide-in-from-top-2 duration-200">
+                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400 mr-2">
                     Topics:
                   </span>
                   {(filters.selectedSections.length > 0 || filters.searchQuery) && (
@@ -328,12 +328,12 @@ export function CheatsheetModal({
                       variant="ghost"
                       size="sm"
                       onClick={clearFilters}
-                      className="h-7 px-2 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                      className="h-8 px-3 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                     >
                       Clear filters {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
                     </Button>
                   )}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-3">
                     {sections.map((section, index) => {
                       const badgeColor = sectionColors[index % sectionColors.length];
                       const isSelected = filters.selectedSections.includes(section.title);
@@ -343,7 +343,7 @@ export function CheatsheetModal({
                           key={section.title}
                           onClick={() => handleSectionClick(section.title)}
                           className={cn(
-                            'px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200',
+                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                             'border border-slate-200 dark:border-slate-700',
                             isSelected
                               ? `${badgeColor} text-white border-transparent shadow-md scale-105`
@@ -352,7 +352,7 @@ export function CheatsheetModal({
                           title={`${section.commands.length} commands - Click to ${isSelected ? 'deselect' : 'select'}`}
                         >
                           {section.title}
-                          <span className="ml-1.5 text-[10px] opacity-75">
+                          <span className="ml-2 text-xs opacity-75">
                             ({section.commands.length})
                           </span>
                         </button>
@@ -366,22 +366,22 @@ export function CheatsheetModal({
         </DialogHeader>
 
         {/* Content - Card Grid Layout */}
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="columns-1 sm:columns-1 md:columns-1 lg:columns-2 xl:columns-2 2xl:columns-3 gap-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-8">
+          <div className="columns-1 sm:columns-1 md:columns-1 lg:columns-2 xl:columns-2 2xl:columns-3 gap-6 space-y-6">
             {filteredSections.map((section, sectionIndex) => {
               const badgeColor = sectionColors[sectionIndex % sectionColors.length];
 
               return (
                 <div
                   key={sectionIndex}
-                  className="break-inside-avoid mb-4"
+                  className="break-inside-avoid mb-6"
                 >
                   {/* Section Card */}
-                  <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg overflow-hidden">
                     {/* Section Title Badge */}
                     <div className="flex justify-center -mt-px">
                       <div className={cn(
-                        'px-4 py-1.5 rounded-b-lg text-sm font-semibold text-white shadow-md',
+                        'px-6 py-3 rounded-b-xl text-base font-bold text-white shadow-lg',
                         badgeColor
                       )}>
                         {section.title}
@@ -389,18 +389,18 @@ export function CheatsheetModal({
                     </div>
 
                     {/* Commands */}
-                    <div className="p-4 space-y-4">
+                    <div className="p-6 space-y-6">
                       {section.commands.map((cmd, cmdIndex) => (
-                        <div key={cmdIndex} className="space-y-3">
+                        <div key={cmdIndex} className="space-y-4">
                           {/* Command Title - Enhanced with better font weight */}
                           <div className="text-center">
-                            <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-200 leading-tight">
+                            <h4 className="text-base font-bold text-slate-800 dark:text-slate-200 leading-tight">
                               {highlightText(cmd.command, filters.searchQuery)}
                             </h4>
                             
                             {/* Description */}
                             {cmd.description && (
-                              <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                              <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
                                 {highlightText(cmd.description, filters.searchQuery)}
                               </p>
                             )}
@@ -408,7 +408,7 @@ export function CheatsheetModal({
 
                           {/* Code Block */}
                           <div className="relative group">
-                            <pre className="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 text-sm font-mono overflow-x-auto">
+                            <pre className="bg-slate-100 dark:bg-slate-800 rounded-xl p-4 text-sm font-mono overflow-x-auto">
                               <code className="text-slate-800 dark:text-slate-200">
                                 {highlightText(cmd.example || cmd.command, filters.searchQuery)}
                               </code>
@@ -417,26 +417,26 @@ export function CheatsheetModal({
                             {/* Copy Button */}
                             <button
                               onClick={() => copyToClipboard(cmd.command)}
-                              className="absolute top-2 right-2 p-1.5 rounded-md bg-slate-200/80 dark:bg-slate-700/80 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-slate-300 dark:hover:bg-slate-600"
+                              className="absolute top-3 right-3 p-2 rounded-lg bg-slate-200/80 dark:bg-slate-700/80 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-slate-300 dark:hover:bg-slate-600"
                             >
                               {copiedCommand === cmd.command ? (
-                                <Check className="w-3.5 h-3.5 text-green-500" />
+                                <Check className="w-4 h-4 text-green-500" />
                               ) : (
-                                <Copy className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
+                                <Copy className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                               )}
                             </button>
                           </div>
 
                           {/* Usage note */}
                           {cmd.usage && cmd.usage !== cmd.command && (
-                            <p className="text-xs text-slate-500 dark:text-slate-500 font-mono">
+                            <p className="text-sm text-slate-500 dark:text-slate-500 font-mono bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
                               {highlightText(cmd.usage, filters.searchQuery)}
                             </p>
                           )}
 
                           {/* Separator between commands */}
                           {cmdIndex < section.commands.length - 1 && (
-                            <div className="border-b border-slate-100 dark:border-slate-800 pt-2" />
+                            <div className="border-b border-slate-100 dark:border-slate-800 pt-4" />
                           )}
                         </div>
                       ))}

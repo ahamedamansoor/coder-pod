@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Sparkles, ExternalLink, Check, Shield, Info, AlertCircle, Loader2, XCircle } from 'lucide-react';
+import { Sparkles, ExternalLink, Check, Shield, Info, AlertCircle, Loader2, XCircle, Trash2, Plus } from 'lucide-react';
 import { AIProvider, AI_PROVIDERS } from '@/types/ai-providers';
 import { cn } from '@/lib/utils';
 
@@ -19,16 +19,40 @@ interface AIProviderModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (provider: AIProvider, key: string) => Promise<boolean>;
+  onRemove?: () => void; // New prop for removing provider
+  showRemoveOption?: boolean; // New prop to control remove option visibility
 }
 
-const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSave }) => {
+const AIProviderModal: React.FC<AIProviderModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onSave, 
+  onRemove, 
+  showRemoveOption = false 
+}) => {
   const [selectedProvider, setSelectedProvider] = useState<AIProvider>('gemini');
   const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [errorType, setErrorType] = useState<'invalid' | 'network' | 'rate-limit' | 'server' | 'generic'>('generic');
+  const [currentProvider, setCurrentProvider] = useState<AIProvider | null>(null);
 
   const provider = AI_PROVIDERS[selectedProvider];
+
+  // Check for current provider on mount
+  useEffect(() => {
+    if (isOpen) {
+      const savedProvider = localStorage.getItem('ai_provider') as AIProvider;
+      const hasKey = localStorage.getItem('ai_api_key');
+      
+      if (savedProvider && hasKey) {
+        setCurrentProvider(savedProvider);
+        setSelectedProvider(savedProvider);
+      } else {
+        setCurrentProvider(null);
+      }
+    }
+  }, [isOpen]);
 
   // Clear error when provider changes
   useEffect(() => {
@@ -128,18 +152,59 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
     }
   };
 
+  const handleRemoveProvider = () => {
+    if (onRemove) {
+      onRemove();
+      setCurrentProvider(null);
+      setApiKey('');
+      onClose();
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center">
-            <Sparkles className="text-blue-500 mr-2" />
-            Choose Your AI Provider
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center">
+              <Sparkles className="text-blue-500 mr-2" />
+              {currentProvider ? 'Manage AI Provider' : 'Choose Your AI Provider'}
+            </div>
+            {currentProvider && showRemoveOption && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRemoveProvider}
+                className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4 mr-1" />
+                Remove
+              </Button>
+            )}
           </DialogTitle>
           <DialogDescription>
-            Select from 3 reliable AI providers and enter your API key to unlock AI-powered features.
+            {currentProvider 
+              ? `Currently using ${AI_PROVIDERS[currentProvider].name}. You can switch to a different provider or remove the current one.`
+              : 'Select from 3 reliable AI providers and enter your API key to unlock AI-powered features.'
+            }
           </DialogDescription>
         </DialogHeader>
+
+        {/* Current Provider Info */}
+        {currentProvider && (
+          <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+            <div className="text-2xl">{AI_PROVIDERS[currentProvider].icon}</div>
+            <div className="flex-1">
+              <p className="font-medium text-green-900 dark:text-green-100">
+                {AI_PROVIDERS[currentProvider].name} is configured
+              </p>
+              <p className="text-sm text-green-700 dark:text-green-300">
+                Your API key is saved and ready to use
+              </p>
+            </div>
+            <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
+          </div>
+        )}
 
         {/* Important Information Section */}
         <div className="space-y-3 py-4 border-y border-gray-200 dark:border-gray-700">
@@ -215,7 +280,9 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
         {/* API Key Input */}
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="api-key">{provider.keyLabel}</Label>
+            <Label htmlFor="api-key">
+              {currentProvider ? 'New API Key (to switch provider)' : provider.keyLabel}
+            </Label>
             <Input
               id="api-key"
               value={apiKey}
@@ -224,11 +291,16 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
                 if (error) setError(null); // Clear error when user starts typing
               }}
               onKeyDown={handleKeyDown}
-              placeholder={provider.keyPlaceholder}
+              placeholder={currentProvider ? 'Enter new API key to switch provider...' : provider.keyPlaceholder}
               disabled={isLoading}
               type="password"
               className={cn(error && "border-red-500 focus:ring-red-500")}
             />
+            {currentProvider && (
+              <p className="text-xs text-muted-foreground">
+                To switch to a different provider, select a new provider above and enter its API key.
+              </p>
+            )}
           </div>
 
           {/* Error Display */}
@@ -257,16 +329,29 @@ const AIProviderModal: React.FC<AIProviderModalProps> = ({ isOpen, onClose, onSa
             Get {provider.name} API key
             <ExternalLink className="w-4 h-4" />
           </a>
-          <Button onClick={handleSave} disabled={isLoading || !apiKey.trim()}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Validating...
-              </>
-            ) : (
-              'Save & Enable AI'
+          <div className="flex gap-2">
+            {currentProvider && (
+              <Button 
+                variant="outline" 
+                onClick={onClose}
+                disabled={isLoading}
+              >
+                Cancel
+              </Button>
             )}
-          </Button>
+            <Button onClick={handleSave} disabled={isLoading || !apiKey.trim()}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Validating...
+                </>
+              ) : currentProvider ? (
+                'Switch Provider'
+              ) : (
+                'Save & Enable AI'
+              )}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

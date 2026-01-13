@@ -2,6 +2,7 @@
 
 import type { Language, Topic } from '@/data/languages';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EnhancedLoadingSkeleton, CompactLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
@@ -164,13 +165,24 @@ export function JavaContentDisplay({
 
   const CustomTopicComponent = topicComponentMap[topic.slug];
   
+  if (!CustomTopicComponent) {
+    return (
+      <GenericContentDisplay
+        topic={topic}
+        language={language}
+      >
+        <TopicUnderDevelopment topic={topic} />
+      </GenericContentDisplay>
+    );
+  }
+
   return (
     <GenericContentDisplay
       topic={topic}
       language={language}
     >
       <Suspense fallback={<CompactLoadingSkeleton />}>
-        {CustomTopicComponent ? <CustomTopicComponent /> : null}
+        <CustomTopicComponent />
       </Suspense>
     </GenericContentDisplay>
   );

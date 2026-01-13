@@ -17,6 +17,8 @@ import { rxjs } from './rxjs';
 import { playwright } from './playwright';
 import { selenium } from './selenium';
 import { git } from './git';
+import { postgresql } from './postgresql';
+import { frontendSystemDesign } from './frontend-system-design';
 import { frontendDeveloper } from './frontend-developer';
 import { backendDeveloper } from './backend-developer';
 import type { Language } from './types';
@@ -40,6 +42,8 @@ export const languages: Language[] = [
     { ...playwright, enabled: false },
     { ...selenium, enabled: true },
     { ...git, enabled: false },
+    { ...postgresql, enabled: true },
+    { ...frontendSystemDesign, enabled: true },
 ];
 
 // Filtered list for display (dashboard, dropdowns, etc.)

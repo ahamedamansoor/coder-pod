@@ -98,19 +98,32 @@ async function validateOpenAIKey(apiKey: string) {
 
 async function validateAnthropicKey(apiKey: string) {
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+    // Try multiple approaches to validate the key
+    // First attempt: Use a simple models list request
+    let response = await fetch('https://api.anthropic.com/v1/models', {
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 10,
-        messages: [{ role: 'user', content: 'Hi' }]
-      })
+      }
     });
+
+    // If models endpoint fails, try messages with a more basic request
+    if (!response.ok) {
+      response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-3-haiku-20240307', // Use more widely available model
+          max_tokens: 1,
+          messages: [{ role: 'user', content: 'test' }]
+        })
+      });
+    }
 
     if (response.ok) {
       return { valid: true };
@@ -119,7 +132,7 @@ async function validateAnthropicKey(apiKey: string) {
     const errorData = await response.json().catch(() => null);
     
     if (response.status === 401 || response.status === 403) {
-      return { valid: false, error: `Invalid Anthropic API key. ${errorData?.error?.message || ''}`.trim() };
+      return { valid: false, error: `Invalid Anthropic API key. ${errorData?.error?.message || 'Please check your API key and try again.'}`.trim() };
     }
     
     return { 

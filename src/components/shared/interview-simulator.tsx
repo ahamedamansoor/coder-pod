@@ -460,7 +460,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       toast({
         variant: 'default',
         title: '🔐 Login Required',
-        description: 'Please login to access AI-powered interview features.',
+        description: 'Please login to access interview features.',
       });
       return;
     }
@@ -474,8 +474,11 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
       setIsModalOpen(true);
       return;
     }
+    
     setIsLoading(true);
     try {
+      
+      // AI mode logic
       const apiKey = localStorage.getItem('ai_api_key');
       const provider = localStorage.getItem('ai_provider') as AIProvider;
       if (!apiKey || !provider) {
@@ -1353,23 +1356,7 @@ const InterviewSimulator: React.FC<InterviewSimulatorProps> = ({ language: langu
                   </div>
                 )}
 
-                {/* Coding - Only for Technical or when no filter is set */}
-                {(!selectedCategoryFilter || selectedCategoryFilter === 'technical') && (
-                  <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:bg-accent cursor-pointer transition-colors">
-                    <RadioGroupItem value="coding" id="coding" />
-                    <Label htmlFor="coding" className="flex-1 cursor-pointer">
-                      <div className="font-semibold text-base">Coding Questions</div>
-                      <div className="text-sm text-muted-foreground">Code snippets, debugging, and implementation problems</div>
-                      <div className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
-                        </svg>
-                        <span className="font-medium">Typing mode only - Voice mode not available</span>
-                      </div>
-                    </Label>
-                  </div>
-                )}
-
+                
                 {/* MCQ - Only for Aptitude */}
                 {selectedCategoryFilter === 'aptitude' && (
                   <div className="flex items-center space-x-3 p-4 border-2 border-emerald-300 dark:border-emerald-700 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/20 cursor-pointer transition-colors">

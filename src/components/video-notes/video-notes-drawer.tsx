@@ -200,6 +200,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         videoId,
         language: languageSlug,
         createdAt: new Date(),
+        updatedAt: new Date(),
         userId: user?.uid || 'local-user',
       };
 

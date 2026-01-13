@@ -31,6 +31,8 @@ import { useSpringBoot } from '@/app/languages/spring-boot/spring-boot-context';
 import { usePlaywright } from '@/app/languages/playwright/playwright-context';
 import { useSelenium } from '@/app/languages/selenium/selenium-context';
 import { useGit } from '@/app/languages/git/git-context';
+import { usePostgresql } from '@/app/languages/postgresql/postgresql-context';
+import { useFrontendSystemDesign } from '@/app/languages/frontend-system-design/frontend-system-design-context';
 import { useUser } from '@/hooks/use-auth-compat';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GenericGroupedTopicMenu } from './generic-grouped-topic-menu';
@@ -101,6 +103,12 @@ function useLanguageContext(language: Language) {
         case 'git':
             // eslint-disable-next-line react-hooks/rules-of-hooks
             return useGit();
+        case 'postgresql':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return usePostgresql();
+        case 'frontend-system-design':
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            return useFrontendSystemDesign();
         default:
             // Fallback or default context if necessary
             return { completedTopics: new Set(), handleToggleComplete: () => {}, isProgressLoading: true };
@@ -175,7 +183,7 @@ export function TopicSidebar({
       if (topic.category) {
         group = topic.category;
       }
-    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'git') {
+    } else if (language.slug === 'html' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'react' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'git' || language.slug === 'postgresql' || language.slug === 'frontend-system-design') {
       // Use category from topic data if available
       if (topic.category) {
         group = topic.category;
@@ -283,10 +291,14 @@ export function TopicSidebar({
     ? ["Overview", "1. Getting Started", "2. Browser Configuration", "3. Locator Strategies", "4. Element Interactions", "5. Waits & Synchronization", "6. Browser Navigation", "7. Advanced Interactions", "8. Frames & Alerts", "9. JavaScript Execution", "10. Screenshots & Visual Testing", "11. Cookies & Storage", "12. Test Frameworks Integration", "13. Page Object Model", "14. Data-Driven Testing", "15. Selenium Grid", "16. Handling Special Elements", "17. Error Handling & Debugging", "18. CI/CD Integration", "19. Performance & Optimization", "20. Best Practices", "21. Framework Architecture", "22. BDD & Cucumber Integration", "23. Reporting & Documentation", "24. API & UI Combined Testing", "25. Mobile Web Testing", "26. Advanced Design Patterns", "27. Selenium 4 Features", "28. Security Testing", "29. Accessibility Testing", "30. Performance Testing Integration", "31. Test Management & Organization", "32. Real-World Scenarios", "33. Interview Preparation"]
     : language.slug === 'git'
     ? ['1. Git Fundamentals', '2. Branching', '3. Merging', '4. Remote Repositories', '5. GitHub Basics', '6. Collaboration', '7. Undoing Changes', '8. Tagging', '9. Advanced Git', '10. GitHub Features', '11. Workflows', '12. Best Practices', '13. Security', '14. Performance', '15. GUI Tools', '16. Troubleshooting', '17. Enterprise Git', '18. Open Source']
+    : language.slug === 'postgresql'
+    ? ['0. Learning Plan', '1. Database Fundamentals', '2. Database Structure', '3. Data Manipulation', '4. Data Integrity & Constraints', '5. Advanced Queries', '6. Aggregation & Grouping', '7. Views & Virtual Tables', '8. Indexing & Performance', '9. Transactions & Concurrency', '10. Window Functions & Analytics', '11. JSON & Semi-Structured Data', '12. Arrays & Complex Types', '13. Partitioning & Scaling', '14. Programming & Procedural Languages', '15. Security & Access Control', '16. Backup & Recovery', '17. Replication & High Availability', '18. Performance Tuning', '19. PostgreSQL Internals', '20. Extensions & Ecosystem', '21. Connection Management', '22. Monitoring & Observability', '23. Scaling & Distributed Systems', '24. Production Deployment', '25. Cloud & DevOps', '26. Migration & Upgrades', '27. Advanced Features', '28. Best Practices & Patterns']
+    : language.slug === 'frontend-system-design'
+    ? ['0. Getting Started', '1. System Design Fundamentals', '2. Architecture Patterns', '3. State Management Architecture', '4. Performance Architecture', '5. Scalability Architecture', '6. Security Architecture', '7. Data Architecture', '8. Component System Design', '9. Routing Architecture', '10. Testing Architecture', '11. Deployment Architecture', '12. Monitoring & Observability', '13. Accessibility Architecture', '14. Mobile-First Architecture', '15. Cross-Platform Architecture', '16. Enterprise Architecture', '17. Emerging Technologies', '18. Advanced Patterns', '19. Creational Design Patterns', '20. Structural Design Patterns', '21. Behavioral Design Patterns', '22. React-Specific Patterns', '23. Vue-Specific Patterns', '24. Performance Design Patterns', '25. Rendering Patterns', '26. CSS Architecture Patterns', '27. API Integration Patterns', '28. Error Handling Patterns', '29. Security Design Patterns', '30. Mobile Design Patterns']
     : [];
 
-  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Selenium, Vue, Next.js, DSA, Git)
-  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa' || language.slug === 'git')
+  // Build ordered groups array for generic component (HTML, JavaScript, TypeScript, CSS, Tailwind, SCSS, Angular, Java, Spring, Spring Boot, Playwright, Selenium, Vue, Next.js, DSA, Git, PostgreSQL, Frontend System Design)
+  const orderedGroupsForGeneric = (language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa' || language.slug === 'git' || language.slug === 'postgresql' || language.slug === 'frontend-system-design')
     ? groupOrder
         .map(group => ({ 
           title: formatGroupTitle(group), 
@@ -537,7 +549,7 @@ export function TopicSidebar({
                     "px-2 py-1 text-xl font-semibold transition-colors",
                     brandTheme.primary
                   )}>Topics</p>
-                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa') ? (
+                  {(language.slug === 'html' || language.slug === 'javascript' || language.slug === 'typescript' || language.slug === 'css' || language.slug === 'tailwind' || language.slug === 'scss' || language.slug === 'angular' || language.slug === 'java' || language.slug === 'spring' || language.slug === 'spring-boot' || language.slug === 'playwright' || language.slug === 'selenium' || language.slug === 'vue' || language.slug === 'nextjs' || language.slug === 'dsa' || language.slug === 'git' || language.slug === 'postgresql' || language.slug === 'frontend-system-design') ? (
                     <GenericGroupedTopicMenu
                       groups={orderedGroupsForGeneric}
                       selectedTopicSlug={selectedTopicSlug}

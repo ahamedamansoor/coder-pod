@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session, AuthError } from '@supabase/supabase-js';
+import { User, Session, AuthError, SupabaseClient } from '@supabase/supabase-js';
 import { supabase, createSupabaseClient } from '@/lib/supabase';
 import { UserProfile } from '@/types/user.types';
 import { supabaseUserService } from '@/services/supabase-user.service';
@@ -16,6 +16,7 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   isLoading: boolean;
   error: AuthError | null;
+  currentSupabaseClient: SupabaseClient;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, userData?: { name?: string; dob?: string; phone_number?: string }) => Promise<void>;
@@ -336,6 +337,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     userProfile,
     isLoading,
     error,
+    currentSupabaseClient,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,

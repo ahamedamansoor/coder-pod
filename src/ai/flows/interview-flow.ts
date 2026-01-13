@@ -128,7 +128,35 @@ CRITICAL REQUIREMENTS:
 5. Questions should test ${input.language} knowledge comprehensively
 6. Ensure one and only one correct answer
 7. Make distractors plausible but clearly wrong`
-    : 'Focus on THEORY questions only - conceptual understanding, definitions, and explanations. Do NOT include code snippets in questions.';
+    : `Focus on THEORY questions only - conceptual understanding, definitions, and explanations. 
+
+${input.language === 'HTML' ? `
+**HTML SPECIFIC GUIDELINES:**
+Focus on these top 10 essential HTML topics:
+1. Semantic HTML5 elements (header, nav, main, article, section, aside, footer)
+2. HTML forms and input types (text, email, password, number, date, etc.)
+3. HTML5 semantic tags vs div-based layouts
+4. HTML accessibility (ARIA attributes, alt text, semantic markup)
+5. HTML document structure and DOCTYPE
+6. HTML media elements (img, video, audio, picture, source)
+7. HTML tables and their attributes
+8. HTML meta tags and SEO optimization
+9. HTML data attributes and custom attributes
+10. HTML validation and best practices
+
+**SAMPLE HTML QUESTIONS TO INSPIRE:**
+- "What is the purpose of semantic HTML5 elements and how do they improve accessibility?"
+- "Explain the difference between <div> and <section> elements with practical examples"
+- "How do you create accessible forms in HTML? Include proper label associations and validation"
+- "What are ARIA attributes and when should you use them in HTML?"
+- "Explain the HTML5 document structure and the importance of DOCTYPE"
+- "How do you optimize images for web performance using HTML picture element?"
+- "What are the different input types available in HTML5 forms?"
+- "How do HTML meta tags impact SEO and page rendering?"
+- "Explain the difference between block-level and inline elements in HTML"
+- "What are data attributes in HTML and how are they commonly used with JavaScript?"
+
+Always provide practical code examples with HTML tags and demonstrate best practices.` : 'Do NOT include code snippets in questions.'}`;
 
   const prompt = ai.definePrompt({
   name: 'interviewPrompt',
@@ -143,16 +171,27 @@ CRITICAL REQUIREMENTS:
     })
   },
   output: { schema: ConductInterviewOutputSchema },
-  prompt: `{{#if (eq category "behavioral")}}You are a friendly and experienced HR interviewer conducting a behavioral interview focused on {{{language}}}.
+  prompt: `{{#if category}}You are a friendly and experienced interviewer conducting a {{category}} interview focused on {{{language}}}.
 
-**Interview Style:** Focus on behavioral questions, soft skills, situational scenarios, past experiences, and HR topics. DO NOT ask programming or technical questions.
-{{else if (eq category "aptitude")}}You are a friendly and experienced interviewer conducting an aptitude assessment focused on {{{language}}}.
-
-**Interview Style:** Focus on logical reasoning, problem-solving, quantitative aptitude, puzzles, and analytical thinking. DO NOT ask programming questions unless specifically about algorithmic thinking.
-{{else}}You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on {{{language}}}.
+**Interview Style:** Follow the guidelines based on the category value provided above.
+{{else}}
+You are a friendly and experienced senior engineering interviewer conducting a mock technical interview for a role focused on {{{language}}}.
 
 **Interview Style:** Focus on technical knowledge, programming concepts, and software engineering practices.
 {{/if}}
+
+${input.language === 'HTML' ? `
+**HTML Interview Specific Guidelines:**
+- Focus on practical, real-world HTML scenarios and best practices
+- Emphasize semantic HTML5 and accessibility standards
+- Include modern HTML features and responsive design considerations
+- Cover form validation, media elements, and SEO optimization
+- Ask about the difference between presentational and semantic markup
+- Test understanding of document structure and DOCTYPE importance
+- Include questions on HTML performance optimization techniques
+- Cover accessibility features like ARIA roles and alt attributes
+- Ask about HTML5 APIs and their practical applications
+- Include questions on cross-browser compatibility and validation` : ''}
 
 **Question Style:** {{{questionType}}}
 
@@ -199,23 +238,13 @@ CRITICAL REQUIREMENTS:
 *   **User's Answer:** {{{userAnswer}}}
 *   **Questions Already Asked:** {{{previousQuestions}}}
 {{else}}
-**Your Task:**
-1.  **Generate the first interview question** for a {{{language}}} {{#if (eq category "behavioral")}}behavioral interview{{else if (eq category "aptitude")}}aptitude test{{else}}mock interview{{/if}} following the question style specified above.
-    {{#if (eq category "behavioral")}}
-    *   IMPORTANT: Ask about past experiences, teamwork, conflict resolution, leadership, communication, or other soft skills
-    *   Focus on "Tell me about a time when..." or "How would you handle..." questions
-    *   Questions should assess behavioral competencies, not technical knowledge
-    {{else if (eq category "aptitude")}}
-    *   IMPORTANT: Focus on logical puzzles, numerical reasoning, pattern recognition, or analytical problems
-    *   Questions should test problem-solving ability and reasoning skills
-    *   Vary between quantitative, logical, and verbal reasoning
-    {{else}}
+**Your Task:**  
+1.  **Generate the first interview question** for a {{{language}}} interview following the question style specified above.
     *   **CRITICAL: RANDOMIZE starting topics** - Pick from: variables, data types, operators, functions, loops, conditionals, scope, closures, arrays, objects, strings, etc.
     *   **DO NOT always ask the same first question** - Each interview should start differently
     *   **Start SIMPLE**: First question should be fundamental but accessible
     *   **Topic diversity**: Choose a topic that will allow for good progression in subsequent questions
     *   **Coverage strategy**: Consider all major areas of {{{language}}} for comprehensive assessment
-    {{/if}}
 2.  The \`feedback\`, \`idealAnswer\`, and \`simpleAnswer\` fields should be empty strings.
 3.  **Provide a helpful answer hint** with 2-3 brief suggestions on how to approach answering the question simply.
 
@@ -515,7 +544,7 @@ Respond with a JSON object containing: feedback (string), idealAnswer (string wi
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-haiku-20240307', // Use more widely available model
         max_tokens: 2048,
         messages: [
           { 

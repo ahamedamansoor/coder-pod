@@ -13,7 +13,8 @@ import {
     Zap,
     Play,
     BookOpen,
-    Target
+    Target,
+    Cpu
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { featureFlags } from '@/config/feature-flags';
@@ -65,7 +66,7 @@ const baseFeatures: FeatureCard[] = [
         delay: 200,
     },
     {
-        title: 'AI Interview Practice',
+        title: 'AI Interview Practice (Beta)',
         description: 'Prepare for technical interviews with our AI-powered interviewer. Get real-time feedback and improve your skills.',
         icon: Brain,
         href: '/ai-interview',
@@ -106,6 +107,17 @@ const baseFeatures: FeatureCard[] = [
         iconBg: 'from-fuchsia-500 to-pink-500',
         size: 'small',
         delay: 600,
+    },
+    {
+        title: 'AI Tools',
+        description: 'Access powerful AI-powered development tools and utilities to enhance your coding productivity.',
+        icon: Cpu,
+        href: '/ai-tools',
+        gradient: 'from-green-500/20 via-emerald-500/10 to-green-600/20',
+        iconBg: 'from-green-500 to-emerald-500',
+        size: 'medium',
+        delay: 700,
+        badge: 'New',
     },
 ];
 

@@ -7,7 +7,7 @@ import { HelpCircle, BookmarkIcon, CheckCircle } from 'lucide-react';
 import React from 'react';
 import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
 import { Skeleton } from '@/components/ui/skeleton';
-import { EnhancedLoadingSkeleton } from './enhanced-loading-skeleton';
+import { EnhancedLoadingSkeleton, CompactLoadingSkeleton } from './enhanced-loading-skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';

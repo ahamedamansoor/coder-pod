@@ -111,17 +111,18 @@ const interviewCategories = [
       { id: 'conflict', name: 'Conflict Resolution', description: 'Problem solving, teamwork' },
     ]
   },
-  {
-    id: 'aptitude',
-    name: 'Aptitude / Reasoning',
-    icon: Calculator,
-    color: 'emerald',
-    topics: [
-      { id: 'quantitative', name: 'Quantitative Aptitude', description: 'Math, numbers, calculations' },
-      { id: 'logical', name: 'Logical Reasoning', description: 'Patterns, puzzles, logic' },
-      { id: 'verbal', name: 'Verbal Reasoning', description: 'Comprehension, vocabulary' },
-    ]
-  }
+  // Aptitude / Reasoning - HIDDEN FOR NOW
+  // {
+  //   id: 'aptitude',
+  //   name: 'Aptitude / Reasoning',
+  //   icon: Calculator,
+  //   color: 'emerald',
+  //   topics: [
+  //     { id: 'quantitative', name: 'Quantitative Aptitude', description: 'Math, numbers, calculations' },
+  //     { id: 'logical', name: 'Logical Reasoning', description: 'Patterns, puzzles, logic' },
+  //     { id: 'verbal', name: 'Verbal Reasoning', description: 'Comprehension, vocabulary' },
+  //   ]
+  // }
 ];
 
 export default function AIInterviewPage() {

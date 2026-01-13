@@ -29,6 +29,8 @@ const accentMap: Record<string, string> = {
     selenium: 'from-green-100/80 via-emerald-50/60 to-teal-100/80',
     rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
     git: 'from-orange-100/80 via-red-50/60 to-orange-100/80',
+    postgresql: 'from-blue-100/80 via-indigo-50/60 to-purple-100/80',
+    'frontend-system-design': 'from-purple-100/80 via-pink-50/60 to-indigo-100/80',
 };
 
 function LearningPathsPageContent() {

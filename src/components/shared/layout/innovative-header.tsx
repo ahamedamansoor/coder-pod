@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X, Users } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X, Users, Cpu } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/tooltip';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview' | 'collaborative-interview';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview' | 'collaborative-interview' | 'ai-tools';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
@@ -90,6 +90,7 @@ export function InnovativeHeader({
     { href: '/learning-paths', label: 'Learn', icon: Code, page: 'learning', requiresAuth: false, description: 'Curated learning path content' },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
     { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
+    { href: '/ai-tools', label: 'AI Tools', icon: Cpu, page: 'ai-tools', requiresAuth: false, description: 'AI-powered tools and utilities' },
     { href: '/ai-interview', label: 'AI practice(Beta)', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
     { href: '/collaborative-interview', label: 'Live Interview', icon: Users, page: 'collaborative-interview', requiresAuth: true, description: 'Real-time coding with partner' },
     { href: '/notes', label: 'My Notes', icon: StickyNote, page: 'notes', requiresAuth: true, description: 'Your saved notes' },

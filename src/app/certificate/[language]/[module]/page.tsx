@@ -188,7 +188,7 @@ export default function CertificatePage() {
               <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-center">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Verification Code</p>
                 <p className="font-mono text-sm text-gray-600 dark:text-gray-300">
-                  CERT-{languageSlug.toUpperCase()}-{moduleSlug.toUpperCase()}-{Date.now().toString().slice(-6)}
+                  CERT-{language.toUpperCase()}-{moduleSlug.toUpperCase()}-{Date.now().toString().slice(-6)}
                 </p>
               </div>
             </CardContent>

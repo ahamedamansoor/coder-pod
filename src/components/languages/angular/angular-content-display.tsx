@@ -3,6 +3,7 @@
 import type { Language, Topic } from '@/data/languages';
 import React, { lazy, Suspense } from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 
@@ -52,14 +53,20 @@ export function AngularContentDisplay({
   const CustomTopicComponent = topicComponents[topic.slug];
   const { openWithContent } = useWebPlayground();
 
+  if (!CustomTopicComponent) {
+    return (
+      <GenericContentDisplay topic={topic} language={language}>
+        <TopicUnderDevelopment topic={topic} />
+      </GenericContentDisplay>
+    );
+  }
+
   return (
     <GenericContentDisplay topic={topic} language={language}>
       <Suspense fallback={<LoadingSkeleton />}>
-        {CustomTopicComponent
-          ? React.createElement(CustomTopicComponent as any, {
-              onOpenWebPlayground: openWithContent,
-            })
-          : null}
+        {React.createElement(CustomTopicComponent as any, {
+          onOpenWebPlayground: openWithContent,
+        })}
       </Suspense>
     </GenericContentDisplay>
   );
