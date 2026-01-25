@@ -3,6 +3,7 @@
 import type { Language, Topic } from '@/data/languages';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 
@@ -230,18 +231,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'sass-advanced-patterns': SassAdvancedPatterns,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 export function ScssContentDisplay({ 
   topic, 
@@ -263,7 +252,7 @@ export function ScssContentDisplay({
       topic={topic}
       language={language}
     >
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         {CustomTopicComponent
           ? React.createElement(CustomTopicComponent as any, {
               onOpenWebPlayground: handleOpenWebPlayground,

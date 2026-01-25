@@ -201,7 +201,7 @@ export default function MicroFrontends({ onOpenWebPlayground }: MicroFrontendsPr
       {/* Page Header */}
       <PageHeader
         icon={Globe}
-        category="Architecture Patterns"
+        category="System Design.Architecture"
         title="Micro Frontend Architecture"
         description="A comprehensive guide to building scalable, maintainable frontend applications with micro frontend patterns"
         colorTheme="teal"

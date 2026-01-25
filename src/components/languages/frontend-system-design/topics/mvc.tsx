@@ -217,9 +217,10 @@ export default function MVC({ onOpenWebPlayground }: MVCProps) {
         title="Model-View-Controller (MVC)"
         description="Master the MVC architectural pattern for building scalable, maintainable web applications with clear separation of concerns"
         icon={Box}
+        category="System Design.Patterns"
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="w-full px-4 py-8 space-y-8">
         {/* Introduction */}
         <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-purple-50/30 dark:from-blue-950/20 dark:to-purple-950/10">
           <CardHeader>

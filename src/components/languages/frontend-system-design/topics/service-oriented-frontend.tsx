@@ -201,9 +201,10 @@ export default function ServiceOrientedFrontend({ onOpenWebPlayground }: Service
         title="Service-Oriented Frontend"
         description="Master service-oriented architecture for frontend applications, including API integration, service composition, and distributed systems design"
         icon={CloudCog}
+        category="System Design.Architecture"
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="w-full px-4 py-8 space-y-8">
         {/* Introduction */}
         <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-purple-50/30 dark:from-indigo-950/20 dark:to-purple-950/10">
           <CardHeader>

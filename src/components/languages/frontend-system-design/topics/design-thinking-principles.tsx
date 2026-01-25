@@ -317,7 +317,7 @@ export default function DesignThinkingPrinciples({ onOpenWebPlayground }: Design
       {/* Page Header */}
       <PageHeader
         icon={Lightbulb}
-        category="Design Thinking · Innovation"
+        category="System Design.Design Thinking"
         title="Design Thinking Principles"
         description="A comprehensive guide to human-centered innovation and creative problem-solving methodology"
         colorTheme="purple"

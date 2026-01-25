@@ -119,7 +119,7 @@ export default function WhatIsSystemDesign({ onOpenWebPlayground }: WhatIsSystem
       {/* Page Header */}
       <PageHeader
         icon={Layers}
-        category="System Design · Fundamentals"
+        category="System Design.Fundamentals"
         title="What is System Design?"
         description="Master the art and science of building scalable, reliable software systems"
         colorTheme="blue"

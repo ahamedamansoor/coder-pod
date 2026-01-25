@@ -3,6 +3,7 @@
 import type { Language, Topic } from '@/data/languages';
 import React from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 
 interface PlaywrightContentDisplayProps {
   topic: Topic;
@@ -20,6 +21,8 @@ export function PlaywrightContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-    />
+    >
+      <TopicUnderDevelopment topic={topic} />
+    </GenericContentDisplay>
   );
 }

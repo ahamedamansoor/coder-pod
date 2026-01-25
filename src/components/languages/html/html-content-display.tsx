@@ -408,7 +408,7 @@ export function HtmlContentDisplay({
 
   return (
     <GenericContentDisplay topic={topic} language={language}>
-      <Suspense fallback={<CompactLoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         {React.createElement(CustomTopicComponent as any, { onOpenWebPlayground: openWithContent })}
       </Suspense>
     </GenericContentDisplay>

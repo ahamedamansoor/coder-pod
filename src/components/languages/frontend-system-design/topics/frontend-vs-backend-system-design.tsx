@@ -205,7 +205,7 @@ export default function FrontendVsBackendSystemDesign({ onOpenWebPlayground }: F
       {/* Page Header */}
       <PageHeader
         icon={Layers}
-        category="System Design · Architecture"
+        category="System Design.Comparison"
         title="Frontend vs Backend System Design"
         description="Understanding the roles, responsibilities, and collaboration patterns between frontend and backend systems"
         colorTheme="blue"

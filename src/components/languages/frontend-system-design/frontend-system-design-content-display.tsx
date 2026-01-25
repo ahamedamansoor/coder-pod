@@ -21,6 +21,32 @@ const ComponentBasedArchitecture = lazy(() => import('./topics/component-based-a
 const MicroFrontends = lazy(() => import('./topics/micro-frontends'));
 const MonolithVsModular = lazy(() => import('./topics/monolith-vs-modular'));
 const ServiceOrientedFrontend = lazy(() => import('./topics/service-oriented-frontend'));
+const StateManagementFundamentals = lazy(() => import('./topics/state-management-fundamentals'));
+const GlobalStatePatterns = lazy(() => import('./topics/global-state-patterns'));
+const LocalStateManagement = lazy(() => import('./topics/local-state-management'));
+const ServerStateManagement = lazy(() => import('./topics/server-state-management'));
+const StatePersistenceStrategies = lazy(() => import('./topics/state-persistence-strategies'));
+const PerformanceFundamentals = lazy(() => import('./topics/performance-fundamentals'));
+const LoadingPerformance = lazy(() => import('./topics/loading-performance'));
+const RuntimePerformance = lazy(() => import('./topics/runtime-performance'));
+const CachingStrategy = lazy(() => import('./topics/caching-strategy'));
+const PerformanceMonitoring = lazy(() => import('./topics/performance-monitoring'));
+const ScalabilityPrinciples = lazy(() => import('./topics/scalability-principles'));
+const CodeScalability = lazy(() => import('./topics/code-scalability'));
+const TeamScalability = lazy(() => import('./topics/team-scalability'));
+const FeatureScalability = lazy(() => import('./topics/feature-scalability'));
+const UserScalability = lazy(() => import('./topics/user-scalability'));
+const SecurityFundamentals = lazy(() => import('./topics/security-fundamentals'));
+const AuthenticationAuthorization = lazy(() => import('./topics/authentication-authorization'));
+const DataProtection = lazy(() => import('./topics/data-protection'));
+const APISecurity = lazy(() => import('./topics/api-security'));
+const SecurityMonitoring = lazy(() => import('./topics/security-monitoring'));
+const DataFlowArchitecture = lazy(() => import('./topics/data-flow-architecture'));
+const APIIntegrationPattern = lazy(() => import('./topics/api-integration-patterns'));
+const DataModelingFrontend = lazy(() => import('./topics/data-modeling-frontend'));
+const OfflineDataStrategies = lazy(() => import('./topics/offline-data-strategies'));
+const RealTimeData = lazy(() => import('./topics/real-time-data'));
+const ComponentDesignPrinciples = lazy(() => import('./topics/component-design-principles'));
 
 // Map topic slugs to components
 const topicComponents: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
@@ -37,6 +63,32 @@ const topicComponents: Record<string, React.LazyExoticComponent<React.ComponentT
   'micro-frontends': MicroFrontends,
   'monolithic-vs-modular': MonolithVsModular,
   'service-oriented-frontend': ServiceOrientedFrontend,
+  'state-management-fundamentals': StateManagementFundamentals,
+  'global-state-patterns': GlobalStatePatterns,
+  'local-state-management': LocalStateManagement,
+  'server-state-management': ServerStateManagement,
+  'state-persistence-strategies': StatePersistenceStrategies,
+  'performance-fundamentals': PerformanceFundamentals,
+  'loading-performance': LoadingPerformance,
+  'runtime-performance': RuntimePerformance,
+  'caching-strategies': CachingStrategy,
+  'performance-monitoring': PerformanceMonitoring,
+  'scalability-principles': ScalabilityPrinciples,
+  'code-scalability': CodeScalability,
+  'team-scalability': TeamScalability,
+  'feature-scalability': FeatureScalability,
+  'user-scalability': UserScalability,
+  'security-fundamentals': SecurityFundamentals,
+  'authentication-authorization': AuthenticationAuthorization,
+  'data-protection': DataProtection,
+  'api-security': APISecurity,
+  'security-monitoring': SecurityMonitoring,
+  'data-flow-architecture': DataFlowArchitecture,
+  'api-integration-patterns': APIIntegrationPattern,
+  'data-modeling-frontend': DataModelingFrontend,
+  'offline-data-strategies': OfflineDataStrategies,
+  'real-time-data': RealTimeData,
+  'component-design-principles': ComponentDesignPrinciples,
 };
 
 interface FrontendSystemDesignContentDisplayProps {

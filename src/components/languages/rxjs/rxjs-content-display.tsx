@@ -4,6 +4,8 @@ import type { Language, Topic } from '@/data/languages';
 import React, { Suspense } from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 
 const RxjsWhatIsReactiveProgramming = React.lazy(() => import('./topics/rxjs-what-is-reactive-programming'));
 const RxjsUnderstandingObservables = React.lazy(() => import('./topics/rxjs-understanding-observables'));
@@ -89,15 +91,6 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'rxjs-flattening-operators-mergeall': RxjsMergeAllOperator,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-6">
-      <Skeleton className="h-10 w-1/2" />
-      <Skeleton className="h-64 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 export function RxjsContentDisplay({ topic, language }: { topic: Topic; language: Language }) {
   const CustomTopicComponent = topicComponents[topic.slug];
@@ -105,10 +98,10 @@ export function RxjsContentDisplay({ topic, language }: { topic: Topic; language
   return (
     <GenericContentDisplay topic={topic} language={language}>
       {CustomTopicComponent ? (
-        <Suspense fallback={<LoadingSkeleton />}>
+        <Suspense fallback={<EnhancedLoadingSkeleton />}>
           <CustomTopicComponent />
         </Suspense>
-      ) : null}
+      ) : <TopicUnderDevelopment topic={topic} />}
     </GenericContentDisplay>
   );
 }

@@ -43,7 +43,7 @@ export const languages: Language[] = [
     { ...selenium, enabled: true },
     { ...git, enabled: false },
     { ...postgresql, enabled: true },
-    { ...frontendSystemDesign, enabled: true },
+    { ...frontendSystemDesign, enabled: false },
 ];
 
 // Filtered list for display (dashboard, dropdowns, etc.)

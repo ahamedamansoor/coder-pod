@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter } from 'next/navigation';
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { enabledLanguages as languages } from '@/data/languages';
-import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin } from 'lucide-react';
+import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, MessageSquare, TrendingUp, Award, Clock } from 'lucide-react';
 
 import { InnovativeHeader } from '@/components/shared';
 import { FeaturesShowcase } from '@/components/dashboard/features-showcase';
@@ -203,7 +203,8 @@ try {
   };
 
   return (
-    <div className="flex flex-col min-h-screen min-w-full w-screen bg-background overflow-x-hidden standalone-page" data-route="dashboard">
+    <>
+      <div className="flex flex-col min-h-screen min-w-full w-screen bg-background overflow-x-hidden standalone-page" data-route="dashboard">
       {/* Innovative Header with User */}
       <InnovativeHeader
         currentPage="home"
@@ -267,6 +268,22 @@ try {
                     <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-pink-200/50 dark:border-pink-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-left" style={{ animationDelay: '0.4s' }}>
                       <MapPin className="w-5 h-5 text-pink-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
                       Learning Roadmaps
+                    </div>
+                    <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-purple-200/50 dark:border-purple-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-fade-scale" style={{ animationDelay: '0.5s' }}>
+                      <Sparkles className="w-5 h-5 text-purple-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                      Useful AI Tools
+                    </div>
+                    <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-right" style={{ animationDelay: '0.6s' }}>
+                      <MessageSquare className="w-5 h-5 text-blue-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                      AI Assistant Chat
+                    </div>
+                    <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-yellow-200/50 dark:border-yellow-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-slide-in-left" style={{ animationDelay: '0.7s' }}>
+                      <BookOpen className="w-5 h-5 text-yellow-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                      Smart Note Reference
+                    </div>
+                    <div className="group flex items-center gap-2 text-sm sm:text-base text-muted-foreground px-4 py-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm border border-red-200/50 dark:border-red-800/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:scale-110 hover:rotate-3 cursor-pointer animate-fade-scale" style={{ animationDelay: '0.8s' }}>
+                      <Globe className="w-5 h-5 text-red-500 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                      Trending Topics
                     </div>
                   </div>
                 </div>
@@ -506,11 +523,12 @@ try {
               </div>
             </div>
           </footer>
+        </div>
 
-          {/* Playground Modals */}
-          <WebPlaygroundModal />
-          <ReactPlaygroundModal />
-    </div>
+        {/* Playground Modals */}
+        <WebPlaygroundModal />
+        <ReactPlaygroundModal />
+    </>
   );
 }
 

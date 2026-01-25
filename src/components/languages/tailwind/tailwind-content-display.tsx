@@ -5,6 +5,8 @@ import React from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import dynamic from 'next/dynamic';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 
 // Dynamically import topic components
 const IntroductionToTailwind = dynamic(() => import('./topics/introduction-to-tailwind'));
@@ -208,18 +210,6 @@ const topicComponentMap: Record<string, React.ComponentType<any>> = {
   'starting-styles': StartingStyles,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 export function TailwindContentDisplay({
   topic,
@@ -232,7 +222,7 @@ export function TailwindContentDisplay({
   if (TopicComponent) {
     return (
       <GenericContentDisplay topic={topic} language={language}>
-        <React.Suspense fallback={<LoadingSkeleton />}>
+        <React.Suspense fallback={<EnhancedLoadingSkeleton />}>
           <TopicComponent
             onOpenEditor={onOpenEditor}
             onOpenWebPlayground={onOpenWebPlayground}
@@ -246,6 +236,8 @@ export function TailwindContentDisplay({
     <GenericContentDisplay
       topic={topic}
       language={language}
-    />
+    >
+      <TopicUnderDevelopment topic={topic} />
+    </GenericContentDisplay>
   );
 }

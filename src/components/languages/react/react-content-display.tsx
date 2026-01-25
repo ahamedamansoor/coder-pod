@@ -32,7 +32,7 @@ export function ReactContentDisplay({ topic, language }: { topic: Topic; languag
 
   return (
     <GenericContentDisplay topic={topic} language={language}>
-      <Suspense fallback={<CompactLoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         <CustomTopicComponent />
       </Suspense>
     </GenericContentDisplay>

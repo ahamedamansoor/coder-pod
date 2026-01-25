@@ -360,7 +360,7 @@ export default function TradeOffsAnalysis({ onOpenWebPlayground }: TradeOffsAnal
       {/* Page Header */}
       <PageHeader
         icon={Scale}
-        category="System Design Fundamentals"
+        category="System Design.Analysis"
         title="Trade-offs Analysis"
         description="Master the art of balancing competing factors in frontend system design to make optimal decisions"
         colorTheme="purple"

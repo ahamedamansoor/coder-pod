@@ -3,6 +3,8 @@
 import type { Language, Topic } from '@/data/languages';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 
 // Lazy load all the topic components
@@ -124,27 +126,19 @@ export const GitContentDisplay: React.FC<GitContentDisplayProps> = ({ topic, lan
   const TopicComponent = topicComponents[topic.slug];
 
   if (!TopicComponent) {
-    // Return a placeholder component for topics that don't have specific components yet
     return (
       <GenericContentDisplay
         topic={topic}
         language={language}
-      />
+      >
+        <TopicUnderDevelopment topic={topic} />
+      </GenericContentDisplay>
     );
   }
 
   return (
     <GenericContentDisplay topic={topic} language={language}>
-      <Suspense 
-        fallback={
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6" />
-          </div>
-        }
-      >
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         <TopicComponent />
       </Suspense>
     </GenericContentDisplay>

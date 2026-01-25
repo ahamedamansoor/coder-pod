@@ -86,7 +86,7 @@ export const PostgresqlContentDisplay: React.FC<PostgresqlContentDisplayProps> =
       topic={topic}
       language={language}
     >
-      <Suspense fallback={<CompactLoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         <TopicComponent />
       </Suspense>
     </GenericContentDisplay>

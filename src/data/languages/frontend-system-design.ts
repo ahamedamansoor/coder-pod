@@ -56,9 +56,9 @@ export const frontendSystemDesign: Language = {
     // 7. DATA ARCHITECTURE
     { slug: 'data-flow-architecture', title: 'Data Flow Architecture', explanation: 'Designing data flow patterns: unidirectional data flow, event-driven architecture, and data synchronization.', category: '7. Data Architecture' },
     { slug: 'api-integration-patterns', title: 'API Integration Patterns', explanation: 'API integration strategies: REST, GraphQL, WebSocket, and real-time data integration patterns.', category: '7. Data Architecture' },
-    { slug: 'data-modeling', title: 'Data Modeling', explanation: 'Frontend data modeling: normalization, denormalization, data structures, and data transformation patterns.', category: '7. Data Architecture' },
+    { slug: 'data-modeling-frontend', title: 'Data Modeling for Frontend', explanation: 'Frontend data modeling with TypeScript interfaces, validation schemas, state management patterns, and robust data architecture for modern applications.', category: '7. Data Architecture' },
     { slug: 'offline-data-strategies', title: 'Offline Data Strategies', explanation: 'Implementing offline functionality: service workers, background sync, and offline-first architecture.', category: '7. Data Architecture' },
-    { slug: 'real-time-data', title: 'Real-Time Data', explanation: 'Real-time data architecture: WebSockets, Server-Sent Events, and real-time synchronization patterns.', category: '7. Data Architecture' },
+    { slug: 'real-time-data', title: 'Real-Time Data', explanation: 'Real-time data architecture: WebSocket communication, server-sent events, live data synchronization, and collaborative editing.', category: '7. Data Architecture' },
 
     // 8. COMPONENT SYSTEM DESIGN
     { slug: 'component-design-principles', title: 'Component Design Principles', explanation: 'Fundamental component design principles: single responsibility, composability, and component lifecycle management.', category: '8. Component System Design' },

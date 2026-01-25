@@ -226,7 +226,7 @@ export default function SystemDesignProcess({ onOpenWebPlayground }: SystemDesig
       {/* Page Header */}
       <PageHeader
         icon={Settings}
-        category="System Design Fundamentals"
+        category="System Design.Process"
         title="System Design Process"
         description="A comprehensive methodology for designing robust, scalable, and maintainable frontend systems from requirements to deployment"
         colorTheme="blue"

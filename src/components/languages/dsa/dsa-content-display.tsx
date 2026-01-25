@@ -4,6 +4,8 @@ import type { Language, Topic } from '@/data/languages';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
+import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 
 // Lazy load topic components
 const BigONotation = lazy(() => import('./topics/complexity-analysis-big-o'));
@@ -41,6 +43,8 @@ const MoveZeros = lazy(() => import('./topics/arrays-move-zeros'));
 const TwoSumSorted = lazy(() => import('./topics/arrays-two-sum-sorted'));
 const ValidPalindrome = lazy(() => import('./topics/arrays-valid-palindrome'));
 const ContainerWithMostWater = lazy(() => import('./topics/arrays-container-with-most-water'));
+const FindMissingNumber = lazy(() => import('./topics/arrays-find-missing-number'));
+const SortColors = lazy(() => import('./topics/arrays-sort-colors'));
 const SortZerosOnes = lazy(() => import('./topics/arrays-sort-zeros-ones'));
 const MaximumSumSubarrayK = lazy(() => import('./topics/arrays-maximum-sum-subarray-k'));
 const FirstNegativeWindow = lazy(() => import('./topics/arrays-first-negative-window'));
@@ -123,6 +127,7 @@ const RecursionFactorial = lazy(() => import('./topics/recursion-factorial'));
 const RecursionSumOfN = lazy(() => import('./topics/recursion-sum-of-n'));
 const RecursionPowerFunction = lazy(() => import('./topics/recursion-power-function'));
 const RecursionFibonacciSequence = lazy(() => import('./topics/recursion-fibonacci-sequence'));
+const RectangleArea = lazy(() => import('./topics/geometry-rectangle-area'));
 
 // Map topic slugs to their components
 const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
@@ -161,6 +166,8 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'arrays-two-sum-sorted': TwoSumSorted,
   'arrays-valid-palindrome': ValidPalindrome,
   'arrays-container-with-most-water': ContainerWithMostWater,
+  'arrays-find-missing-number': FindMissingNumber,
+  'arrays-sort-colors': SortColors,
   'arrays-sort-zeros-ones': SortZerosOnes,
   'arrays-maximum-sum-subarray-k': MaximumSumSubarrayK,
   'arrays-first-negative-window': FirstNegativeWindow,
@@ -243,20 +250,9 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'recursion-sum-numbers': RecursionSumOfN,
   'recursion-power-function': RecursionPowerFunction,
   'recursion-fibonacci-sequence': RecursionFibonacciSequence,
+  'geometry-rectangle-area': RectangleArea,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8 p-4">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 export function DsaContentDisplay({ topic, language }: { topic: Topic; language: Language }) {
   const CustomTopicComponent = topicComponentMap[topic.slug];
@@ -270,10 +266,10 @@ export function DsaContentDisplay({ topic, language }: { topic: Topic; language:
   return (
     <GenericContentDisplay topic={topic} language={language}>
       {CustomTopicComponent ? (
-        <Suspense fallback={<LoadingSkeleton />}>
+        <Suspense fallback={<EnhancedLoadingSkeleton />}>
           <CustomTopicComponent />
         </Suspense>
-      ) : null}
+      ) : <TopicUnderDevelopment topic={topic} />}
     </GenericContentDisplay>
   );
 }

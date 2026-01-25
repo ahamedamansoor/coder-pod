@@ -260,7 +260,7 @@ export default function ComponentBasedArchitecture({ onOpenWebPlayground }: Comp
       {/* Page Header */}
       <PageHeader
         icon={Component}
-        category="Architecture Patterns"
+        category="System Design.Architecture"
         title="Component-Based Architecture"
         description="A comprehensive guide to designing scalable component systems with composition, reusability, and lifecycle management"
         colorTheme="indigo"

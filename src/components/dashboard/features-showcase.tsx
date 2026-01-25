@@ -110,7 +110,7 @@ const baseFeatures: FeatureCard[] = [
     },
     {
         title: 'AI Tools',
-        description: 'Access powerful AI-powered development tools and utilities to enhance your coding productivity.',
+        description: 'Access powerful AI-powered tools for coding, design, content creation, and everyday productivity tasks.',
         icon: Cpu,
         href: '/ai-tools',
         gradient: 'from-green-500/20 via-emerald-500/10 to-green-600/20',

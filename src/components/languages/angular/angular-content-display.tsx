@@ -5,6 +5,7 @@ import React, { lazy, Suspense } from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
 import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 
 // Lazy load topic components
@@ -27,18 +28,6 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'component-basics': AngularComponentBasics,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 interface AngularContentDisplayProps {
   topic: Topic;
@@ -63,7 +52,7 @@ export function AngularContentDisplay({
 
   return (
     <GenericContentDisplay topic={topic} language={language}>
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         {React.createElement(CustomTopicComponent as any, {
           onOpenWebPlayground: openWithContent,
         })}

@@ -181,7 +181,7 @@ export function JavaContentDisplay({
       topic={topic}
       language={language}
     >
-      <Suspense fallback={<CompactLoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         <CustomTopicComponent />
       </Suspense>
     </GenericContentDisplay>

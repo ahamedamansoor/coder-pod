@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { 
@@ -17,6 +17,8 @@ interface ArchitecturalPatternsOverviewProps {
 }
 
 export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: ArchitecturalPatternsOverviewProps) {
+  const [activeFramework, setActiveFramework] = useState<'all' | 'react' | 'angular' | 'vue'>('all');
+
   const architecturePatterns = [
     {
       name: 'MVC (Model-View-Controller)',
@@ -34,7 +36,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['Traditional web applications', 'Server-side rendering', 'Enterprise applications'],
       pros: ['Clear separation', 'Testable components', 'Parallel development'],
       cons: ['Complex for simple apps', 'Tight coupling', 'Controller bloat'],
-      realWorld: ['Ruby on Rails', 'Django', 'ASP.NET MVC']
+      realWorld: ['Ruby on Rails', 'Django', 'ASP.NET MVC'],
+      frameworkSupport: {
+        react: {
+          supported: false,
+          reason: 'React follows component-based architecture rather than traditional MVC. React components combine view and controller logic, making pure MVC separation unnatural.',
+          alternatives: ['Component-based patterns', 'Flux/Redux for state management']
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular was originally built on MVC principles and evolved to MVVM. It supports MVC-like separation with Components (View), Services (Model), and Controllers.',
+          implementation: 'Components act as controllers, services handle model logic, templates represent views'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue supports MVC-like patterns but is more flexible. Components can follow MVC principles with proper organization.',
+          implementation: 'Templates as views, component methods as controllers, data/services as models'
+        }
+      }
     },
     {
       name: 'MVP (Model-View-Presenter)',
@@ -52,7 +71,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['Desktop applications', 'Mobile apps', 'Test-driven development'],
       pros: ['Better testability', 'View is passive', 'Clear separation'],
       cons: ['More boilerplate', 'Presenter can become bloated', 'Complex for simple UI'],
-      realWorld: ['Android development', 'Windows Forms', 'Java Swing']
+      realWorld: ['Android development', 'Windows Forms', 'Java Swing'],
+      frameworkSupport: {
+        react: {
+          supported: false,
+          reason: 'React components are not passive views; they contain their own logic. MVP requires passive views which contradicts React\'s component model.',
+          alternatives: ['Component patterns', 'Custom hooks for logic separation', 'Render props']
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular can implement MVP with Components as Views and Services as Presenters. The framework\'s dependency injection supports this pattern well.',
+          implementation: 'Component templates as passive views, services as presenters, models as data services'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue can implement MVP with templates as passive views and composables/services as presenters. The composition API supports this separation.',
+          implementation: 'Templates as passive views, composables as presenters, reactive data as models'
+        }
+      }
     },
     {
       name: 'MVVM (Model-View-ViewModel)',
@@ -70,7 +106,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['Modern web apps', 'Mobile applications', 'Data-heavy interfaces'],
       pros: ['Two-way binding', 'Great testability', 'Designer-friendly'],
       cons: ['Learning curve', 'Memory leaks risk', 'Complex debugging'],
-      realWorld: ['Vue.js', 'Knockout.js', 'Angular', 'WPF']
+      realWorld: ['Vue.js', 'Knockout.js', 'Angular', 'WPF'],
+      frameworkSupport: {
+        react: {
+          supported: false,
+          reason: 'React doesn\'t have built-in two-way data binding which is core to MVVM. React\'s one-way data flow conflicts with MVVM\'s bidirectional binding.',
+          alternatives: ['Controlled components', 'State management libraries', 'Custom hooks']
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular was designed with MVVM in mind. Components act as Views, Services/Classes as ViewModels, and dependency injection provides the Model layer.',
+          implementation: 'Component templates as views, component classes as viewmodels, services as models'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue is inherently MVVM-based. The framework was built around this pattern with reactive data binding as a core feature.',
+          implementation: 'Templates as views, component instances as viewmodels, reactive data/services as models'
+        }
+      }
     },
     {
       name: 'Flux Architecture',
@@ -89,7 +142,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['Large React apps', 'Complex state management', 'Real-time applications'],
       pros: ['Predictable state', 'Easy debugging', 'Time travel'],
       cons: ['Boilerplate heavy', 'Learning curve', 'Overkill for simple apps'],
-      realWorld: ['Flux', 'Redux', 'Vuex', 'NgRx']
+      realWorld: ['Flux', 'Redux', 'Vuex', 'NgRx'],
+      frameworkSupport: {
+        react: {
+          supported: true,
+          reason: 'Flux was created by Facebook specifically for React. It complements React\'s component model perfectly with unidirectional data flow.',
+          implementation: 'Redux, Zustand, or custom Flux implementations with React hooks'
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular can implement Flux-like patterns using NgRx (Redux for Angular) or custom store implementations. RxJS operators make this natural.',
+          implementation: 'NgRx store with actions, reducers, and effects integrated with Angular services'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue has excellent Flux support through Vuex (official state management) and Pinia (modern alternative). Vue\'s reactivity works well with Flux.',
+          implementation: 'Vuex or Pinia stores with actions, mutations, and state management'
+        }
+      }
     },
     {
       name: 'Microservices',
@@ -108,7 +178,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['Large applications', 'Team scaling', 'Cloud deployment'],
       pros: ['Independent deployment', 'Technology diversity', 'Team autonomy'],
       cons: ['Network complexity', 'Data consistency', 'Operational overhead'],
-      realWorld: ['Netflix', 'Amazon', 'Uber', 'Spotify']
+      realWorld: ['Netflix', 'Amazon', 'Uber', 'Spotify'],
+      frameworkSupport: {
+        react: {
+          supported: true,
+          reason: 'React is excellent for microservice frontends. It can consume multiple microservice APIs and works well with micro-frontend architectures.',
+          implementation: 'Single-page applications consuming REST/GraphQL APIs, micro-frontend with Module Federation'
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular\'s enterprise features make it suitable for microservice frontends. Dependency injection and HTTP client support service communication.',
+          implementation: 'Enterprise SPAs consuming microservice APIs, micro-frontend with single-spa or Module Federation'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue\'s lightweight nature and progressive adoption make it ideal for microservice frontends and micro-frontend architectures.',
+          implementation: 'Progressive web apps consuming microservice APIs, micro-frontend with Vite Module Federation'
+        }
+      }
     },
     {
       name: 'Serverless Architecture',
@@ -127,7 +214,24 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       bestFor: ['APIs', 'Event processing', 'Burst workloads'],
       pros: ['No server management', 'Auto-scaling', 'Pay-per-use'],
       cons: ['Cold starts', 'Vendor lock-in', 'Complex orchestration'],
-      realWorld: ['AWS Lambda', 'Azure Functions', 'Google Cloud Functions']
+      realWorld: ['AWS Lambda', 'Azure Functions', 'Google Cloud Functions'],
+      frameworkSupport: {
+        react: {
+          supported: true,
+          reason: 'React works well with serverless backends through API calls. Static site generation with Next.js/React can be deployed serverlessly.',
+          implementation: 'Static sites with Next.js, API routes, client-side calls to serverless functions'
+        },
+        angular: {
+          supported: true,
+          reason: 'Angular applications can consume serverless APIs effectively. Angular Universal enables server-side rendering in serverless environments.',
+          implementation: 'Angular Universal SSR, API service integration, static site generation'
+        },
+        vue: {
+          supported: true,
+          reason: 'Vue\'s lightweight nature is perfect for serverless. Nuxt.js provides excellent serverless deployment options.',
+          implementation: 'Nuxt.js serverless deployment, static generation, API routes integration'
+        }
+      }
     }
   ];
 
@@ -271,7 +375,7 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
       {/* Page Header */}
       <PageHeader
         icon={Layers}
-        category="Architecture Patterns"
+        category="System Design.Architecture"
         title="Architectural Patterns Overview"
         description="A comprehensive guide to frontend architectural patterns and when to use them"
         colorTheme="blue"
@@ -364,6 +468,130 @@ export default function ArchitecturalPatternsOverview({ onOpenWebPlayground }: A
                     <p className="text-slate-700 dark:text-slate-300 mb-4">
                       {pattern.description}
                     </p>
+                    
+                    {/* Framework Support Tabs */}
+                    <div className="mb-4">
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        <button
+                          onClick={() => setActiveFramework('all')}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                            activeFramework === 'all'
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                          }`}
+                        >
+                          All Frameworks
+                        </button>
+                        <button
+                          onClick={() => setActiveFramework('react')}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                            activeFramework === 'react'
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800'
+                          }`}
+                        >
+                          React
+                        </button>
+                        <button
+                          onClick={() => setActiveFramework('angular')}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                            activeFramework === 'angular'
+                              ? 'bg-red-500 text-white'
+                              : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-800'
+                          }`}
+                        >
+                          Angular
+                        </button>
+                        <button
+                          onClick={() => setActiveFramework('vue')}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                            activeFramework === 'vue'
+                              ? 'bg-green-500 text-white'
+                              : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800'
+                          }`}
+                        >
+                          Vue
+                        </button>
+                      </div>
+                      
+                      {/* Framework Support Content */}
+                      {(activeFramework === 'all' || activeFramework === 'react') && (
+                        <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800 mb-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">React</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              pattern.frameworkSupport.react.supported 
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' 
+                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                            }`}>
+                              {pattern.frameworkSupport.react.supported ? 'Supported' : 'Not Supported'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+                            {pattern.frameworkSupport.react.reason}
+                          </p>
+                          {pattern.frameworkSupport.react.implementation && (
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              <strong>Implementation:</strong> {pattern.frameworkSupport.react.implementation}
+                            </p>
+                          )}
+                          {pattern.frameworkSupport.react.alternatives && (
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              <strong>Alternatives:</strong> {pattern.frameworkSupport.react.alternatives.join(', ')}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      
+                      {(activeFramework === 'all' || activeFramework === 'angular') && (
+                        <div className="p-3 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800 mb-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span className="text-sm font-semibold text-red-700 dark:text-red-300">Angular</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              pattern.frameworkSupport.angular.supported 
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' 
+                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                            }`}>
+                              {pattern.frameworkSupport.angular.supported ? 'Supported' : 'Not Supported'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+                            {pattern.frameworkSupport.angular.reason}
+                          </p>
+                          {pattern.frameworkSupport.angular.implementation && (
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              <strong>Implementation:</strong> {pattern.frameworkSupport.angular.implementation}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      
+                      {(activeFramework === 'all' || activeFramework === 'vue') && (
+                        <div className="p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800 mb-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-sm font-semibold text-green-700 dark:text-green-300">Vue</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              pattern.frameworkSupport.vue.supported 
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' 
+                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                            }`}>
+                              {pattern.frameworkSupport.vue.supported ? 'Supported' : 'Not Supported'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
+                            {pattern.frameworkSupport.vue.reason}
+                          </p>
+                          {pattern.frameworkSupport.vue.implementation && (
+                            <p className="text-xs text-slate-500 dark:text-slate-500">
+                              <strong>Implementation:</strong> {pattern.frameworkSupport.vue.implementation}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
                     
                     <div className="space-y-3">
                       <div>

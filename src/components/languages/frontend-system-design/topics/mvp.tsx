@@ -191,7 +191,7 @@ export default function MVP({ onOpenWebPlayground }: MVPProps) {
       {/* Page Header */}
       <PageHeader
         icon={Box}
-        category="Architecture Patterns"
+        category="System Design.Patterns"
         title="Model-View-Presenter (MVP)"
         description="A comprehensive guide to the MVP pattern with diagrammatic explanations and practical implementations"
         colorTheme="green"
@@ -806,7 +806,7 @@ export default function MVP({ onOpenWebPlayground }: MVPProps) {
             </div>
             
             {/* Side-by-Side Code Display */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Model */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -961,7 +961,7 @@ public class LoginPresenter {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Model */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -1153,7 +1153,7 @@ class LoginPresenter {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Model */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -1402,7 +1402,7 @@ class TodoPresenter {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Model */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
@@ -1655,7 +1655,7 @@ export class TaskPresenter {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Model */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">

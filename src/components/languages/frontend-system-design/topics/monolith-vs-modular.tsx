@@ -154,9 +154,10 @@ export default function MonolithVsModular({ onOpenWebPlayground }: MonolithVsMod
         title="Monolith vs Modular Architecture"
         description="Compare and contrast monolithic and modular architectural approaches to make informed design decisions"
         icon={Layout}
+        category="System Design.Comparison"
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="w-full px-4 py-8 space-y-8">
         {/* Introduction */}
         <Card className="border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50/50 to-blue-50/30 dark:from-orange-950/20 dark:to-blue-950/10">
           <CardHeader>

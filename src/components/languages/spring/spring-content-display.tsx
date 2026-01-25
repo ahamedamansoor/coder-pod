@@ -5,6 +5,7 @@ import { GenericContentDisplay } from '@/components/shared/generic-content-displ
 import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';
 import React, { lazy, Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EnhancedLoadingSkeleton } from '@/components/shared/enhanced-loading-skeleton';
 
 // Lazy load all the topic components
 const SpringCoreOverview = lazy(() => import('./topics/spring-core-overview'));
@@ -16,18 +17,6 @@ const topicComponentMap: Record<string, React.LazyExoticComponent<any>> = {
   'ioc-container-and-beans': IocAndDependencyInjection,
 };
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Skeleton className="h-10 w-3/4" />
-        <Skeleton className="h-6 w-1/2" />
-      </div>
-      <Skeleton className="h-48 w-full" />
-      <Skeleton className="h-64 w-full" />
-    </div>
-  );
-}
 
 export function SpringContentDisplay({ 
   topic, 
@@ -55,7 +44,7 @@ export function SpringContentDisplay({
       topic={topic}
       language={language}
     >
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={<EnhancedLoadingSkeleton />}>
         <CustomTopicComponent />
       </Suspense>
     </GenericContentDisplay>

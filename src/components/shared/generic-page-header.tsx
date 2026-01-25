@@ -2,6 +2,7 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { YouTubeVideosButton } from '@/components/shared/youtube-videos-modal';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type ColorTheme = 
   | 'violet' 
@@ -227,9 +228,27 @@ export function PageHeader({
   topic,
 }: PageHeaderProps) {
   const colors = colorClasses[colorTheme];
+  const router = useRouter();
+  const searchParams = useSearchParams();
   
   // Extract language from category (e.g., "React · Describing the UI" -> "React")
   const extractedLanguage = category.includes('·') ? category.split('·')[0].trim() : null;
+
+  const handleCategoryClick = () => {
+    // Create search params for filtering
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    
+    // Filter by category (first part before dot if exists)
+    const filterCategory = category.includes('.') ? category.split('.')[0].trim() : category;
+    params.set('category', filterCategory);
+    
+    // Also filter by main title keywords
+    const titleKeywords = title.toLowerCase().split(' ').slice(0, 3).join(' ');
+    params.set('search', titleKeywords);
+    
+    // Navigate to the main learning page with filters
+    router.push(`/learn?${params.toString()}`);
+  };
 
   const getBadgeStyle = (
     variant: 'default' | 'secondary' | 'outline' | 'destructive' | 'success' | 'info' | undefined
@@ -255,12 +274,14 @@ export function PageHeader({
     <div className="text-center space-y-4 py-8">
       {/* Category Badge with Icon - Fixed Logo Color */}
       <div 
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border animate-in fade-in slide-in-from-top-4 duration-500 hover:scale-105 transition-all hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group"
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-full border animate-in fade-in slide-in-from-top-4 duration-500 hover:scale-105 transition-all hover:shadow-lg hover:shadow-blue-500/50 relative overflow-hidden group cursor-pointer"
         style={{ 
           backgroundColor: '#4A7BF5',
           borderColor: '#4A7BF5',
           animation: 'badge-pulse 3s ease-in-out infinite'
         }}
+        onClick={handleCategoryClick}
+        title={`Click to filter by ${category}`}
       >
         {/* Shimmer effect */}
         <div 
@@ -321,7 +342,13 @@ export function PageHeader({
       {/* YouTube Videos Button */}
       {showYouTubeVideos && (
         <div className="mt-6">
-          <YouTubeVideosButton topic={extractedLanguage ? `${title} ${extractedLanguage}` : (topic || title)} />
+          <YouTubeVideosButton 
+            topic={
+              category.includes('System Design') 
+                ? `System Design ${title}` 
+                : (extractedLanguage ? `${title} ${extractedLanguage}` : (topic || title))
+            } 
+          />
         </div>
       )}
     </div>
