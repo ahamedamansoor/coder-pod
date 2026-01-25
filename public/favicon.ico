@@ -1,0 +1,17 @@
+# This favicon.ico will be generated from your logo.svg
+# Your current logo.svg is already perfect for favicon:
+# - Round shape with dark background (#1a1a2e)
+# - "C" in blue (#4d7cff) and "P" in white (#ffffff)
+# - 120x120 viewBox, scalable to any size
+# 
+# To generate favicon.ico from logo.svg:
+# 1. Use online converter: https://favicon.io/favicon-converter/
+# 2. Upload your logo.svg
+# 3. Download the favicon.ico file
+# 4. Replace this placeholder file
+#
+# Benefits of using SVG as primary favicon:
+# - Crisp at all sizes
+# - Smaller file size
+# - Better browser support
+# - Scales perfectly for retina displays
