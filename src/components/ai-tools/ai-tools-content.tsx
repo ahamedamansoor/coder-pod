@@ -339,6 +339,7 @@ const aiCategories: AiCategory[] = [
     icon: Zap,
     color: 'from-yellow-500 to-amber-500',
     tools: [
+      { name: 'MyPocketPDF', url: 'https://mypocketpdf.com/', description: 'Free online tools for PDF conversion, merge, oraganize, repair, editing, and pdf to jpg' },
       { name: 'TinyWow', url: 'https://tinywow.com', description: 'Free online tools for PDF conversion, editing, and file manipulation' },
       { name: 'ILovePDF', url: 'https://ilovepdf.com', description: 'Online PDF tools for merging, splitting, compressing, and converting PDFs' },
       { name: 'PDF24 Tools', url: 'https://tools.pdf24.org', description: 'Free PDF tools for editing, converting, and managing PDF files' },

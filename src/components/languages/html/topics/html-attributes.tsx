@@ -2628,9 +2628,7 @@ function logEvent(message, category = 'info') {
 function clearLog() {
   const log = document.getElementById('event-log');
   log.innerHTML = '<div class="log-entry">Event log cleared...</div>';
-}`,
-  js: ''
-  };
+}
 
   return (
     <div className="w-full space-y-8 pb-16">
