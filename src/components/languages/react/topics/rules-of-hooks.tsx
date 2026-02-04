@@ -209,7 +209,7 @@ export default function RulesOfHooks() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Properly Structured Component"
             description="All Hooks at top level, in React component"
             colorTheme="green"

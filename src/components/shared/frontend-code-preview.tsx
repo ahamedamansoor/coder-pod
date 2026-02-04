@@ -201,7 +201,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
   
   const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js' | 'react' | 'angular' | 'vue' | 'next'>(getInitialTab());
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [showCode, setShowCode] = useState(false); // Hide code by default, show only UI preview
+  const [showCode, setShowCode] = useState(true); // Show code by default
 
   // Get playground contexts
   const { openWithContent } = useWebPlayground();
@@ -348,79 +348,27 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     ` : '';
       
-    // If HTML already contains complete document structure, inject theme detection and Tailwind
+    // If HTML already contains complete document structure, force dark mode
     if (html.trim().toLowerCase().startsWith('<!doctype')) {
-      // Inject Tailwind CDN, React CDN and dark mode detection script into the HTML
+      // Force dark mode by adding dark class and removing theme detection
       const injectedHTML = html.replace(
         '</head>',
         `${tailwindCDN}
         ${reactCDN}
-        <script>
-          (function() {
-            // Function to update theme
-            function updateTheme() {
-              // Check if parent has dark mode, fallback to system preference
-              const parentHasDark = window.parent.document.documentElement.classList.contains('dark');
-              const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const isDark = parentHasDark || systemPrefersDark;
-              
-              console.log('🎨 [Theme] Parent has dark:', parentHasDark);
-              console.log('🎨 [Theme] System prefers dark:', systemPrefersDark);
-              console.log('🎨 [Theme] Using dark mode:', isDark);
-              
-              if (isDark) {
-                document.documentElement.classList.add('dark');
-                console.log('🎨 [Theme] Applied dark class to iframe');
-              } else {
-                document.documentElement.classList.remove('dark');
-                console.log('🎨 [Theme] Removed dark class from iframe');
-              }
-            }
-            
-            // Initial theme setup with delay to ensure parent is ready
-            setTimeout(updateTheme, 100);
-            
-            // Also try multiple times in case parent is still loading
-            let retryCount = 0;
-            const maxRetries = 5;
-            const retryInterval = setInterval(() => {
-              updateTheme();
-              retryCount++;
-              if (retryCount >= maxRetries) {
-                clearInterval(retryInterval);
-              }
-            }, 200);
-            
-            // Listen for theme changes in parent
-            if (window.parent.MutationObserver) {
-              const observer = new window.parent.MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                  if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    updateTheme();
-                  }
-                });
-              });
-              
-              observer.observe(window.parent.document.documentElement, {
-                attributes: true,
-                attributeFilter: ['class']
-              });
-            }
-          })();
-        </script>
         </head>`
+      ).replace(
+        '<html',
+        '<html class="dark"'
       );
       return injectedHTML;
     }
     
-    // Otherwise, build complete document from parts
-    const bgColor = isDarkMode ? '#0f172a' : '#f8fafc';
-    const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+    // Otherwise, build complete document from parts - ALWAYS USE DARK MODE
+    const bgColor = '#0f172a';
+    const textColor = '#e2e8f0';
     
-    // For Tailwind or SCSS, don't add default styles (SCSS has its own base styles)
-    const defaultBodyStyles = (styleLanguage === 'tailwind' || styleLanguage === 'scss')
-      ? '' 
-      : `
+    // Always use dark mode styling (no light mode)
+    const defaultBodyStyles = `
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -435,14 +383,14 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
       transition: background-color 0.3s, color 0.3s;
     }
     
-    /* Dark mode support for common elements */
-    .dark a { color: #60a5fa; }
-    .dark a:visited { color: #a78bfa; }
-    .dark button:not([style*="background"]) {
+    /* Dark mode styles for common elements */
+    a { color: #60a5fa; }
+    a:visited { color: #a78bfa; }
+    button:not([style*="background"]) {
       background: #3b82f6;
       color: white;
     }
-    .dark input, .dark textarea, .dark select {
+    input, textarea, select {
       background: #1e293b;
       color: #e2e8f0;
       border-color: #475569;
@@ -450,7 +398,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     `;
     
     return `<!DOCTYPE html>
-<html lang="en" class="${isDarkMode ? 'dark' : ''}">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -460,59 +408,6 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
     ${defaultBodyStyles}
     ${compiledCss}
   </style>
-  <script>
-    (function() {
-      // Function to update theme
-      function updateTheme() {
-        // Check if parent has dark mode, fallback to system preference
-        const parentHasDark = window.parent.document.documentElement.classList.contains('dark');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = parentHasDark || systemPrefersDark;
-        
-        console.log('🎨 [Theme] Parent has dark:', parentHasDark);
-        console.log('🎨 [Theme] System prefers dark:', systemPrefersDark);
-        console.log('🎨 [Theme] Using dark mode:', isDark);
-        
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-          console.log('🎨 [Theme] Applied dark class to iframe');
-        } else {
-          document.documentElement.classList.remove('dark');
-          console.log('🎨 [Theme] Removed dark class from iframe');
-        }
-      }
-      
-      // Initial theme setup with delay to ensure parent is ready
-      setTimeout(updateTheme, 100);
-      
-      // Also try multiple times in case parent is still loading
-      let retryCount = 0;
-      const maxRetries = 5;
-      const retryInterval = setInterval(() => {
-        updateTheme();
-        retryCount++;
-        if (retryCount >= maxRetries) {
-          clearInterval(retryInterval);
-        }
-      }, 200);
-      
-      // Listen for theme changes in parent
-      if (window.parent.MutationObserver) {
-        const observer = new window.parent.MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-              updateTheme();
-            }
-          });
-        });
-        
-        observer.observe(window.parent.document.documentElement, {
-          attributes: true,
-          attributeFilter: ['class']
-        });
-      }
-    })();
-  </script>
 </head>
 <body>
   ${html}
@@ -789,7 +684,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
             <div
               className="lg:w-1/2 h-full flex flex-col rounded-lg overflow-hidden border border-slate-200/60 dark:border-slate-700/40"
             >
-            <div className="flex items-center justify-between bg-[#f6f8fa] dark:bg-[#161b22] px-4 py-2">
+            <div className="flex items-center justify-between bg-[#161b22] px-4 py-2">
               <div className="flex gap-2">
                 {/* Framework tabs - only show when framework code is provided */}
                 {hasReact && (
@@ -881,7 +776,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                 )}
               </button>
             </div>
-            <div className="flex-1 overflow-auto bg-white dark:bg-[#0d1117]">
+            <div className="flex-1 overflow-auto bg-[#0d1117]">
                 <SyntaxHighlighter
                 language={
                   activeTab === 'html' ? 'html' :
@@ -891,12 +786,12 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                   activeTab === 'next' ? 'jsx' :
                   'javascript'
                 }
-                style={appTheme === 'dark' ? vscDarkPlus : prism}
+                style={vscDarkPlus}
                 showLineNumbers={false}
                 customStyle={{
                   margin: 0,
                   padding: '1.25rem',
-                  background: appTheme === 'dark' ? '#0d1117' : '#ffffff',
+                  background: '#0d1117',
                   fontSize: '13px',
                   lineHeight: '1.45',
                   border: 'none',
@@ -974,18 +869,18 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
 
                       // Vue Playground (fallback to web playground for now)
                       if (hasVue && openWithContent) {
-                        openWithContent(html || '', compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
+                        openWithContent(getDisplayHTML(), compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
                         return;
                       }
 
                       // Next.js Playground (fallback to web playground for now)
                       if (hasNext && openWithContent) {
-                        openWithContent(html || '', compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
+                        openWithContent(getDisplayHTML(), compiledCss || extractedCSS || '', extractedJS || '', styleLanguage);
                         return;
                       }
 
                       // Default: Web Playground for HTML/CSS/JS
-                      const htmlContent = html || '';
+                      const htmlContent = getDisplayHTML(); // Use cleaned HTML without style tags
                       // Use compiledCss (SCSS compiled to CSS) instead of extractedCSS
                       const cssContent = compiledCss || extractedCSS || '';
                       const jsContent = extractedJS || '';
@@ -1005,7 +900,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                       // Fallback to legacy handlers if provided
                       const openHandler = onOpenPlayground ?? onOpenWebPlayground;
                       if (openHandler) {
-                        openHandler(htmlContent, cssContent, jsContent);
+                        openHandler(getDisplayHTML(), cssContent, jsContent);
                       }
                     } catch (error) {
                       console.error('Error opening playground:', error);
@@ -1064,7 +959,7 @@ export const FrontendCodePreview: React.FC<FrontendCodePreviewProps> = ({
                   srcDoc={getPreviewContent()}
                   title="Preview"
                   className="w-full h-full border-0 bg-white dark:bg-slate-950 rounded"
-                  sandbox="allow-scripts allow-same-origin"
+                  sandbox="allow-scripts allow-same-origin allow-popups"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800">

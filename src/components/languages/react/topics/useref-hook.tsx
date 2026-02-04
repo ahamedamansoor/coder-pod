@@ -134,7 +134,7 @@ export default function UseRefHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Focus Input with useRef"
             description="Click button to focus the input field"
             colorTheme="blue"
@@ -364,7 +364,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Timer with useRef"
             description="Storing interval ID without causing re-renders"
             colorTheme="purple"

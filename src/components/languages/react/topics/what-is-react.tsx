@@ -249,10 +249,11 @@ export default function WhatIsReact() {
           size="lg"
         />
 
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="Simple Greeting Component"
           description="A basic React component that displays a greeting message"
           colorTheme="cyan"
+          learningContext="react"
           react={`function Greeting() {
   return (
     <div>
@@ -339,10 +340,11 @@ document.head.appendChild(script2);`}
           size="lg"
         />
 
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="Counter Component"
           description="Click the button and count updates automatically!"
           colorTheme="purple"
+          learningContext="react"
           react={`const { useState } = React;
 
 function Counter() {

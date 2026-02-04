@@ -518,43 +518,59 @@ export default function HtmlSyntax({ onOpenWebPlayground }: HtmlSyntaxProps) {
 </html>`,
             `body {
   font-family: system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #1e293b, #334155);
   padding: 2rem;
   text-align: center;
+  color: #e2e8f0;
 }
 
 h1 {
-  color: white;
+  color: #60a5fa;
   font-size: 3rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .intro {
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 1.5rem;
   border-radius: 12px;
   margin: 2rem auto;
   max-width: 500px;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #cbd5e1;
 }
 
 button {
-  background: white;
-  color: #667eea;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
   border: none;
   padding: 1rem 2rem;
   font-size: 1.2rem;
   font-weight: 600;
   border-radius: 12px;
   cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
 }
 
 #message {
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 1.5rem;
   border-radius: 12px;
   margin: 2rem auto;
   max-width: 500px;
   opacity: 0;
   transition: opacity 0.3s;
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  color: #e2e8f0;
 }
 
 #message.show {

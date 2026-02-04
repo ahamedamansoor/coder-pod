@@ -217,7 +217,7 @@ html.dark .navbar {
   padding-bottom: 0.25rem;
 }`}
               colorTheme="blue"
-              previewHeight="220px"
+              previewHeight="420px"
               onOpenPlayground={() => openPlayground(
                 `<nav class="navbar"><a href="/" class="logo">MyWebsite</a><div class="nav-links"><a href="/">Home</a><a href="/about">About</a><a href="/services">Services</a></div></nav>`,
                 `.navbar { background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; } .nav-links { display: flex; gap: 2rem; } .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: all 0.3s; } /* Dark mode */ html.dark body { background: #0f172a; } html.dark .navbar { background: linear-gradient(90deg, #1e293b 0%, #1e40af 100%); }`,
@@ -287,7 +287,7 @@ html.dark .breadcrumb a:hover {
   color: #93c5fd;
 }`}
               colorTheme="blue"
-              previewHeight="200px"
+              previewHeight="400px"
               onOpenPlayground={() => openPlayground(
                 `<nav class="breadcrumb"><a href="/">Home</a><span>/</span><a href="/blog">Blog</a><span>/</span><span class="current">CSS Tips</span></nav>`,
                 `.breadcrumb { display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: white; border-radius: 8px; border-left: 4px solid #3b82f6; } .breadcrumb a { color: #3b82f6; text-decoration: none; font-weight: 500; } .breadcrumb a:hover { text-decoration: underline; } /* Dark mode */ html.dark body { background: #0f172a; } html.dark .breadcrumb { background: #1e293b; } html.dark .breadcrumb a { color: #60a5fa; } html.dark .breadcrumb a:hover { color: #93c5fd; }`,
@@ -466,7 +466,7 @@ html.dark body {
   padding-left: 1rem;
 }`}
               colorTheme="blue"
-              previewHeight="280px"
+              previewHeight="480px"
               onOpenPlayground={() => openPlayground(
                 `<footer class="footer"><div class="footer-section"><h4>Company</h4><a href="/about">About</a><a href="/careers">Careers</a></div><div class="footer-section"><h4>Resources</h4><a href="/blog">Blog</a><a href="/docs">Docs</a></div></footer>`,
                 `.footer { background: #1f2937; color: white; padding: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; } .footer-section h4 { color: #fbbf24; margin-bottom: 1rem; } .footer-section a { display: block; color: #d1d5db; text-decoration: none; margin: 0.5rem 0; transition: all 0.3s; padding-left: 0.5rem; } .footer-section a:hover { color: #fbbf24; padding-left: 1rem; } /* Dark mode */ html.dark body { background: #0f172a; }`,

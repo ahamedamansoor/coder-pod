@@ -199,7 +199,7 @@ export default function HooksOverview() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Simple Counter with Hooks"
             description="Clean, modern function component"
             colorTheme="green"

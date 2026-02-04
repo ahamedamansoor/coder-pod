@@ -183,7 +183,7 @@ export default function UseContextHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Theme Switcher with Context"
             description="All components access theme without props"
             colorTheme="purple"

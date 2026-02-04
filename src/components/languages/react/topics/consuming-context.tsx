@@ -70,7 +70,7 @@ export default function ConsumingContext() {
             description="Multiple components consuming same context"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Shopping Cart Context"
             description="Add items, see multiple components update from shared context!"
             colorTheme="green"

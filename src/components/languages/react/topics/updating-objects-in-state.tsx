@@ -210,7 +210,7 @@ export default function UpdatingObjectsInState() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Update Object Properties"
             description="Try updating different properties"
             colorTheme="cyan"
@@ -686,7 +686,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Update Nested Address"
             description="Change city and country in a nested object"
             colorTheme="cyan"

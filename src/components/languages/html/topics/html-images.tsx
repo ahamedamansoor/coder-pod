@@ -244,7 +244,7 @@ html.dark .note {
 }`}
                 colorTheme="blue"
                 icon={FileImage}
-                previewHeight="300px"
+                previewHeight="500px"
               />
             </CardContent>
           </Card>
@@ -300,7 +300,7 @@ html.dark .note {
 }`}
                 colorTheme="emerald"
                 icon={FileImage}
-                previewHeight="300px"
+                previewHeight="500px"
               />
             </CardContent>
           </Card>
@@ -371,7 +371,7 @@ html.dark .note {
 }`}
                 colorTheme="amber"
                 icon={LinkIcon}
-                previewHeight="350px"
+                previewHeight="550px"
               />
             </CardContent>
           </Card>
@@ -463,7 +463,7 @@ code {
 }`}
                 colorTheme="purple"
                 icon={Frame}
-                previewHeight="400px"
+                previewHeight="550px"
               />
             </CardContent>
           </Card>
@@ -689,7 +689,7 @@ code {
 }`}
                 colorTheme="cyan"
                 icon={Image}
-                previewHeight="350px"
+                previewHeight="550px"
               />
             </CardContent>
           </Card>

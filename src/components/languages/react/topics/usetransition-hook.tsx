@@ -157,7 +157,7 @@ export default function UseTransitionHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Search List with useTransition"
             description="Input stays responsive even with large lists"
             colorTheme="green"

@@ -169,7 +169,7 @@ export default function UnderstandingYourUIAsATree() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Simple Blog Layout"
             description="Each colored box is a component. Notice how they nest inside each other!"
             colorTheme="cyan"
@@ -580,7 +580,7 @@ body {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Dynamic Component Tree"
             description="Add components and watch the tree grow in real-time"
             colorTheme="cyan"

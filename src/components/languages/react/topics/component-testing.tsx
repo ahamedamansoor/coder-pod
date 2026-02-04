@@ -287,7 +287,7 @@ root.render(
           description="See both logged-in and logged-out states"
           size="lg"
         />
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="Greeting Component"
           html={`<div id="root"></div>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>

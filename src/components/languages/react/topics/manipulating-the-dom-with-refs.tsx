@@ -95,7 +95,7 @@ function MyComponent() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Focus Input with Ref"
             description="Use ref to programmatically focus an input"
             colorTheme="cyan"
@@ -318,7 +318,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Scroll to Element with Ref"
             description="Use scrollIntoView to navigate smoothly"
             colorTheme="purple"

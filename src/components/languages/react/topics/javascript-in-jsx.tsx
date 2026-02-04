@@ -88,7 +88,7 @@ export default function JavaScriptInJSX() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Using Variables with Curly Braces"
             description="See how JavaScript variables are displayed using {} in JSX!"
             colorTheme="cyan"
@@ -244,7 +244,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="User Profile with Object"
             description="See how to display object properties in JSX"
             colorTheme="cyan"

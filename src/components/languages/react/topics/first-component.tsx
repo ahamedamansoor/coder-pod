@@ -306,6 +306,7 @@ export default App;`;
         </CardHeader>
         <CardContent className="space-y-6">
           <FrontendCodePreviewReact
+            learningContext="react"
             title="Welcome.js"
             description="Your first React component"
             css={`.welcome-container {
@@ -447,7 +448,10 @@ function Welcome() {
   );
 }
 
-export default Welcome;`}
+export default Welcome;
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Welcome />);`}
           />
           
           <Alert>
@@ -478,6 +482,7 @@ export default Welcome;`}
         </CardHeader>
         <CardContent className="space-y-6">
           <FrontendCodePreviewReact
+            learningContext="react"
             title="InteractiveButton.js"
             description="A button that counts clicks"
             css={`.button-container {
@@ -586,7 +591,10 @@ function InteractiveButton() {
   );
 }
 
-export default InteractiveButton;`}
+export default InteractiveButton;
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<InteractiveButton />);`}
           />
           
           <Alert>

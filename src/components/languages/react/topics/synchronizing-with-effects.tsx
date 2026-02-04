@@ -174,7 +174,7 @@ export default function SynchronizingWithEffects() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Counter with Document Title"
             description="The document title updates every time count changes"
             colorTheme="cyan"
@@ -381,7 +381,7 @@ button {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Timer with Cleanup"
             description="Effect starts timer and cleanup stops it"
             colorTheme="purple"

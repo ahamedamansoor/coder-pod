@@ -243,7 +243,7 @@ function Panel2() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Controlled Accordion"
             description="Click panels to expand - only one can be open"
             colorTheme="cyan"

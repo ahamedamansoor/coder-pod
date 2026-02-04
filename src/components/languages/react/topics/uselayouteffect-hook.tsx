@@ -211,7 +211,7 @@ export default function UseLayoutEffectHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Tooltip with useLayoutEffect"
             description="Tooltip positioned based on element size"
             colorTheme="blue"

@@ -185,7 +185,7 @@ export default function LifecycleOfReactiveEffects() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Chat Room with Lifecycle"
             description="Connect/disconnect as room changes"
             colorTheme="cyan"

@@ -687,12 +687,21 @@ export function WebPlaygroundModal({
           html.classList.remove('dark');
           html.classList.remove('light');
           html.classList.add('${theme === 'dark' ? 'dark' : 'light'}');
+          
+          // Debug link clicks
+          document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+              console.log('Link clicked:', e.target.href, 'target:', e.target.target);
+              if (e.target.target === '_blank') {
+                console.log('Opening in new tab');
+              }
+            }
+          });
         })();
       `;
 
       // Update the output source
-      setOutputSrc(`
-        data:text/html;charset=utf-8,${encodeURIComponent(`
+      const htmlContent = `
           <html>
             <head>
               ${tailwindCDN}
@@ -705,8 +714,12 @@ export function WebPlaygroundModal({
               <script>${scriptToRun}</script>
             </body>
           </html>
-        `)}
-      `);
+        `;
+      
+      // Create blob URL instead of data URL for better link support
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      setOutputSrc(blobUrl);
       setHasChanges(false);
     }, 50);
   }, [htmlCode, compiledCss, jsCode, styleLang, scriptLang, theme]);
@@ -1126,7 +1139,7 @@ export function WebPlaygroundModal({
                           key={iframeKey}
                           src={outputSrc}
                           title="preview"
-                          sandbox="allow-scripts allow-modals"
+                          sandbox="allow-scripts allow-modals allow-popups allow-same-origin"
                           frameBorder="0"
                           width="100%"
                           height="100%"

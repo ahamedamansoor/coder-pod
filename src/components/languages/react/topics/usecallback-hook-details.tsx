@@ -67,7 +67,7 @@ export default function UseCallbackHookDetails() {
             description="See how useCallback prevents unnecessary re-renders"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useCallback Performance Demo"
             description="Compare with and without useCallback - watch render counts!"
             colorTheme="green"

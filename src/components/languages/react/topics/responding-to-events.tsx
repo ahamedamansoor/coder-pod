@@ -243,7 +243,7 @@ export default function RespondingToEvents() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Event Handlers Demo"
             description="Multiple event types with visual feedback"
             colorTheme="cyan"

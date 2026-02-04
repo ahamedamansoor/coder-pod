@@ -172,7 +172,7 @@ export default function FragmentApi() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Fragment vs Div Comparison"
             description="See how Fragments keep your DOM clean"
             colorTheme="green"

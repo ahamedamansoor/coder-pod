@@ -8,7 +8,6 @@ import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap,
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
-import { ThemeToggle } from './theme-toggle';
 import { cn } from '@/lib/utils';
 import { FeatureGateModal } from '@/components/shared/feature-gate-modal';
 import { featureFlags } from '@/config/feature-flags';
@@ -27,7 +26,7 @@ import {
 } from '@/components/ui/tooltip';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'ai-interview' | 'collaborative-interview' | 'ai-tools';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'collaborative-interview' | 'ai-tools';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
@@ -91,7 +90,6 @@ export function InnovativeHeader({
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
     { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
     { href: '/ai-tools', label: 'AI Tools', icon: Cpu, page: 'ai-tools', requiresAuth: false, description: 'AI-powered tools and utilities' },
-    { href: '/ai-interview', label: 'AI practice(Beta)', icon: Brain, page: 'ai-interview', requiresAuth: false, description: 'Practice with AI interviewer' },
     { href: '/collaborative-interview', label: 'Live Interview', icon: Users, page: 'collaborative-interview', requiresAuth: true, description: 'Real-time coding with partner' },
     { href: '/notes', label: 'My Notes', icon: StickyNote, page: 'notes', requiresAuth: true, description: 'Your saved notes' },
     { href: '/discover', label: 'Explore', icon: Sparkles, page: 'discover', requiresAuth: false, description: 'Discover new content' },
@@ -309,11 +307,6 @@ export function InnovativeHeader({
               </Button>
             </div>
           )}
-
-          {/* Theme Toggle */}
-          <div className="transition-transform duration-300 hover:scale-105">
-            <ThemeToggle />
-          </div>
 
           {/* Sign In Button for Guests */}
           {!user && (

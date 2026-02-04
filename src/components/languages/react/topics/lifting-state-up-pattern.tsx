@@ -299,7 +299,7 @@ body {
             description="See lifting state up in action"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Shared Count Dashboard"
             description="Parent owns the shared count and both buttons update it"
             colorTheme="emerald"

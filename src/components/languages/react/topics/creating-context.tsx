@@ -74,7 +74,7 @@ export default function CreatingContext() {
             description="Complete working example"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Theme Switcher with Context"
             description="Toggle between light and dark themes using Context!"
             colorTheme="green"

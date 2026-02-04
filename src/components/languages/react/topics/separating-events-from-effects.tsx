@@ -148,7 +148,7 @@ export default function SeparatingEventsFromEffects() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Product Purchase with Correct Separation"
             description="Notification only shows on purchase, not on product change"
             colorTheme="green"

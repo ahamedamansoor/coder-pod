@@ -157,7 +157,7 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
 </body>
 </html>`}
             colorTheme="blue"
-            previewHeight="350px"
+            previewHeight="550px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
@@ -384,7 +384,7 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
 </body>
 </html>`}
             colorTheme="blue"
-            previewHeight="450px"
+            previewHeight="750px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
@@ -628,7 +628,7 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
 </body>
 </html>`}
             colorTheme="blue"
-            previewHeight="500px"
+            previewHeight="850px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
@@ -861,23 +861,24 @@ export default function HtmlDocumentStructure({ onOpenWebPlayground }: HtmlDocum
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   min-height: 100vh;
-  color: #1e293b;
+  color: #e2e8f0;
 }
 
 header {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
   padding: 1.5rem 2rem;
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
 }
 
 nav h1 {
-  color: #667eea;
+  color: #60a5fa;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
@@ -889,14 +890,14 @@ nav ul {
 }
 
 nav a {
-  color: #475569;
+  color: #94a3b8;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s;
 }
 
 nav a:hover {
-  color: #667eea;
+  color: #60a5fa;
 }
 
 main {
@@ -906,34 +907,35 @@ main {
 }
 
 article, section {
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 2.5rem;
   border-radius: 20px;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.3);
 }
 
 h2 {
-  color: #764ba2;
+  color: #a78bfa;
   font-size: 2rem;
   margin-bottom: 1.5rem;
 }
 
 h3 {
-  color: #667eea;
+  color: #60a5fa;
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
 }
 
 p {
   line-height: 1.8;
-  color: #64748b;
+  color: #cbd5e1;
   margin-bottom: 1rem;
 }
 
 ul {
   list-style-position: inside;
-  color: #64748b;
+  color: #cbd5e1;
   padding-left: 1rem;
 }
 
@@ -950,15 +952,17 @@ li {
 
 .feature {
   padding: 2rem;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 20%);
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
   border-radius: 16px;
   color: white;
   text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
 }
 
 .feature:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6);
 }
 
 .feature h3 {
@@ -971,7 +975,7 @@ li {
 }
 
 button {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
   border: none;
   padding: 1.25rem 2.5rem;
@@ -979,14 +983,15 @@ button {
   font-weight: 600;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
   transition: all 0.3s;
   margin-top: 1rem;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
 }
 
 #message {
@@ -998,6 +1003,9 @@ button:hover {
   font-weight: 600;
   opacity: 0;
   transition: opacity 0.3s;
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  color: #e2e8f0;
 }
 
 #message.show {
@@ -1005,11 +1013,12 @@ button:hover {
 }
 
 footer {
-  background: rgba(30, 41, 59, 0.95);
-  color: white;
+  background: rgba(15, 23, 42, 0.95);
+  color: #94a3b8;
   text-align: center;
   padding: 2rem;
   margin-top: 3rem;
+  border-top: 1px solid rgba(51, 65, 85, 0.3);
 }`,
             `function celebrate() {
   const message = document.getElementById('message');

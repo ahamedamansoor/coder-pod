@@ -169,7 +169,7 @@ export default function PreservingAndResettingState() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Same Position Preserves State"
             description="Check the box, then toggle - score stays"
             colorTheme="cyan"
@@ -499,7 +499,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Chat with Key Reset"
             description="Switch contacts - message input resets with key"
             colorTheme="purple"

@@ -337,7 +337,7 @@ root.render(<Counter />);`;
           description="See the component we'll test"
           size="lg"
         />
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="Counter Component"
           html={`<div id="root"></div>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>

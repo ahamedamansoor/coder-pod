@@ -151,7 +151,7 @@ export default function YouMightNotNeedAnEffect() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Todo List with Derived State"
             description="No Effect needed - just calculate during render!"
             colorTheme="purple"
@@ -618,7 +618,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Contact Form with Event Handlers"
             description="No Effect needed - handle in onClick!"
             colorTheme="green"

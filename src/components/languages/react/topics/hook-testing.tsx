@@ -251,7 +251,7 @@ root.render(<CounterApp />);`;
           description="See useCounter hook in action"
           size="lg"
         />
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="useCounter Hook Demo"
           html={`<div id="root"></div>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>

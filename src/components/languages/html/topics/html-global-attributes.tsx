@@ -304,7 +304,7 @@ html.dark .arabic {
 }`}
             colorTheme="blue"
             icon={Tags}
-            previewHeight="750px"
+            previewHeight="950px"
           />
         </CardContent>
       </Card>
@@ -582,7 +582,7 @@ html.dark .footer-text {
   color: #999;
 }`}
             colorTheme="blue"
-            previewHeight="700px"
+            previewHeight="800px"
           />
         </CardContent>
       </Card>
@@ -795,7 +795,7 @@ html.dark .info-box {
   color: #93c5fd;
 }`}
             colorTheme="purple"
-            previewHeight="650px"
+            previewHeight="850px"
           />
         </CardContent>
       </Card>
@@ -959,7 +959,7 @@ html.dark .highlight-box {
   border-color: #60a5fa;
 }`}
             colorTheme="emerald"
-            previewHeight="650px"
+            previewHeight="900px"
           />
         </CardContent>
       </Card>
@@ -1213,7 +1213,7 @@ html.dark .focusable-card:focus {
   box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.2);
 }`}
             colorTheme="amber"
-            previewHeight="850px"
+            previewHeight="1050px"
           />
         </CardContent>
       </Card>

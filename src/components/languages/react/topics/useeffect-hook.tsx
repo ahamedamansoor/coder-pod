@@ -103,7 +103,7 @@ export default function UseEffectHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="User Data Fetcher"
             description="Fetch data when component mounts"
             colorTheme="blue"
@@ -467,7 +467,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Live Clock"
             description="Cleanup stops the timer when unmounting"
             colorTheme="orange"

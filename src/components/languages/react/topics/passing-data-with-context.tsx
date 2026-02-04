@@ -73,7 +73,7 @@ export default function PassingDataWithContext() {
             description="Complete example with state and functions"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Auth Context with Login/Logout"
             description="Real-world example: user authentication with Context"
             colorTheme="green"

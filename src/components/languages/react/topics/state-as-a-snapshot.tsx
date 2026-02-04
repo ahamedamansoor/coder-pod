@@ -214,7 +214,7 @@ export default function StateAsASnapshot() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="State Snapshot Demo"
             description="Click +3 and watch what happens"
             colorTheme="cyan"
@@ -608,7 +608,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Timer Snapshot Demo"
             description="Click 'Show in 3s', then change the number before message appears"
             colorTheme="cyan"

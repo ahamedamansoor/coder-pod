@@ -150,7 +150,7 @@ export default function HtmlLinks({ onOpenWebPlayground }: HtmlLinksProps) {
 </p>`}
               css={`body { font-family: system-ui; padding: 2rem; }\na { color: #3b82f6; text-decoration: none; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }\na:hover { color: #2563eb; border-bottom-color: #2563eb; }\na:visited { color: #7c3aed; }\n/* Dark mode */\nhtml.dark body { background: #0f172a; }\nhtml.dark a { color: #60a5fa; }\nhtml.dark a:hover { color: #93c5fd; border-bottom-color: #93c5fd; }\nhtml.dark a:visited { color: #a78bfa; }`}
               colorTheme="blue"
-              previewHeight="200px"
+              previewHeight="400px"
               onOpenPlayground={() => openPlayground(
                 `<p>Visit our <a href="https://developer.mozilla.org">documentation site</a> to learn more.</p>`,
                 `body { font-family: system-ui; padding: 2rem; }\na { color: #3b82f6; text-decoration: none; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }\na:hover { color: #2563eb; border-bottom-color: #2563eb; }\na:visited { color: #7c3aed; }\n/* Dark mode */\nhtml.dark body { background: #0f172a; }\nhtml.dark a { color: #60a5fa; }\nhtml.dark a:hover { color: #93c5fd; border-bottom-color: #93c5fd; }\nhtml.dark a:visited { color: #a78bfa; }`,
@@ -174,7 +174,7 @@ export default function HtmlLinks({ onOpenWebPlayground }: HtmlLinksProps) {
 </div>`}
               css={`body { font-family: system-ui; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%); }\n.link-container { display: flex; gap: 1rem; }\n.btn-link { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; }\n.btn-link:hover { background: #2563eb; transform: translateY(-2px); }\n/* Dark mode */\nhtml.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }\nhtml.dark .btn-link { background: #60a5fa; color: #0f172a; }\nhtml.dark .btn-link:hover { background: #93c5fd; }`}
               colorTheme="blue"
-              previewHeight="220px"
+              previewHeight="420px"
               onOpenPlayground={() => openPlayground(
                 `<a href="https://example.com" class="btn-link">📖 Learn More</a>`,
                 `body { font-family: system-ui; padding: 2rem; background: linear-gradient(135deg, #f0f9ff 0%, #f3e8ff 100%); }\n.link-container { display: flex; gap: 1rem; }\n.btn-link { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; }\n.btn-link:hover { background: #2563eb; transform: translateY(-2px); }\n/* Dark mode */\nhtml.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }\nhtml.dark .btn-link { background: #60a5fa; color: #0f172a; }\nhtml.dark .btn-link:hover { background: #93c5fd; }`,
@@ -199,7 +199,7 @@ export default function HtmlLinks({ onOpenWebPlayground }: HtmlLinksProps) {
 </nav>`}
               css={`body { font-family: system-ui; margin: 0; }\n.navbar { background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%); padding: 1rem 2rem; display: flex; gap: 2rem; }\n.nav-link { color: white; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; }\n.nav-link:hover { background: rgba(255, 255, 255, 0.1); }\n.nav-link.active { background: rgba(255, 255, 255, 0.2); border-bottom: 2px solid #fbbf24; }\n/* Dark mode */\nhtml.dark .navbar { background: linear-gradient(90deg, #1e293b 0%, #1e40af 100%); }\nhtml.dark .nav-link:hover { background: rgba(255, 255, 255, 0.15); }`}
               colorTheme="blue"
-              previewHeight="250px"
+              previewHeight="450px"
               onOpenPlayground={() => openPlayground(
                 `<nav class="navbar"><a href="/" class="nav-link active">Home</a><a href="/about" class="nav-link">About</a><a href="/services" class="nav-link">Services</a><a href="/contact" class="nav-link">Contact</a></nav>`,
                 `body { font-family: system-ui; margin: 0; }\n.navbar { background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%); padding: 1rem 2rem; display: flex; gap: 2rem; }\n.nav-link { color: white; text-decoration: none; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; }\n.nav-link:hover { background: rgba(255, 255, 255, 0.1); }\n.nav-link.active { background: rgba(255, 255, 255, 0.2); border-bottom: 2px solid #fbbf24; }\n/* Dark mode */\nhtml.dark .navbar { background: linear-gradient(90deg, #1e293b 0%, #1e40af 100%); }\nhtml.dark .nav-link:hover { background: rgba(255, 255, 255, 0.15); }`,

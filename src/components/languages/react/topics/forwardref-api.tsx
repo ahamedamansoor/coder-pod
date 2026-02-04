@@ -142,7 +142,7 @@ export default function ForwardRefApi() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Input Component with forwardRef"
             description="Click the button to focus the custom input"
             colorTheme="green"

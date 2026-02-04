@@ -101,7 +101,7 @@ export default function UncontrolledComponentsPattern() {
             description="Using refs to access values"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Uncontrolled Form - Live Demo"
             description="Type and submit! No re-renders until you click submit"
             colorTheme="green"

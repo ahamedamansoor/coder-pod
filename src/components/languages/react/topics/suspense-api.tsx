@@ -235,7 +235,7 @@ export default function SuspenseApi() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Suspense with React.lazy()"
             description="Click tabs to see lazy-loaded components with fallback"
             colorTheme="green"

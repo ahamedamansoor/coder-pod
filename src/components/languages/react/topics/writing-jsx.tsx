@@ -88,7 +88,7 @@ export default function WritingJSX() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Hello World in JSX"
             description="The simplest JSX example - just like HTML but in React!"
             colorTheme="cyan"
@@ -258,7 +258,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Profile Card with Multiple Elements"
             description="See how JSX handles multiple nested elements - just like HTML!"
             colorTheme="cyan"

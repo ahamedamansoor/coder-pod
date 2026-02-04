@@ -32,10 +32,11 @@ export function LanguageSwitcher({
     setSearchQuery(''); // Reset search on selection
   };
 
-  const frontendSlugs = new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'typescript', 'react', 'angular', 'rxjs']);
+  const frontendSlugs = new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs']);
   const backendSlugs = new Set(['java', 'spring', 'spring-boot']);
   const dsaSlugs = new Set(['dsa']);
-  const testingSlugs = new Set(['playwright']);
+  const testingSlugs = new Set(['playwright', 'selenium']);
+  const toolsSlugs = new Set(['git']);
 
   // Filter languages based on search query
   const filteredLanguages = useMemo(() => {
@@ -45,8 +46,9 @@ export function LanguageSwitcher({
         backend: languages.filter((lang) => backendSlugs.has(lang.slug)),
         testing: languages.filter((lang) => testingSlugs.has(lang.slug)),
         dsa: languages.filter((lang) => dsaSlugs.has(lang.slug)),
+        tools: languages.filter((lang) => toolsSlugs.has(lang.slug)),
         other: languages.filter(
-          (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug)
+          (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
         ),
       };
     }
@@ -61,11 +63,12 @@ export function LanguageSwitcher({
       backend: matchingLanguages.filter((lang) => backendSlugs.has(lang.slug)),
       testing: matchingLanguages.filter((lang) => testingSlugs.has(lang.slug)),
       dsa: matchingLanguages.filter((lang) => dsaSlugs.has(lang.slug)),
+      tools: matchingLanguages.filter((lang) => toolsSlugs.has(lang.slug)),
       other: matchingLanguages.filter(
-        (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug)
+        (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
       ),
     };
-  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs]);
+  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs, toolsSlugs]);
 
   return (
       <DropdownMenu>
@@ -176,6 +179,25 @@ export function LanguageSwitcher({
               </div>
             )}
 
+            {filteredLanguages.tools.length > 0 && (
+              <div>
+                <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Tools ({filteredLanguages.tools.length})
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {filteredLanguages.tools.map((lang) => (
+                    <DropdownMenuItem 
+                      key={lang.slug} 
+                      onClick={() => handleLanguageSelect(lang.slug)}
+                      className="cursor-pointer text-sm"
+                    >
+                      {lang.name}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {filteredLanguages.other.length > 0 && (
               <div>
                 <p className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -201,6 +223,7 @@ export function LanguageSwitcher({
              filteredLanguages.backend.length === 0 && 
              filteredLanguages.testing.length === 0 && 
              filteredLanguages.dsa.length === 0 && 
+             filteredLanguages.tools.length === 0 &&
              filteredLanguages.other.length === 0 && (
               <div className="text-center py-6 text-sm text-muted-foreground">
                 No languages found matching "{searchQuery}"

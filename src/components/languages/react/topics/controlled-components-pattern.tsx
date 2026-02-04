@@ -103,7 +103,7 @@ export default function ControlledComponentsPattern() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Controlled Form - Live Demo"
             description="Try typing! State updates on every keystroke"
             colorTheme="green"

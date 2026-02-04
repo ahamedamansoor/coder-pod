@@ -209,7 +209,7 @@ export default function RemovingEffectDependencies() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Search with Optimized Effect"
             description="Effect only re-runs when search term changes"
             colorTheme="blue"

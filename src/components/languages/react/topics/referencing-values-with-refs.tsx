@@ -191,7 +191,7 @@ function MyComponent() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="State vs Ref Counter"
             description="Compare how state and ref updates behave"
             colorTheme="cyan"
@@ -703,7 +703,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Stopwatch Example"
             description="Uses ref to store interval ID"
             colorTheme="green"

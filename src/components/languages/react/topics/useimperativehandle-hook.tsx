@@ -146,7 +146,7 @@ export default function UseImperativeHandleHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Input with Custom API"
             description="Parent can call focus() and clear() methods"
             colorTheme="green"

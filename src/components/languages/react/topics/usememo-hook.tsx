@@ -165,7 +165,7 @@ export default function UseMemoHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Product Search with useMemo"
             description="Memoized filtering - only recalculates when needed"
             colorTheme="green"

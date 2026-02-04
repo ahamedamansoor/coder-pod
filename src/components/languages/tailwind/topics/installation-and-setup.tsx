@@ -13,24 +13,46 @@ export default function InstallationAndSetup() {
 
   // CDN Example
   const cdnHTML = `<!DOCTYPE html>
-<html>
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+  </style>
 </head>
 <body>
-  <h1 class="text-3xl font-bold text-blue-600">
+  <h1 class="text-3xl font-bold text-blue-400">
     Hello Tailwind!
   </h1>
 </body>
 </html>`;
 
   // Basic HTML with Tailwind
-  const simpleExampleHTML = `<div class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-8 rounded-xl text-center">
-  <h1 class="text-4xl font-bold mb-2">🎉 Tailwind is Working!</h1>
-  <p class="text-xl">You're all set to start building!</p>
-</div>`;
+  const simpleExampleHTML = `<!DOCTYPE html>
+<html class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white p-8 rounded-xl text-center">
+    <h1 class="text-4xl font-bold mb-2">🎉 Tailwind is Working!</h1>
+    <p class="text-xl">You're all set to start building!</p>
+  </div>
+</body>
+</html>`;
 
   return (
     <div className="space-y-8">
@@ -207,7 +229,7 @@ export default function InstallationAndSetup() {
                   That's it! You can now use any Tailwind class in your HTML.
                 </p>
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-sm text-cyan-400">
-                  &lt;h1 class="text-3xl font-bold text-blue-600"&gt;
+                  &lt;h1 class="text-3xl font-bold text-blue-400"&gt;
                   <br />
                   &nbsp;&nbsp;Hello Tailwind!
                   <br />
@@ -299,7 +321,7 @@ export default function InstallationAndSetup() {
               <div className="flex-1">
                 <h4 className="font-bold text-lg mb-2">Configure Template Paths</h4>
                 <p className="text-sm text-muted-foreground mb-3">
-                  Add paths to your HTML files in <code className="bg-muted px-2 py-1 rounded">tailwind.config.js</code>:
+                  Add paths to your HTML files and enable dark mode in <code className="bg-muted px-2 py-1 rounded">tailwind.config.js</code>:
                 </p>
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-sm text-cyan-400">
                   /** @type {'{'}import('tailwindcss').Config{'}'} */
@@ -307,6 +329,8 @@ export default function InstallationAndSetup() {
                   module.exports = {'{'}
                   <br />
                   &nbsp;&nbsp;content: ["./src/**/*.{'{'}html,js{'}'}"],
+                  <br />
+                  &nbsp;&nbsp;darkMode: 'class', // Enable dark mode with class strategy
                   <br />
                   &nbsp;&nbsp;theme: {'{'}
                   <br />

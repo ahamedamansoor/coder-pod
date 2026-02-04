@@ -167,7 +167,7 @@ setNumber(n => n + 1);  // n = 2, returns 3
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Regular Updates vs Updater Functions"
             description="Click both buttons and see the difference!"
             colorTheme="cyan"

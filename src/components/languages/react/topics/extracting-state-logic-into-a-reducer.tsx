@@ -304,7 +304,7 @@ export default function ExtractingStateLogicIntoAReducer() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Task Manager with useReducer"
             description="Add, toggle, and delete tasks using a reducer"
             colorTheme="cyan"

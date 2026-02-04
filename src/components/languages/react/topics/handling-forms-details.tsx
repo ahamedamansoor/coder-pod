@@ -278,7 +278,7 @@ document.head.appendChild(script2);`;
               '> Submitted: { name, email }'
             ]}
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Live Controlled Form"
             description="Interact with the same form in the browser"
             colorTheme="green"

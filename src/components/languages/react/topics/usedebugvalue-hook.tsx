@@ -143,7 +143,7 @@ export default function UseDebugValueHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useOnlineStatus with Debug Value"
             description="Shows connection status in DevTools"
             colorTheme="green"

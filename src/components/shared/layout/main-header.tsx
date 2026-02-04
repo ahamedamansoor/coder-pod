@@ -4,7 +4,6 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Code, LogOut, User, LogIn, LayoutGrid, Home, ToyBrick } from 'lucide-react';
-import { ThemeToggle } from './theme-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -133,7 +132,6 @@ export function MainHeader({
             Code Editor
           </Button>
         )}
-        <ThemeToggle />
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

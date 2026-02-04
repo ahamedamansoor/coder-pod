@@ -64,29 +64,29 @@ export default function UtilityFirstClasses() {
 ### HTML:
 \`\`\`html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tailwind Utility-First Demo</title>
   <!-- Note: In a real app, Tailwind is compiled. This is a conceptual example. -->
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 p-6">
+<body class="min-h-screen bg-slate-900 text-slate-100 p-6">
   <div class="max-w-xl mx-auto space-y-4">
     <h1 class="text-3xl font-bold tracking-tight">Utility-First Card</h1>
-    <p class="text-slate-600">A small example showing how utilities replace custom CSS classes.</p>
+    <p class="text-slate-300">A small example showing how utilities replace custom CSS classes.</p>
 
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="rounded-2xl border border-slate-700 bg-slate-800 p-6 shadow-sm">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold">Pro Plan</h2>
-        <span class="rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">Popular</span>
+        <h2 class="text-xl font-semibold text-white">Pro Plan</h2>
+        <span class="rounded-full bg-emerald-900 px-3 py-1 text-sm font-medium text-emerald-100">Popular</span>
       </div>
-      <p class="mt-2 text-slate-600">Everything you need to build fast.</p>
+      <p class="mt-2 text-slate-300">Everything you need to build fast.</p>
       <div class="mt-4 flex items-center gap-3">
         <button id="cta" class="rounded-xl bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition">
           Get Started
         </button>
-        <button class="rounded-xl border border-slate-200 px-4 py-2 font-semibold hover:bg-slate-50 transition">
+        <button class="rounded-xl border border-slate-600 px-4 py-2 font-semibold text-slate-200 hover:bg-slate-700 transition">
           Learn more
         </button>
       </div>
@@ -157,7 +157,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
 
   // Traditional vs Utility-First Comparison
   const traditionalCssHtml = `<!DOCTYPE html>
-<html lang="en">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,15 +171,10 @@ document.getElementById('cta')?.addEventListener('click', () => {
     
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+      color: #e2e8f0;
       padding: 40px 20px;
       min-height: 100vh;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
-      }
     }
     
     .container {
@@ -188,40 +183,24 @@ document.getElementById('cta')?.addEventListener('click', () => {
     }
     
     .card {
-      background: white;
+      background: #1e293b;
       padding: 32px;
       border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card {
-        background: #1e293b;
-      }
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      border: 1px solid #334155;
+      margin-bottom: 24px;
     }
     
     .card-title {
       font-size: 28px;
       font-weight: 700;
-      color: #1e293b;
+      color: #f1f5f9;
       margin-bottom: 12px;
     }
     
-    @media (prefers-color-scheme: dark) {
-      .card-title {
-        color: #f1f5f9;
-      }
-    }
-    
     .card-description {
-      color: #64748b;
+      color: #cbd5e1;
       margin-bottom: 24px;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      .card-description {
-        color: #cbd5e1;
-      }
     }
     
     .button {
@@ -239,6 +218,33 @@ document.getElementById('cta')?.addEventListener('click', () => {
       background: #dc2626;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
     }
+    
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    
+    .example-box {
+      height: 48px;
+      border-radius: 8px;
+    }
+    
+    .text-example {
+      margin-top: 16px;
+      font-size: 18px;
+    }
+    
+    .bold-text {
+      font-weight: bold;
+      color: #fbbf24;
+    }
+    
+    .italic-text {
+      font-style: italic;
+      color: #34d399;
+    }
   </style>
 </head>
 <body>
@@ -251,31 +257,43 @@ document.getElementById('cta')?.addEventListener('click', () => {
       </p>
       <button class="button">Click Me</button>
       
-      <div style="margin-top: 20px; padding: 16px; background: #fee2e2; border-left: 4px solid #ef4444; border-radius: 8px;">
-        <p style="color: #991b1b; font-size: 14px;">
+      <div style="margin-top: 20px; padding: 16px; background: #7f1d1d; border-left: 4px solid #ef4444; border-radius: 8px;">
+        <p style="color: #fca5a5; font-size: 14px;">
           <strong>⚠️ Problems:</strong> Lots of custom CSS, naming classes, context switching
         </p>
       </div>
+    </div>
+    
+    <div class="card">
+      <h3 class="card-title">More Examples</h3>
+      <div class="example-grid">
+        <div class="example-box" style="background: #3b82f6;"></div>
+        <div class="example-box" style="background: #10b981;"></div>
+        <div class="example-box" style="background: #8b5cf6;"></div>
+      </div>
+      <p class="text-example">
+        Large <span class="bold-text">bold</span> and <span class="italic-text">italic</span> text
+      </p>
     </div>
   </div>
 </body>
 </html>`;
 
   const utilityFirstHtml = `<!DOCTYPE html>
-<html lang="en">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Utility-First Approach</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950 dark:to-teal-950 min-h-screen p-10">
-  <div class="max-w-2xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl">
-      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-3">
+<body class="bg-gradient-to-br from-emerald-950 to-teal-950 min-h-screen p-10">
+  <div class="max-w-2xl mx-auto space-y-8">
+    <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700">
+      <h2 class="text-3xl font-bold text-white mb-3">
         ✅ Utility-First CSS
       </h2>
-      <p class="text-slate-600 dark:text-slate-300 mb-6">
+      <p class="text-slate-300 mb-6">
         Style elements directly in HTML using pre-built utility classes. 
         No need to write custom CSS or switch between files!
       </p>
@@ -283,10 +301,29 @@ document.getElementById('cta')?.addEventListener('click', () => {
         Click Me
       </button>
       
-      <div class="mt-5 p-4 bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 rounded-lg">
-        <p class="text-emerald-900 dark:text-emerald-100 text-sm">
+      <div class="mt-5 p-4 bg-emerald-900/20 border-l-4 border-emerald-500 rounded-lg">
+        <p class="text-emerald-100 text-sm">
           <strong>✨ Benefits:</strong> Fast development, no CSS files, consistent design system
         </p>
+      </div>
+    </div>
+
+    <div class="bg-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-700">
+      <h3 class="text-2xl font-bold text-white mb-4">More Examples</h3>
+      <div class="space-y-4">
+        <div class="bg-slate-700 p-4 rounded-lg">
+          <p class="text-cyan-400 font-semibold mb-2">Flexible Layout</p>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="bg-blue-500 h-12 rounded"></div>
+            <div class="bg-green-500 h-12 rounded"></div>
+            <div class="bg-purple-500 h-12 rounded"></div>
+          </div>
+        </div>
+        
+        <div class="bg-slate-700 p-4 rounded-lg">
+          <p class="text-pink-400 font-semibold mb-2">Text Styling</p>
+          <p class="text-slate-200">Large <span class="text-yellow-400 font-bold">bold</span> and <span class="text-green-400 italic">italic</span> text</p>
+        </div>
       </div>
     </div>
   </div>
@@ -295,26 +332,26 @@ document.getElementById('cta')?.addEventListener('click', () => {
 
   // Colors & Backgrounds
   const colorsExample = `<!DOCTYPE html>
-<html lang="en">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Colors & Backgrounds</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-8">
   <div class="max-w-6xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
+    <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+      <h1 class="text-4xl font-bold text-center mb-2 text-white">
         🎨 Colors & Backgrounds
       </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
+      <p class="text-center text-slate-300 mb-8">
         Tailwind provides a comprehensive color palette with shades from 50-950
       </p>
       
       <!-- Background Colors -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Background Colors</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Background Colors</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="bg-blue-500 rounded-xl p-6 text-white text-center shadow-lg hover:shadow-2xl transition-shadow">
             <div class="text-2xl mb-2">💙</div>
@@ -337,18 +374,18 @@ document.getElementById('cta')?.addEventListener('click', () => {
       
       <!-- Text Colors -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Text Colors</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Text Colors</h3>
         <div class="space-y-2">
-          <p class="text-blue-600 dark:text-blue-400 text-lg font-semibold">text-blue-600 • Blue text for links</p>
-          <p class="text-red-600 dark:text-red-400 text-lg font-semibold">text-red-600 • Red text for errors</p>
-          <p class="text-green-600 dark:text-green-400 text-lg font-semibold">text-green-600 • Green text for success</p>
-          <p class="text-amber-600 dark:text-amber-400 text-lg font-semibold">text-amber-600 • Amber text for warnings</p>
+          <p class="text-blue-400 text-lg font-semibold">text-blue-400 • Blue text for links</p>
+          <p class="text-red-400 text-lg font-semibold">text-red-400 • Red text for errors</p>
+          <p class="text-green-400 text-lg font-semibold">text-green-400 • Green text for success</p>
+          <p class="text-amber-400 text-lg font-semibold">text-amber-400 • Amber text for warnings</p>
         </div>
       </div>
       
       <!-- Gradients -->
       <div>
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Gradient Backgrounds</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Gradient Backgrounds</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-6 text-white text-center shadow-lg">
             <div class="font-semibold mb-1">Horizontal Gradient</div>
@@ -362,23 +399,38 @@ document.getElementById('cta')?.addEventListener('click', () => {
       </div>
       
       <!-- Color Shades -->
-      <div class="mt-8 p-6 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800">
-        <h4 class="font-semibold text-slate-900 dark:text-white mb-3">💡 Color Shades</h4>
+      <div class="mt-8 p-6 bg-slate-950 rounded-xl border border-slate-700">
+        <h4 class="font-semibold text-white mb-3">💡 Color Shades</h4>
         <div class="flex items-center gap-2 overflow-x-auto pb-2">
-          <div class="bg-blue-50 dark:bg-blue-950 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0">50</div>
-          <div class="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0">100</div>
-          <div class="bg-blue-200 dark:bg-blue-800 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0">200</div>
-          <div class="bg-blue-300 dark:bg-blue-700 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">300</div>
-          <div class="bg-blue-400 dark:bg-blue-600 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">400</div>
+          <div class="bg-blue-950 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-blue-200">50</div>
+          <div class="bg-blue-900 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-blue-200">100</div>
+          <div class="bg-blue-800 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-blue-200">200</div>
+          <div class="bg-blue-700 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">300</div>
+          <div class="bg-blue-600 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">400</div>
           <div class="bg-blue-500 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">500</div>
           <div class="bg-blue-600 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">600</div>
           <div class="bg-blue-700 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">700</div>
           <div class="bg-blue-800 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">800</div>
-          <div class="bg-blue-900 dark:bg-blue-100 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">900</div>
+          <div class="bg-blue-900 w-16 h-16 rounded flex items-center justify-center text-xs font-mono shrink-0 text-white">900</div>
         </div>
-        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">
+        <p class="text-xs text-slate-400 mt-2">
           Each color has 10 shades (50-950) for maximum flexibility
         </p>
+      </div>
+      
+      <!-- Additional Examples -->
+      <div class="mt-8 p-6 bg-slate-900 rounded-xl border border-slate-700">
+        <h4 class="font-semibold text-white mb-4">🎨 Advanced Color Usage</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4 rounded-lg text-white">
+            <h5 class="font-bold mb-2">Gradient Cards</h5>
+            <p class="text-sm opacity-90">Beautiful gradients for modern designs</p>
+          </div>
+          <div class="bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 p-4 rounded-lg text-white">
+            <h5 class="font-bold mb-2">Multi-stop Gradients</h5>
+            <p class="text-sm opacity-90">Complex color transitions</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -387,38 +439,38 @@ document.getElementById('cta')?.addEventListener('click', () => {
 
   // Spacing & Sizing
   const spacingExample = `<!DOCTYPE html>
-<html lang="en">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spacing & Sizing</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-8">
   <div class="max-w-5xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
+    <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+      <h1 class="text-4xl font-bold text-center mb-2 text-white">
         📏 Spacing & Sizing
       </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
+      <p class="text-center text-slate-300 mb-8">
         Consistent spacing system based on 0.25rem (4px) increments
       </p>
       
       <!-- Padding Examples -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Padding (p-*)</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Padding (p-*)</h3>
         <div class="space-y-3">
-          <div class="bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+          <div class="bg-violet-900/30 rounded-lg">
             <div class="bg-violet-500 text-white p-2 rounded-lg text-center font-semibold">
               p-2 (0.5rem / 8px)
             </div>
           </div>
-          <div class="bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+          <div class="bg-violet-900/30 rounded-lg">
             <div class="bg-violet-500 text-white p-4 rounded-lg text-center font-semibold">
               p-4 (1rem / 16px)
             </div>
           </div>
-          <div class="bg-violet-100 dark:bg-violet-900/30 rounded-lg">
+          <div class="bg-violet-900/30 rounded-lg">
             <div class="bg-violet-500 text-white p-8 rounded-lg text-center font-semibold">
               p-8 (2rem / 32px)
             </div>
@@ -428,8 +480,8 @@ document.getElementById('cta')?.addEventListener('click', () => {
       
       <!-- Margin Examples -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Margin (m-*)</h3>
-        <div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-4">
+        <h3 class="text-xl font-semibold mb-4 text-white">Margin (m-*)</h3>
+        <div class="bg-slate-900 rounded-xl p-4">
           <div class="flex items-center gap-4">
             <div class="bg-purple-500 text-white px-6 py-3 rounded-lg font-semibold shadow-lg">
               No Margin
@@ -448,50 +500,50 @@ document.getElementById('cta')?.addEventListener('click', () => {
       
       <!-- Width & Height -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Width & Height</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Width & Height</h3>
         <div class="grid grid-cols-4 gap-4">
           <div class="space-y-2">
             <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg flex items-center justify-center text-white font-bold text-xs">
               w-16<br/>h-16
             </div>
-            <p class="text-xs text-center text-slate-600 dark:text-slate-400">4rem</p>
+            <p class="text-xs text-center text-slate-400">4rem</p>
           </div>
           <div class="space-y-2">
             <div class="w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg flex items-center justify-center text-white font-bold text-xs">
               w-24<br/>h-24
             </div>
-            <p class="text-xs text-center text-slate-600 dark:text-slate-400">6rem</p>
+            <p class="text-xs text-center text-slate-400">6rem</p>
           </div>
           <div class="space-y-2">
             <div class="w-32 h-32 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg flex items-center justify-center text-white font-bold text-xs">
               w-32<br/>h-32
             </div>
-            <p class="text-xs text-center text-slate-600 dark:text-slate-400">8rem</p>
+            <p class="text-xs text-center text-slate-400">8rem</p>
           </div>
           <div class="space-y-2">
             <div class="w-40 h-40 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg flex items-center justify-center text-white font-bold text-xs">
               w-40<br/>h-40
             </div>
-            <p class="text-xs text-center text-slate-600 dark:text-slate-400">10rem</p>
+            <p class="text-xs text-center text-slate-400">10rem</p>
           </div>
         </div>
       </div>
       
       <!-- Gap (Flexbox/Grid) -->
       <div>
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Gap (Flexbox/Grid Spacing)</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Gap (Flexbox/Grid Spacing)</h3>
         <div class="space-y-4">
-          <div class="flex gap-2 bg-slate-100 dark:bg-slate-900 p-4 rounded-lg">
+          <div class="flex gap-2 bg-slate-900 p-4 rounded-lg">
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">gap-2</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">0.5rem</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">spacing</div>
           </div>
-          <div class="flex gap-4 bg-slate-100 dark:bg-slate-900 p-4 rounded-lg">
+          <div class="flex gap-4 bg-slate-900 p-4 rounded-lg">
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">gap-4</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">1rem</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">spacing</div>
           </div>
-          <div class="flex gap-8 bg-slate-100 dark:bg-slate-900 p-4 rounded-lg">
+          <div class="flex gap-8 bg-slate-900 p-4 rounded-lg">
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">gap-8</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">2rem</div>
             <div class="bg-indigo-500 text-white px-4 py-2 rounded font-semibold">spacing</div>
@@ -500,17 +552,17 @@ document.getElementById('cta')?.addEventListener('click', () => {
       </div>
       
       <!-- Spacing Scale Reference -->
-      <div class="mt-8 p-6 bg-gradient-to-r from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 rounded-xl border border-violet-200 dark:border-violet-800">
-        <h4 class="font-semibold text-violet-900 dark:text-violet-100 mb-3">💡 Spacing Scale</h4>
+      <div class="mt-8 p-6 bg-gradient-to-r from-violet-900/20 to-purple-900/20 rounded-xl border border-violet-800">
+        <h4 class="font-semibold text-violet-100 mb-3">💡 Spacing Scale</h4>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">0</code> = 0px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">1</code> = 4px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">2</code> = 8px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">4</code> = 16px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">8</code> = 32px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">16</code> = 64px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">32</code> = 128px</div>
-          <div><code class="bg-violet-100 dark:bg-violet-950 px-2 py-1 rounded">64</code> = 256px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">0</code> = 0px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">1</code> = 4px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">2</code> = 8px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">4</code> = 16px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">8</code> = 32px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">16</code> = 64px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">32</code> = 128px</div>
+          <div><code class="bg-violet-950 px-2 py-1 rounded">64</code> = 256px</div>
         </div>
       </div>
     </div>
@@ -520,92 +572,92 @@ document.getElementById('cta')?.addEventListener('click', () => {
 
   // Typography
   const typographyExample = `<!DOCTYPE html>
-<html lang="en">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Typography Utilities</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-800 min-h-screen p-8">
+<body class="bg-gradient-to-br from-slate-900 to-slate-800 min-h-screen p-8">
   <div class="max-w-4xl mx-auto">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
-      <h1 class="text-4xl font-bold text-center mb-2 text-slate-900 dark:text-white">
+    <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+      <h1 class="text-4xl font-bold text-center mb-2 text-white">
         📝 Typography Utilities
       </h1>
-      <p class="text-center text-slate-600 dark:text-slate-300 mb-8">
+      <p class="text-center text-slate-300 mb-8">
         Complete control over text styling with utility classes
       </p>
       
       <!-- Font Sizes -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Font Sizes</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Font Sizes</h3>
         <div class="space-y-3">
-          <p class="text-xs text-slate-600 dark:text-slate-400">text-xs • Extra small text (0.75rem)</p>
-          <p class="text-sm text-slate-600 dark:text-slate-400">text-sm • Small text (0.875rem)</p>
-          <p class="text-base text-slate-700 dark:text-slate-300">text-base • Base text (1rem)</p>
-          <p class="text-lg text-slate-800 dark:text-slate-200">text-lg • Large text (1.125rem)</p>
-          <p class="text-xl text-slate-900 dark:text-white">text-xl • Extra large text (1.25rem)</p>
-          <p class="text-2xl font-semibold text-slate-900 dark:text-white">text-2xl • 2X large (1.5rem)</p>
-          <p class="text-4xl font-bold text-slate-900 dark:text-white">text-4xl • 4X large (2.25rem)</p>
+          <p class="text-xs text-slate-400">text-xs • Extra small text (0.75rem)</p>
+          <p class="text-sm text-slate-400">text-sm • Small text (0.875rem)</p>
+          <p class="text-base text-slate-300">text-base • Base text (1rem)</p>
+          <p class="text-lg text-slate-200">text-lg • Large text (1.125rem)</p>
+          <p class="text-xl text-white">text-xl • Extra large text (1.25rem)</p>
+          <p class="text-2xl font-semibold text-white">text-2xl • 2X large (1.5rem)</p>
+          <p class="text-4xl font-bold text-white">text-4xl • 4X large (2.25rem)</p>
         </div>
       </div>
       
       <!-- Font Weights -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Font Weights</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Font Weights</h3>
         <div class="space-y-2">
-          <p class="font-thin text-lg text-slate-700 dark:text-slate-300">font-thin • Thin weight (100)</p>
-          <p class="font-light text-lg text-slate-700 dark:text-slate-300">font-light • Light weight (300)</p>
-          <p class="font-normal text-lg text-slate-700 dark:text-slate-300">font-normal • Normal weight (400)</p>
-          <p class="font-medium text-lg text-slate-700 dark:text-slate-300">font-medium • Medium weight (500)</p>
-          <p class="font-semibold text-lg text-slate-800 dark:text-slate-200">font-semibold • Semibold weight (600)</p>
-          <p class="font-bold text-lg text-slate-900 dark:text-white">font-bold • Bold weight (700)</p>
-          <p class="font-black text-lg text-slate-900 dark:text-white">font-black • Black weight (900)</p>
+          <p class="font-thin text-lg text-slate-300">font-thin • Thin weight (100)</p>
+          <p class="font-light text-lg text-slate-300">font-light • Light weight (300)</p>
+          <p class="font-normal text-lg text-slate-300">font-normal • Normal weight (400)</p>
+          <p class="font-medium text-lg text-slate-300">font-medium • Medium weight (500)</p>
+          <p class="font-semibold text-lg text-slate-200">font-semibold • Semibold weight (600)</p>
+          <p class="font-bold text-lg text-white">font-bold • Bold weight (700)</p>
+          <p class="font-black text-lg text-white">font-black • Black weight (900)</p>
         </div>
       </div>
       
       <!-- Text Alignment -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Text Alignment</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Text Alignment</h3>
         <div class="space-y-3">
-          <div class="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg">
-            <p class="text-left text-amber-900 dark:text-amber-100">text-left • Left aligned text</p>
+          <div class="bg-amber-900/20 p-3 rounded-lg">
+            <p class="text-left text-amber-100">text-left • Left aligned text</p>
           </div>
-          <div class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
-            <p class="text-center text-orange-900 dark:text-orange-100">text-center • Center aligned text</p>
+          <div class="bg-orange-900/20 p-3 rounded-lg">
+            <p class="text-center text-orange-100">text-center • Center aligned text</p>
           </div>
-          <div class="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-            <p class="text-right text-red-900 dark:text-red-100">text-right • Right aligned text</p>
+          <div class="bg-red-900/20 p-3 rounded-lg">
+            <p class="text-right text-red-100">text-right • Right aligned text</p>
           </div>
         </div>
       </div>
       
       <!-- Text Decorations -->
       <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Text Decorations</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Text Decorations</h3>
         <div class="space-y-2 text-lg">
-          <p class="underline text-slate-700 dark:text-slate-300">underline • Underlined text</p>
-          <p class="line-through text-slate-700 dark:text-slate-300">line-through • Strikethrough text</p>
-          <p class="uppercase text-slate-700 dark:text-slate-300">uppercase • Uppercase text</p>
-          <p class="lowercase text-slate-700 dark:text-slate-300">LOWERCASE • Lowercase text</p>
-          <p class="capitalize text-slate-700 dark:text-slate-300">capitalize • Capitalized text</p>
+          <p class="underline text-slate-300">underline • Underlined text</p>
+          <p class="line-through text-slate-300">line-through • Strikethrough text</p>
+          <p class="uppercase text-slate-300">uppercase • Uppercase text</p>
+          <p class="lowercase text-slate-300">LOWERCASE • Lowercase text</p>
+          <p class="capitalize text-slate-300">capitalize • Capitalized text</p>
         </div>
       </div>
       
       <!-- Line Height & Letter Spacing -->
       <div>
-        <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">Line Height & Spacing</h3>
+        <h3 class="text-xl font-semibold mb-4 text-white">Line Height & Spacing</h3>
         <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="font-semibold text-sm mb-2 text-slate-900 dark:text-white">leading-tight</p>
-            <p class="leading-tight text-sm text-slate-600 dark:text-slate-400">
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-700">
+            <p class="font-semibold text-sm mb-2 text-white">leading-tight</p>
+            <p class="leading-tight text-sm text-slate-400">
               This text has tight line height. The lines are closer together for a compact look.
             </p>
           </div>
-          <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
-            <p class="font-semibold text-sm mb-2 text-slate-900 dark:text-white">leading-relaxed</p>
-            <p class="leading-relaxed text-sm text-slate-600 dark:text-slate-400">
+          <div class="bg-slate-950 p-4 rounded-lg border border-slate-700">
+            <p class="font-semibold text-sm mb-2 text-white">leading-relaxed</p>
+            <p class="leading-relaxed text-sm text-slate-400">
               This text has relaxed line height. The lines have more space for better readability.
             </p>
           </div>
@@ -613,13 +665,13 @@ document.getElementById('cta')?.addEventListener('click', () => {
       </div>
       
       <!-- Quick Reference -->
-      <div class="mt-8 p-6 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl border border-amber-200 dark:border-amber-800">
-        <h4 class="font-semibold text-amber-900 dark:text-amber-100 mb-3">💡 Typography Tips</h4>
-        <ul class="space-y-2 text-sm text-amber-800 dark:text-amber-200">
+      <div class="mt-8 p-6 bg-gradient-to-r from-amber-900/20 to-orange-900/20 rounded-xl border border-amber-800">
+        <h4 class="font-semibold text-amber-100 mb-3">💡 Typography Tips</h4>
+        <ul class="space-y-2 text-sm text-amber-200">
           <li>✓ Use text-base for body copy</li>
           <li>✓ Combine font-bold with text-2xl+ for headings</li>
           <li>✓ Use leading-relaxed for better readability</li>
-          <li>✓ text-slate-600 dark:text-slate-400 for secondary text</li>
+          <li>✓ text-slate-400 for secondary text</li>
         </ul>
       </div>
     </div>
@@ -641,14 +693,14 @@ document.getElementById('cta')?.addEventListener('click', () => {
       {/* INTRODUCTION CARD */}
       <Card>
         <CardHeader className="relative">
-          <CardTitle className="flex items-center gap-3 text-2xl text-blue-700 dark:text-blue-300">
+          <CardTitle className="flex items-center gap-3 text-2xl text-blue-300">
             <div className="relative">
               <Code2 className="w-8 h-8" />
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
             </div>
             What are Utility-First Classes?
           </CardTitle>
-          <CardDescription className="text-lg text-blue-600 dark:text-blue-400">
+          <CardDescription className="text-lg text-blue-400">
             🚀 Style elements directly in HTML using single-purpose utility classes instead of writing custom CSS
           </CardDescription>
         </CardHeader>
@@ -657,8 +709,8 @@ document.getElementById('cta')?.addEventListener('click', () => {
             {/* Interactive Demo Section */}
             <div className="lg:col-span-2 space-y-6">
               {/* Comparison Selector */}
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-200/50 shadow-lg">
-                <h4 className="font-bold mb-4 text-blue-700 dark:text-blue-300 flex items-center gap-2">
+              <div className="bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl border border-blue-800/50 shadow-lg">
+                <h4 className="font-bold mb-4 text-blue-300 flex items-center gap-2">
                   <Zap className="w-5 h-5 animate-pulse" />
                   🎯 Traditional vs Utility-First
                 </h4>
@@ -668,36 +720,36 @@ document.getElementById('cta')?.addEventListener('click', () => {
                     onClick={() => setComparisonView('traditional')}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       comparisonView === 'traditional'
-                        ? 'border-red-500 bg-red-50 dark:bg-red-900/30 ring-2 ring-red-200 dark:ring-red-800'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-red-300 dark:hover:border-red-700'
+                        ? 'border-red-500 bg-red-900/30 ring-2 ring-red-800'
+                        : 'border-slate-700 hover:border-red-700'
                     }`}
                   >
                     <div className="text-3xl mb-2">❌</div>
-                    <h3 className="font-bold text-slate-900 dark:text-white mb-1">Traditional CSS</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">Custom classes</p>
+                    <h3 className="font-bold text-white mb-1">Traditional CSS</h3>
+                    <p className="text-xs text-slate-400">Custom classes</p>
                   </button>
                   
                   <button
                     onClick={() => setComparisonView('utility')}
                     className={`p-4 rounded-xl border-2 transition-all ${
                       comparisonView === 'utility'
-                        ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/30 ring-2 ring-emerald-200 dark:ring-emerald-800'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-700'
+                        ? 'border-emerald-500 bg-emerald-900/30 ring-2 ring-emerald-800'
+                        : 'border-slate-700 hover:border-emerald-700'
                     }`}
                   >
                     <div className="text-3xl mb-2">✅</div>
-                    <h3 className="font-bold text-slate-900 dark:text-white mb-1">Utility-First</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400">No custom CSS</p>
+                    <h3 className="font-bold text-white mb-1">Utility-First</h3>
+                    <p className="text-xs text-slate-400">No custom CSS</p>
                   </button>
                 </div>
 
                 {comparisonView === 'traditional' && (
-                  <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 p-4 rounded-lg border border-red-200/50">
-                    <div className="text-sm font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-red-900/20 to-orange-900/20 p-4 rounded-lg border border-red-800">
+                    <div className="text-sm font-semibold text-red-300 mb-2 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
                       ❌ Traditional Problems
                     </div>
-                    <ul className="text-xs text-red-600 dark:text-red-400 space-y-1">
+                    <ul className="text-xs text-red-400 space-y-1">
                       <li>• Need to create custom CSS classes</li>
                       <li>• Switch between HTML and CSS files</li>
                       <li>• Think of class names</li>
@@ -707,12 +759,12 @@ document.getElementById('cta')?.addEventListener('click', () => {
                 )}
 
                 {comparisonView === 'utility' && (
-                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-lg border border-emerald-200/50">
-                    <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-2 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-emerald-900/20 to-teal-900/20 p-4 rounded-lg border border-emerald-800">
+                    <div className="text-sm font-semibold text-emerald-300 mb-2 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
                       ✅ Utility-First Benefits
                     </div>
-                    <ul className="text-xs text-emerald-600 dark:text-emerald-400 space-y-1">
+                    <ul className="text-xs text-emerald-400 space-y-1">
                       <li>• Style directly in HTML</li>
                       <li>• No context switching</li>
                       <li>• No naming struggles</li>
@@ -830,6 +882,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
               description="Custom CSS classes with separate stylesheet"
               colorTheme="red"
               styleLanguage="css"
+              learningContext="html"
             />
             <FrontendCodePreview
               html={utilityFirstHtml}
@@ -837,6 +890,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
               description="Tailwind utility classes directly in HTML"
               colorTheme="green"
               styleLanguage="tailwind"
+              learningContext="html"
             />
           </div>
         </CardContent>
@@ -847,7 +901,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <div className="p-2 bg-purple-500/10 rounded-lg">
-              <Palette className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+              <Palette className="h-5 w-5 text-purple-400" />
             </div>
             1. Colors & Backgrounds
           </CardTitle>
@@ -862,6 +916,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
             description="Background colors, text colors, and gradients"
             colorTheme="purple"
             styleLanguage="tailwind"
+            learningContext="html"
           />
         </CardContent>
       </Card>
@@ -871,7 +926,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <div className="p-2 bg-violet-500/10 rounded-lg">
-              <Box className="h-5 w-5 text-violet-600 dark:text-violet-400" />
+              <Box className="h-5 w-5 text-violet-400" />
             </div>
             2. Spacing & Sizing
           </CardTitle>
@@ -886,6 +941,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
             description="Padding, margin, gap, width, and height utilities"
             colorTheme="purple"
             styleLanguage="tailwind"
+            learningContext="html"
           />
         </CardContent>
       </Card>
@@ -895,7 +951,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <div className="p-2 bg-amber-500/10 rounded-lg">
-              <Type className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <Type className="h-5 w-5 text-amber-400" />
             </div>
             3. Typography
           </CardTitle>
@@ -910,6 +966,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
             description="Font sizes, weights, alignment, and decorations"
             colorTheme="orange"
             styleLanguage="tailwind"
+            learningContext="html"
           />
         </CardContent>
       </Card>
@@ -931,16 +988,16 @@ document.getElementById('cta')?.addEventListener('click', () => {
       {/* AI ASSISTANT SECTION */}
       <div className="relative mt-8">
         <Card className={cn(
-          "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+          "transition-all duration-200 animate-in fade-in-50 bg-slate-900 border-slate-800",
           !isUserAuthenticated && "blur-sm pointer-events-none",
-          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
+          isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-950"
         )}>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+            <CardTitle className="flex items-center gap-2 text-slate-100">
               <HelpCircle className="w-6 h-6 text-primary" />
               Ask a Question
             </CardTitle>
-            <CardDescription className="text-slate-600 dark:text-slate-400">
+            <CardDescription className="text-slate-400">
               Have a question about Utility-First Classes? Ask our AI assistant.
             </CardDescription>
           </CardHeader>
@@ -950,7 +1007,7 @@ document.getElementById('cta')?.addEventListener('click', () => {
               value={question} 
               onChange={(e) => setQuestion(e.target.value)} 
               disabled={isAsking || !isUserAuthenticated}
-              className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+              className="transition-colors focus:ring-2 bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-500"
             />
             <Button 
               onClick={handleAskQuestionAction}

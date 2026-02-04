@@ -143,7 +143,7 @@ export default function UseDeferredValueHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Search with useDeferredValue"
             description="Input stays snappy, list updates when it can"
             colorTheme="green"

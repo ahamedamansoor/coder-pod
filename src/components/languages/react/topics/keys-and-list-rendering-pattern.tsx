@@ -332,7 +332,7 @@ months.map((month, index) => (
             description="Best practice for keys"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="List with Proper Keys - Live Demo"
             description="Add and remove items! Keys remain stable"
             colorTheme="green"

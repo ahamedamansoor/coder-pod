@@ -92,7 +92,7 @@ export default function ConditionalRendering() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="If Statement Conditional Rendering"
             description="Show different greetings based on login status"
             colorTheme="cyan"
@@ -258,7 +258,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Status Message with Ternary"
             description="Display online or offline status using the ternary operator"
             colorTheme="cyan"
@@ -432,7 +432,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Notification Badge with &&"
             description="Show a notification badge only when there are unread messages"
             colorTheme="cyan"

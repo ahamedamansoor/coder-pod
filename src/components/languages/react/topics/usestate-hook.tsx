@@ -88,7 +88,7 @@ export default function UseStateHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Counter with useState"
             description="Click buttons to see state updates"
             colorTheme="blue"
@@ -408,7 +408,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Form with Multiple States"
             description="Each input has its own state"
             colorTheme="purple"

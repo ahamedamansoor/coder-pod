@@ -92,7 +92,7 @@ export default function RenderingLists() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Rendering a Simple List"
             description="Use map() to transform an array of names into list items"
             colorTheme="cyan"
@@ -267,7 +267,7 @@ li:hover {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="User List with Proper Keys"
             description="Each user has a unique ID - perfect for keys!"
             colorTheme="cyan"
@@ -451,7 +451,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Product List with Filtering"
             description="Show only products that are in stock"
             colorTheme="cyan"

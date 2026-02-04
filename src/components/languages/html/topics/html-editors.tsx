@@ -438,7 +438,7 @@ p {
   }
 }`}
             colorTheme="blue"
-            previewHeight="400px"
+            previewHeight="700px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
@@ -641,44 +641,47 @@ p {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   min-height: 100vh;
   padding: 2rem;
+  color: #e2e8f0;
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 3rem;
   border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.3);
 }
 
 h1 {
   font-size: 2.5rem;
-  background: linear-gradient(135deg, #ea580c, #dc2626);
+  background: linear-gradient(135deg, #fb923c, #f87171);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
 }
 
 p {
-  color: #64748b;
+  color: #cbd5e1;
   font-size: 1.2rem;
   margin-bottom: 2rem;
 }
 
 .features {
-  background: #fff7ed;
+  background: rgba(234, 88, 12, 0.1);
   padding: 2rem;
   border-radius: 16px;
-  border-left: 4px solid #ea580c;
+  border-left: 4px solid #fb923c;
   margin-bottom: 2rem;
+  border: 1px solid rgba(234, 88, 12, 0.2);
 }
 
 h2 {
-  color: #ea580c;
+  color: #fb923c;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
 }
@@ -688,10 +691,10 @@ ul {
 }
 
 li {
-  color: #475569;
+  color: #e2e8f0;
   padding: 0.75rem 0;
   font-size: 1.1rem;
-  border-bottom: 1px solid #fed7aa;
+  border-bottom: 1px solid rgba(251, 146, 60, 0.2);
 }
 
 li:last-child {
@@ -699,7 +702,7 @@ li:last-child {
 }
 
 button {
-  background: linear-gradient(135deg, #ea580c, #dc2626);
+  background: linear-gradient(135deg, #fb923c, #f87171);
   color: white;
   border: none;
   padding: 1.25rem 2.5rem;
@@ -708,12 +711,13 @@ button {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+  box-shadow: 0 4px 15px rgba(251, 146, 60, 0.4);
 }
 
 button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(234, 88, 12, 0.6);
+  box-shadow: 0 8px 25px rgba(251, 146, 60, 0.6);
+  background: linear-gradient(135deg, #f97316, #ef4444);
 }
 
 #message {
@@ -725,6 +729,9 @@ button:hover {
   font-weight: 600;
   opacity: 0;
   transition: opacity 0.3s;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  color: #e2e8f0;
 }
 
 #message.show {

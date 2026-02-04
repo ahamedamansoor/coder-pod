@@ -177,7 +177,7 @@ export default function UseReducerHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Counter using useReducer"
             description="Dispatch actions to update state"
             colorTheme="green"

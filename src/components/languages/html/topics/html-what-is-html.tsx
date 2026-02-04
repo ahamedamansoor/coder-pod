@@ -205,9 +205,11 @@ export default function HtmlIntroduction({ onOpenWebPlayground }: HtmlIntroducti
           <FrontendCodePreview
             title="Your First HTML Tags"
             description="See how tags wrap around content to give it meaning"
-            html={`<h1>Welcome to My Website!</h1>
-<p>This is a paragraph of text.</p>
-<button>Click Me</button>`}
+            html={`<div class="container">
+  <h1>Welcome to My Website!</h1>
+  <p>This is a paragraph of text. HTML tags give meaning and structure to content.</p>
+  <button onclick="this.textContent = 'Clicked! 🎉'">Click Me</button>
+</div>`}
             css={`body {
   font-family: system-ui, sans-serif;
   background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
@@ -224,7 +226,7 @@ export default function HtmlIntroduction({ onOpenWebPlayground }: HtmlIntroducti
   }
 }
 
-div {
+.container {
   background: white;
   padding: 2.5rem;
   border-radius: 20px;
@@ -234,7 +236,7 @@ div {
 }
 
 @media (prefers-color-scheme: dark) {
-  div {
+  .container {
     background: #1e293b;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   }
@@ -283,7 +285,7 @@ button:hover {
   box-shadow: 0 6px 20px rgba(234, 88, 12, 0.6);
 }`}
             colorTheme="blue"
-            previewHeight="400px"
+            previewHeight="500px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
@@ -428,7 +430,7 @@ p {
   }
 }`}
             colorTheme="blue"
-            previewHeight="320px"
+            previewHeight="400px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
@@ -519,7 +521,7 @@ a:hover {
   box-shadow: 0 6px 16px rgba(124, 58, 237, 0.5);
 }`}
             colorTheme="blue"
-            previewHeight="300px"
+            previewHeight="380px"
             onOpenPlayground={onOpenWebPlayground}
           />
 
@@ -610,7 +612,7 @@ li {
   }
 }`}
             colorTheme="blue"
-            previewHeight="340px"
+            previewHeight="720px"
             onOpenPlayground={onOpenWebPlayground}
           />
         </CardContent>
@@ -809,9 +811,10 @@ li {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   min-height: 100vh;
   padding: 2rem;
+  color: #e2e8f0;
 }
 
 .container {
@@ -820,36 +823,38 @@ body {
 }
 
 header {
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 3rem 2rem;
   border-radius: 24px;
   text-align: center;
   margin-bottom: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.3);
 }
 
 h1 {
   font-size: 3rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
 }
 
 header p {
-  color: #64748b;
+  color: #cbd5e1;
   font-size: 1.2rem;
 }
 
 .content {
-  background: white;
+  background: rgba(30, 41, 59, 0.95);
   padding: 2.5rem;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(71, 85, 105, 0.3);
 }
 
 h2 {
-  color: #667eea;
+  color: #60a5fa;
   font-size: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -860,24 +865,25 @@ ul {
 }
 
 li {
-  color: #475569;
+  color: #e2e8f0;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  background: #f1f5f9;
+  background: rgba(51, 65, 85, 0.5);
   border-radius: 12px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #60a5fa;
   font-size: 1.1rem;
+  border: 1px solid rgba(71, 85, 105, 0.2);
 }
 
 li:before {
   content: "✓ ";
-  color: #667eea;
+  color: #60a5fa;
   font-weight: bold;
   margin-right: 0.5rem;
 }
 
 button {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
   border: none;
   padding: 1.25rem 2.5rem;
@@ -886,12 +892,13 @@ button {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
 button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
 }
 
 .message {
@@ -903,6 +910,9 @@ button:hover {
   font-weight: 600;
   opacity: 0;
   transition: opacity 0.3s;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+  color: #e2e8f0;
 }
 
 .message.show {

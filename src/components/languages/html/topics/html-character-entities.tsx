@@ -438,7 +438,7 @@ code {
                 css=""
                 colorTheme="blue"
                 icon={AlertCircle}
-                previewHeight="400px"
+                previewHeight="600px"
               />
             </CardContent>
           </Card>
@@ -533,7 +533,7 @@ p {
                 css=""
                 colorTheme="purple"
                 icon={Sigma}
-                previewHeight="450px"
+                previewHeight="650px"
               />
             </CardContent>
           </Card>
@@ -625,7 +625,7 @@ p {
                 css=""
                 colorTheme="amber"
                 icon={DollarSign}
-                previewHeight="400px"
+                previewHeight="600px"
               />
             </CardContent>
           </Card>
@@ -722,7 +722,7 @@ p {
                 css=""
                 colorTheme="cyan"
                 icon={Pilcrow}
-                previewHeight="500px"
+                previewHeight="750px"
               />
             </CardContent>
           </Card>
@@ -818,7 +818,7 @@ p {
                 css=""
                 colorTheme="emerald"
                 icon={Key}
-                previewHeight="450px"
+                previewHeight="650px"
               />
             </CardContent>
           </Card>
@@ -914,7 +914,7 @@ p {
                 css=""
                 colorTheme="pink"
                 icon={Key}
-                previewHeight="550px"
+                previewHeight="750px"
               />
             </CardContent>
           </Card>
@@ -1200,7 +1200,7 @@ p {
 </html>`}
               css=""
               colorTheme="purple"
-              previewHeight="450px"
+              previewHeight="750px"
             />
           </CardContent>
         </Card>

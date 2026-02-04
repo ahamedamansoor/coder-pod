@@ -252,7 +252,7 @@ if (status === 'sent') {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Form with Clear State"
             description="Using status instead of multiple booleans"
             colorTheme="cyan"

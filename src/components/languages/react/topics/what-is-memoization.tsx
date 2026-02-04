@@ -82,7 +82,7 @@ export default function WhatIsMemoization() {
             description="Prevent unnecessary component re-renders"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="React.memo Optimization"
             description="See how React.memo prevents re-renders! Watch the render counts."
             colorTheme="green"

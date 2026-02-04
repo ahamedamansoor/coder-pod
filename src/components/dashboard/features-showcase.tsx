@@ -4,7 +4,6 @@ import Link from 'next/link';
 import {
     Map,
     FileText,
-    Brain,
     Users,
     StickyNote,
     Sparkles,
@@ -66,17 +65,6 @@ const baseFeatures: FeatureCard[] = [
         delay: 200,
     },
     {
-        title: 'AI Interview Practice (Beta)',
-        description: 'Prepare for technical interviews with our AI-powered interviewer. Get real-time feedback and improve your skills.',
-        icon: Brain,
-        href: '/ai-interview',
-        gradient: 'from-emerald-500/20 via-teal-500/10 to-emerald-600/20',
-        iconBg: 'from-emerald-500 to-teal-500',
-        size: 'large',
-        delay: 300,
-        badge: 'AI Powered',
-    },
-    {
         title: 'Collaborative Interview',
         description: 'Practice coding with a partner in real-time. Perfect for mock interviews.',
         icon: Users,
@@ -84,7 +72,7 @@ const baseFeatures: FeatureCard[] = [
         gradient: 'from-rose-500/20 via-red-500/10 to-rose-600/20',
         iconBg: 'from-rose-500 to-red-500',
         size: 'medium',
-        delay: 400,
+        delay: 300,
         badge: 'Live',
         enabled: featureFlags.collaborativeInterview,
     },
@@ -96,7 +84,7 @@ const baseFeatures: FeatureCard[] = [
         gradient: 'from-indigo-500/20 via-violet-500/10 to-indigo-600/20',
         iconBg: 'from-indigo-500 to-violet-500',
         size: 'small',
-        delay: 500,
+        delay: 400,
     },
     {
         title: 'Discover',
@@ -106,7 +94,7 @@ const baseFeatures: FeatureCard[] = [
         gradient: 'from-fuchsia-500/20 via-pink-500/10 to-fuchsia-600/20',
         iconBg: 'from-fuchsia-500 to-pink-500',
         size: 'small',
-        delay: 600,
+        delay: 500,
     },
     {
         title: 'AI Tools',
@@ -116,7 +104,7 @@ const baseFeatures: FeatureCard[] = [
         gradient: 'from-green-500/20 via-emerald-500/10 to-green-600/20',
         iconBg: 'from-green-500 to-emerald-500',
         size: 'medium',
-        delay: 700,
+        delay: 600,
         badge: 'New',
     },
 ];

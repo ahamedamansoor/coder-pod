@@ -56,7 +56,7 @@ export default function ProfilingPerformance() {
             description="Track render performance in real-time"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Performance Monitor"
             description="See render times and counts for different components"
             colorTheme="green"

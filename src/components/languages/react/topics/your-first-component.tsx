@@ -106,7 +106,7 @@ export default function YourFirstComponent() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Simple Button Component"
             description="This is the simplest React component - a function that returns JSX. Click Run to see it!"
             colorTheme="cyan"

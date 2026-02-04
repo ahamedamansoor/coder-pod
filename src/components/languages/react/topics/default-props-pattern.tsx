@@ -218,7 +218,7 @@ function Component({ value }) {
             description="The recommended approach"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Default Props - Live Demo"
             description="See default values in action! Hover to see what props each button uses"
             colorTheme="green"

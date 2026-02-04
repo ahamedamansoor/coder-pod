@@ -311,7 +311,7 @@ html.dark .contact-link:hover {
   color: #93c5fd;
 }`}
               colorTheme="blue"
-              previewHeight="360px"
+              previewHeight="560px"
               onOpenPlayground={() => openPlayground(
                 `<div class="contact-card"><h2>📞 Get in Touch</h2><div class="contact-item"><strong>Email:</strong><a href="mailto:hello@example.com">hello@example.com</a></div><div class="contact-item"><strong>Phone:</strong><a href="tel:+1-555-0123">(555) 0123</a></div></div>`,
                 `.contact-card { max-width: 400px; background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); } .contact-item { margin: 1.5rem 0; padding: 1rem; background: #f3f4f6; border-radius: 8px; border-left: 4px solid #3b82f6; } .contact-link { color: #3b82f6; text-decoration: none; font-weight: 500; transition: all 0.3s; } .contact-link:hover { color: #2563eb; text-decoration: underline; } /* Dark mode */ html.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); } html.dark .contact-card { background: #1e293b; } html.dark .contact-item { background: #334155; } html.dark .contact-link { color: #60a5fa; } html.dark .contact-link:hover { color: #93c5fd; }`,
@@ -421,7 +421,7 @@ html.dark .btn:hover {
   background: #93c5fd;
 }`}
               colorTheme="blue"
-              previewHeight="360px"
+              previewHeight="560px"
               onOpenPlayground={() => openPlayground(
                 `<div class="contact-grid"><div class="contact-method"><h3>📧 Email</h3><a href="mailto:sales@example.com" class="btn">sales@example.com</a></div><div class="contact-method"><h3>☎️ Call</h3><a href="tel:+1-555-9999" class="btn">1-555-9999</a></div></div>`,
                 `.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; } .contact-method { background: white; border-radius: 12px; padding: 1.5rem; border: 2px solid #e5e7eb; text-align: center; } .btn { display: inline-block; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s; } /* Dark mode */ html.dark .contact-method { background: #1e293b; border-color: #334155; } html.dark .btn { background: #60a5fa; color: #0f172a; } html.dark .btn:hover { background: #93c5fd; }`,
@@ -552,7 +552,7 @@ html.dark .link {
   color: #0f172a;
 }`}
               colorTheme="blue"
-              previewHeight="360px"
+              previewHeight="560px"
               onOpenPlayground={() => openPlayground(
                 `<section class="contact-section"><h2>How to Reach Us</h2><div class="contact-options"><div class="option"><h3>📧 Email</h3><p>24hr response</p><a href="mailto:hello@example.com">Send Message</a></div><div class="option"><h3>☎️ Call</h3><p>Mon-Fri 9-5</p><a href="tel:+1-800-555-0123">1-800-555-0123</a></div></div></section>`,
                 `.contact-section { max-width: 900px; margin: 0 auto; } .contact-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; } .option { background: white; border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); transition: all 0.3s; } /* Dark mode */ html.dark body { background: #0f172a; } html.dark .option { background: #1e293b; } html.dark .link { background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%); color: #0f172a; }`,

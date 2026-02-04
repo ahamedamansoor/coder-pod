@@ -76,7 +76,7 @@ export default function AriaAndAccessibilityPattern() {
             description="Use the right HTML elements"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Semantic HTML - Live Demo"
             description="See the difference! Right-click and inspect to see proper semantic structure"
             colorTheme="green"
@@ -403,7 +403,7 @@ footer p {
             description="Enhancing HTML with ARIA"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Accessible Modal Dialog"
             description="Interactive modal with proper ARIA attributes"
             colorTheme="blue"
@@ -617,7 +617,7 @@ button:focus {
             description="Essential for accessibility"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Keyboard Accessible Dropdown - Live Demo"
             description="Try using Tab, Arrow keys, Enter, and Escape! Full keyboard support"
             colorTheme="purple"

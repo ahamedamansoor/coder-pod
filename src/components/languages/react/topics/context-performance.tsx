@@ -54,7 +54,7 @@ export default function ContextPerformance() {
             description="See which components re-render on context updates"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Context Re-render Counter"
             description="Watch render counts increase when context changes!"
             colorTheme="orange"

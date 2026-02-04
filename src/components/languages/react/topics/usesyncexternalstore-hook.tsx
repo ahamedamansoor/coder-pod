@@ -144,7 +144,7 @@ export default function UseSyncExternalStoreHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Online Status with useSyncExternalStore"
             description="Detects online/offline status using navigator.onLine"
             colorTheme="green"

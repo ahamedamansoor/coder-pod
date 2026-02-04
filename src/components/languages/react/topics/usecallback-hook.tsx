@@ -169,7 +169,7 @@ export default function UseCallbackHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Todo List with useCallback"
             description="Child items don't re-render when parent updates"
             colorTheme="blue"

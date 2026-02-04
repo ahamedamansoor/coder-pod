@@ -166,7 +166,7 @@ export default function UseIdHook() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Form with useId"
             description="Label and error message properly connected"
             colorTheme="green"

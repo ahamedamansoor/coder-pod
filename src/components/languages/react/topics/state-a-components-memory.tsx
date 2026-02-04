@@ -280,7 +280,7 @@ export default function StateAComponentsMemory() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Counter with State"
             description="Click the buttons to see state in action!"
             colorTheme="cyan"
@@ -637,7 +637,7 @@ button:active {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Form with Multiple States"
             description="Name and age stored in separate state variables"
             colorTheme="cyan"

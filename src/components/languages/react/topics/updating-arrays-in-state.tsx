@@ -232,7 +232,7 @@ setItems(items.filter((item, index) => index !== indexToRemove));`}</code>
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Todo List with Array Operations"
             description="Add new todos and remove them with filter"
             colorTheme="cyan"

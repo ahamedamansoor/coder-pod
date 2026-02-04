@@ -79,7 +79,7 @@ export default function CustomHookExamples() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useWindowSize in Action"
             description="Responsive UI based on window size"
             colorTheme="blue"
@@ -412,7 +412,7 @@ h1 {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useLocalStorage in Action"
             description="State that survives page refreshes"
             colorTheme="purple"

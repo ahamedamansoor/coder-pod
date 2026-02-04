@@ -150,7 +150,7 @@ export default function MemoApi() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="React.memo Optimization"
             description="Click counter - expensive component only updates when needed"
             colorTheme="green"

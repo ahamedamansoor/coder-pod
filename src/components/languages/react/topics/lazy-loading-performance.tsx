@@ -66,7 +66,7 @@ export default function LazyLoadingPerformance() {
             description="Load components on demand"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Lazy Loading Components"
             description="Click tabs to load components dynamically!"
             colorTheme="green"

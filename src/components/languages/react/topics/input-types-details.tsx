@@ -69,7 +69,7 @@ export default function InputTypesDetails() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Comprehensive Form Example"
             description="All input types with proper React handling"
             colorTheme="green"

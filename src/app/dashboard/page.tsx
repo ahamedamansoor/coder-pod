@@ -376,12 +376,6 @@ try {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/ai-interview" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
-                          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                          AI Interview
-                        </Link>
-                      </li>
-                      <li>
                         <Link href="/notes" className="text-sm text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 group">
                           <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                           My Notes

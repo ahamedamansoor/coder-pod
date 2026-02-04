@@ -154,7 +154,7 @@ export default function ReusingLogicWithCustomHooks() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useToggle Hook in Action"
             description="Toggle visibility, dark mode, and more"
             colorTheme="green"

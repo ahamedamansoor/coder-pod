@@ -96,7 +96,7 @@ export default function KeepingComponentsPure() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Pure Recipe Component"
             description="Given the same props, this component always renders the same result"
             colorTheme="cyan"

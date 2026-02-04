@@ -88,7 +88,7 @@ export default function ComponentsAndProps() {
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Passing Props to a Component"
             description="See how to pass a name prop and display it in the component"
             colorTheme="cyan"
@@ -236,7 +236,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="User Card with Multiple Props"
             description="Pass multiple props like name, role, and avatar to create rich components"
             colorTheme="cyan"
@@ -406,7 +406,7 @@ document.head.appendChild(script2);`}
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Using the children Prop"
             description="The children prop lets you pass JSX content between component tags"
             colorTheme="cyan"

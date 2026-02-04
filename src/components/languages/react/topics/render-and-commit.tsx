@@ -369,7 +369,7 @@ root.render(<App />); // Triggers initial render!`}</code>
             size="lg"
           />
 
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Render and Commit Visualizer"
             description="Click the button to trigger renders and see what updates"
             colorTheme="cyan"

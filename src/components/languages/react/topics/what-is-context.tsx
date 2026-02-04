@@ -73,7 +73,7 @@ export default function WhatIsContext() {
             description="See the difference in action"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Context Solves Prop Drilling"
             description="Toggle between approaches to see the difference"
             colorTheme="green"

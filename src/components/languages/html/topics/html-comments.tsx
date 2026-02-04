@@ -291,7 +291,7 @@ html.dark footer {
 }`}
               colorTheme="blue"
               icon={Code}
-              previewHeight="700px"
+              previewHeight="880px"
             />
           </CardContent>
         </Card>

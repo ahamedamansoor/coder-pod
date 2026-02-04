@@ -11,35 +11,109 @@ import { Badge } from '@/components/ui/badge';
 export default function IntroductionToTailwind() {
 
   // Simple Button Example
-  const simpleButtonHTML = `<button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold">
-  Click Me!
-</button>`;
+  const simpleButtonHTML = `<!DOCTYPE html>
+<html class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold">
+    Click Me!
+  </button>
+</body>
+</html>`;
 
   // Card Example
-  const cardExampleHTML = `<div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 max-w-sm">
-  <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Beautiful Card</h3>
-  <p class="text-gray-600 dark:text-gray-300">This card was created with just utility classes!</p>
-</div>`;
+  const cardExampleHTML = `<!DOCTYPE html>
+<html class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-slate-800 rounded-xl shadow-lg p-6 max-w-sm border border-slate-600">
+    <h3 class="text-xl font-bold text-white mb-2">Beautiful Card</h3>
+    <p class="text-slate-300">This card was created with just utility classes!</p>
+  </div>
+</body>
+</html>`;
 
   // Layout Example
-  const layoutExampleHTML = `<div class="flex items-center justify-center gap-4 p-8">
-  <div class="bg-blue-500 text-white p-4 rounded">Box 1</div>
-  <div class="bg-green-500 text-white p-4 rounded">Box 2</div>
-  <div class="bg-purple-500 text-white p-4 rounded">Box 3</div>
-</div>`;
+  const layoutExampleHTML = `<!DOCTYPE html>
+<html class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="flex items-center justify-center gap-4 p-8">
+    <div class="bg-blue-500 text-white p-4 rounded">Box 1</div>
+    <div class="bg-green-500 text-white p-4 rounded">Box 2</div>
+    <div class="bg-purple-500 text-white p-4 rounded">Box 3</div>
+  </div>
+</body>
+</html>`;
 
   // Responsive Example
-  const responsiveHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-  <div class="bg-cyan-500 text-white p-6 rounded-lg text-center">
-    <p class="font-semibold">1 column on mobile</p>
+  const responsiveHTML = `<!DOCTYPE html>
+<html class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div class="bg-cyan-500 text-white p-6 rounded-lg text-center">
+      <p class="font-semibold">1 column on mobile</p>
+    </div>
+    <div class="bg-blue-500 text-white p-6 rounded-lg text-center">
+      <p class="font-semibold">2 columns on tablet</p>
+    </div>
+    <div class="bg-violet-500 text-white p-6 rounded-lg text-center">
+      <p class="font-semibold">3 columns on desktop</p>
+    </div>
   </div>
-  <div class="bg-blue-500 text-white p-6 rounded-lg text-center">
-    <p class="font-semibold">2 columns on tablet</p>
-  </div>
-  <div class="bg-violet-500 text-white p-6 rounded-lg text-center">
-    <p class="font-semibold">3 columns on desktop</p>
-  </div>
-</div>`;
+</body>
+</html>`;
 
   return (
     <div className="space-y-8">
@@ -461,10 +535,18 @@ export default function IntroductionToTailwind() {
         <AlertTitle className="text-2xl text-cyan-900 dark:text-cyan-100">Ready to Start?</AlertTitle>
         <AlertDescription className="text-cyan-800 dark:text-cyan-200 space-y-3">
           <p className="text-base">
-            You can start using Tailwind in seconds! Just add this to your HTML:
+            You can start using Tailwind in seconds! Just add this to your HTML with dark mode:
           </p>
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-sm text-green-400">
-            &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+            &lt;!DOCTYPE html&gt;<br/>
+            &lt;html class="dark"&gt;<br/>
+            &lt;head&gt;<br/>
+            &nbsp;&nbsp;&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;<br/>
+            &lt;/head&gt;<br/>
+            &lt;body&gt;<br/>
+            &nbsp;&nbsp;&lt;!-- Your content here --&gt;<br/>
+            &lt;/body&gt;<br/>
+            &lt;/html&gt;
           </div>
           <p className="text-sm">
             💡 <strong>Pro Tip:</strong> Use the CDN for learning and prototyping. For production apps, install via npm for better performance!

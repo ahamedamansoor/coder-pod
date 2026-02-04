@@ -75,7 +75,7 @@ export default function TypeCheckingWithPropTypes() {
             description="See type checking in action"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="PropTypes Type Checker"
             description="Try different prop types and see validation in action!"
             colorTheme="green"

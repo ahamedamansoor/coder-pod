@@ -209,7 +209,7 @@ html.dark a:hover {
   background: rgba(255, 255, 255, 0.15);
 }`}
               colorTheme="blue"
-              previewHeight="180px"
+              previewHeight="400px"
               onOpenPlayground={() => openPlayground(
                 `<nav><a href="/">Home</a><a href="/about">About</a><a href="/services">Services</a></nav>`,
                 `nav { background: #3b82f6; padding: 1rem; border-radius: 8px; display: flex; gap: 1rem; } a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; font-weight: 500; } a:hover { background: rgba(255, 255, 255, 0.2); } /* Dark mode */ html.dark body { background: #0f172a; } html.dark nav { background: #1e40af; } html.dark a:hover { background: rgba(255, 255, 255, 0.15); }`,
@@ -287,7 +287,7 @@ html.dark a:hover {
   background: #34d399;
 }`}
               colorTheme="blue"
-              previewHeight="280px"
+              previewHeight="400px"
               onOpenPlayground={() => openPlayground(
                 `<section class="resources"><h2>Learn More</h2><a href="https://developer.mozilla.org" target="_blank" rel="noopener noreferrer">📖 MDN Web Docs</a><a href="https://www.w3schools.com" target="_blank" rel="noopener noreferrer">🎓 W3Schools</a></section>`,
                 `.resources { max-width: 500px; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); } a { display: block; padding: 1rem; margin: 0.5rem 0; background: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s; } a:hover { background: #059669; } /* Dark mode */ html.dark body { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); } html.dark .resources { background: #1e293b; } html.dark a { background: #059669; } html.dark a:hover { background: #34d399; }`,
@@ -368,7 +368,7 @@ html.dark .section a:hover {
   color: #93c5fd;
 }`}
               colorTheme="blue"
-              previewHeight="320px"
+              previewHeight="420px"
               onOpenPlayground={() => openPlayground(
                 `<div class="footer-links"><div class="section"><h3>Company</h3><a href="/about">About Us</a><a href="/careers">Careers</a><a href="/contact">Contact</a></div><div class="section"><h3>Resources</h3><a href="https://blog.example.com" target="_blank">Blog</a><a href="https://twitter.com" target="_blank">Follow Us</a></div></div>`,
                 `.footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; background: #f3f4f6; padding: 2rem; border-radius: 12px; } .section h3 { color: #1e40af; margin-bottom: 1rem; } .section a { display: block; color: #3b82f6; text-decoration: none; margin: 0.5rem 0; transition: all 0.3s; font-weight: 500; } .section a:hover { color: #2563eb; padding-left: 0.5rem; } /* Dark mode */ html.dark .footer-links { background: #1e293b; } html.dark .section a { color: #60a5fa; } html.dark .section a:hover { color: #93c5fd; }`,

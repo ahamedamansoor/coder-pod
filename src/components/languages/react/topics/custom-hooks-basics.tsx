@@ -69,7 +69,7 @@ export default function CustomHooksBasics() {
             description="Reusable toggle logic in action"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="useToggle Custom Hook"
             description="See how custom hooks make logic reusable"
             colorTheme="green"

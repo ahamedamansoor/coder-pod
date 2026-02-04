@@ -278,7 +278,7 @@ root.render(
           description="See loading, success, and error states"
           size="lg"
         />
-        <FrontendCodePreview
+        <FrontendCodePreview learningContext="react"
           title="UserProfile Async Component"
           html={`<div id="root"></div>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>

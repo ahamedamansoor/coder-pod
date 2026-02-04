@@ -68,7 +68,7 @@ export default function ContextCombinationPatterns() {
             description="Complete todo app with reducer pattern"
             size="lg"
           />
-          <FrontendCodePreview
+          <FrontendCodePreview learningContext="react"
             title="Todo App with Context + useReducer"
             description="Professional state management pattern - add, toggle, delete todos!"
             colorTheme="green"
