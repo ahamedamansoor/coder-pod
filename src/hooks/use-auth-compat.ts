@@ -1,14 +1,13 @@
 'use client';
 
 /**
- * Compatibility hooks for migrating from Firebase to Supabase
- * These maintain the same API so we don't have to update all components at once
+ * Auth compatibility hooks wrapping Supabase auth
  */
 
 import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 
 /**
- * Compatible useUser hook (replaces Firebase useUser)
+ * useUser hook - provides user data from Supabase auth
  */
 export function useUser() {
   const { user, isLoading, error } = useSupabaseAuth();
@@ -20,7 +19,7 @@ export function useUser() {
       displayName: user.user_metadata?.name || user.user_metadata?.full_name || null,
       photoURL: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
       emailVerified: !!user.email_confirmed_at,
-      isAnonymous: false, // Supabase doesn't have anonymous auth by default
+      isAnonymous: false,
     } : null,
     isUserLoading: isLoading,
     userError: error,
@@ -28,7 +27,7 @@ export function useUser() {
 }
 
 /**
- * Compatible useAuth hook (replaces Firebase useAuth)
+ * useAuth hook - provides auth actions
  */
 export function useAuth() {
   const { signOut } = useSupabaseAuth();
@@ -37,12 +36,4 @@ export function useAuth() {
     signOut,
     currentUser: null, // Will be populated by useUser
   };
-}
-
-/**
- * Compatible useFirestore hook (no longer needed but kept for compatibility)
- */
-export function useFirestore() {
-  // Firestore is no longer used - all data in Supabase
-  return null;
 }

@@ -21,7 +21,7 @@ export class ServiceFactory {
   }
 
   /**
-   * Get Notes Service - Now uses Supabase instead of Firebase
+   * Get Notes Service
    */
   static getNotesService() {
     return supabaseNotesService;
