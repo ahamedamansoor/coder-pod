@@ -20,6 +20,8 @@ class NotesSyncService {
       // Get all notes from server to sync
       const serverNotes = await supabaseNotesService.getUserNotes(user.id, client);
       
+      console.log(`Fetched ${serverNotes.length} notes from server for sync`);
+
       // Store notes locally for offline access
       if (typeof window !== 'undefined') {
         localStorage.setItem('user_notes', JSON.stringify(serverNotes));

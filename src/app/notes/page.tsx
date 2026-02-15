@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { useRouter } from 'next/navigation';
 import { ServiceFactory } from '@/services';
 import { Note } from '@/types/notes.types';
@@ -61,6 +62,7 @@ export default function NotesPage() {
   const [showFeatureGate, setShowFeatureGate] = useState(false);
 
   const { user, isUserLoading } = useUser();
+  const { currentSupabaseClient } = useSupabaseAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { setContent } = usePlayer();
@@ -75,7 +77,7 @@ export default function NotesPage() {
   // Extract YouTube video ID from URL
   const extractVideoId = (url: string): string | null => {
     console.log('🔍 Extracting video ID from URL:', url);
-    
+
     const patterns = [
       // Standard YouTube watch URLs
       /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
@@ -86,7 +88,7 @@ export default function NotesPage() {
       // YouTube v URLs (alternative format)
       /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
     ];
-    
+
     for (const pattern of patterns) {
       const match = url.match(pattern);
       if (match) {
@@ -125,7 +127,7 @@ export default function NotesPage() {
       const notesService = ServiceFactory.getNotesService();
       console.log('📦 NotesService obtained, fetching...');
 
-      const fetchedNotes = await notesService.getUserNotes(user.uid);
+      const fetchedNotes = await notesService.getUserNotes(user.uid, currentSupabaseClient);
       console.log('✅ Notes fetched successfully:', fetchedNotes.length, 'notes');
 
       setNotes(fetchedNotes);
@@ -296,7 +298,7 @@ export default function NotesPage() {
         type: resourceType,
         videoId,
         language: selectedLanguage,
-      });
+      }, currentSupabaseClient);
 
       toast({
         title: "✅ Resource Saved!",
@@ -333,7 +335,7 @@ export default function NotesPage() {
 
     try {
       const notesService = ServiceFactory.getNotesService();
-      await notesService.deleteNote(noteId, user.uid);
+      await notesService.deleteNote(noteId, user.uid, currentSupabaseClient);
 
       await fetchNotes();
       toast({

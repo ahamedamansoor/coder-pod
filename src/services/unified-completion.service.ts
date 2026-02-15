@@ -139,7 +139,9 @@ class UnifiedCompletionService {
     
     try {
       const status = localStorage.getItem(this.SYNC_STATUS_KEY);
-      return status ? JSON.parse(status).pending : false;
+      const isPending = status ? JSON.parse(status).pending : false;
+      console.log('UnifiedCompletionService - hasPendingSync():', isPending);
+      return isPending;
     } catch (error) {
       console.error('Error checking sync status:', error);
       return false;
@@ -150,6 +152,7 @@ class UnifiedCompletionService {
   markAsPendingSync(): void {
     if (typeof window === 'undefined') return;
     
+    console.log('UnifiedCompletionService - markAsPendingSync()');
     const status: SyncStatus = {
       pending: true,
       lastSync: null
@@ -172,6 +175,7 @@ class UnifiedCompletionService {
   updateFromServer(data: AllCompletionData): void {
     if (typeof window === 'undefined') return;
     
+    console.log('UnifiedCompletionService - updateFromServer():', data);
     this.storeCompletionData(data);
     
     // Mark as synced
@@ -201,6 +205,8 @@ class UnifiedCompletionService {
     
     localStorage.removeItem(this.STORAGE_KEY);
     localStorage.removeItem(this.LAST_FETCH_KEY);
+    localStorage.removeItem(this.SYNC_STATUS_KEY);
+    localStorage.removeItem(this.USER_ID_KEY);
   }
 
   // Get completion data with cache fallback

@@ -48,10 +48,22 @@ export const useUnifiedCompletion = (): UnifiedCompletionContextType => {
     };
   }, []);
 
-  // Initialize data on first load
+  // Initialize data on first load or user change
   useEffect(() => {
     const initializeData = async () => {
-      if (!user || globalState.initialized) return;
+      if (!user) {
+        // Clear global state if user logs out
+        globalState.completedTopics = {};
+        globalState.initialized = false;
+        notifyListeners();
+        return;
+      }
+
+      // If already initialized for THIS user, skip
+      // We use user.uid to track who it was initialized for
+      if (globalState.initialized && unifiedCompletionService.getUserId() === user.uid) {
+        return;
+      }
 
       globalState.isLoading = true;
       notifyListeners();
@@ -81,7 +93,28 @@ export const useUnifiedCompletion = (): UnifiedCompletionContextType => {
       }
     };
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && user) {
+        // Re-fetch data if tab becomes visible
+        const data = unifiedCompletionService.getAllCompletionData();
+        const completedTopicsSets: { [language: string]: Set<string> } = {};
+        Object.entries(data).forEach(([language, topics]) => {
+          completedTopicsSets[language] = new Set(topics);
+        });
+        globalState.completedTopics = completedTopicsSets;
+        notifyListeners();
+      }
+    };
+
     initializeData();
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleVisibilityChange);
+    };
   }, [user]);
 
   const handleToggleComplete = useCallback((language: string, topicSlug: string) => {
@@ -105,6 +138,9 @@ export const useUnifiedCompletion = (): UnifiedCompletionContextType => {
     // Update unified service
     const updatedTopics = Array.from(currentTopics);
     unifiedCompletionService.updateLanguageCompletion(language, updatedTopics);
+    
+    // Trigger immediate sync to server
+    unifiedCompletionService.triggerImmediateSync();
     
     notifyListeners();
   }, [user]);

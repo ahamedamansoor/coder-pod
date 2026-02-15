@@ -69,7 +69,7 @@ export function LoginPageForm() {
       let description = 'An unexpected error occurred. Please try again.';
       
       if (error.message && error.message.includes('verify')) {
-        description = 'Please verify your email before signing in. Check your inbox for a verification link.';
+        description = error.message;
       } else if (error.message && (error.message.includes('Invalid') || error.message.includes('credentials'))) {
         description = 'The email or password you entered is incorrect. Please try again.';
       } else if (error.message) {

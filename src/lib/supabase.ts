@@ -13,8 +13,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Create a dynamic Supabase client factory for concurrent logins
 export const createSupabaseClient = (email?: string) => {
   // Generate unique storage key per user email
-  const storageKey = email ? 
-    `coder-pod-auth-${email.replace(/[^a-zA-Z0-9]/g, '_')}` : 
+  const storageKey = email ?
+    `coder-pod-auth-${email.replace(/[^a-zA-Z0-9]/g, '_')}` :
     'coder-pod-auth-default';
 
   return createClient(supabaseUrl, supabaseAnonKey, {
@@ -40,12 +40,13 @@ export interface Database {
           user_id: string;
           title: string;
           description: string | null;
-          type: 'article' | 'video' | 'link' | 'doc';
+          type: 'article' | 'video' | 'link' | 'doc' | 'blog' | 'documentation';
           language: string;
           url: string | null;
           video_id: string | null;
           content: string | null;
           tags: string[];
+          favorited: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -54,12 +55,13 @@ export interface Database {
           user_id: string;
           title: string;
           description?: string | null;
-          type: 'article' | 'video' | 'link' | 'doc';
+          type: 'article' | 'video' | 'link' | 'doc' | 'blog' | 'documentation';
           language: string;
           url?: string | null;
           video_id?: string | null;
           content?: string | null;
           tags?: string[];
+          favorited?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -68,12 +70,13 @@ export interface Database {
           user_id?: string;
           title?: string;
           description?: string | null;
-          type?: 'article' | 'video' | 'link' | 'doc';
+          type?: 'article' | 'video' | 'link' | 'doc' | 'blog' | 'documentation';
           language?: string;
           url?: string | null;
           video_id?: string | null;
           content?: string | null;
           tags?: string[];
+          favorited?: boolean;
           created_at?: string;
           updated_at?: string;
         };

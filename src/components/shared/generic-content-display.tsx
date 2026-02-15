@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { HelpCircle, BookmarkIcon, CheckCircle } from 'lucide-react';
 import React from 'react';
 import { VideoNotesDrawer } from '@/components/video-notes/video-notes-drawer';
+import { ServiceFactory } from '@/services';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EnhancedLoadingSkeleton, CompactLoadingSkeleton } from './enhanced-loading-skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -27,6 +28,7 @@ import { useNextjsContext } from '@/app/languages/nextjs/nextjs-context';
 import { useTailwind } from '@/app/languages/tailwind/tailwind-context';
 import { useSelenium } from '@/app/languages/selenium/selenium-context';
 import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';
@@ -39,32 +41,32 @@ import { ModuleCompletionCelebration } from './modals/module-completion-celebrat
 import { TopicNavigation } from './topic-navigation';
 
 function useLanguageContext(language: Language) {
-    switch(language.slug) {
-        case 'java': return useJava();
-        case 'spring': return useSpring();
-        case 'spring-boot': return useSpringBoot();
-        case 'javascript': return useJavascript();
-        case 'react': return useReact();
-        case 'html': return useHtml();
-        case 'css': return useCss();
-        case 'scss': return useScss();
-        case 'dsa': return useDsa();
-        case 'rxjs': return useRxjs();
-        case 'playwright': return usePlaywright();
-        case 'nextjs': return useNextjsContext();
-        case 'tailwind': return useTailwind();
-        case 'selenium': return useSelenium();
-        default: return { completedTopics: new Set<string>(), handleToggleComplete: () => {}, isProgressLoading: true };
-    }
+  switch (language.slug) {
+    case 'java': return useJava();
+    case 'spring': return useSpring();
+    case 'spring-boot': return useSpringBoot();
+    case 'javascript': return useJavascript();
+    case 'react': return useReact();
+    case 'html': return useHtml();
+    case 'css': return useCss();
+    case 'scss': return useScss();
+    case 'dsa': return useDsa();
+    case 'rxjs': return useRxjs();
+    case 'playwright': return usePlaywright();
+    case 'nextjs': return useNextjsContext();
+    case 'tailwind': return useTailwind();
+    case 'selenium': return useSelenium();
+    default: return { completedTopics: new Set<string>(), handleToggleComplete: () => { }, isProgressLoading: true };
+  }
 }
 
-export function GenericContentDisplay({ 
-  topic, 
-  language, 
+export function GenericContentDisplay({
+  topic,
+  language,
   children
-}: { 
-  topic: Topic, 
-  language: Language, 
+}: {
+  topic: Topic,
+  language: Language,
   children?: React.ReactNode
 }) {
   const [question, setQuestion] = React.useState('');
@@ -76,23 +78,35 @@ export function GenericContentDisplay({
   const [videoNotesCount, setVideoNotesCount] = React.useState(0);
   const [completedModule, setCompletedModule] = React.useState<string | null>(null);
 
-  // Load video notes count for this language
-  const loadVideoNotesCount = React.useCallback(() => {
-    const STORAGE_KEY = 'video_notes';
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
+  // Auth hooks — must be before any callback that uses user/client
+  const { user } = useUser();
+  const isUserAuthenticated = user && !user.isAnonymous;
+  const { currentSupabaseClient } = useSupabaseAuth();
+
+  const loadVideoNotesCount = React.useCallback(async () => {
+    if (user && !user.isAnonymous) {
       try {
-        const allNotes = JSON.parse(stored);
-        const filteredNotes = allNotes.filter((note: any) => note.language === language.slug);
-        const count = filteredNotes.length;
-        setVideoNotesCount(count);
+        const notesService = ServiceFactory.getNotesService();
+        const notes = await notesService.getNotesByLanguage(user.uid, language.slug, currentSupabaseClient);
+        setVideoNotesCount(notes.length);
       } catch (error) {
+        console.error('Error loading notes count:', error);
         setVideoNotesCount(0);
       }
     } else {
-      setVideoNotesCount(0);
+      // Fallback to localStorage for non-authenticated users
+      const localNotes = localStorage.getItem(`notes_${language.slug}`);
+      if (localNotes) {
+        try {
+          setVideoNotesCount(JSON.parse(localNotes).length);
+        } catch {
+          setVideoNotesCount(0);
+        }
+      } else {
+        setVideoNotesCount(0);
+      }
     }
-  }, [language.slug]);
+  }, [language.slug, user, currentSupabaseClient]);
 
   React.useEffect(() => {
     loadVideoNotesCount();
@@ -105,9 +119,9 @@ export function GenericContentDisplay({
       loadVideoNotesCount();
     }
   };
-  
+
   const { completedTopics: rawCompletedTopics, handleToggleComplete } = useLanguageContext(language);
-  
+
   // Ensure completedTopics is always a Set (defensive programming)
   const completedTopics = React.useMemo(() => {
     if (rawCompletedTopics instanceof Set) {
@@ -119,10 +133,8 @@ export function GenericContentDisplay({
     }
     return new Set<string>();
   }, [rawCompletedTopics]);
-  
-  const { user } = useUser();
-  const isUserAuthenticated = user && !user.isAnonymous;
-  
+
+
   const { toast } = useToast();
   const { openWithContent } = useWebPlayground();
 
@@ -148,9 +160,9 @@ export function GenericContentDisplay({
     if (topic.category && !isTopicComplete) {
       // Get all topics in the same category
       const categoryTopics = language.topics.filter(t => t.category === topic.category);
-      
+
       // Check if all topics in this category will be completed after this one
-      const allTopicsCompleted = categoryTopics.every(t => 
+      const allTopicsCompleted = categoryTopics.every(t =>
         completedTopics.has(t.slug) || t.slug === topic.slug
       );
 
@@ -174,7 +186,7 @@ export function GenericContentDisplay({
 
   const handleAskQuestionAction = async () => {
     if (!question.trim()) return;
-    
+
     // Check AI availability before making request
     if (!isAiEnabled) {
       toast({
@@ -185,24 +197,24 @@ export function GenericContentDisplay({
       setShowAiKeyModal(true);
       return;
     }
-    
+
     setIsAsking(true);
     setQaResult(null);
     try {
       // Get API configuration from localStorage
       const apiKey = localStorage.getItem('ai_api_key');
       const provider = localStorage.getItem('ai_provider') as AIProvider;
-      
+
       if (!apiKey || !provider) {
         throw new Error('API configuration not found');
       }
-      
+
       // Create language-specific structured prompts
       const isHTMLLanguage = language.slug === 'html';
       const isCSSLanguage = language.slug === 'css' || language.slug === 'scss';
       const isJSLanguage = language.slug === 'javascript' || language.slug === 'react';
-      
-      const structuredPrompt = isHTMLLanguage 
+
+      const structuredPrompt = isHTMLLanguage
         ? `You are an expert HTML tutor. Answer this question with clear, structured examples that follow HTML best practices.
 
 **Question:** ${question}
@@ -305,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
 - Keep explanations simple and beginner-friendly
 - Use emojis for section headers as shown above`
         : isCSSLanguage || isJSLanguage
-        ? `You are an expert ${isCSSLanguage ? 'CSS' : 'JavaScript'} tutor. Answer this question with clear, structured examples.
+          ? `You are an expert ${isCSSLanguage ? 'CSS' : 'JavaScript'} tutor. Answer this question with clear, structured examples.
 
 **Question:** ${question}
 
@@ -393,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
 - Include dark mode CSS support
 ${isJSLanguage ? '- Add functional JavaScript with clear comments\n' : ''}- Keep code simple and beginner-friendly
 - Use emojis for section headers`
-        : `You are a helpful programming tutor. Answer this question clearly and simply.
+          : `You are a helpful programming tutor. Answer this question clearly and simply.
 
 **Question:** ${question}
 
@@ -442,17 +454,17 @@ Keep it simple and easy to understand.`;
         previousQuestions: [],
         questionType: 'theory'
       });
-      
+
       // Use the idealAnswer field which contains the detailed response
       // Configure marked to handle special characters properly
       marked.setOptions({
         breaks: true,
         gfm: true,
       });
-      
+
       // Parse markdown and decode HTML entities
       let parsedAnswer = await marked(result.idealAnswer);
-      
+
       // Handle common HTML entities that might appear
       parsedAnswer = parsedAnswer
         .replace(/&amp;/g, '&')
@@ -461,11 +473,11 @@ Keep it simple and easy to understand.`;
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
         .replace(/&nbsp;/g, ' ');
-      
+
       setQaResult({ answer: parsedAnswer });
     } catch (error) {
       console.error('Failed to answer question:', error);
-      
+
       // Check if error is due to AI configuration
       const errorMessage = error instanceof Error ? error.message : '';
       if (errorMessage.includes('API') || errorMessage.includes('key') || errorMessage.includes('auth') || errorMessage.includes('401') || errorMessage.includes('403')) {
@@ -486,7 +498,7 @@ Keep it simple and easy to understand.`;
       setIsAsking(false);
     }
   };
-  
+
   return (
     <div className="space-y-2 min-h-screen">
       {/* Refined Mark as Completed Button with Enhanced Design */}
@@ -500,14 +512,14 @@ Keep it simple and easy to understand.`;
               "before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent",
               "before:translate-x-[-100%] before:transition-transform before:duration-700",
               "hover:before:translate-x-[100%]",
-              isTopicComplete 
-                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 border-green-200 hover:border-green-300 hover:shadow-green-100/50 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-400 dark:border-green-800/50 dark:hover:border-green-700/50 dark:hover:shadow-green-900/20" 
+              isTopicComplete
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-600 border-green-200 hover:border-green-300 hover:shadow-green-100/50 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-400 dark:border-green-800/50 dark:hover:border-green-700/50 dark:hover:shadow-green-900/20"
                 : "bg-gradient-to-r from-slate-50 to-white text-slate-600 border-slate-200 hover:border-slate-300 hover:shadow-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/50 dark:text-slate-300 dark:border-slate-700/50 dark:hover:border-slate-600/50 dark:hover:shadow-slate-900/20"
             )}
           >
             {/* Inner shadow for depth */}
             <div className="absolute inset-0 rounded-xl shadow-inner opacity-30"></div>
-            
+
             {isTopicComplete ? (
               <>
                 <div className="relative flex-shrink-0">
@@ -558,19 +570,19 @@ Keep it simple and easy to understand.`;
         <div className="w-full max-w-md">
           {/* Gradient line */}
           <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
-          
+
           {/* Subtle glow effect */}
           <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent blur-sm"></div>
         </div>
       </div>
-      
+
       {/* Floating Video Notes Button with Animation */}
       <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50">
         <div className="relative">
           {/* Animated pulse ring */}
           <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
           <div className="absolute inset-0 rounded-full bg-primary/30 animate-pulse" />
-          
+
           <Button
             onClick={() => setShowVideoNotes(true)}
             size="lg"
@@ -598,7 +610,7 @@ Keep it simple and easy to understand.`;
           <AiSimplification topic={topic} language={language} />
         )}
       </div>
-      
+
       {/* Video Notes Drawer */}
       <VideoNotesDrawer
         open={showVideoNotes}
@@ -608,76 +620,76 @@ Keep it simple and easy to understand.`;
 
       {/* Topic Navigation - Next/Previous Topics */}
       <TopicNavigation currentTopic={topic} language={language} />
-      
+
       {!isLearningPlanTopic && (
-          <div className="relative mt-8">
-            <Card className={cn(
-              "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
-              !isUserAuthenticated && "blur-sm pointer-events-none",
-              isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
-            )}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
-                  <HelpCircle className="w-6 h-6 text-primary" />
-                  Ask a Question
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-400">
-                  Have a question about {topic.title}? Ask our AI assistant.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Textarea 
-                  placeholder={`e.g., "Explain this like I'm 5."`} 
-                  value={question} 
-                  onChange={(e) => setQuestion(e.target.value)} 
-                  disabled={isAsking || !isUserAuthenticated}
-                  className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                />
-                <Button 
-                  onClick={handleAskQuestionAction}
-                  disabled={isAsking || !question.trim() || !isUserAuthenticated}
-                  className="transition-all duration-200"
+        <div className="relative mt-8">
+          <Card className={cn(
+            "transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+            !isUserAuthenticated && "blur-sm pointer-events-none",
+            isUserAuthenticated && "hover:shadow-lg hover:shadow-slate-200 dark:hover:shadow-slate-950"
+          )}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+                <HelpCircle className="w-6 h-6 text-primary" />
+                Ask a Question
+              </CardTitle>
+              <CardDescription className="text-slate-600 dark:text-slate-400">
+                Have a question about {topic.title}? Ask our AI assistant.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                placeholder={`e.g., "Explain this like I'm 5."`}
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                disabled={isAsking || !isUserAuthenticated}
+                className="transition-colors focus:ring-2 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
+              />
+              <Button
+                onClick={handleAskQuestionAction}
+                disabled={isAsking || !question.trim() || !isUserAuthenticated}
+                className="transition-all duration-200"
+              >
+                {isAsking ? 'Thinking...' : 'Get Answer'}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Guest User Overlay - Simple & Subtle */}
+          {!isUserAuthenticated ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
+              <div className="text-center space-y-3 px-6">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  🔐 Login to use AI Assistant
+                </p>
+                <Button
+                  onClick={() => window.location.href = '/login'}
+                  size="sm"
+                  className="shadow-sm"
                 >
-                  {isAsking ? 'Thinking...' : 'Get Answer'}
+                  Login
                 </Button>
-              </CardContent>
-            </Card>
-            
-            {/* Guest User Overlay - Simple & Subtle */}
-            {!isUserAuthenticated ? (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-                <div className="text-center space-y-3 px-6">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                    🔐 Login to use AI Assistant
-                  </p>
-                  <Button 
-                    onClick={() => window.location.href = '/login'}
-                    size="sm"
-                    className="shadow-sm"
-                  >
-                    Login
-                  </Button>
-                </div>
               </div>
-            ) : !isAiEnabled && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
-                <div className="text-center space-y-3 px-6">
-                  <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                    ⚙️ AI Provider Not Configured
-                  </p>
-                  <Button 
-                    onClick={() => setShowAiKeyModal(true)}
-                    size="sm"
-                    className="shadow-sm"
-                  >
-                    Setup AI Key
-                  </Button>
-                </div>
+            </div>
+          ) : !isAiEnabled && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-lg border border-slate-200 dark:border-slate-800">
+              <div className="text-center space-y-3 px-6">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  ⚙️ AI Provider Not Configured
+                </p>
+                <Button
+                  onClick={() => setShowAiKeyModal(true)}
+                  size="sm"
+                  className="shadow-sm"
+                >
+                  Setup AI Key
+                </Button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+        </div>
       )}
-      
+
       {isAsking && (
         <Card className="transition-all duration-200 animate-in fade-in-50 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
           <CardContent className="p-6 space-y-2">
@@ -687,13 +699,13 @@ Keep it simple and easy to understand.`;
       )}
 
       {qaResult && (
-        <AIAnswerDisplay 
-          answer={qaResult.answer} 
+        <AIAnswerDisplay
+          answer={qaResult.answer}
           language={language.slug}
           onOpenWebPlayground={openWithContent}
         />
       )}
-      
+
       {/* AI Provider Modal */}
       <AIProviderModal
         isOpen={showAiKeyModal}
@@ -717,7 +729,7 @@ Keep it simple and easy to understand.`;
         languageSlug={language.slug}
         onClose={() => setCompletedModule(null)}
       />
-      
+
       {/* Keyframe animation for badge pulse */}
       <style jsx>{`
         @keyframes badge-pulse {

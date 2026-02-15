@@ -14,7 +14,6 @@ export { AiInterviewDemo } from './ai-interview-demo';
 export { AiSimplification } from './ai-simplification';
 export { AIAnswerDisplay } from './ai-answer-display';
 export { default as InterviewSimulator } from './interview-simulator';
-export { FirebaseErrorListener } from './FirebaseErrorListener';
 export { MotivationalLoader } from './motivational-loader';
 export { FeatureGateModal } from './feature-gate-modal';
 export { CodeSnippet } from './code-snippet';

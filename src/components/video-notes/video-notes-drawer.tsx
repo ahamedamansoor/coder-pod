@@ -46,7 +46,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
-  
+
   // Form states
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
@@ -97,9 +97,9 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     try {
       // Only use ServiceFactory for authenticated users
       const notesService = ServiceFactory.getNotesService();
-      const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug);
+      const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug, currentSupabaseClient);
       setNotes(allNotes);
-      
+
       // Update cache
       notesCache.set(cacheKey, {
         data: allNotes,
@@ -186,7 +186,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     setIsSaving(true);
     try {
       let videoId: string | undefined;
-      
+
       // Extract video ID if it's a YouTube video
       if (resourceType === 'video') {
         videoId = extractVideoId(url) || undefined;
@@ -199,6 +199,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         type: resourceType,
         videoId,
         language: languageSlug,
+        favorited: false,
         createdAt: new Date(),
         updatedAt: new Date(),
         userId: user?.uid || 'local-user',
@@ -220,28 +221,28 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         const existingNotes = localNotes ? JSON.parse(localNotes) : [];
         existingNotes.push(newNote);
         localStorage.setItem(`notes_${languageSlug}`, JSON.stringify(existingNotes));
-        
+
         // Update local state immediately for non-authenticated users
         setNotes(existingNotes);
       }
-      
+
       toast({
         title: "✅ Resource Saved!",
         description: `Your ${resourceType} has been saved successfully.`,
       });
-      
+
       // Only refresh from server for authenticated users
       if (user) {
         await fetchNotes(true);
       }
-      
+
       setIsAddDialogOpen(false);
       resetForm();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving note:", error);
       toast({
         title: "❌ Save Failed",
-        description: "Failed to save resource. Please try again.",
+        description: error.message || "Failed to save resource. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -323,7 +324,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                 filteredNotes.map((note) => {
                   const ResourceIcon = getResourceIcon(note.type);
                   const thumbnail = getThumbnail(note);
-                  
+
                   return (
                     <div
                       key={note.id}
@@ -504,7 +505,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
           <DialogHeader>
             <DialogTitle>Add Learning Resource</DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             {/* Resource Type */}
             <div className="space-y-2">

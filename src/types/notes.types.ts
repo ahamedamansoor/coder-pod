@@ -11,6 +11,7 @@ export interface Note {
   videoId?: string;
   content?: string;
   tags?: string[];
+  favorited: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export interface CreateNoteData {
   videoId?: string;
   content?: string;
   tags?: string[];
+  favorited?: boolean;
 }
 
 export interface UpdateNoteData {
@@ -33,4 +35,5 @@ export interface UpdateNoteData {
   videoId?: string;
   content?: string;
   tags?: string[];
+  favorited?: boolean;
 }

@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { languages } from '@/data/languages';
 import { useUser } from '@/hooks/use-auth-compat';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { ServiceFactory } from '@/services';
 import { useLoading } from '@/hooks/use-loading';
 import { useToast } from '@/hooks/use-toast';
@@ -37,6 +38,7 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
   const [selectedLanguage, setSelectedLanguage] = useState('');
 
   const { user } = useUser();
+  const { currentSupabaseClient } = useSupabaseAuth();
   const { showLoader, hideLoader } = useLoading();
   const { toast } = useToast();
 
@@ -70,7 +72,7 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
         url: videoUrl,
         language: selectedLanguage,
         type: 'video',
-      });
+      }, currentSupabaseClient);
 
       toast({
         title: 'Note created!',
@@ -84,11 +86,11 @@ export function AddNoteModal({ isOpen, onClose, onNoteAdded }: AddNoteModalProps
         onNoteAdded();
       }
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating note:', error);
       toast({
         title: 'Error',
-        description: 'There was a problem creating your note. Please try again.',
+        description: error.message || 'There was a problem creating your note. Please try again.',
         variant: 'destructive',
       });
     } finally {

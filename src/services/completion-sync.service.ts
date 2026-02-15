@@ -15,11 +15,6 @@ class CompletionSyncService {
       const data = unifiedCompletionService.getAllCompletionData();
       const hasChanges = unifiedCompletionService.hasPendingSync();
       
-      if (!hasChanges) {
-        console.log('No changes to sync');
-        return true;
-      }
-
       // Use provided client or default
       const client = supabaseClient || supabase;
 
@@ -30,6 +25,16 @@ class CompletionSyncService {
         return false;
       }
 
+      if (!hasChanges) {
+        console.log('No pending changes to push, checking for updates from server...');
+        // Even if no local changes, we should ensure local is up to date with server
+        await this.loadFromServer(client);
+        return true;
+      }
+
+      console.log('Pushing local changes to server for user:', user.id);
+      console.log('Local completion data to sync:', data);
+
       // Get current user profile
       const { data: profile, error: profileError } = await client
         .from('users')
@@ -38,16 +43,20 @@ class CompletionSyncService {
         .single();
 
       if (profileError && profileError.code !== 'PGRST116') {
-        console.error('Error fetching user profile:', profileError);
+        console.error('Error fetching user profile during sync:', profileError);
         return false;
       }
 
       // Merge with existing data
       const existingTopics = profile?.completed_topics || {};
+      console.log('Existing topics on server:', existingTopics);
+
       const updatedTopics = {
         ...existingTopics,
         ...data
       };
+      
+      console.log('Final merged topics to be saved:', updatedTopics);
 
       // Update server
       const { error: updateError } = await client
@@ -56,13 +65,13 @@ class CompletionSyncService {
         .eq('id', user.id);
 
       if (updateError) {
-        console.error('Error syncing to server:', updateError);
+        console.error('Error updating users table in Supabase:', updateError);
         // Mark as pending again if sync failed
         unifiedCompletionService.markAsPendingSync();
         return false;
       }
 
-      console.log('Successfully synced completion data');
+      console.log('Successfully synced completion data to Supabase');
       return true;
     } catch (error) {
       console.error('Sync error:', error);
@@ -71,12 +80,13 @@ class CompletionSyncService {
   }
 
   // Load completion data from server
-  async loadFromServer(): Promise<void> {
+  async loadFromServer(supabaseClient?: any): Promise<void> {
     try {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      const client = supabaseClient || supabase;
+      const { data: { user }, error: userError } = await client.auth.getUser();
       if (userError || !user) return;
 
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile, error: profileError } = await client
         .from('users')
         .select('completed_topics')
         .eq('id', user.id)

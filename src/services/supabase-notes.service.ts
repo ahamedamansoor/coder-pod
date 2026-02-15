@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { Note, CreateNoteData, UpdateNoteData } from '@/types/notes.types';
+import { Note, NoteType, CreateNoteData, UpdateNoteData } from '@/types/notes.types';
 
 export class SupabaseNotesService {
   private tableName = 'notes';
@@ -17,10 +17,11 @@ export class SupabaseNotesService {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching user notes:', error);
+        console.error('Error fetching user notes from Supabase:', error);
         throw new Error(`Failed to fetch notes: ${error.message}`);
       }
 
+      console.log(`Successfully fetched ${data?.length || 0} notes from Supabase for user ${userId}`);
       return this.mapSupabaseNotesToNotes(data || []);
     } catch (error) {
       console.error('Error fetching user notes:', error);
@@ -73,6 +74,7 @@ export class SupabaseNotesService {
         video_id: noteData.videoId || null,
         content: noteData.content || null,
         tags: noteData.tags || [],
+        favorited: noteData.favorited ?? false,
       };
 
       const { data, error } = await client
@@ -82,10 +84,12 @@ export class SupabaseNotesService {
         .single();
 
       if (error) {
-        console.error('Error creating note:', error);
+        console.error('Error creating note in Supabase:', error);
+        console.error('Note data attempted:', newNote);
         throw new Error(`Failed to create note: ${error.message}`);
       }
 
+      console.log('✅ Note created successfully in Supabase:', data.id);
       return this.mapSupabaseNoteToNote(data);
     } catch (error) {
       console.error('Error creating note:', error);
@@ -115,6 +119,7 @@ export class SupabaseNotesService {
       if (updateData.content !== undefined)
         updatePayload.content = updateData.content || null;
       if (updateData.tags !== undefined) updatePayload.tags = updateData.tags;
+      if (updateData.favorited !== undefined) updatePayload.favorited = updateData.favorited;
 
       const { error } = await client
         .from(this.tableName)
@@ -155,7 +160,7 @@ export class SupabaseNotesService {
   }
 
   /**
-   * Search notes by title or content
+   * Search notes using full-text search (GIN index on title + content)
    */
   async searchNotes(userId: string, searchQuery: string, supabaseClient?: any): Promise<Note[]> {
     try {
@@ -164,12 +169,23 @@ export class SupabaseNotesService {
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)
-        .or(`title.ilike.%${searchQuery}%,content.ilike.%${searchQuery}%`)
+        .textSearch('title', searchQuery, { type: 'websearch' })
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error searching notes:', error);
-        throw new Error(`Failed to search notes: ${error.message}`);
+        // Fallback to ILIKE if full-text search fails (e.g. short queries)
+        const { data: fallbackData, error: fallbackError } = await client
+          .from(this.tableName)
+          .select('*')
+          .eq('user_id', userId)
+          .or(`title.ilike.%${searchQuery}%,content.ilike.%${searchQuery}%`)
+          .order('created_at', { ascending: false });
+
+        if (fallbackError) {
+          console.error('Error searching notes:', fallbackError);
+          throw new Error(`Failed to search notes: ${fallbackError.message}`);
+        }
+        return this.mapSupabaseNotesToNotes(fallbackData || []);
       }
 
       return this.mapSupabaseNotesToNotes(data || []);
@@ -180,11 +196,39 @@ export class SupabaseNotesService {
   }
 
   /**
+   * Toggle the favorited status of a note
+   */
+  async toggleFavorite(
+    noteId: string,
+    userId: string,
+    currentFavorited: boolean,
+    supabaseClient?: any
+  ): Promise<void> {
+    try {
+      const client = supabaseClient || supabase;
+      const { error } = await client
+        .from(this.tableName)
+        .update({ favorited: !currentFavorited })
+        .eq('id', noteId)
+        .eq('user_id', userId);
+
+      if (error) {
+        console.error('Error toggling favorite:', error);
+        throw new Error(`Failed to toggle favorite: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Get notes by language
    */
-  async getNotesByLanguage(userId: string, language: string): Promise<Note[]> {
+  async getNotesByLanguage(userId: string, language: string, supabaseClient?: any): Promise<Note[]> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)
@@ -208,10 +252,12 @@ export class SupabaseNotesService {
    */
   async getNotesByType(
     userId: string,
-    type: 'article' | 'video' | 'link' | 'doc'
+    type: NoteType,
+    supabaseClient?: any
   ): Promise<Note[]> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('user_id', userId)
@@ -245,6 +291,7 @@ export class SupabaseNotesService {
       videoId: supabaseNote.video_id || '',
       content: supabaseNote.content || '',
       tags: supabaseNote.tags || [],
+      favorited: supabaseNote.favorited ?? false,
       createdAt: new Date(supabaseNote.created_at),
       updatedAt: new Date(supabaseNote.updated_at),
     };

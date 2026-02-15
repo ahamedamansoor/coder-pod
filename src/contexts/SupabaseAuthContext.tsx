@@ -36,14 +36,15 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [currentSupabaseClient, setCurrentSupabaseClient] = useState(supabase);
 
   // Fetch user profile from database
-  const fetchUserProfile = async (userId: string, authData?: any) => {
+  const fetchUserProfile = async (userId: string, authData?: any, supabaseClient?: any) => {
     try {
+      const client = supabaseClient || currentSupabaseClient;
       // First sync user to ensure profile exists
       if (authData) {
-        await supabaseUserService.syncUserFromAuth(userId, authData);
+        await supabaseUserService.syncUserFromAuth(userId, authData, client);
       }
       
-      const profile = await supabaseUserService.getUserProfile(userId);
+      const profile = await supabaseUserService.getUserProfile(userId, client);
       setUserProfile(profile);
     } catch (err) {
       console.error('Error fetching user profile:', err);
@@ -66,7 +67,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     }
 
     // Get initial session
-    clientToUse.auth.getSession().then(({ data: { session }, error }) => {
+    clientToUse.auth.getSession().then(async ({ data: { session }, error }) => {
       if (error) {
         console.error('Error getting session:', error);
         setError(error);
@@ -75,7 +76,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchUserProfile(session.user.id, session.user);
+        await fetchUserProfile(session.user.id, session.user, clientToUse);
         // Trigger immediate sync of completion data on login
         unifiedCompletionService.triggerImmediateSync(clientToUse);
         // Trigger immediate sync of notes data on login
@@ -97,7 +98,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
         if (typeof window !== 'undefined' && session.user.email) {
           window.localStorage.setItem('last-login-email', session.user.email);
         }
-        await fetchUserProfile(session.user.id, session.user);
+        await fetchUserProfile(session.user.id, session.user, clientToUse);
         // Trigger sync on auth state changes
         unifiedCompletionService.triggerImmediateSync(clientToUse);
         // Trigger notes sync on auth state changes
@@ -187,8 +188,17 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
 
       // Check if email is verified
       if (!data.user?.email_confirmed_at) {
+        // Resend verification email
+        await userSupabaseClient.auth.resend({
+          type: 'signup',
+          email: email,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
+        });
+        
         await userSupabaseClient.auth.signOut();
-        throw new Error('Please verify your email before signing in. Check your inbox for the verification link.');
+        throw new Error('Please verify your email before signing in. A new verification link has been sent to your inbox.');
       }
 
       // Manually set the session and user since auth state listener might not be ready yet
@@ -327,7 +337,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   // Refresh user profile
   const refreshUserProfile = async () => {
     if (user) {
-      await fetchUserProfile(user.id);
+      await fetchUserProfile(user.id, null, currentSupabaseClient);
     }
   };
 

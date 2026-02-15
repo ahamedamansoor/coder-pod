@@ -178,10 +178,12 @@ export default function CertificatePage() {
             variant="outline" 
             size="sm" 
             className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-lg"
-            onClick={() => window.history.back()}
+            asChild
           >
-            <Home className="mr-2 h-4 w-4" />
-            Back to Learning
+            <Link href={`/languages/${language}/learning-plan`}>
+              <Home className="mr-2 h-4 w-4" />
+              Back to Learning
+            </Link>
           </Button>
           
           <div className="flex items-center gap-4">

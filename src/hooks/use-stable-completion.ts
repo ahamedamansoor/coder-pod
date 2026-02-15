@@ -21,49 +21,55 @@ export const useStableCompletion = (language: string): StableCompletionContextTy
   const [currentCacheVersion, setCurrentCacheVersion] = useState(0);
 
   // Load completion data for this specific language
+  const loadCompletionData = useCallback(async () => {
+    if (!user) return;
+
+    setIsLoading(true);
+    try {
+      // Get completion data from unified service
+      const allData = unifiedCompletionService.getAllCompletionData();
+      const languageTopics = allData[language] || [];
+      const topicsSet = new Set(languageTopics);
+      
+      // Update cache and state
+      completionCache.set(language, topicsSet);
+      setCompletedTopics(topicsSet);
+      setCurrentCacheVersion(cacheVersion);
+    } catch (error) {
+      console.error('Error loading completion data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.uid, language]);
+
   useEffect(() => {
-    const loadCompletionData = async () => {
-      if (!user) return;
-
-      setIsLoading(true);
-      try {
-        // Get completion data from unified service
-        const allData = unifiedCompletionService.getAllCompletionData();
-        const languageTopics = allData[language] || [];
-        const topicsSet = new Set(languageTopics);
-        
-        // Update cache and state
-        completionCache.set(language, topicsSet);
-        setCompletedTopics(topicsSet);
-        setCurrentCacheVersion(cacheVersion);
-      } catch (error) {
-        console.error('Error loading completion data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     loadCompletionData();
-  }, [user?.uid, language]); // Use user.uid instead of user object
+  }, [loadCompletionData]);
 
-  // Listen for storage changes to update this component
+  // Listen for storage changes and visibility changes to update this component
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'completion_data') {
-        // Reload data when localStorage changes
-        const allData = unifiedCompletionService.getAllCompletionData();
-        const languageTopics = allData[language] || [];
-        const topicsSet = new Set(languageTopics);
-        
-        completionCache.set(language, topicsSet);
-        setCompletedTopics(topicsSet);
-        setCurrentCacheVersion(prev => prev + 1);
+        loadCompletionData();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        loadCompletionData();
       }
     };
 
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [language]);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', loadCompletionData);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', loadCompletionData);
+    };
+  }, [loadCompletionData]);
 
   const handleToggleComplete = useCallback((topicSlug: string) => {
     if (!user) return;

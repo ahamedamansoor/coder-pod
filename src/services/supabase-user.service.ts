@@ -7,9 +7,10 @@ export class SupabaseUserService {
   /**
    * Get user profile by ID
    */
-  async getUserProfile(userId: string): Promise<UserProfile | null> {
+  async getUserProfile(userId: string, supabaseClient?: any): Promise<UserProfile | null> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('*')
         .eq('id', userId)
@@ -33,9 +34,10 @@ export class SupabaseUserService {
   /**
    * Check if user exists
    */
-  async userExists(userId: string): Promise<boolean> {
+  async userExists(userId: string, supabaseClient?: any): Promise<boolean> {
     try {
-      const { data, error } = await supabase
+      const client = supabaseClient || supabase;
+      const { data, error } = await client
         .from(this.tableName)
         .select('id')
         .eq('id', userId)
@@ -55,8 +57,9 @@ export class SupabaseUserService {
   /**
    * Create user profile
    */
-  async createUserProfile(userId: string, userData: CreateUserData): Promise<UserProfile> {
+  async createUserProfile(userId: string, userData: CreateUserData, supabaseClient?: any): Promise<UserProfile> {
     try {
+      const client = supabaseClient || supabase;
       const newUser = {
         id: userId,
         email: userData.email,
@@ -71,7 +74,7 @@ export class SupabaseUserService {
         stats: {},
       };
 
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from(this.tableName)
         .insert(newUser)
         .select()
@@ -91,8 +94,9 @@ export class SupabaseUserService {
   /**
    * Update user profile
    */
-  async updateUserProfile(userId: string, updateData: UpdateUserData): Promise<void> {
+  async updateUserProfile(userId: string, updateData: UpdateUserData, supabaseClient?: any): Promise<void> {
     try {
+      const client = supabaseClient || supabase;
       const updatePayload: any = {};
 
       if (updateData.name !== undefined) updatePayload.name = updateData.name;
@@ -104,7 +108,7 @@ export class SupabaseUserService {
 
       updatePayload.updated_at = new Date().toISOString();
 
-      const { error } = await supabase
+      const { error } = await client
         .from(this.tableName)
         .update(updatePayload)
         .eq('id', userId);
@@ -121,9 +125,10 @@ export class SupabaseUserService {
   /**
    * Update last login timestamp
    */
-  async updateLastLogin(userId: string): Promise<void> {
+  async updateLastLogin(userId: string, supabaseClient?: any): Promise<void> {
     try {
-      const { error } = await supabase
+      const client = supabaseClient || supabase;
+      const { error } = await client
         .from(this.tableName)
         .update({ last_login_at: new Date().toISOString() })
         .eq('id', userId);
@@ -140,17 +145,18 @@ export class SupabaseUserService {
   /**
    * Mark topic as completed
    */
-  async markTopicCompleted(userId: string, languageSlug: string, topicSlug: string): Promise<void> {
+  async markTopicCompleted(userId: string, languageSlug: string, topicSlug: string, supabaseClient?: any): Promise<void> {
     try {
+      const client = supabaseClient || supabase;
       // Get current completed topics
-      const profile = await this.getUserProfile(userId);
+      const profile = await this.getUserProfile(userId, client);
       if (!profile) throw new Error('User profile not found');
 
       const previous = profile.completedTopics?.[languageSlug] ?? [];
       const next = Array.from(new Set([...previous, topicSlug]));
       const completedTopics = { ...profile.completedTopics, [languageSlug]: next };
 
-      const { error } = await supabase
+      const { error } = await client
         .from(this.tableName)
         .update({ completed_topics: completedTopics })
         .eq('id', userId);
@@ -167,23 +173,33 @@ export class SupabaseUserService {
   /**
    * Sync user from Supabase Auth to users table
    */
-  async syncUserFromAuth(userId: string, authData: any): Promise<void> {
+  async syncUserFromAuth(userId: string, authData: any, supabaseClient?: any): Promise<void> {
     try {
-      const exists = await this.userExists(userId);
+      const client = supabaseClient || supabase;
+      const exists = await this.userExists(userId, client);
 
       if (!exists) {
+        console.log('📝 Creating user profile for:', userId);
         // Create new profile
         await this.createUserProfile(userId, {
           email: authData.email || null,
           name: authData.user_metadata?.name || authData.user_metadata?.full_name || null,
           photoURL: authData.user_metadata?.avatar_url || authData.user_metadata?.picture || null,
-        });
+        }, client);
       } else {
         // Update last login
-        await this.updateLastLogin(userId);
+        await this.updateLastLogin(userId, client);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error syncing user from auth:', error);
+      // If it's an RLS error, log more details
+      if (error.message?.includes('row-level security policy')) {
+        console.error('RLS Violation details:', {
+          userId,
+          table: this.tableName,
+          authUid: (await (supabaseClient || supabase).auth.getUser()).data.user?.id
+        });
+      }
       throw error;
     }
   }
