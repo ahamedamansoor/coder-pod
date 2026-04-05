@@ -10,7 +10,7 @@ export const postgresql: Language = {
       slug: 'learning-plan',
       title: 'Learning Plan',
       explanation: 'A comprehensive roadmap to master PostgreSQL from fundamentals to expert-level database administration, performance tuning, and production deployment.',
-      category: '0. Learning Plan'
+      category: 'Learning Plan'
     },
 
     // 1. DATABASE FUNDAMENTALS
@@ -18,31 +18,31 @@ export const postgresql: Language = {
       slug: 'database-rdbms-overview',
       title: 'What is a Database & RDBMS',
       explanation: 'Understanding database concepts, relational database management systems, data models, and how PostgreSQL fits into the database ecosystem with real-world examples.',
-      category: '1. Database Fundamentals'
+      category: 'Database Fundamentals'
     },
     {
       slug: 'postgresql-overview',
       title: 'PostgreSQL Overview',
       explanation: 'Introduction to PostgreSQL, its history, features, advantages, architecture, and why it\'s considered the world\'s most advanced open-source relational database.',
-      category: '1. Database Fundamentals'
+      category: 'Database Fundamentals'
     },
     {
       slug: 'installing-postgresql',
       title: 'Installing PostgreSQL',
       explanation: 'Step-by-step installation guide for PostgreSQL on Windows, macOS, Linux distributions, Docker, and cloud platforms with troubleshooting tips.',
-      category: '1. Database Fundamentals'
+      category: 'Database Fundamentals'
     },
     {
       slug: 'psql-pgadmin-basics',
       title: 'psql & pgAdmin Basics',
       explanation: 'Master the essential tools for interacting with PostgreSQL: psql command-line interface, pgAdmin GUI, and basic database operations.',
-      category: '1. Database Fundamentals'
+      category: 'Database Fundamentals'
     },
     {
       slug: 'postgresql-configuration',
       title: 'PostgreSQL Configuration',
       explanation: 'Understanding postgresql.conf, pg_hba.conf, authentication methods, and basic server configuration for optimal performance.',
-      category: '1. Database Fundamentals'
+      category: 'Database Fundamentals'
     },
 
     // 2. DATABASE STRUCTURE
@@ -50,25 +50,25 @@ export const postgresql: Language = {
       slug: 'databases-schemas-tables',
       title: 'Databases, Schemas, Tables',
       explanation: 'Understanding PostgreSQL\'s hierarchical structure: creating and managing databases, schemas for organization, and table design principles.',
-      category: '2. Database Structure'
+      category: 'Database Structure'
     },
     {
       slug: 'postgresql-data-types',
       title: 'Data Types Deep Dive',
       explanation: 'Comprehensive guide to PostgreSQL data types: numeric, character, date/time, boolean, arrays, JSON, JSONB, UUID, custom types, and type casting.',
-      category: '2. Database Structure'
+      category: 'Database Structure'
     },
     {
       slug: 'table-creation',
       title: 'Table Creation & Design',
       explanation: 'Creating tables with proper structure, column definitions, default values, constraints, and best practices for table design.',
-      category: '2. Database Structure'
+      category: 'Database Structure'
     },
     {
       slug: 'schema-management',
       title: 'Schema Management',
       explanation: 'Creating and managing schemas, organizing database objects, schema search path, and multi-tenant architecture with schemas.',
-      category: '2. Database Structure'
+      category: 'Database Structure'
     },
 
     // 3. DATA MANIPULATION
@@ -76,25 +76,25 @@ export const postgresql: Language = {
       slug: 'crud-operations',
       title: 'CRUD Operations',
       explanation: 'Master the fundamental database operations: INSERT with various syntaxes, SELECT basics, UPDATE strategies, and DELETE with safety considerations.',
-      category: '3. Data Manipulation'
+      category: 'Data Manipulation'
     },
     {
       slug: 'basic-select-queries',
       title: 'Basic SELECT Queries',
       explanation: 'Learn to retrieve data with SELECT statements: column selection, aliases, expressions, literals, NULL handling, and basic filtering.',
-      category: '3. Data Manipulation'
+      category: 'Data Manipulation'
     },
     {
       slug: 'where-order-limit',
       title: 'WHERE, ORDER BY, LIMIT',
       explanation: 'Filter data with WHERE clauses, sort results with ORDER BY, limit output with LIMIT/OFFSET, and combine multiple conditions.',
-      category: '3. Data Manipulation'
+      category: 'Data Manipulation'
     },
     {
       slug: 'data-modification-advanced',
       title: 'Advanced Data Modification',
       explanation: 'UPSERT operations, bulk inserts, UPDATE with JOINs, DELETE with USING clause, and returning data from DML operations.',
-      category: '3. Data Manipulation'
+      category: 'Data Manipulation'
     },
 
     // 4. DATA INTEGRITY & CONSTRAINTS
@@ -102,19 +102,19 @@ export const postgresql: Language = {
       slug: 'constraints',
       title: 'Constraints (PK, FK, UNIQUE, CHECK, DEFAULT)',
       explanation: 'Ensure data integrity with PostgreSQL constraints: Primary Keys, Foreign Keys with cascading actions, UNIQUE constraints, CHECK conditions, and DEFAULT values.',
-      category: '4. Data Integrity & Constraints'
+      category: 'Data Integrity & Constraints'
     },
     {
       slug: 'not-null-constraints',
       title: 'NOT NULL & Domain Constraints',
       explanation: 'Implement NOT NULL constraints, create custom domains with type constraints, and enforce data validation at the database level.',
-      category: '4. Data Integrity & Constraints'
+      category: 'Data Integrity & Constraints'
     },
     {
       slug: 'constraint-management',
       title: 'Constraint Management',
       explanation: 'Adding, modifying, and dropping constraints, deferred constraints, constraint naming conventions, and troubleshooting constraint violations.',
-      category: '4. Data Integrity & Constraints'
+      category: 'Data Integrity & Constraints'
     },
 
     // 5. ADVANCED QUERIES
@@ -122,31 +122,31 @@ export const postgresql: Language = {
       slug: 'joins',
       title: 'Joins (INNER, LEFT, RIGHT, FULL)',
       explanation: 'Master table relationships with comprehensive coverage of INNER JOINs, OUTER JOINs, CROSS JOINs, self-joins, and join optimization techniques.',
-      category: '5. Advanced Queries'
+      category: 'Advanced Queries'
     },
     {
       slug: 'join-optimization',
       title: 'Join Optimization & Strategies',
       explanation: 'Understanding join algorithms, join order optimization, hash joins vs nested loops, and writing efficient join queries.',
-      category: '5. Advanced Queries'
+      category: 'Advanced Queries'
     },
     {
       slug: 'subqueries',
       title: 'Subqueries',
       explanation: 'Understanding and implementing subqueries, correlated subqueries, EXISTS/NOT EXISTS, IN/NOT IN, and when to use subqueries vs joins.',
-      category: '5. Advanced Queries'
+      category: 'Advanced Queries'
     },
     {
       slug: 'common-table-expressions',
       title: 'Common Table Expressions (CTEs)',
       explanation: 'Simplify complex queries with CTEs, recursive CTEs for hierarchical data, materialized CTEs, and advanced CTE patterns.',
-      category: '5. Advanced Queries'
+      category: 'Advanced Queries'
     },
     {
       slug: 'set-operations',
       title: 'Set Operations',
       explanation: 'UNION, UNION ALL, INTERSECT, EXCEPT operations for combining query results and handling duplicate data.',
-      category: '5. Advanced Queries'
+      category: 'Advanced Queries'
     },
 
     // 6. AGGREGATION & GROUPING
@@ -154,19 +154,19 @@ export const postgresql: Language = {
       slug: 'aggregations',
       title: 'Aggregations (GROUP BY, HAVING)',
       explanation: 'Analyze data with aggregate functions, GROUP BY clauses, HAVING filters, grouping sets, and advanced aggregation techniques.',
-      category: '6. Aggregation & Grouping'
+      category: 'Aggregation & Grouping'
     },
     {
       slug: 'aggregate-functions',
       title: 'Aggregate Functions',
       explanation: 'Master COUNT, SUM, AVG, MIN, MAX, statistical functions, string aggregates, and creating custom aggregate functions.',
-      category: '6. Aggregation & Grouping'
+      category: 'Aggregation & Grouping'
     },
     {
       slug: 'grouping-operations',
       title: 'Advanced Grouping Operations',
       explanation: 'GROUPING SETS, CUBE, ROLLUP, window functions for aggregation, and handling NULL values in grouping operations.',
-      category: '6. Aggregation & Grouping'
+      category: 'Aggregation & Grouping'
     },
 
     // 7. VIEWS & VIRTUAL TABLES
@@ -174,19 +174,19 @@ export const postgresql: Language = {
       slug: 'views',
       title: 'Views',
       explanation: 'Create and manage virtual tables with views for data abstraction, security, simplified complex queries, and updatable views.',
-      category: '7. Views & Virtual Tables'
+      category: 'Views & Virtual Tables'
     },
     {
       slug: 'materialized-views',
       title: 'Materialized Views',
       explanation: 'Create and manage materialized views for performance optimization, refresh strategies, and query result caching.',
-      category: '7. Views & Virtual Tables'
+      category: 'Views & Virtual Tables'
     },
     {
       slug: 'updatable-views',
       title: 'Updatable Views & Rules',
       explanation: 'Creating updatable views, INSTEAD OF triggers, view limitations, and using rules for view updates.',
-      category: '7. Views & Virtual Tables'
+      category: 'Views & Virtual Tables'
     },
 
     // 8. INDEXING & PERFORMANCE
@@ -194,19 +194,19 @@ export const postgresql: Language = {
       slug: 'indexes-basics',
       title: 'Indexes (Basics)',
       explanation: 'Improve query performance with basic indexing concepts, B-tree indexes, index creation, maintenance, and when to index.',
-      category: '8. Indexing & Performance'
+      category: 'Indexing & Performance'
     },
     {
       slug: 'advanced-indexing',
       title: 'Advanced Indexing (B-Tree, GIN, GiST, BRIN)',
       explanation: 'Explore advanced index types including B-Tree, GIN, GiST, BRIN, HASH indexes, partial indexes, and expression indexes.',
-      category: '8. Indexing & Performance'
+      category: 'Indexing & Performance'
     },
     {
       slug: 'index-optimization',
       title: 'Index Optimization Strategies',
       explanation: 'Index analysis, covering indexes, multicolumn indexes, index bloat management, and index usage monitoring.',
-      category: '8. Indexing & Performance'
+      category: 'Indexing & Performance'
     },
 
     // 9. TRANSACTIONS & CONCURRENCY
@@ -214,25 +214,25 @@ export const postgresql: Language = {
       slug: 'transactions',
       title: 'Transactions',
       explanation: 'Ensure data consistency with transactions, savepoints, transaction isolation levels, and proper transaction management.',
-      category: '9. Transactions & Concurrency'
+      category: 'Transactions & Concurrency'
     },
     {
       slug: 'acid-properties',
       title: 'ACID Properties',
       explanation: 'Deep dive into Atomicity, Consistency, Isolation, and Durability properties that make PostgreSQL reliable and ACID compliance.',
-      category: '9. Transactions & Concurrency'
+      category: 'Transactions & Concurrency'
     },
     {
       slug: 'locks-concurrency',
       title: 'Locks & Concurrency Control',
       explanation: 'Understand PostgreSQL locking mechanisms, lock types, deadlock detection, lock monitoring, and managing concurrent access.',
-      category: '9. Transactions & Concurrency'
+      category: 'Transactions & Concurrency'
     },
     {
       slug: 'isolation-levels',
       title: 'Isolation Levels',
       explanation: 'Master transaction isolation levels, read phenomena (dirty reads, non-repeatable reads, phantom reads), and choosing the right isolation.',
-      category: '9. Transactions & Concurrency'
+      category: 'Transactions & Concurrency'
     },
 
     // 10. WINDOW FUNCTIONS & ANALYTICS
@@ -240,19 +240,19 @@ export const postgresql: Language = {
       slug: 'window-functions',
       title: 'Window Functions',
       explanation: 'Advanced analytical queries with window functions, ranking functions (ROW_NUMBER, RANK, DENSE_RANK), and analytical calculations.',
-      category: '10. Window Functions & Analytics'
+      category: 'Window Functions & Analytics'
     },
     {
       slug: 'window-frame-clauses',
       title: 'Window Frame Clauses',
       explanation: 'Understanding window frames (ROWS, RANGE, GROUPS), frame boundaries, and advanced window function patterns.',
-      category: '10. Window Functions & Analytics'
+      category: 'Window Functions & Analytics'
     },
     {
       slug: 'analytical-functions',
       title: 'Advanced Analytical Functions',
       explanation: 'LEAD, LAG, FIRST_VALUE, LAST_VALUE, NTH_VALUE, NTILE, and complex analytical queries for business intelligence.',
-      category: '10. Window Functions & Analytics'
+      category: 'Window Functions & Analytics'
     },
 
     // 11. JSON & SEMI-STRUCTURED DATA
@@ -260,19 +260,19 @@ export const postgresql: Language = {
       slug: 'json-jsonb',
       title: 'JSON & JSONB',
       explanation: 'Work with semi-structured data using PostgreSQL\'s powerful JSON and JSONB data types, operators, and functions for document storage.',
-      category: '11. JSON & Semi-Structured Data'
+      category: 'JSON & Semi-Structured Data'
     },
     {
       slug: 'json-operators-functions',
       title: 'JSON Operators & Functions',
       explanation: 'Master JSON path expressions, JSON operators (->, ->>, #>, #>>), JSON functions, and efficient JSON querying.',
-      category: '11. JSON & Semi-Structured Data'
+      category: 'JSON & Semi-Structured Data'
     },
     {
       slug: 'json-indexing',
       title: 'JSON Indexing Strategies',
       explanation: 'Optimize JSON queries with GIN indexes, expression indexes on JSON fields, and JSON performance tuning.',
-      category: '11. JSON & Semi-Structured Data'
+      category: 'JSON & Semi-Structured Data'
     },
 
     // 12. ARRAYS & COMPLEX TYPES
@@ -280,19 +280,19 @@ export const postgresql: Language = {
       slug: 'arrays',
       title: 'Array Data Types',
       explanation: 'Working with array types, array operators, array functions, multidimensional arrays, and array aggregation.',
-      category: '12. Arrays & Complex Types'
+      category: 'Arrays & Complex Types'
     },
     {
       slug: 'composite-types',
       title: 'Composite Types',
       explanation: 'Creating and using custom composite types, row types, type constructors, and complex data structures.',
-      category: '12. Arrays & Complex Types'
+      category: 'Arrays & Complex Types'
     },
     {
       slug: 'range-types',
       title: 'Range Types',
       explanation: 'Using built-in range types (int4range, daterange, tsrange), creating custom ranges, and range operations.',
-      category: '12. Arrays & Complex Types'
+      category: 'Arrays & Complex Types'
     },
 
     // 13. PARTITIONING & SCALING
@@ -300,19 +300,19 @@ export const postgresql: Language = {
       slug: 'partitioning',
       title: 'Table Partitioning',
       explanation: 'Implement table partitioning for large datasets: declarative partitioning, range/list/hash partitioning, and partition pruning.',
-      category: '13. Partitioning & Scaling'
+      category: 'Partitioning & Scaling'
     },
     {
       slug: 'partition-strategies',
       title: 'Advanced Partitioning Strategies',
       explanation: 'Subpartitioning, partition maintenance, partition-wise joins, and designing scalable partitioned architectures.',
-      category: '13. Partitioning & Scaling'
+      category: 'Partitioning & Scaling'
     },
     {
       slug: 'table-inheritance',
       title: 'Table Inheritance',
       explanation: 'PostgreSQL\'s table inheritance feature, inheritance hierarchies, and when to use inheritance vs partitioning.',
-      category: '13. Partitioning & Scaling'
+      category: 'Partitioning & Scaling'
     },
 
     // 14. PROGRAMMING & PROCEDURAL LANGUAGES
@@ -320,25 +320,25 @@ export const postgresql: Language = {
       slug: 'pl-pgsql',
       title: 'PL/pgSQL',
       explanation: 'Program in PostgreSQL with PL/pgSQL procedural language: variables, control structures, exception handling, and best practices.',
-      category: '14. Programming & Procedural Languages'
+      category: 'Programming & Procedural Languages'
     },
     {
       slug: 'stored-functions-procedures',
       title: 'Stored Functions & Procedures',
       explanation: 'Create and manage stored functions and procedures for encapsulating business logic, function overloading, and security definers.',
-      category: '14. Programming & Procedural Languages'
+      category: 'Programming & Procedural Languages'
     },
     {
       slug: 'triggers',
       title: 'Triggers',
       explanation: 'Implement automated database operations with triggers for auditing, validation, business rule enforcement, and event triggers.',
-      category: '14. Programming & Procedural Languages'
+      category: 'Programming & Procedural Languages'
     },
     {
       slug: 'procedural-languages',
       title: 'Other Procedural Languages',
       explanation: 'Overview of PL/Python, PL/Perl, PL/Tcl, and installing additional procedural languages for specific use cases.',
-      category: '14. Programming & Procedural Languages'
+      category: 'Programming & Procedural Languages'
     },
 
     // 15. SECURITY & ACCESS CONTROL
@@ -346,25 +346,25 @@ export const postgresql: Language = {
       slug: 'row-level-security',
       title: 'Row-Level Security (RLS)',
       explanation: 'Implement fine-grained access control with PostgreSQL\'s Row-Level Security policies for multi-tenant applications and data isolation.',
-      category: '15. Security & Access Control'
+      category: 'Security & Access Control'
     },
     {
       slug: 'roles-permissions',
       title: 'Roles & Permissions',
       explanation: 'Master PostgreSQL security model with roles, privileges, GRANT/REVOKE, role inheritance, and granular permission management.',
-      category: '15. Security & Access Control'
+      category: 'Security & Access Control'
     },
     {
       slug: 'authentication-methods',
       title: 'Authentication Methods',
       explanation: 'Configure various authentication methods: password, MD5, SCRAM, LDAP, Kerberos, and certificate-based authentication.',
-      category: '15. Security & Access Control'
+      category: 'Security & Access Control'
     },
     {
       slug: 'encryption-security',
       title: 'Data Encryption & Security',
       explanation: 'Column-level encryption, transparent data encryption (TDE), SSL/TLS configuration, and security best practices.',
-      category: '15. Security & Access Control'
+      category: 'Security & Access Control'
     },
 
     // 16. BACKUP & RECOVERY
@@ -372,19 +372,19 @@ export const postgresql: Language = {
       slug: 'backup-restore',
       title: 'Backup & Restore',
       explanation: 'Implement robust backup and recovery strategies with pg_dump, pg_dumpall, pg_restore, and automated backup solutions.',
-      category: '16. Backup & Recovery'
+      category: 'Backup & Recovery'
     },
     {
       slug: 'point-in-time-recovery',
       title: 'Point-in-Time Recovery (PITR)',
       explanation: 'Configure continuous archiving, WAL archiving, base backups, and recovering to specific points in time.',
-      category: '16. Backup & Recovery'
+      category: 'Backup & Recovery'
     },
     {
       slug: 'backup-strategies',
       title: 'Advanced Backup Strategies',
       explanation: 'Physical vs logical backups, incremental backups, backup validation, and disaster recovery planning.',
-      category: '16. Backup & Recovery'
+      category: 'Backup & Recovery'
     },
 
     // 17. REPLICATION & HIGH AVAILABILITY
@@ -392,19 +392,19 @@ export const postgresql: Language = {
       slug: 'replication',
       title: 'Replication',
       explanation: 'Configure and manage PostgreSQL replication: streaming replication, logical replication, replication slots, and monitoring.',
-      category: '17. Replication & High Availability'
+      category: 'Replication & High Availability'
     },
     {
       slug: 'high-availability',
       title: 'High Availability',
       explanation: 'Design and implement high-availability PostgreSQL architectures with failover, load balancing, and automatic failover tools.',
-      category: '17. Replication & High Availability'
+      category: 'Replication & High Availability'
     },
     {
       slug: 'replication-management',
       title: 'Advanced Replication Management',
       explanation: 'Replication lag monitoring, conflict resolution, cascading replication, and replication troubleshooting.',
-      category: '17. Replication & High Availability'
+      category: 'Replication & High Availability'
     },
 
     // 18. PERFORMANCE TUNING
@@ -412,25 +412,25 @@ export const postgresql: Language = {
       slug: 'query-optimization',
       title: 'Query Optimization',
       explanation: 'Advanced techniques for optimizing PostgreSQL queries, understanding execution plans, and improving database performance.',
-      category: '18. Performance Tuning'
+      category: 'Performance Tuning'
     },
     {
       slug: 'explain-analyze',
       title: 'EXPLAIN & EXPLAIN ANALYZE',
       explanation: 'Master query planning and execution analysis with EXPLAIN, EXPLAIN ANALYZE, query plan interpretation, and performance tuning.',
-      category: '18. Performance Tuning'
+      category: 'Performance Tuning'
     },
     {
       slug: 'performance-tuning',
       title: 'Advanced Performance Tuning',
       explanation: 'Configuration optimization, memory management, work_mem, shared_buffers, checkpoint tuning, and system-level performance tuning.',
-      category: '18. Performance Tuning'
+      category: 'Performance Tuning'
     },
     {
       slug: 'vacuum-autovacuum',
       title: 'VACUUM & Autovacuum',
       explanation: 'Understand and optimize PostgreSQL\'s VACUUM process for table maintenance, bloat management, and performance optimization.',
-      category: '18. Performance Tuning'
+      category: 'Performance Tuning'
     },
 
     // 19. POSTGRESQL INTERNALS
@@ -438,19 +438,19 @@ export const postgresql: Language = {
       slug: 'postgresql-internals',
       title: 'PostgreSQL Internals (MVCC, WAL, Query Planner)',
       explanation: 'Deep dive into PostgreSQL internals including MVCC, Write-Ahead Logging, buffer manager, and the query planner architecture.',
-      category: '19. PostgreSQL Internals'
+      category: 'PostgreSQL Internals'
     },
     {
       slug: 'storage-system',
       title: 'Storage System & Pages',
       explanation: 'Understanding PostgreSQL storage: data pages, TOAST, tuple headers, and how data is physically stored on disk.',
-      category: '19. PostgreSQL Internals'
+      category: 'PostgreSQL Internals'
     },
     {
       slug: 'query-execution',
       title: 'Query Execution Engine',
       explanation: 'How PostgreSQL executes queries: parsing, planning, optimization, execution, and result generation.',
-      category: '19. PostgreSQL Internals'
+      category: 'PostgreSQL Internals'
     },
 
     // 20. EXTENSIONS & ECOSYSTEM
@@ -458,19 +458,19 @@ export const postgresql: Language = {
       slug: 'postgresql-extensions',
       title: 'PostgreSQL Extensions',
       explanation: 'Explore powerful extensions: PostGIS for geospatial data, pg_stat_statements, pg_trgm, hstore, and other useful extensions.',
-      category: '20. Extensions & Ecosystem'
+      category: 'Extensions & Ecosystem'
     },
     {
       slug: 'full-text-search',
       title: 'Full-Text Search',
       explanation: 'Implement powerful search capabilities with PostgreSQL\'s built-in full-text search features, tsvector, tsquery, and GIN indexes.',
-      category: '20. Extensions & Ecosystem'
+      category: 'Extensions & Ecosystem'
     },
     {
       slug: 'foreign-data-wrappers',
       title: 'Foreign Data Wrappers (FDW)',
       explanation: 'Access external data sources using FDW for integrating PostgreSQL with other databases, APIs, and file systems.',
-      category: '20. Extensions & Ecosystem'
+      category: 'Extensions & Ecosystem'
     },
 
     // 21. CONNECTION MANAGEMENT
@@ -478,13 +478,13 @@ export const postgresql: Language = {
       slug: 'connection-pooling',
       title: 'Connection Pooling (PgBouncer)',
       explanation: 'Implement connection pooling with PgBouncer for optimal resource management, performance, and handling high concurrency.',
-      category: '21. Connection Management'
+      category: 'Connection Management'
     },
     {
       slug: 'connection-management',
       title: 'Advanced Connection Management',
       explanation: 'Connection limits, resource queues, connection monitoring, and optimizing connection usage in applications.',
-      category: '21. Connection Management'
+      category: 'Connection Management'
     },
 
     // 22. MONITORING & OBSERVABILITY
@@ -492,13 +492,13 @@ export const postgresql: Language = {
       slug: 'monitoring-tools',
       title: 'Monitoring & Metrics',
       explanation: 'Comprehensive database monitoring: pg_stat views, system catalogs, performance metrics, and monitoring tools setup.',
-      category: '22. Monitoring & Observability'
+      category: 'Monitoring & Observability'
     },
     {
       slug: 'logging-auditing',
       title: 'Logging & Auditing',
       explanation: 'Configure PostgreSQL logging, audit logging, log analysis, and compliance monitoring for security and troubleshooting.',
-      category: '22. Monitoring & Observability'
+      category: 'Monitoring & Observability'
     },
 
     // 23. SCALING & DISTRIBUTED SYSTEMS
@@ -506,13 +506,13 @@ export const postgresql: Language = {
       slug: 'sharding-scaling',
       title: 'Sharding & Scaling',
       explanation: 'Advanced scaling strategies including horizontal partitioning, sharding, distributed PostgreSQL solutions, and scaling patterns.',
-      category: '23. Scaling & Distributed Systems'
+      category: 'Scaling & Distributed Systems'
     },
     {
       slug: 'distributed-postgresql',
       title: 'Distributed PostgreSQL',
       explanation: 'Overview of distributed PostgreSQL solutions: Citus, CockroachDB compatibility, and distributed database architectures.',
-      category: '23. Scaling & Distributed Systems'
+      category: 'Scaling & Distributed Systems'
     },
 
     // 24. PRODUCTION DEPLOYMENT
@@ -520,19 +520,19 @@ export const postgresql: Language = {
       slug: 'postgresql-production',
       title: 'PostgreSQL in Production',
       explanation: 'Best practices for running PostgreSQL in production environments including monitoring, security, maintenance, and operations.',
-      category: '24. Production Deployment'
+      category: 'Production Deployment'
     },
     {
       slug: 'deployment-strategies',
       title: 'Deployment Strategies',
       explanation: 'Production deployment patterns, blue-green deployments, rolling upgrades, and zero-downtime deployment strategies.',
-      category: '24. Production Deployment'
+      category: 'Production Deployment'
     },
     {
       slug: 'capacity-planning',
       title: 'Capacity Planning & Sizing',
       explanation: 'Hardware sizing, resource planning, performance benchmarking, and scaling calculations for production deployments.',
-      category: '24. Production Deployment'
+      category: 'Production Deployment'
     },
 
     // 25. CLOUD & DEVOPS
@@ -540,19 +540,19 @@ export const postgresql: Language = {
       slug: 'postgresql-cloud-deployment',
       title: 'Cloud Deployment',
       explanation: 'Deploying PostgreSQL on AWS RDS, Google Cloud SQL, Azure Database, and other cloud platforms with managed services.',
-      category: '25. Cloud & DevOps'
+      category: 'Cloud & DevOps'
     },
     {
       slug: 'postgresql-docker',
       title: 'PostgreSQL with Docker',
       explanation: 'Containerizing PostgreSQL applications, Docker Compose setups, Kubernetes deployment, and container orchestration.',
-      category: '25. Cloud & DevOps'
+      category: 'Cloud & DevOps'
     },
     {
       slug: 'ci-cd-databases',
       title: 'CI/CD for Databases',
       explanation: 'Implementing database migrations, schema versioning, automated testing, and database lifecycle management in CI/CD pipelines.',
-      category: '25. Cloud & DevOps'
+      category: 'Cloud & DevOps'
     },
 
     // 26. MIGRATION & UPGRADES
@@ -560,13 +560,13 @@ export const postgresql: Language = {
       slug: 'postgresql-upgrades',
       title: 'PostgreSQL Upgrades',
       explanation: 'Planning and executing major version upgrades with minimal downtime, compatibility considerations, and upgrade strategies.',
-      category: '26. Migration & Upgrades'
+      category: 'Migration & Upgrades'
     },
     {
       slug: 'database-migration',
       title: 'Database Migration',
       explanation: 'Migrating from other databases (MySQL, Oracle, SQL Server) to PostgreSQL with data conversion tools and migration strategies.',
-      category: '26. Migration & Upgrades'
+      category: 'Migration & Upgrades'
     },
 
     // 27. ADVANCED FEATURES
@@ -574,13 +574,13 @@ export const postgresql: Language = {
       slug: 'custom-functions',
       title: 'Custom Functions & Operators',
       explanation: 'Creating custom functions, operators, aggregates, and data types to extend PostgreSQL functionality for specific use cases.',
-      category: '27. Advanced Features'
+      category: 'Advanced Features'
     },
     {
       slug: 'event-triggers',
       title: 'Event Triggers & DDL Capture',
       explanation: 'Implementing DDL event triggers, auditing schema changes, and capturing database modification events.',
-      category: '27. Advanced Features'
+      category: 'Advanced Features'
     },
 
     // 28. BEST PRACTICES & PATTERNS
@@ -588,13 +588,13 @@ export const postgresql: Language = {
       slug: 'postgresql-best-practices',
       title: 'Best Practices & Patterns',
       explanation: 'Industry best practices, design patterns, architectural considerations, and anti-patterns for PostgreSQL applications.',
-      category: '28. Best Practices & Patterns'
+      category: 'Best Practices & Patterns'
     },
     {
       slug: 'sql-anti-patterns',
       title: 'SQL Anti-Patterns',
       explanation: 'Common mistakes and anti-patterns in SQL and database design, with solutions and best practice alternatives.',
-      category: '28. Best Practices & Patterns'
+      category: 'Best Practices & Patterns'
     }
   ]
 };

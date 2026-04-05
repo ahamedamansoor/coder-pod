@@ -51,7 +51,6 @@ export const LearningPathChartModal = ({
 
   // Get comparison language data
   const compareLanguageData = allLanguages.find(lang => lang.slug === compareLanguage);
-  console.log('Compare language data:', compareLanguageData);
   const compareTopicsByCategory = compareLanguageData ? 
     compareLanguageData.topics
       .filter(t => !excludedSlugs.includes(t.slug))
@@ -63,7 +62,6 @@ export const LearningPathChartModal = ({
         acc[category].push(topic);
         return acc;
       }, {} as Record<string, Topic[]>) : null;
-  console.log('Compare topics by category:', compareTopicsByCategory);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -175,10 +173,8 @@ export const LearningPathChartModal = ({
           {/* Comparison Dropdown */}
           <div className="flex items-center gap-2">
             <Select value={compareLanguage} onValueChange={(value) => {
-              console.log('Selected comparison:', value);
               setCompareLanguage(value);
               setIsComparing(value !== '');
-              console.log('Is comparing:', value !== '');
             }}>
               <SelectTrigger className="w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg">
                 <SelectValue placeholder="Compare with..." />
@@ -254,17 +250,11 @@ export const LearningPathChartModal = ({
 
             {/* Desktop View (Side by Side Layout) */}
             <div className="hidden md:block relative z-10">
-              {/* Debug indicator */}
-              {isComparing && (
-                <div className="fixed top-20 right-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm z-50">
-                  Comparison Mode: ON
-                </div>
-              )}
               {isComparing ? (
                 // Comparison View - Two complete roadmaps side by side
-                <div className="flex gap-8 border-2 border-red-500 p-4 w-full" style={{ display: 'flex', flexDirection: 'row' }}>
+                <div className="grid grid-cols-2 gap-8">
                   {/* Left Roadmap */}
-                  <div className="space-y-24 border-2 border-blue-500 p-2 flex-1" style={{ flex: '1' }}>
+                  <div className="space-y-24">
                     <div className="text-center mb-8">
                       <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800">
                         <div className="w-3 h-3 bg-blue-500 rounded-full" />
@@ -421,17 +411,16 @@ export const LearningPathChartModal = ({
                   </div>
 
                   {/* Right Roadmap */}
-                  <div className="space-y-24 border-2 border-purple-500 p-2 flex-1" style={{ flex: '1' }}>
+                  <div className="space-y-24">
                     <div className="text-center mb-8">
                       <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800">
                         <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                        <span className="font-bold text-purple-800 dark:text-purple-200">{compareLanguageData?.name || 'Select a roadmap'}</span>
+                        <span className="font-bold text-purple-800 dark:text-purple-200">{compareLanguageData?.name}</span>
                       </div>
                     </div>
                     <div className="relative">
                       <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-purple-500 z-0" />
-                      {compareTopicsByCategory && Object.entries(compareTopicsByCategory).length > 0 ? (
-                        Object.entries(compareTopicsByCategory).map(([category, topics], categoryIndex) => {
+                      {compareTopicsByCategory && Object.entries(compareTopicsByCategory).map(([category, topics], categoryIndex) => {
                         const leftTopics = topics.filter((_, i) => i % 2 === 0);
                         const rightTopics = topics.filter((_, i) => i % 2 === 1);
 
@@ -526,18 +515,7 @@ export const LearningPathChartModal = ({
                             </div>
                           </div>
                         );
-                      })
-                      ) : (
-                        <div className="flex items-center justify-center h-64">
-                          <div className="text-center">
-                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                              <ArrowRightLeft className="w-8 h-8 text-purple-500" />
-                            </div>
-                            <p className="text-purple-600 dark:text-purple-400 font-medium">Select a roadmap to compare</p>
-                            <p className="text-purple-500 dark:text-purple-500 text-sm mt-1">Use the dropdown above</p>
-                          </div>
-                        </div>
-                      )}
+                      })}
                     </div>
                   </div>
                 </div>
@@ -571,141 +549,145 @@ export const LearningPathChartModal = ({
                         </div>
 
                         {/* Topics Grid */}
-                        <div className="grid grid-cols-[1fr_auto_1fr] gap-0 items-start">
-                          {/* Left Column */}
-                          <div className="flex flex-col gap-4 items-end">
-                            {leftTopics.map((topic, i) => {
-                              const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
-                              return (
-                                <div
-                                  key={topic.slug}
-                                  className="flex items-center animate-slide-left"
-                                  style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
-                                >
-                                  {/* Topic Box */}
+                          <div className="grid grid-cols-[1fr_auto_1fr] gap-0 items-start">
+                            {/* Left Column */}
+                            <div className="flex flex-col gap-4 items-end">
+                              {leftTopics.map((topic, i) => {
+                                const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
+                                return (
+                                  <div
+                                    key={topic.slug}
+                                    className="flex items-center animate-slide-left"
+                                    style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
+                                  >
+                              {/* Topic Box */}
+                              <div className={cn(
+                                "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
+                                isCompleted
+                                  ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
+                                  : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
+                              )}>
+                                <div className="p-4">
                                   <div className={cn(
-                                    "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                    isCompleted
-                                      ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                      : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
+                                    "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
+                                    isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
                                   )}>
-                                    <div className="p-4">
-                                      <div className={cn(
-                                        "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                        isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                      )}>
-                                        {topic.title}
-                                      </div>
-                                      <div className={cn(
-                                        "text-xs leading-relaxed line-clamp-3",
-                                        isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
-                                      )}>
-                                        {topic.explanation}
-                                      </div>
-                                    </div>
-                                    <div className={cn(
-                                      "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                      isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
-                                    )} />
+                                    {topic.title}
                                   </div>
-
-                                  {/* Connector */}
-                                  <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
-                                    <path
-                                      d={`M 0 20 Q 50 20 100 ${i % 2 === 0 ? 5 : 35}`}
-                                      fill="none"
-                                      stroke="#6b7280"
-                                      strokeWidth="2"
-                                      strokeDasharray="6 4"
-                                      className="animate-draw-line"
-                                      style={{ animationDelay: `${0.4 + i * 0.1}s` }}
-                                    />
-                                    <circle
-                                      cx="100"
-                                      cy={i % 2 === 0 ? 5 : 35}
-                                      r="6"
-                                      fill="#3b82f6"
-                                      className="animate-pop-in"
-                                      style={{ animationDelay: `${0.5 + i * 0.1}s`, opacity: 0 }}
-                                    />
-                                  </svg>
-                                </div>
-                              );
-                            })}
-                          </div>
-
-                          {/* Center Spine */}
-                          <div className="relative flex flex-col items-center">
-                            <div className="w-0.5 h-full bg-blue-500" />
-                          </div>
-
-                          {/* Right Column */}
-                          <div className="flex flex-col gap-4 items-start">
-                            {rightTopics.map((topic, i) => {
-                              const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
-                              return (
-                                <div
-                                  key={topic.slug}
-                                  className="flex items-center animate-slide-right"
-                                  style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
-                                >
-                                  {/* Connector */}
-                                  <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
-                                    <circle
-                                      cx="0"
-                                      cy={i % 2 === 0 ? 5 : 35}
-                                      r="6"
-                                      fill="#3b82f6"
-                                      className="animate-pop-in"
-                                      style={{ animationDelay: `${0.5 + i * 0.1}s`, opacity: 0 }}
-                                    />
-                                    <path
-                                      d={`M 0 ${i % 2 === 0 ? 5 : 35} Q 50 20 100 20`}
-                                      fill="none"
-                                      stroke="#6b7280"
-                                      strokeWidth="2"
-                                      strokeDasharray="6 4"
-                                      className="animate-draw-line"
-                                      style={{ animationDelay: `${0.4 + i * 0.1}s` }}
-                                    />
-                                  </svg>
-
-                                  {/* Topic Box */}
                                   <div className={cn(
-                                    "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                    isCompleted
-                                      ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                      : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
+                                    "text-xs leading-relaxed line-clamp-3",
+                                    isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
                                   )}>
-                                    <div className="p-4">
-                                      <div className={cn(
-                                        "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                        isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                      )}>
-                                        {topic.title}
-                                      </div>
-                                      <div className={cn(
-                                        "text-xs leading-relaxed line-clamp-3",
-                                        isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
-                                      )}>
-                                        {topic.explanation}
-                                      </div>
-                                    </div>
-                                    <div className={cn(
-                                      "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                      isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
-                                    )} />
+                                    {topic.explanation}
                                   </div>
                                 </div>
-                              );
-                            })}
-                          </div>
-                        </div>
+                                <div className={cn(
+                                  "absolute top-3 right-3 w-2 h-2 rounded-full",
+                                  isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
+                                )} />
+                              </div>
+
+                              {/* Connector */}
+                              <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
+                                <path
+                                  d={`M 0 20 Q 50 20 100 ${i % 2 === 0 ? 5 : 35}`}
+                                  fill="none"
+                                  stroke="#6b7280"
+                                  strokeWidth="2"
+                                  strokeDasharray="6 4"
+                                  className="animate-draw-line"
+                                  style={{ animationDelay: `${0.4 + i * 0.1}s` }}
+                                />
+                                <circle
+                                  cx="100"
+                                  cy={i % 2 === 0 ? 5 : 35}
+                                  r="6"
+                                  fill="#3b82f6"
+                                  className="animate-pop-in"
+                                  style={{ animationDelay: `${0.5 + i * 0.1}s`, opacity: 0 }}
+                                />
+                              </svg>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
-                </div>
-              )}
+
+                      {/* Spine Dots */}
+                      <div className="flex flex-col items-center gap-4 py-2 relative">
+                        {[...Array(Math.max(leftTopics.length, rightTopics.length))].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-3 h-3 rounded-full bg-blue-500 border-2 border-blue-300 opacity-0"
+                            style={{ height: '40px' }}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Right Column */}
+                      <div className="flex flex-col gap-4 items-start">
+                        {rightTopics.map((topic, i) => {
+                          const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
+                          return (
+                            <div
+                              key={topic.slug}
+                              className="flex items-center animate-slide-right"
+                              style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
+                            >
+                              {/* Connector */}
+                              <svg width="100" height="40" className="flex-shrink-0" style={{ marginLeft: '-4px', marginRight: '-4px' }}>
+                                <circle
+                                  cx="0"
+                                  cy={i % 2 === 0 ? 5 : 35}
+                                  r="6"
+                                  fill="#3b82f6"
+                                  className="animate-pop-in"
+                                  style={{ animationDelay: `${0.5 + i * 0.1}s`, opacity: 0 }}
+                                />
+                                <path
+                                  d={`M 0 ${i % 2 === 0 ? 5 : 35} Q 50 20 100 20`}
+                                  fill="none"
+                                  stroke="#6b7280"
+                                  strokeWidth="2"
+                                  strokeDasharray="6 4"
+                                  className="animate-draw-line"
+                                  style={{ animationDelay: `${0.4 + i * 0.1}s` }}
+                                />
+                              </svg>
+
+                              {/* Topic Box */}
+                              <div className={cn(
+                                "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
+                                isCompleted
+                                  ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
+                                  : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
+                              )}>
+                                <div className="p-4">
+                                  <div className={cn(
+                                    "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
+                                    isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
+                                  )}>
+                                    {topic.title}
+                                  </div>
+                                  <div className={cn(
+                                    "text-xs leading-relaxed line-clamp-3",
+                                    isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                  )}>
+                                    {topic.explanation}
+                                  </div>
+                                </div>
+                                <div className={cn(
+                                  "absolute top-3 right-3 w-2 h-2 rounded-full",
+                                  isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
+                                )} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Mobile View (Timeline Layout) */}

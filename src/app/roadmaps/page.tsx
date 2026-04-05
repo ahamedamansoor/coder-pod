@@ -30,6 +30,8 @@ const accentColors: Record<string, string> = {
   'frontend-developer': 'bg-blue-600',
   'backend-developer': 'bg-slate-700',
   playwright: 'bg-green-500',
+  selenium: 'bg-green-600',
+  python: 'bg-blue-600',
   rxjs: 'bg-purple-500',
   dsa: 'bg-violet-600',
 };
@@ -45,8 +47,8 @@ const categories = [
 const categoryMap: Record<string, string[]> = {
   roles: ['frontend-developer', 'backend-developer'],
   frontend: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs'],
-  backend: ['java', 'spring', 'spring-boot'],
-  testing: ['playwright'],
+  backend: ['java', 'spring', 'spring-boot', 'python'],
+  testing: ['playwright', 'selenium'],
 };
 
 export default function RoadmapsPage() {
@@ -473,6 +475,7 @@ export default function RoadmapsPage() {
           language={selectedLanguage}
           completedTopics={new Set()}
           showProgress={false}
+          allLanguages={languages}
         />
       )}
     </div>

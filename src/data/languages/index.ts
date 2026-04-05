@@ -16,6 +16,7 @@ import { dsa } from './dsa';
 import { rxjs } from './rxjs';
 import { playwright } from './playwright';
 import { selenium } from './selenium';
+import { python } from './python';
 import { git } from './git';
 import { postgresql } from './postgresql';
 import { frontendSystemDesign } from './frontend-system-design';
@@ -41,6 +42,7 @@ export const languages: Language[] = [
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
     { ...selenium, enabled: true },
+    { ...python, enabled: true },
     { ...git, enabled: false },
     { ...postgresql, enabled: false },
     { ...frontendSystemDesign, enabled: false },
