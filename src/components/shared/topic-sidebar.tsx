@@ -203,7 +203,15 @@ export function TopicSidebar({
   }, {} as Record<string, typeof language.topics>);
 
   const groupOrder = language.slug === 'html'
-    ? ['1. Fundamentals','2. Text & Content','3. Links & Navigation','4. Images & Media','5. Lists & Tables','6. Forms','7. Semantic HTML','8. Document Head','9. Scripts & Styles','10. Interactive Elements','11. Iframes & Embedding','12. Web Components','13. HTML5 APIs','14. Performance','15. SEO & Metadata','16. Accessibility','17. Modern HTML Features','18. Best Practices']
+    ? ['Fundamentals','Text & Content','Links & Navigation','Images & Media','Lists & Tables','Forms','Semantic HTML','Document Head','Scripts & Styles','Interactive Elements','Iframes & Embedding','Web Components','HTML5 APIs','Performance','SEO & Metadata','Accessibility','Modern HTML Features','Best Practices']
+    : language.slug === 'javascript'
+    ? ['Fundamentals','Variables & Data Types','Functions','Objects & Arrays','Control Flow','DOM Manipulation','Events','Async Programming','ES6+ Features','Modules','Error Handling','Performance','Testing','Modern JavaScript','Best Practices']
+    : language.slug === 'scss'
+    ? ['Fundamentals','Variables','Nesting','Mixins','Functions','Inheritance','Operators','Control Directives','Partials & Import','Advanced Features','Architecture','Best Practices']
+    : language.slug === 'selenium'
+    ? ['Introduction','Setup & Installation','Basic Commands','Locators','Interactions','Waits','Forms','Windows & Tabs','Actions','JavaScript Execution','Testing Frameworks','Advanced Features','Best Practices']
+    : language.slug === 'dsa'
+    ? ['Introduction','Complexity Analysis','Arrays','Linked Lists','Stacks','Queues','Trees','Graphs','Sorting','Searching','Dynamic Programming','Greedy Algorithms','Backtracking','Advanced Topics','Practice Problems']
     : language.slug === 'java'
     ? ["1. Getting Started", "2. Basic Output", "3. Variables & Data Types", "4. Operators", "5. User Input", "6. Control Flow", "7. Strings & Arrays", "8. Methods & OOP Basics", "9. Advanced OOP", "10. Advanced Collections", "11. Error Handling", "12. Generics", "13. Functional Programming", "14. Concurrency", "15. Java 8+ Features", "16. Java 9-11 Features", "17. Java 12-16 Features", "18. Java 17+ (LTS)", "19. File I/O", "20. Annotations", "21. Reflection", "22. JVM Internals", "23. Testing", "24. Best Practices"]
     : language.slug === 'spring' 

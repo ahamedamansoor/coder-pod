@@ -33,28 +33,32 @@ export function LanguageSwitcher({
   };
 
   const frontendSlugs = new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs']);
-  const backendSlugs = new Set(['java', 'spring', 'spring-boot']);
+  const backendSlugs = new Set(['java', 'spring', 'spring-boot', 'python']);
   const dsaSlugs = new Set(['dsa']);
   const testingSlugs = new Set(['playwright', 'selenium']);
   const toolsSlugs = new Set(['git']);
+  const excludedSlugs = new Set(['python']); // Languages to exclude from dropdown
 
   // Filter languages based on search query
   const filteredLanguages = useMemo(() => {
+    // Filter out excluded languages first
+    const availableLanguages = languages.filter((lang) => !excludedSlugs.has(lang.slug));
+    
     if (!searchQuery.trim()) {
       return {
-        frontend: languages.filter((lang) => frontendSlugs.has(lang.slug)),
-        backend: languages.filter((lang) => backendSlugs.has(lang.slug)),
-        testing: languages.filter((lang) => testingSlugs.has(lang.slug)),
-        dsa: languages.filter((lang) => dsaSlugs.has(lang.slug)),
-        tools: languages.filter((lang) => toolsSlugs.has(lang.slug)),
-        other: languages.filter(
+        frontend: availableLanguages.filter((lang) => frontendSlugs.has(lang.slug)),
+        backend: availableLanguages.filter((lang) => backendSlugs.has(lang.slug)),
+        testing: availableLanguages.filter((lang) => testingSlugs.has(lang.slug)),
+        dsa: availableLanguages.filter((lang) => dsaSlugs.has(lang.slug)),
+        tools: availableLanguages.filter((lang) => toolsSlugs.has(lang.slug)),
+        other: availableLanguages.filter(
           (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
         ),
       };
     }
 
     const query = searchQuery.toLowerCase();
-    const matchingLanguages = languages.filter((lang) =>
+    const matchingLanguages = availableLanguages.filter((lang) =>
       lang.name.toLowerCase().includes(query) || lang.slug.toLowerCase().includes(query)
     );
 
@@ -68,7 +72,7 @@ export function LanguageSwitcher({
         (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
       ),
     };
-  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs, toolsSlugs]);
+  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs, toolsSlugs, excludedSlugs]);
 
   return (
       <DropdownMenu>
