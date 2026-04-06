@@ -56,6 +56,100 @@ const categoryMap: Record<string, string[]> = {
   utilities: ['Daily Utilities'],
 };
 
+// Color mapping for AI tool categories
+const categoryColors: Record<string, { border: string; accent: string; bg: string; icon: string }> = {
+  'AI Assistants & Chat': {
+    border: 'border-blue-500',
+    accent: 'bg-gradient-to-b from-blue-500 to-blue-600',
+    bg: 'bg-blue-50 dark:bg-blue-950/50',
+    icon: 'text-blue-600 dark:text-blue-400'
+  },
+  'Writing & Copy': {
+    border: 'border-emerald-500',
+    accent: 'bg-gradient-to-b from-emerald-500 to-emerald-600',
+    bg: 'bg-emerald-50 dark:bg-emerald-950/50',
+    icon: 'text-emerald-600 dark:text-emerald-400'
+  },
+  'Productivity & Work': {
+    border: 'border-purple-500',
+    accent: 'bg-gradient-to-b from-purple-500 to-purple-600',
+    bg: 'bg-purple-50 dark:bg-purple-950/50',
+    icon: 'text-purple-600 dark:text-purple-400'
+  },
+  'Image & Graphic AI': {
+    border: 'border-pink-500',
+    accent: 'bg-gradient-to-b from-pink-500 to-pink-600',
+    bg: 'bg-pink-50 dark:bg-pink-950/50',
+    icon: 'text-pink-600 dark:text-pink-400'
+  },
+  'Video AI Tools': {
+    border: 'border-orange-500',
+    accent: 'bg-gradient-to-b from-orange-500 to-orange-600',
+    bg: 'bg-orange-50 dark:bg-orange-950/50',
+    icon: 'text-orange-600 dark:text-orange-400'
+  },
+  'Voice & Audio AI': {
+    border: 'border-indigo-500',
+    accent: 'bg-gradient-to-b from-indigo-500 to-indigo-600',
+    bg: 'bg-indigo-50 dark:bg-indigo-950/50',
+    icon: 'text-indigo-600 dark:text-indigo-400'
+  },
+  'Coding & Dev Productivity': {
+    border: 'border-cyan-500',
+    accent: 'bg-gradient-to-b from-cyan-500 to-cyan-600',
+    bg: 'bg-cyan-50 dark:bg-cyan-950/50',
+    icon: 'text-cyan-600 dark:text-cyan-400'
+  },
+  'Learning & Research': {
+    border: 'border-violet-500',
+    accent: 'bg-gradient-to-b from-violet-500 to-violet-600',
+    bg: 'bg-violet-50 dark:bg-violet-950/50',
+    icon: 'text-violet-600 dark:text-violet-400'
+  },
+  'Business, Marketing & SEO': {
+    border: 'border-amber-500',
+    accent: 'bg-gradient-to-b from-amber-500 to-amber-600',
+    bg: 'bg-amber-50 dark:bg-amber-950/50',
+    icon: 'text-amber-600 dark:text-amber-400'
+  },
+  'AI Notebooks & LLM Platforms': {
+    border: 'border-teal-500',
+    accent: 'bg-gradient-to-b from-teal-500 to-teal-600',
+    bg: 'bg-teal-50 dark:bg-teal-950/50',
+    icon: 'text-teal-600 dark:text-teal-400'
+  },
+  'Daily Utilities': {
+    border: 'border-slate-500',
+    accent: 'bg-gradient-to-b from-slate-500 to-slate-600',
+    bg: 'bg-slate-50 dark:bg-slate-950/50',
+    icon: 'text-slate-600 dark:text-slate-400'
+  },
+};
+
+// Color mapping for top AI tools by category
+const topToolCategoryColors: Record<string, { border: string; badge: string }> = {
+  'ML Platform': {
+    border: 'border-violet-500',
+    badge: 'from-violet-500 to-purple-600'
+  },
+  'AI Assistant': {
+    border: 'border-blue-500',
+    badge: 'from-blue-500 to-blue-600'
+  },
+  'Coding': {
+    border: 'border-cyan-500',
+    badge: 'from-cyan-500 to-cyan-600'
+  },
+  'Productivity': {
+    border: 'border-emerald-500',
+    badge: 'from-emerald-500 to-emerald-600'
+  },
+  'Productivity & Creativity': {
+    border: 'border-purple-500',
+    badge: 'from-purple-500 to-purple-600'
+  },
+};
+
 const topAiTools: TopAiTool[] = [
   {
     rank: 1,
@@ -505,14 +599,23 @@ export default function AiToolsContent() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {topAiTools.map((tool) => (
+            {topAiTools.map((tool) => {
+              const categoryColors = topToolCategoryColors[tool.category] || topToolCategoryColors['Productivity & Creativity'];
+              
+              return (
               <div
                 key={tool.name}
                 onClick={() => handleToolClick(tool.url)}
-                className="group relative bg-white dark:bg-slate-800 rounded-xl border border-violet-200 dark:border-violet-800 p-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+                className={cn(
+                  "group relative bg-white dark:bg-slate-800 rounded-xl border p-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer",
+                  categoryColors.border
+                )}
               >
                 {/* Rank Badge */}
-                <div className="absolute -top-2 -left-2 w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                <div className={cn(
+                  "absolute -top-2 -left-2 w-8 h-8 bg-gradient-to-br rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg",
+                  categoryColors.badge
+                )}>
                   {tool.name === 'Hugging Face Spaces' ? (
                     <div className="relative">
                       <Crown className="w-4 h-4 text-yellow-300 fill-yellow-300 animate-pulse drop-shadow-lg" />
@@ -548,7 +651,8 @@ export default function AiToolsContent() {
                 {/* Hover Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-400/10 to-purple-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -577,11 +681,17 @@ export default function AiToolsContent() {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                    {filteredTopTools.map((tool) => (
+                    {filteredTopTools.map((tool) => {
+                      const categoryColors = topToolCategoryColors[tool.category] || topToolCategoryColors['Productivity & Creativity'];
+                      
+                      return (
                       <div
                         key={tool.name}
                         onClick={() => handleToolClick(tool.url)}
-                        className="group relative bg-white dark:bg-slate-800 rounded-xl border border-violet-200 dark:border-violet-800 p-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+                        className={cn(
+                          "group relative bg-white dark:bg-slate-800 rounded-xl border p-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer",
+                          categoryColors.border
+                        )}
                       >
                         {/* Rank Badge */}
                         <div className="absolute -top-2 -left-2 w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
@@ -620,7 +730,8 @@ export default function AiToolsContent() {
                         {/* Hover Effect */}
                         <div className="absolute inset-0 bg-gradient-to-br from-violet-400/10 to-purple-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -654,16 +765,22 @@ export default function AiToolsContent() {
                             <div className={cn(
                               'relative h-full rounded-xl overflow-hidden',
                               'bg-white dark:bg-slate-900',
-                              'border border-slate-200 dark:border-slate-800',
+                              `border ${categoryColors[category.title]?.border || 'border-slate-200'} dark:${categoryColors[category.title]?.border || 'dark:border-slate-800'}`,
                               'shadow-sm hover:shadow-md',
                               'transition-all duration-200',
                               'hover:-translate-y-0.5'
                             )}>
-                              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600" />
+                              <div className={cn(
+                                'absolute left-0 top-0 bottom-0 w-1',
+                                categoryColors[category.title]?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                              )} />
                               <div className="p-5 pl-6 flex flex-col h-full">
                                 <div className="flex items-start gap-3 mb-3">
-                                  <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                    <CategoryIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                  <div className={cn(
+                                    'p-2 rounded-lg flex-shrink-0',
+                                    categoryColors[category.title]?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                                  )}>
+                                    <CategoryIcon className={cn('h-5 w-5', categoryColors[category.title]?.icon || 'text-blue-600 dark:text-blue-400')} />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -726,16 +843,22 @@ export default function AiToolsContent() {
                             <div className={cn(
                               'relative h-full rounded-xl overflow-hidden',
                               'bg-white dark:bg-slate-900',
-                              'border border-slate-200 dark:border-slate-800',
+                              `border ${categoryColors[category.title]?.border || 'border-slate-200'} dark:${categoryColors[category.title]?.border || 'dark:border-slate-800'}`,
                               'shadow-sm hover:shadow-md',
                               'transition-all duration-200',
                               'hover:-translate-y-0.5'
                             )}>
-                              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600" />
+                              <div className={cn(
+                                'absolute left-0 top-0 bottom-0 w-1',
+                                categoryColors[category.title]?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                              )} />
                               <div className="p-5 pl-6 flex flex-col h-full">
                                 <div className="flex items-start gap-3 mb-3">
-                                  <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                    <CategoryIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                  <div className={cn(
+                                    'p-2 rounded-lg flex-shrink-0',
+                                    categoryColors[category.title]?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                                  )}>
+                                    <CategoryIcon className={cn('h-5 w-5', categoryColors[category.title]?.icon || 'text-blue-600 dark:text-blue-400')} />
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -797,16 +920,22 @@ export default function AiToolsContent() {
                           <div className={cn(
                             'relative h-full rounded-xl overflow-hidden',
                             'bg-white dark:bg-slate-900',
-                            'border border-slate-200 dark:border-slate-800',
+                            `border ${categoryColors[category.title]?.border || 'border-slate-200'} dark:${categoryColors[category.title]?.border || 'dark:border-slate-800'}`,
                             'shadow-sm hover:shadow-md',
                             'transition-all duration-200',
                             'hover:-translate-y-0.5'
                           )}>
-                            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600" />
+                            <div className={cn(
+                              'absolute left-0 top-0 bottom-0 w-1',
+                              categoryColors[category.title]?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                            )} />
                             <div className="p-5 pl-6 flex flex-col h-full">
                               <div className="flex items-start gap-3 mb-3">
-                                <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                  <CategoryIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                <div className={cn(
+                                  'p-2 rounded-lg flex-shrink-0',
+                                  categoryColors[category.title]?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                                )}>
+                                  <CategoryIcon className={cn('h-5 w-5', categoryColors[category.title]?.icon || 'text-blue-600 dark:text-blue-400')} />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

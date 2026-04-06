@@ -1,18 +1,23 @@
 'use client';
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useState, useCallback } from 'react';
 
 interface PythonContextType {
-  // Add any Python-specific context values here
-  // For now, we'll keep it simple as the GenericLearningPath handles most functionality
+  completedTopics: Set<string>;
+  handleToggleComplete: (topicId: string) => void;
+  isProgressLoading: boolean;
 }
 
 const PythonContext = createContext<PythonContextType | undefined>(undefined);
 
-export const usePython = () => {
+export const usePython = (): PythonContextType => {
   const context = useContext(PythonContext);
   if (context === undefined) {
-    // Return empty context if not provided - GenericLearningPath will handle this
-    return {};
+    // Return default implementation if not provided
+    return {
+      completedTopics: new Set(),
+      handleToggleComplete: () => {},
+      isProgressLoading: false,
+    };
   }
   return context;
 };
@@ -22,10 +27,32 @@ interface PythonProviderProps {
 }
 
 export const PythonProvider = ({ children }: PythonProviderProps) => {
-  // Add any Python-specific state or functions here
-  
+  const [completedTopics, setCompletedTopics] = useState<Set<string>>(new Set());
+  const [isProgressLoading, setIsProgressLoading] = useState(false);
+
+  const handleToggleComplete = useCallback(async (topicId: string) => {
+    setIsProgressLoading(true);
+    try {
+      setCompletedTopics(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(topicId)) {
+          newSet.delete(topicId);
+        } else {
+          newSet.add(topicId);
+        }
+        return newSet;
+      });
+    } finally {
+      setIsProgressLoading(false);
+    }
+  }, []);
+
   return (
-    <PythonContext.Provider value={{}}>
+    <PythonContext.Provider value={{
+      completedTopics,
+      handleToggleComplete,
+      isProgressLoading,
+    }}>
       {children}
     </PythonContext.Provider>
   );

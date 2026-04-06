@@ -190,6 +190,62 @@ export default function CheatsheetBoard() {
     'operating-systems': Cpu,
   };
 
+  // Color mapping for cheatsheet categories
+  const categoryColors: Record<string, { border: string; accent: string; bg: string; icon: string }> = {
+    'web-development': {
+      border: 'border-blue-500',
+      accent: 'bg-blue-500',
+      bg: 'bg-blue-50 dark:bg-blue-950/30',
+      icon: 'text-blue-600 dark:text-blue-400'
+    },
+    'programming-languages': {
+      border: 'border-emerald-500',
+      accent: 'bg-emerald-500',
+      bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+      icon: 'text-emerald-600 dark:text-emerald-400'
+    },
+    'databases': {
+      border: 'border-purple-500',
+      accent: 'bg-purple-500',
+      bg: 'bg-purple-50 dark:bg-purple-950/30',
+      icon: 'text-purple-600 dark:text-purple-400'
+    },
+    'devops-cloud': {
+      border: 'border-orange-500',
+      accent: 'bg-orange-500',
+      bg: 'bg-orange-50 dark:bg-orange-950/30',
+      icon: 'text-orange-600 dark:text-orange-400'
+    },
+    'developer-tools': {
+      border: 'border-pink-500',
+      accent: 'bg-pink-500',
+      bg: 'bg-pink-50 dark:bg-pink-950/30',
+      icon: 'text-pink-600 dark:text-pink-400'
+    },
+    'editors-browsers': {
+      border: 'border-indigo-500',
+      accent: 'bg-indigo-500',
+      bg: 'bg-indigo-50 dark:bg-indigo-950/30',
+      icon: 'text-indigo-600 dark:text-indigo-400'
+    },
+    'operating-systems': {
+      border: 'border-slate-500',
+      accent: 'bg-slate-500',
+      bg: 'bg-slate-50 dark:bg-slate-950/30',
+      icon: 'text-slate-600 dark:text-slate-400'
+    },
+  };
+
+  // Function to get category for a cheatsheet
+  const getCheatsheetCategory = (sheetId: string): string => {
+    for (const category of cheatsheetCategories) {
+      if (category.cheatsheets.some(sheet => sheet.id === sheetId)) {
+        return category.id;
+      }
+    }
+    return 'web-development'; // fallback
+  };
+
   const categories = [
     { id: 'all', label: 'All', icon: Layers, count: allCheatsheets.length },
     ...cheatsheetCategories.map(cat => ({
@@ -233,36 +289,6 @@ export default function CheatsheetBoard() {
       {/* Top Controls Section - Sticky */}
       <div className="sticky top-0 z-40 px-4 sm:px-6 lg:px-8 py-4 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
         <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
-          {/* Search Bar */}
-          <div className="relative w-full max-w-lg flex-shrink-0">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
-            <Input
-              id="cheatsheets-search-input"
-              data-testid="cheatsheets-search-input"
-              placeholder="Search commands, situations, or cheat sheets..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={cn(
-                "pl-10 pr-10 h-10 text-sm rounded-xl",
-                "bg-white/70 dark:bg-slate-900/60 backdrop-blur-md",
-                "border border-slate-200/50 dark:border-slate-700/60",
-                "shadow-sm hover:shadow-md transition-all duration-200",
-                "focus:border-blue-400 dark:focus:border-blue-600",
-                "focus:ring-2 focus:ring-blue-500/20"
-              )}
-            />
-            {searchQuery && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              >
-                <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
-              </Button>
-            )}
-          </div>
-
           {/* Filters - Scrollable */}
           <div className="w-full relative flex justify-center">
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 max-w-full w-auto mx-auto lg:mx-0 snap-x">
@@ -298,6 +324,35 @@ export default function CheatsheetBoard() {
                 );
               })}
             </div>
+          </div>
+          {/* Search Bar */}
+          <div className="relative w-full max-w-lg flex-shrink-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
+            <Input
+                id="cheatsheets-search-input"
+                data-testid="cheatsheets-search-input"
+                placeholder="Search commands, situations, or cheat sheets..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={cn(
+                    "pl-10 pr-10 h-10 text-sm rounded-xl",
+                    "bg-white/70 dark:bg-slate-900/60 backdrop-blur-md",
+                    "border border-slate-200/50 dark:border-slate-700/60",
+                    "shadow-sm hover:shadow-md transition-all duration-200",
+                    "focus:border-blue-400 dark:focus:border-blue-600",
+                    "focus:ring-2 focus:ring-blue-500/20"
+                )}
+            />
+            {searchQuery && (
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
+                </Button>
+            )}
           </div>
 
           {/* View Mode Toggle */}
@@ -348,6 +403,8 @@ export default function CheatsheetBoard() {
                   {filteredCheatsheets.map((sheet) => {
                     const Icon = sheet.icon;
                     const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
+                    const category = getCheatsheetCategory(sheet.id);
+                    const colors = categoryColors[category];
 
                     return (
                       <div
@@ -361,21 +418,25 @@ export default function CheatsheetBoard() {
                         <div className={cn(
                           'relative h-full rounded-xl overflow-hidden',
                           'bg-white dark:bg-slate-900',
-                          'border border-slate-200 dark:border-slate-800',
+                          `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                           'shadow-sm hover:shadow-md',
                           'transition-all duration-200',
                           'hover:-translate-y-0.5'
                         )}>
-
-                          {/* Thin Accent Line */}
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+                          <div className={cn(
+                            'absolute left-0 top-0 bottom-0 w-1',
+                            colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                          )} />
 
                           {/* Card Content */}
                           <div className="p-5 pl-6 flex flex-col h-full">
                             {/* Header */}
                             <div className="flex items-start gap-3 mb-3">
-                              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                              <div className={cn(
+                                'p-2 rounded-lg flex-shrink-0',
+                                colors?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                              )}>
+                                <Icon className={cn('h-5 w-5', colors?.icon || 'text-blue-600 dark:text-blue-400')} />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
@@ -437,6 +498,8 @@ export default function CheatsheetBoard() {
                           {categorySheets.map((sheet) => {
                             const Icon = sheet.icon;
                             const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
+                            const category = getCheatsheetCategory(sheet.id);
+                            const colors = categoryColors[category];
 
                             return (
                               <div
@@ -450,21 +513,25 @@ export default function CheatsheetBoard() {
                                 <div className={cn(
                                   'relative h-full rounded-xl overflow-hidden',
                                   'bg-white dark:bg-slate-900',
-                                  'border border-slate-200 dark:border-slate-800',
+                                  `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                                   'shadow-sm hover:shadow-md',
                                   'transition-all duration-200',
                                   'hover:-translate-y-0.5'
                                 )}>
-
-                                  {/* Thin Accent Line */}
-                                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+                                  <div className={cn(
+                                    'absolute left-0 top-0 bottom-0 w-1',
+                                    colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                                  )} />
 
                                   {/* Card Content */}
                                   <div className="p-5 pl-6 flex flex-col h-full">
                                     {/* Header */}
                                     <div className="flex items-start gap-3 mb-3">
-                                      <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                        <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                                      <div className={cn(
+                                        'p-2 rounded-lg flex-shrink-0',
+                                        colors?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                                      )}>
+                                        <Icon className={cn('h-5 w-5', colors?.icon || 'text-blue-600 dark:text-blue-400')} />
                                       </div>
                                       <div className="flex-1 min-w-0">
                                         <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">
@@ -505,6 +572,8 @@ export default function CheatsheetBoard() {
                   {filteredCheatsheets.map((sheet) => {
                     const Icon = sheet.icon;
                     const commandCount = sheet.sections.reduce((total: number, section: CheatsheetSection) => total + section.commands.length, 0);
+                    const category = getCheatsheetCategory(sheet.id);
+                    const colors = categoryColors[category];
 
                     return (
                       <div
@@ -518,21 +587,25 @@ export default function CheatsheetBoard() {
                         <div className={cn(
                           'relative h-full rounded-xl overflow-hidden',
                           'bg-white dark:bg-slate-900',
-                          'border border-slate-200 dark:border-slate-800',
+                          `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                           'shadow-sm hover:shadow-md',
                           'transition-all duration-200',
                           'hover:-translate-y-0.5'
                         )}>
-
-                          {/* Thin Accent Line */}
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500" />
+                          <div className={cn(
+                            'absolute left-0 top-0 bottom-0 w-1',
+                            colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
+                          )} />
 
                           {/* Card Content */}
                           <div className="p-5 pl-6 flex flex-col h-full">
                             {/* Header */}
                             <div className="flex items-start gap-3 mb-3">
-                              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex-shrink-0">
-                                <Icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                              <div className={cn(
+                                'p-2 rounded-lg flex-shrink-0',
+                                colors?.bg || 'bg-blue-50 dark:bg-blue-950/50'
+                              )}>
+                                <Icon className={cn('h-5 w-5', colors?.icon || 'text-blue-600 dark:text-blue-400')} />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate">

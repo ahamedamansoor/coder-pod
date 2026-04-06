@@ -36,6 +36,40 @@ const accentColors: Record<string, string> = {
   dsa: 'bg-violet-600',
 };
 
+// Color mapping for roadmap categories - full border colors
+const categoryColors: Record<string, { border: string; accent: string; bg: string; icon: string }> = {
+  'all': {
+    border: 'border-slate-500',
+    accent: 'bg-slate-500',
+    bg: 'bg-slate-50 dark:bg-slate-950/30',
+    icon: 'text-slate-600 dark:text-slate-400'
+  },
+  'roles': {
+    border: 'border-indigo-500',
+    accent: 'bg-indigo-500',
+    bg: 'bg-indigo-50 dark:bg-indigo-950/30',
+    icon: 'text-indigo-600 dark:text-indigo-400'
+  },
+  'frontend': {
+    border: 'border-blue-500',
+    accent: 'bg-blue-500',
+    bg: 'bg-blue-50 dark:bg-blue-950/30',
+    icon: 'text-blue-600 dark:text-blue-400'
+  },
+  'backend': {
+    border: 'border-emerald-500',
+    accent: 'bg-emerald-500',
+    bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+    icon: 'text-emerald-600 dark:text-emerald-400'
+  },
+  'testing': {
+    border: 'border-orange-500',
+    accent: 'bg-orange-500',
+    bg: 'bg-orange-50 dark:bg-orange-950/30',
+    icon: 'text-orange-600 dark:text-orange-400'
+  },
+};
+
 const categories = [
   { id: 'all', label: 'All', icon: Layers },
   { id: 'roles', label: 'Career Paths', icon: Briefcase },
@@ -49,6 +83,16 @@ const categoryMap: Record<string, string[]> = {
   frontend: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs'],
   backend: ['java', 'spring', 'spring-boot', 'python'],
   testing: ['playwright', 'selenium'],
+};
+
+// Function to get category for a roadmap
+const getRoadmapCategory = (slug: string): string => {
+  for (const [categoryId, slugs] of Object.entries(categoryMap)) {
+    if (slugs.includes(slug)) {
+      return categoryId;
+    }
+  }
+  return 'all'; // fallback
 };
 
 export default function RoadmapsPage() {
@@ -226,6 +270,8 @@ export default function RoadmapsPage() {
                 const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
                 const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
                 const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+                const category = getRoadmapCategory(roadmap.slug);
+                const colors = categoryColors[category];
 
                 return (
                   <div
@@ -237,16 +283,14 @@ export default function RoadmapsPage() {
                     <div className={cn(
                       'relative h-full rounded-xl overflow-hidden',
                       'bg-white dark:bg-slate-900',
-                      'border border-slate-200 dark:border-slate-800',
+                      `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                       'shadow-sm hover:shadow-md',
                       'transition-all duration-200',
                       'hover:-translate-y-0.5'
                     )}>
-
-                      {/* Thin Accent Line - Left Border */}
                       <div className={cn(
                         'absolute left-0 top-0 bottom-0 w-1',
-                        accentColor
+                        colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
                       )} />
 
                       {/* Card Content */}
@@ -318,6 +362,7 @@ export default function RoadmapsPage() {
                         const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
                         const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
                         const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+                        const colors = categoryColors[category.id];
 
                         return (
                           <div
@@ -329,16 +374,14 @@ export default function RoadmapsPage() {
                             <div className={cn(
                               'relative h-full rounded-xl overflow-hidden',
                               'bg-white dark:bg-slate-900',
-                              'border border-slate-200 dark:border-slate-800',
+                              `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                               'shadow-sm hover:shadow-md',
                               'transition-all duration-200',
                               'hover:-translate-y-0.5'
                             )}>
-
-                              {/* Thin Accent Line - Left Border */}
                               <div className={cn(
                                 'absolute left-0 top-0 bottom-0 w-1',
-                                accentColor
+                                colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
                               )} />
 
                               {/* Card Content */}
@@ -387,6 +430,8 @@ export default function RoadmapsPage() {
                 const accentColor = accentColors[roadmap.slug] || 'bg-slate-500';
                 const topicCount = roadmap.topics?.filter(t => t.slug !== 'learning-plan').length || 0;
                 const isRoleBased = categoryMap.roles.includes(roadmap.slug);
+                const category = getRoadmapCategory(roadmap.slug);
+                const colors = categoryColors[category];
 
                 return (
                   <div
@@ -398,16 +443,14 @@ export default function RoadmapsPage() {
                     <div className={cn(
                       'relative h-full rounded-xl overflow-hidden',
                       'bg-white dark:bg-slate-900',
-                      'border border-slate-200 dark:border-slate-800',
+                      `border ${colors?.border || 'border-slate-200'} dark:${colors?.border || 'dark:border-slate-800'}`,
                       'shadow-sm hover:shadow-md',
                       'transition-all duration-200',
                       'hover:-translate-y-0.5'
                     )}>
-
-                      {/* Thin Accent Line - Left Border */}
                       <div className={cn(
                         'absolute left-0 top-0 bottom-0 w-1',
-                        accentColor
+                        colors?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
                       )} />
 
                       {/* Card Content */}

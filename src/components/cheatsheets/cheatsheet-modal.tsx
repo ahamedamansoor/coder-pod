@@ -408,30 +408,34 @@ export function CheatsheetModal({
 
                           {/* Code Block */}
                           <div className="relative group">
-                            <pre className="bg-slate-100 dark:bg-slate-800 rounded-xl p-4 text-sm font-mono overflow-x-auto">
-                              <code className="text-slate-800 dark:text-slate-200">
-                                {highlightText(cmd.example || cmd.command, filters.searchQuery)}
-                              </code>
-                            </pre>
+                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                              <pre className="p-4 text-sm font-mono overflow-x-auto">
+                                <code className="text-gray-800 dark:text-gray-200">
+                                  {highlightText(cmd.example || cmd.command, filters.searchQuery)}
+                                </code>
+                              </pre>
+                            </div>
 
                             {/* Copy Button */}
                             <button
                               onClick={() => copyToClipboard(cmd.command)}
-                              className="absolute top-3 right-3 p-2 rounded-lg bg-slate-200/80 dark:bg-slate-700/80 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-slate-300 dark:hover:bg-slate-600"
+                              className="absolute top-3 right-3 p-2 rounded-lg bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-white dark:hover:bg-gray-600 shadow-sm"
                             >
                               {copiedCommand === cmd.command ? (
-                                <Check className="w-4 h-4 text-green-500" />
+                                <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                               ) : (
-                                <Copy className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                                <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                               )}
                             </button>
                           </div>
 
                           {/* Usage note */}
                           {cmd.usage && cmd.usage !== cmd.command && (
-                            <p className="text-sm text-slate-500 dark:text-slate-500 font-mono bg-slate-50 dark:bg-slate-800/50 rounded-lg p-3">
-                              {highlightText(cmd.usage, filters.searchQuery)}
-                            </p>
+                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200 dark:border-blue-800/30 shadow-sm">
+                              <p className="text-sm text-blue-800 dark:text-blue-200 font-mono p-3">
+                                {highlightText(cmd.usage, filters.searchQuery)}
+                              </p>
+                            </div>
                           )}
 
                           {/* Separator between commands */}
