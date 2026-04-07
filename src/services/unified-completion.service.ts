@@ -121,6 +121,38 @@ class UnifiedCompletionService {
     }
   }
 
+  // Fetch completion data for a specific language from server
+  async fetchLanguageCompletionData(userId: string, language: string): Promise<string[]> {
+    try {
+      const { data: profile, error } = await supabase
+        .from('users')
+        .select('completed_topics')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching language completion data:', error);
+        return [];
+      }
+
+      const allCompletionData = profile?.completed_topics || {};
+      const languageData = allCompletionData[language] || [];
+      
+      // Update cached data for this specific language
+      const currentData = this.getAllCompletionData();
+      const updatedData = {
+        ...currentData,
+        [language]: languageData
+      };
+      this.storeCompletionData(updatedData);
+      
+      return languageData;
+    } catch (error) {
+      console.error('Error in fetchLanguageCompletionData:', error);
+      return [];
+    }
+  }
+
   // Store completion data in localStorage
   storeCompletionData(data: AllCompletionData): void {
     if (typeof window === 'undefined') return;

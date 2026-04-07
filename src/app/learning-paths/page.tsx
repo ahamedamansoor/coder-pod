@@ -55,52 +55,14 @@ function LearningPathsPageContent() {
 
     const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium', 'dsa']), []);
 
-    // Load completion data from unified service
+    // Load completion data from unified service (only from cache initially)
     useEffect(() => {
         if (user) {
+            // Only get cached data initially, don't fetch from server
             const data = unifiedCompletionService.getAllCompletionData();
             setCompletionData(data);
         }
     }, [user?.uid]); // Use user.uid instead of user object
-
-    // Refresh completion data when page becomes visible (when user navigates back)
-    useEffect(() => {
-        const handleVisibilityChange = async () => {
-            if (document.visibilityState === 'visible' && user) {
-                // Try to fetch fresh data from server
-                try {
-                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
-                } catch (error) {
-                    console.error('Error fetching fresh completion data:', error);
-                }
-                // Update local state
-                const data = unifiedCompletionService.getAllCompletionData();
-                setCompletionData(data);
-            }
-        };
-
-        const handleFocus = async () => {
-            if (user) {
-                // Try to fetch fresh data from server
-                try {
-                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
-                } catch (error) {
-                    console.error('Error fetching fresh completion data:', error);
-                }
-                // Update local state
-                const data = unifiedCompletionService.getAllCompletionData();
-                setCompletionData(data);
-            }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener('focus', handleFocus);
-        
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-            window.removeEventListener('focus', handleFocus);
-        };
-    }, [user?.uid]);
 
     // Listen for storage changes to update completion data
     useEffect(() => {
@@ -143,21 +105,23 @@ function LearningPathsPageContent() {
 
     const handleViewPath = async (lang: { slug: string; name: string }) => {
         if (readySlugs.has(lang.slug)) {
-            // Mark as started and refresh completion data
+            // Mark as started
             setStartedPaths((prev) => {
                 const next = new Set(prev);
                 next.add(lang.slug);
                 return next;
             });
             
-            // Fetch fresh completion data before navigation
+            // Fetch completion data only for this specific language
             if (user) {
                 try {
-                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
+                    console.log(`Fetching completion data for ${lang.slug}...`);
+                    await unifiedCompletionService.fetchLanguageCompletionData(user.uid, lang.slug);
                     const data = unifiedCompletionService.getAllCompletionData();
                     setCompletionData(data);
+                    console.log(`Updated completion data for ${lang.slug}:`, data[lang.slug]);
                 } catch (error) {
-                    console.error('Error fetching completion data before navigation:', error);
+                    console.error(`Error fetching completion data for ${lang.slug}:`, error);
                 }
             }
             

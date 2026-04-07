@@ -106,13 +106,14 @@ export function GenericContentDisplay({
         setVideoNotesCount(0);
       }
     }
-  }, [language.slug, user, currentSupabaseClient]);
+  }, [language.slug, user?.uid, currentSupabaseClient]); // Only depend on user.uid, not entire user object
 
-  React.useEffect(() => {
-    loadVideoNotesCount();
-  }, [loadVideoNotesCount]);
+  // Remove automatic fetching - only fetch when explicitly needed
+  // React.useEffect(() => {
+  //   loadVideoNotesCount();
+  // }, [loadVideoNotesCount]);
 
-  // Refresh count when drawer closes
+  // Refresh count when drawer closes (only if needed)
   const handleDrawerChange = (open: boolean) => {
     setShowVideoNotes(open);
     if (!open) {
