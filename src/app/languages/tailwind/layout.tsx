@@ -14,7 +14,6 @@ import { WebPlaygroundModal } from '@/components/shared/playground/web-playgroun
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/hooks/use-auth-compat';
-import { useCompletionSync } from '@/hooks/use-completion-sync';
 import { getRouteParam } from '@/lib/params';
 
 function TailwindTopicLayoutContent({ children }: { children: React.ReactNode }) {
@@ -24,9 +23,6 @@ function TailwindTopicLayoutContent({ children }: { children: React.ReactNode })
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();
   const { hideLoader } = useLoading();
-
-  // Sync completion data when navigating away
-  useCompletionSync();
 
   useEffect(() => {
     hideLoader();

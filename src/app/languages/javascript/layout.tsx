@@ -12,7 +12,6 @@ import { JavascriptLayoutProvider, useJavascriptLayout } from './javascript-layo
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/hooks/use-auth-compat';
-import { useCompletionSync } from '@/hooks/use-completion-sync';
 import { getRouteParam } from '@/lib/params';
 
 function JavascriptTopicLayoutContent({ children }: { children: React.ReactNode }) {
@@ -22,9 +21,6 @@ function JavascriptTopicLayoutContent({ children }: { children: React.ReactNode 
   const { hideLoader } = useLoading();
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();
-
-  // Sync completion data when navigating away
-  useCompletionSync();
 
   useEffect(() => {
     hideLoader();

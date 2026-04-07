@@ -247,7 +247,7 @@ export default function CertificatePage() {
             <CardContent className="p-5 relative">
               {/* Certificate Header */}
               <div className="text-center mb-4">
-                <div className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-xl mb-2 transform transition-all duration-1000 ${
+                <div className={`mb-4 transform transition-all duration-1000 ${
                   isAnimating ? 'rotate-0 scale-100' : 'rotate-180 scale-0'
                 }`}>
                   <Logo />

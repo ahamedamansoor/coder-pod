@@ -14,7 +14,6 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
-import { useCompletionSync } from '@/hooks/use-completion-sync';
 import { getRouteParam } from '@/lib/params';
 
 function CssTopicLayoutContent({ children }: { children: React.ReactNode }) {
@@ -24,9 +23,6 @@ function CssTopicLayoutContent({ children }: { children: React.ReactNode }) {
   const { hideLoader } = useLoading();
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();
-
-  // Sync completion data when navigating away
-  useCompletionSync();
 
   useEffect(() => {
     hideLoader();
