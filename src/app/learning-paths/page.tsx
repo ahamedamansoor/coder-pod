@@ -242,14 +242,6 @@ function LearningPathsPageContent() {
                                     // Use completionData state instead of getCompletedTopics function
                                     const completedTopicsArray = completionData[lang.slug] || [];
                                     
-                                    // Debug logging
-                                    console.log(`Learning Path Debug - ${lang.slug}:`, {
-                                        completedTopicsArray,
-                                        completionData,
-                                        topicListLength: topicList.length,
-                                        actualTopicCount: topicList.length
-                                    });
-                                    
                                     const validTopicSlugs = new Set(topicList.map((t) => t.slug));
                                     const actualTopicCount = topicList.length;
                                     const validCompletedTopics = completedTopicsArray.filter((slug) => validTopicSlugs.has(slug));
@@ -258,15 +250,7 @@ function LearningPathsPageContent() {
                                     let completionPercentage = hasTopics
                                         ? Math.min(100, Math.round((completedCount / actualTopicCount) * 100))
                                         : 0;
-                                    
-                                    // Debug logging for percentage calculation
-                                    console.log(`Percentage Calculation - ${lang.slug}:`, {
-                                        validCompletedTopics,
-                                        completedCount,
-                                        actualTopicCount,
-                                        completionPercentage
-                                    });
-                                    
+
                                     const hasStartedLocally = hasTopics && startedPaths.has(lang.slug);
                                     if (hasStartedLocally && completionPercentage === 0) {
                                         completionPercentage = 1; // reflect started state
