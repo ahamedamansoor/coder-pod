@@ -76,7 +76,6 @@ export function EnhancedAuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const { data: { subscription } } = currentSupabaseClient.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
 
         if (session?.user) {
           // Store email for dynamic client creation
