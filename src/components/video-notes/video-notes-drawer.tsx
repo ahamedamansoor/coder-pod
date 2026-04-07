@@ -131,8 +131,18 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     : notes;
 
   const handlePlayVideo = (note: Note) => {
-    // Always open in modal dialog
-    setPlayingVideo(note);
+    // Open videos in floating player
+    if (note.type === 'video' && note.videoId) {
+      setContent({
+        id: note.id,
+        type: 'video',
+        url: note.url || '',
+        title: note.title,
+      });
+    } else {
+      // For non-video content, open in dialog
+      setPlayingVideo(note);
+    }
   };
 
   // Extract YouTube video ID from URL
@@ -409,7 +419,7 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         </SheetContent>
       </Sheet>
 
-      {/* Resource Viewer Dialog */}
+      {/* Resource Viewer Dialog - Only for non-video content */}
       <Dialog open={!!playingVideo} onOpenChange={() => {
         setPlayingVideo(null);
         setIframeError(false);
@@ -417,20 +427,8 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         <DialogContent className="max-w-5xl p-0">
           {playingVideo && (
             <div>
-              {/* Video Player or Link Preview */}
-              {playingVideo.type === 'video' && playingVideo.videoId ? (
-                <div className="aspect-video bg-black rounded-t-lg overflow-hidden">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${playingVideo.videoId}?autoplay=1`}
-                    title={playingVideo.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              ) : (
+              {/* Link Preview for non-video content */}
+              {playingVideo.type !== 'video' && (
                 <div className="aspect-video bg-muted rounded-t-lg overflow-hidden flex items-center justify-center relative">
                   {!iframeError ? (
                     <>
@@ -462,6 +460,17 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
                       </Button>
                     </div>
                   )}
+                </div>
+              )}
+              
+              {/* Show message for videos since they use floating player */}
+              {playingVideo.type === 'video' && (
+                <div className="aspect-video bg-black rounded-t-lg overflow-hidden flex items-center justify-center">
+                  <div className="text-center text-white p-8">
+                    <Youtube className="w-16 h-16 mx-auto mb-4" />
+                    <p className="text-lg font-medium mb-2">Video is now playing</p>
+                    <p className="text-sm opacity-75">Check the draggable floating player in the corner</p>
+                  </div>
                 </div>
               )}
 

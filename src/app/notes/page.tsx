@@ -282,6 +282,15 @@ export default function NotesPage() {
       return;
     }
 
+    if (!currentSupabaseClient) {
+      toast({
+        title: "Connection Error",
+        description: "Database connection not available. Please refresh the page.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       let videoId: string | undefined;
@@ -310,7 +319,29 @@ export default function NotesPage() {
       resetForm();
     } catch (error: any) {
       console.error("Error saving note:", error);
-      const errorMessage = error?.message || error?.code || "Failed to save resource. Please try again.";
+      console.error("Error details:", {
+        message: error?.message,
+        code: error?.code,
+        details: error?.details,
+        hint: error?.hint,
+        user: user?.uid,
+        currentSupabaseClient: !!currentSupabaseClient
+      });
+      
+      let errorMessage = "Failed to save resource. Please try again.";
+      
+      if (error?.message) {
+        if (error.message.includes('duplicate key')) {
+          errorMessage = "This resource already exists in your notes.";
+        } else if (error.message.includes('permission')) {
+          errorMessage = "You don't have permission to save notes. Please try logging out and back in.";
+        } else if (error.message.includes('auth')) {
+          errorMessage = "Authentication error. Please log in again.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "❌ Save Failed",
         description: errorMessage,

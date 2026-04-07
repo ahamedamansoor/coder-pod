@@ -73,7 +73,7 @@ export class SupabaseNotesService {
         url: noteData.url || null,
         video_id: noteData.videoId || null,
         content: noteData.content || null,
-        tags: noteData.tags || [],
+        tags: noteData.tags ? JSON.stringify(noteData.tags) : null, // Convert array to JSON string
         favorited: noteData.favorited ?? false,
       };
 
@@ -111,14 +111,13 @@ export class SupabaseNotesService {
       const updatePayload: any = {};
 
       if (updateData.title !== undefined) updatePayload.title = updateData.title;
-      if (updateData.description !== undefined)
-        updatePayload.description = updateData.description || null;
+      // Remove description field as it doesn't exist in the database
       if (updateData.url !== undefined) updatePayload.url = updateData.url || null;
       if (updateData.videoId !== undefined)
         updatePayload.video_id = updateData.videoId || null;
       if (updateData.content !== undefined)
         updatePayload.content = updateData.content || null;
-      if (updateData.tags !== undefined) updatePayload.tags = updateData.tags;
+      if (updateData.tags !== undefined) updatePayload.tags = updateData.tags ? JSON.stringify(updateData.tags) : null;
       if (updateData.favorited !== undefined) updatePayload.favorited = updateData.favorited;
 
       const { error } = await client
@@ -284,16 +283,16 @@ export class SupabaseNotesService {
       id: supabaseNote.id,
       userId: supabaseNote.user_id,
       title: supabaseNote.title,
-      description: supabaseNote.description || '',
+      description: '', // No description field in DB
       type: supabaseNote.type,
       language: supabaseNote.language,
       url: supabaseNote.url || '',
       videoId: supabaseNote.video_id || '',
       content: supabaseNote.content || '',
-      tags: supabaseNote.tags || [],
+      tags: supabaseNote.tags ? JSON.parse(supabaseNote.tags) : [], // Parse JSON string to array
       favorited: supabaseNote.favorited ?? false,
       createdAt: new Date(supabaseNote.created_at),
-      updatedAt: new Date(supabaseNote.updated_at),
+      updatedAt: new Date(supabaseNote.updated_at || supabaseNote.created_at), // Handle missing updated_at
     };
   }
 
