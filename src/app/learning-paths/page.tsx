@@ -63,6 +63,45 @@ function LearningPathsPageContent() {
         }
     }, [user?.uid]); // Use user.uid instead of user object
 
+    // Refresh completion data when page becomes visible (when user navigates back)
+    useEffect(() => {
+        const handleVisibilityChange = async () => {
+            if (document.visibilityState === 'visible' && user) {
+                // Try to fetch fresh data from server
+                try {
+                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
+                } catch (error) {
+                    console.error('Error fetching fresh completion data:', error);
+                }
+                // Update local state
+                const data = unifiedCompletionService.getAllCompletionData();
+                setCompletionData(data);
+            }
+        };
+
+        const handleFocus = async () => {
+            if (user) {
+                // Try to fetch fresh data from server
+                try {
+                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
+                } catch (error) {
+                    console.error('Error fetching fresh completion data:', error);
+                }
+                // Update local state
+                const data = unifiedCompletionService.getAllCompletionData();
+                setCompletionData(data);
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('focus', handleFocus);
+        
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('focus', handleFocus);
+        };
+    }, [user?.uid]);
+
     // Listen for storage changes to update completion data
     useEffect(() => {
         const handleStorageChange = (e: StorageEvent) => {
@@ -102,13 +141,26 @@ function LearningPathsPageContent() {
         router.push('/login');
     };
 
-    const handleViewPath = (lang: { slug: string; name: string }) => {
+    const handleViewPath = async (lang: { slug: string; name: string }) => {
         if (readySlugs.has(lang.slug)) {
+            // Mark as started and refresh completion data
             setStartedPaths((prev) => {
                 const next = new Set(prev);
                 next.add(lang.slug);
                 return next;
             });
+            
+            // Fetch fresh completion data before navigation
+            if (user) {
+                try {
+                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
+                    const data = unifiedCompletionService.getAllCompletionData();
+                    setCompletionData(data);
+                } catch (error) {
+                    console.error('Error fetching completion data before navigation:', error);
+                }
+            }
+            
             router.push(`/languages/${lang.slug}/learning-plan`);
             return;
         }
