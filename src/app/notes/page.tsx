@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { ServiceFactory } from '@/services';
 import { Note } from '@/types/notes.types';

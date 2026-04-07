@@ -2,7 +2,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
-import { LoginPageForm } from '@/components/shared/modals/login-page-form';
+import { EnhancedSignInForm } from '@/components/auth/enhanced-sign-in-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Logo } from '@/components/shared/layout/logo';
@@ -45,7 +45,7 @@ export default function LoginPage() {
             {/* Left Side - Form */}
             <div className="relative flex items-center justify-center w-full lg:w-1/2 p-8 z-10">
                 <Suspense fallback={<LoginSkeleton />}>
-                    <LoginPageForm />
+                    <EnhancedSignInForm />
                 </Suspense>
             </div>
             
@@ -106,6 +106,40 @@ export default function LoginPage() {
                                 </blockquote>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                {/* Platform Features */}
+                <div className="mt-12 text-center space-y-8">
+                    <div className="space-y-6">
+                        <p className="text-xl font-light text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed tracking-wide">
+                            All modern development requirements in one place - from learning paths to AI tools, everything you need to master coding
+                        </p>
+                    </div>
+                    
+                    {/* Feature Tags */}
+                    <div className="flex flex-wrap justify-center gap-3 max-w-xl mx-auto">
+                        <span className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                            Learning Paths
+                        </span>
+                        <span className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                            Roadmaps
+                        </span>
+                        <span className="px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium">
+                            67+ Cheatsheets
+                        </span>
+                        <span className="px-4 py-2 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded-full text-sm font-medium">
+                            Interview Practice
+                        </span>
+                        <span className="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
+                            Personal Notes
+                        </span>
+                        <span className="px-4 py-2 bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-700 dark:text-fuchsia-300 rounded-full text-sm font-medium">
+                            Discover
+                        </span>
+                        <span className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                            AI Tools
+                        </span>
                     </div>
                 </div>
             </div>

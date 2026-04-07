@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { InnovativeHeader } from '@/components/shared';
 import { CollaborativeInterview } from '@/components/shared/collaborative-interview';
 import { collaborativeSessionService } from '@/services/collaborative-session.service';

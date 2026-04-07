@@ -10,7 +10,7 @@ import { SeleniumProvider } from './selenium-context';
 import { SeleniumLayoutProvider, useSeleniumLayout } from './selenium-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { SeleniumPlaygroundProvider } from '@/components/languages/selenium/playground/selenium-playground-context';
 import { SeleniumPlaygroundModal } from '@/components/languages/selenium/playground/selenium-playground-modal';
 import { getRouteParam } from '@/lib/params';

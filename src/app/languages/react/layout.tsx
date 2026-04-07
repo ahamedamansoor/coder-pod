@@ -11,7 +11,7 @@ import { ReactProvider } from './react-context';
 import { ReactLayoutProvider, useReactLayout } from './react-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { ReactPlaygroundProvider } from '@/components/shared/playground/react-playground-context';
 import { ReactPlaygroundModal } from '@/components/shared/playground/react-playground-modal';
 import { getRouteParam } from '@/lib/params';

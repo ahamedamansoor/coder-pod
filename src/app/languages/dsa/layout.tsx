@@ -10,7 +10,7 @@ import { DsaProvider } from './dsa-context';
 import { DsaLayoutProvider, useDsaLayout } from './dsa-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function DsaLayoutContent({ children }: { children: React.ReactNode }) {

@@ -10,7 +10,7 @@ import { RxjsProvider } from './rxjs-context';
 import { RxjsLayoutProvider, useRxjsLayout } from './rxjs-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function RxjsLayoutContent({ children }: { children: React.ReactNode }) {

@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useRouter, usePathname } from 'next/navigation';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { LanguageSwitcher } from './language-switcher';
@@ -90,7 +90,7 @@ export function MainHeader({
     return name[0].toUpperCase();
   };
 
-  const displayName = user ? (userProfile?.name || user.user_metadata?.name || user.email?.split('@')[0] || 'User') : 'Guest User';
+  const displayName = user ? (userProfile?.name || user.name || user.email?.split('@')[0] || 'User') : 'Guest User';
 
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b bg-card px-4 md:px-6">
@@ -137,7 +137,7 @@ export function MainHeader({
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer h-9 w-9">
                 <AvatarImage
-                  src={userProfile?.photoURL || user.user_metadata?.avatar_url || user.user_metadata?.picture || ''}
+                  src={userProfile?.avatar_url || user.avatar || ''}
                   alt={displayName}
                 />
                 <AvatarFallback>{getInitials(displayName)}</AvatarFallback>

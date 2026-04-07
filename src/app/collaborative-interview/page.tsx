@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { RoomLobby } from '@/components/shared/room-lobby';

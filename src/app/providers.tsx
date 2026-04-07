@@ -10,7 +10,7 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
-import { SupabaseAuthProvider } from '@/contexts/SupabaseAuthContext';
+import { EnhancedAuthProvider } from '@/lib/auth/enhanced-auth-context';
 import { LoadingProvider, useLoading } from '@/hooks/use-loading';
 import { PlayerProvider } from '@/contexts/PlayerContext';
 import { FloatingPlayer } from '@/components/shared/FloatingPlayer';
@@ -64,7 +64,7 @@ function GlobalLoadingIndicator() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <SupabaseAuthProvider>
+        <EnhancedAuthProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
                 <TooltipProvider>
                     <SidebarProvider>
@@ -87,6 +87,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     </SidebarProvider>
                 </TooltipProvider>
             </ThemeProvider>
-        </SupabaseAuthProvider>
+        </EnhancedAuthProvider>
     )
 }

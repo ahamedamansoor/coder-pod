@@ -11,7 +11,7 @@ import { languages } from '@/data/languages';
 import { useToast } from '@/hooks/use-toast';
 import { usePlayer } from '@/contexts/PlayerContext';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { ServiceFactory } from '@/services';
 import { Note } from '@/types/notes.types';
 import {

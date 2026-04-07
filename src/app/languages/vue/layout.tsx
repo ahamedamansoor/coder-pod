@@ -10,7 +10,7 @@ import { VueProvider } from './vue-context';
 import { VueLayoutProvider, useVueLayout } from './vue-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function VueTopicLayoutContent({ children }: { children: React.ReactNode }) {

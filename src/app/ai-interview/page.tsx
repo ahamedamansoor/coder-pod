@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { Brain, Mic, MessageSquare, Target, Zap, Code, Users, Calculator, TrendingUp, Flame } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';

@@ -10,7 +10,7 @@ import { FrontendSystemDesignProvider } from './frontend-system-design-context';
 import { FrontendSystemDesignLayoutProvider, useFrontendSystemDesignLayout } from './frontend-system-design-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 import { useCompletionSync } from '@/hooks/use-completion-sync';
 

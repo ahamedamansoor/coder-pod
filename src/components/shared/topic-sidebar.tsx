@@ -202,56 +202,67 @@ export function TopicSidebar({
     return acc;
   }, {} as Record<string, typeof language.topics>);
 
+  const jsCategoryOrder = language.slug === 'javascript'
+    ? language.topics.reduce((acc, topic) => {
+        if (
+          topic.category &&
+          !acc.includes(topic.category) &&
+          !['learning-plan', 'interview-questions', 'react-version-updates'].includes(topic.slug)
+        ) {
+          acc.push(topic.category);
+        }
+        return acc;
+      }, [] as string[])
+    : [];
+
+  const seleniumCategoryOrder = language.slug === 'selenium'
+    ? language.topics.reduce((acc, topic) => {
+        if (
+          topic.category &&
+          !acc.includes(topic.category) &&
+          !['learning-plan', 'interview-questions', 'react-version-updates'].includes(topic.slug)
+        ) {
+          acc.push(topic.category);
+        }
+        return acc;
+      }, [] as string[])
+    : [];
+
+  const dsaCategoryOrderFromTopics = language.slug === 'dsa'
+    ? language.topics.reduce((acc, topic) => {
+        if (
+          topic.category &&
+          !acc.includes(topic.category) &&
+          !['learning-plan', 'interview-questions', 'react-version-updates'].includes(topic.slug)
+        ) {
+          acc.push(topic.category);
+        }
+        return acc;
+      }, [] as string[])
+    : [];
+
   const groupOrder = language.slug === 'html'
     ? ['Fundamentals','Text & Content','Links & Navigation','Images & Media','Lists & Tables','Forms','Semantic HTML','Document Head','Scripts & Styles','Interactive Elements','Iframes & Embedding','Web Components','HTML5 APIs','Performance','SEO & Metadata','Accessibility','Modern HTML Features','Best Practices']
     : language.slug === 'javascript'
-    ? ['Fundamentals','Variables & Data Types','Functions','Objects & Arrays','Control Flow','DOM Manipulation','Events','Async Programming','ES6+ Features','Modules','Error Handling','Performance','Testing','Modern JavaScript','Best Practices']
+    ? (jsCategoryOrder.length > 0
+        ? jsCategoryOrder
+        : ['Fundamentals','Variables & Data Types','Functions','Objects & Arrays','Control Flow','DOM Manipulation','Events','Async Programming','ES6+ Features','Modules','Error Handling','Performance','Testing','Modern JavaScript','Best Practices'])
     : language.slug === 'scss'
     ? ['Fundamentals','Variables','Nesting','Mixins','Functions','Inheritance','Operators','Control Directives','Partials & Import','Advanced Features','Architecture','Best Practices']
     : language.slug === 'selenium'
-    ? ['Introduction','Setup & Installation','Basic Commands','Locators','Interactions','Waits','Forms','Windows & Tabs','Actions','JavaScript Execution','Testing Frameworks','Advanced Features','Best Practices']
+    ? (seleniumCategoryOrder.length > 0
+        ? seleniumCategoryOrder
+        : ['Introduction','Setup & Installation','Basic Commands','Locators','Interactions','Waits','Forms','Windows & Tabs','Actions','JavaScript Execution','Testing Frameworks','Advanced Features','Best Practices'])
     : language.slug === 'dsa'
-    ? ['Introduction','Complexity Analysis','Arrays','Linked Lists','Stacks','Queues','Trees','Graphs','Sorting','Searching','Dynamic Programming','Greedy Algorithms','Backtracking','Advanced Topics','Practice Problems']
+    ? (dsaCategoryOrderFromTopics.length > 0
+        ? dsaCategoryOrderFromTopics
+        : dsaCategoryOrder)
     : language.slug === 'java'
     ? ["1. Getting Started", "2. Basic Output", "3. Variables & Data Types", "4. Operators", "5. User Input", "6. Control Flow", "7. Strings & Arrays", "8. Methods & OOP Basics", "9. Advanced OOP", "10. Advanced Collections", "11. Error Handling", "12. Generics", "13. Functional Programming", "14. Concurrency", "15. Java 8+ Features", "16. Java 9-11 Features", "17. Java 12-16 Features", "18. Java 17+ (LTS)", "19. File I/O", "20. Annotations", "21. Reflection", "22. JVM Internals", "23. Testing", "24. Best Practices"]
     : language.slug === 'spring' 
     ? ["1. Introduction", "2. Core Container", "3. Dependency Injection", "4. Configuration", "5. AOP", "6. Spring MVC", "7. Data Access", "8. ORM Integration", "9. Spring Security", "10. Validation", "11. Testing", "12. Messaging", "13. Caching", "14. Scheduling", "15. Events", "16. Spring WebFlux", "17. Spring 5+ Features", "18. Spring 6+ Features", "19. SpEL", "20. Best Practices"]
     : language.slug === 'spring-boot'
     ? ["1. Introduction & Setup", "2. Core Concepts", "3. Configuration", "4. Web Development", "5. Data Access", "6. Security", "7. Validation", "8. Testing", "9. Actuator & Monitoring", "10. Caching", "11. Messaging", "12. Scheduling", "13. Reactive Programming", "14. Documentation", "15. Logging", "16. Performance", "17. Deployment", "18. Spring Boot 3.x", "19. Best Practices"]
-    : language.slug === 'javascript'
-    ? [
-        "1. Fundamentals",
-        "2. Operators & Control Flow",
-        "3. Functions",
-        "4. Arrays & Objects",
-        "5. Strings & Regex",
-        "6. Scope & Closures",
-        "7. Object-Oriented JavaScript",
-        "8. Asynchronous JavaScript",
-        "9. DOM Manipulation",
-        "10. Events",
-        "11. ES6+ Features",
-        "12. Design Patterns",
-        "13. Performance & Optimization",
-        "14. APIs & Browser",
-        "15. Modern JavaScript",
-        "16. Advanced Array Methods",
-        "17. Advanced Object Patterns",
-        "18. Sets & Maps",
-        "19. Date & Time",
-        "20. Math & Numbers",
-        "21. JSON",
-        "22. Internationalization",
-        "23. Browser APIs",
-        "24. Advanced Async Patterns",
-        "25. Runtime Environments",
-        "26. Tooling & Build",
-        "27. Security & Best Practices",
-        "28. Testing",
-        "29. Meta-Programming",
-        "30. Memory & Performance",
-        "Others"
-      ]
     : language.slug === 'react'
     ? [
         '1. Getting Started', 

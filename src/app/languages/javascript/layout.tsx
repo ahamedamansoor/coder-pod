@@ -11,7 +11,7 @@ import { JavascriptProvider } from './javascript-context';
 import { JavascriptLayoutProvider, useJavascriptLayout } from './javascript-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function JavascriptTopicLayoutContent({ children }: { children: React.ReactNode }) {

@@ -8,7 +8,7 @@ import { SpringBootLayoutProvider } from './spring-boot-layout-context';
 import { InnovativeHeader } from '@/components/shared';
 import { languages } from '@/data/languages';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 
 export default function SpringBootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

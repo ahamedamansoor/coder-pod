@@ -28,7 +28,7 @@ import { useNextjsContext } from '@/app/languages/nextjs/nextjs-context';
 import { useTailwind } from '@/app/languages/tailwind/tailwind-context';
 import { useSelenium } from '@/app/languages/selenium/selenium-context';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { cn } from '@/lib/utils';
 import { marked } from 'marked';
 import { AiSimplification } from './ai-simplification';

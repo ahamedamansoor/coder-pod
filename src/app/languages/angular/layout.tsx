@@ -11,7 +11,7 @@ import { AngularProvider } from './angular-context';
 import { AngularLayoutProvider, useAngularLayout } from './angular-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { AngularPlaygroundProvider } from '@/components/shared/playground/angular-playground-context';
 import { AngularPlaygroundModal } from '@/components/shared/playground/angular-playground-modal';
 import { getRouteParam } from '@/lib/params';

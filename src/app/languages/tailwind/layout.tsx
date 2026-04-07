@@ -13,7 +13,7 @@ import { WebPlaygroundProvider } from '@/components/shared/playground/web-playgr
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function TailwindTopicLayoutContent({ children }: { children: React.ReactNode }) {

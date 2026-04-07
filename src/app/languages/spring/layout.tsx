@@ -11,7 +11,7 @@ import { SpringProvider } from './spring-context';
 import { SpringLayoutProvider, useSpringLayout } from './spring-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function SpringTopicLayoutContent({ children }: { children: React.ReactNode }) {

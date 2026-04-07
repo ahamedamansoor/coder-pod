@@ -2,133 +2,24 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { format } from 'date-fns';
-
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalendarIcon, Loader2, Quote, Chrome } from 'lucide-react';
+import { EnhancedSignUpForm } from '@/components/auth/enhanced-sign-up-form';
 import { Logo } from '@/components/shared/layout/logo';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { countries } from '@/lib/countries';
-
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
+import { useLoading } from '@/hooks/use-loading';
 import { getRandomQuote } from '@/data/motivational-quotes';
-
-const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-  countryCode: z.string().nonempty({ message: 'Please select your country code.' }),
-  phoneNumber: z.string().min(5, { message: 'Please enter a valid phone number.' }),
-  dob: z.string().regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, {
-    message: 'Please enter a valid date in MM/DD/YYYY format.',
-  }),
-});
+import { Quote } from 'lucide-react';
 
 export default function SignupPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [phonePlaceholder, setPhonePlaceholder] = useState('555-123-4567');
-  const [quote, setQuote] = useState(() => getRandomQuote());
-  const { signUpWithEmail, signInWithGoogle } = useSupabaseAuth();
-  const router = useRouter();
-  const { toast } = useToast();
-
-  useEffect(() => {
-    // Refresh quote on component mount
-    setQuote(getRandomQuote());
-  }, []);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      countryCode: '+1',
-      phoneNumber: '',
-    },
+  const { hideLoader } = useLoading();
+  
+  // Use the specific quote requested
+  const [quote] = useState({
+    text: "Learning is a treasure that will follow its owner everywhere.",
+    author: "Chinese Proverb"
   });
 
-  const handleCountryChange = (dialCode: string) => {
-    const country = countries.find(c => c.dial_code === dialCode);
-    if (country) {
-      setPhonePlaceholder(`Phone number in ${country.name}`);
-    } else {
-      setPhonePlaceholder('555-123-4567');
-    }
-    form.setValue('countryCode', dialCode);
-  };
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-
-    try {
-      // Store user data for profile creation
-      const userData = {
-        name: values.name,
-        dob: values.dob,
-        phone_number: `${values.countryCode}${values.phoneNumber}`,
-      };
-
-      await signUpWithEmail(values.email, values.password, userData);
-
-      toast({ 
-        title: 'Account Created!',
-        description: "We've sent a verification link to your email. Please verify your account before signing in.",
-        duration: 8000,
-      });
-
-      // Redirect to login page
-      router.push('/login');
-
-    } catch (error: any) {
-      console.error("Signup error:", error);
-      
-      let description = 'Could not create a new account.';
-      if (error.message && error.message.includes('already registered')) {
-        description = 'This email is already in use. Please try to sign in instead.';
-      } else if (error.message) {
-        description = error.message;
-      }
-      
-      toast({
-        variant: 'destructive',
-        title: 'Sign-up failed',
-        description,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const handleGoogleSignUp = async () => {
-    setIsGoogleLoading(true);
-    
-    try {
-      await signInWithGoogle();
-      // Supabase will handle the redirect automatically
-    } catch (error: any) {
-      console.error('Google sign-up error:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Sign-up failed',
-        description: error.message || 'An unexpected error occurred during Google sign-up.',
-      });
-      setIsGoogleLoading(false);
-    }
-  };
+  useEffect(() => {
+    hideLoader();
+  }, [hideLoader]);
 
   return (
     <div className="relative flex min-h-screen w-full overflow-hidden">
@@ -141,152 +32,8 @@ export default function SignupPage() {
       </div>
 
       {/* Left Side - Form */}
-      <div className="relative flex items-center justify-center w-full lg:w-1/2 p-8 overflow-y-auto z-10">
-        <Card className="w-full max-w-md my-8">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex justify-center">
-            <Logo clickable={false} />
-          </div>
-          <CardTitle>Create an Account</CardTitle>
-          <CardDescription>Join Coder Pod and start your learning journey today.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button
-            variant="outline"
-            onClick={handleGoogleSignUp}
-            disabled={isLoading || isGoogleLoading}
-            className="w-full mb-4"
-          >
-            {isGoogleLoading ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <>
-                <Chrome className="mr-2 h-4 w-4" />
-                Sign up with Google
-              </>
-            )}
-          </Button>
-
-          <div className="relative mb-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or with email</span>
-            </div>
-          </div>
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" {...field} disabled={isLoading} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" placeholder="name@example.com" {...field} disabled={isLoading} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} disabled={isLoading} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormItem>
-                <FormLabel>Phone Number</FormLabel>
-                <div className="flex gap-2">
-                  <FormField
-                    control={form.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                      <FormItem className="w-1/3">
-                        <Select onValueChange={handleCountryChange} defaultValue={field.value} disabled={isLoading}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Code" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {countries.map(country => (
-                              <SelectItem key={`${country.code}-${country.dial_code}`} value={country.dial_code}>{`${country.code} (${country.dial_code})`}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem className="w-2/3">
-                        <FormControl>
-                          <Input type="tel" placeholder={phonePlaceholder} {...field} disabled={isLoading} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </FormItem>
-              <FormField
-                control={form.control}
-                name="dob"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="text" 
-                        placeholder="MM/DD/YYYY" 
-                        {...field} 
-                        disabled={isLoading}
-                        maxLength={10}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading || isGoogleLoading}>
-                {isLoading ? <Loader2 className="animate-spin" /> : 'Create Account'}
-              </Button>
-            </form>
-          </Form>
-          <div className="mt-4 text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
-            <Link href="/login" className="font-semibold text-primary hover:underline">
-              Sign in
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="relative flex items-center justify-center w-full lg:w-1/2 p-8 z-10">
+        <EnhancedSignUpForm />
       </div>
       
       {/* Beautiful Divider */}
@@ -345,6 +92,40 @@ export default function SignupPage() {
                   </footer>
                 </blockquote>
               </div>
+            </div>
+          </div>
+          
+          {/* Platform Features */}
+          <div className="mt-12 text-center space-y-8">
+            <div className="space-y-6">
+              <p className="text-xl font-light text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed tracking-wide">
+                All modern development requirements in one place - from learning paths to AI tools, everything you need to master coding
+              </p>
+            </div>
+            
+            {/* Feature Tags */}
+            <div className="flex flex-wrap justify-center gap-3 max-w-xl mx-auto">
+              <span className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium">
+                Learning Paths
+              </span>
+              <span className="px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                Roadmaps
+              </span>
+              <span className="px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium">
+                67+ Cheatsheets
+              </span>
+              <span className="px-4 py-2 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded-full text-sm font-medium">
+                Interview Practice
+              </span>
+              <span className="px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
+                Personal Notes
+              </span>
+              <span className="px-4 py-2 bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-700 dark:text-fuchsia-300 rounded-full text-sm font-medium">
+                Discover
+              </span>
+              <span className="px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                AI Tools
+              </span>
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ import { PlaywrightProvider } from './playwright-context';
 import { PlaywrightLayoutProvider, usePlaywrightLayout } from './playwright-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function PlaywrightTopicLayoutContent({ children }: { children: React.ReactNode }) {

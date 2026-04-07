@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

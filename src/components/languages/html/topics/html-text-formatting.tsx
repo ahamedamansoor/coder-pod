@@ -57,10 +57,10 @@ export default function TextFormatting({ onOpenWebPlaygroundAction, onOpenWebPla
 <blockquote cite="https://example.com/post">
   <p>“The web’s strength lies in its universality.”</p>
 </blockquote>`,
-      css: `body { font-family: system-ui; line-height:1.6; padding:1.5rem; background: #0f172a; color: #f1f5f9; }
-blockquote { margin:1rem 0; padding:1rem 1.25rem; background:rgba(30, 41, 59, 0.6); border-left:4px solid #3b82f6; border-radius:6px; border: 1px solid #374151; }
-mark { background:#fbbf24; color: #1f2937; padding:0 0.25rem; border-radius:2px; }
-q { quotes: '“' '”' '‘' '’'; }
+      css: `body { font-family: system-ui; line-height:1.6; padding:1.5rem; background: hsl(var(--background)); color: hsl(var(--foreground)); }
+blockquote { margin:1rem 0; padding:1rem 1.25rem; background:hsl(var(--muted)); border-left:4px solid hsl(var(--primary)); border-radius:6px; border: 1px solid hsl(var(--border)); }
+mark { background:hsl(var(--accent)); color: hsl(var(--accent-foreground)); padding:0 0.25rem; border-radius:2px; }
+q { quotes: '"' '"' ''' '''; }
 q::before { content: open-quote; } q::after { content: close-quote; }`,
       js: ''
     };
@@ -71,10 +71,10 @@ q::before { content: open-quote; } q::after { content: close-quote; }`,
 <p>Shortcut: Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save.</p>
 <p>Sample output: <samp>Build succeeded in 2.34s</samp></p>
 <p>Variable: Let <var>x</var> be the number of items.</p>`,
-      css: `code, kbd, samp, var { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:rgba(31, 41, 55, 0.8); padding:2px 4px; border-radius:4px; border: 1px solid #4b5563; color: #e2e8f0; }
-kbd { background:#374151; color:#fbbf24; box-shadow: inset 0 -2px 0 rgba(0,0,0,.5); border: 1px solid #6b7280; }
-samp { background:rgba(14, 165, 233, 0.2); color:#38bdf8; }
-var { font-style: italic; background:rgba(241, 245, 249, 0.1); color:#f1f5f9; }`,
+      css: `code, kbd, samp, var { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:hsl(var(--muted)); padding:2px 4px; border-radius:4px; border: 1px solid hsl(var(--border)); color: hsl(var(--foreground)); }
+kbd { background:hsl(var(--accent)); color:hsl(var(--accent-foreground)); box-shadow: inset 0 -2px 0 rgba(0,0,0,.2); border: 1px solid hsl(var(--border)); }
+samp { background:hsl(var(--primary)); color:hsl(var(--primary-foreground)); opacity: 0.8; }
+var { font-style: italic; background:hsl(var(--muted)/0.5); color:hsl(var(--foreground)); }`,
       js: ''
     };
 
@@ -84,10 +84,10 @@ var { font-style: italic; background:rgba(241, 245, 249, 0.1); color:#f1f5f9; }`
 <p>Change log: <ins datetime="2025-11-22T09:00:00Z">Feature X enabled</ins></p>
 <p>Strikethrough style (not semantic removal): <s>Legacy Feature</s></p>
 <p>Highlighted context: <mark>Beta</mark> phase extended.</p>`,
-      css: `del { color:#f87171; text-decoration: line-through; }
-ins { color:#34d399; text-decoration: underline; }
-s { color:#9ca3af; }
-mark { background:#fbbf24; color: #1f2937; }`,
+      css: `del { color:hsl(var(--destructive)); text-decoration: line-through; }
+ins { color:hsl(var(--primary)); text-decoration: underline; }
+s { color:hsl(var(--muted-foreground)); }
+mark { background:hsl(var(--accent)); color: hsl(var(--accent-foreground)); }`,
       js: ''
     };
 
@@ -97,7 +97,7 @@ mark { background:#fbbf24; color: #1f2937; }`,
 <p>Event Starts: <time datetime="2025-12-01T09:30:00Z">Dec 1st 09:30 UTC</time></p>
 <p>Relative date (still semantic): <time datetime="2025-11-22">Today</time></p>
 <p>Chemistry: H<sub>2</sub>O — Math: E = mc<sup>2</sup></p>`,
-      css: `time { font-weight:500; color:#60a5fa; }
+      css: `time { font-weight:500; color:hsl(var(--primary)); }
 sub, sup { font-size:0.75em; line-height:0; position:relative; vertical-align: baseline; }
 sub { bottom:-0.25em; } sup { top:-0.5em; }`,
       js: ''
@@ -137,16 +137,16 @@ li { margin:0.35rem 0; }`,
 <p>Time published: <time datetime="2025-11-22">Nov 22, 2025</time></p>
 <p>Small print: <small>Terms apply.</small></p>
 </article>`,
-      css: `article { font-family: system-ui; max-width: 780px; margin:0 auto; line-height:1.7; background: #0f172a; color: #f1f5f9; padding: 2rem; border-radius: 8px; }
-blockquote { margin:1.25rem 0; background:#f8fafc; border-left:4px solid #3b82f6; padding:1rem 1.25rem; border-radius:6px; }
-mark { background:#fde68a; }
-code, kbd, samp, var { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#f1f5f9; padding:2px 4px; border-radius:4px; }
-kbd { background:#1e293b; color:#fff; }
-samp { background:#e0f2fe; }
+      css: `article { font-family: system-ui; max-width: 780px; margin:0 auto; line-height:1.7; background: hsl(var(--background)); color: hsl(var(--foreground)); padding: 2rem; border-radius: 8px; border: 1px solid hsl(var(--border)); }
+blockquote { margin:1.25rem 0; background:hsl(var(--muted)); border-left:4px solid hsl(var(--primary)); padding:1rem 1.25rem; border-radius:6px; }
+mark { background:hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+code, kbd, samp, var { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:hsl(var(--muted)); padding:2px 4px; border-radius:4px; color: hsl(var(--foreground)); }
+kbd { background:hsl(var(--accent)); color:hsl(var(--accent-foreground)); }
+samp { background:hsl(var(--primary)); color:hsl(var(--primary-foreground)); opacity: 0.8; }
 var { font-style:italic; }
-del { color:#dc2626; }
-ins { color:#16a34a; text-decoration: underline; }
-small { color:#64748b; }
+del { color:hsl(var(--destructive)); }
+ins { color:hsl(var(--primary)); text-decoration: underline; }
+small { color:hsl(var(--muted-foreground)); }
 q { quotes:'“' '”' '‘' '’'; }
 q::before { content: open-quote; } q::after { content: close-quote; }`,
       js: ''
@@ -265,8 +265,8 @@ q::before { content: open-quote; } q::after { content: close-quote; }`,
 body {
   font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.8;
-  background: linear-gradient(135deg, #0f172a 0%, #2d1b69 100%);
-  color: #e2e8f0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 
 .container {
@@ -304,9 +304,9 @@ body {
 .demo-section {
   margin-bottom: 3rem;
   padding: 2rem;
-  background: #1e293b;
+  background: hsl(var(--muted));
   border-radius: 12px;
-  border: 2px solid #334155;
+  border: 2px solid hsl(var(--border));
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
   transition: all 0.3s ease;
 }

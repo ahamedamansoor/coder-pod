@@ -11,7 +11,7 @@ import { HtmlProvider } from './html-context';
 import { HtmlLayoutProvider, useHtmlLayout } from './html-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { WebPlaygroundProvider } from '@/components/shared/playground/web-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { getRouteParam } from '@/lib/params';

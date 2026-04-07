@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { languages } from '@/data/languages';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { ServiceFactory } from '@/services';
 import { useLoading } from '@/hooks/use-loading';
 import { useToast } from '@/hooks/use-toast';

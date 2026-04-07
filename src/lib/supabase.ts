@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // Supabase configuration
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -10,6 +10,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Singleton instance to prevent multiple clients
+let supabaseInstance: SupabaseClient | null = null;
+
+// Client cache to prevent duplicate instances for same email
+const clientCache = new Map<string, SupabaseClient>();
+
 // Create a dynamic Supabase client factory for concurrent logins
 export const createSupabaseClient = (email?: string) => {
   // Generate unique storage key per user email
@@ -17,7 +23,13 @@ export const createSupabaseClient = (email?: string) => {
     `coder-pod-auth-${email.replace(/[^a-zA-Z0-9]/g, '_')}` :
     'coder-pod-auth-default';
 
-  return createClient(supabaseUrl, supabaseAnonKey, {
+  // Check cache first
+  if (clientCache.has(storageKey)) {
+    return clientCache.get(storageKey)!;
+  }
+
+  // Create new client and cache it
+  const client = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true, // Enable session persistence
       autoRefreshToken: true,
@@ -25,10 +37,29 @@ export const createSupabaseClient = (email?: string) => {
       storageKey: storageKey,
     },
   });
+
+  clientCache.set(storageKey, client);
+  return client;
 };
 
-// Default Supabase client (for initial auth)
-export const supabase = createSupabaseClient();
+// Default Supabase client (singleton pattern)
+export const supabase = (() => {
+  if (!supabaseInstance) {
+    supabaseInstance = createSupabaseClient();
+  }
+  return supabaseInstance;
+})();
+
+// Utility function to clear client cache (useful for testing or logout)
+export const clearSupabaseClientCache = () => {
+  clientCache.clear();
+  supabaseInstance = null;
+};
+
+// Get cache size for debugging
+export const getSupabaseClientCacheSize = () => {
+  return clientCache.size;
+};
 
 // Database types for TypeScript
 export interface Database {

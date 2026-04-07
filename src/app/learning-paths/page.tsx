@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { languages as allLanguages } from '@/data/languages';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useUser } from '@/hooks/use-auth-compat';
 import { unifiedCompletionService } from '@/services/unified-completion.service';
 

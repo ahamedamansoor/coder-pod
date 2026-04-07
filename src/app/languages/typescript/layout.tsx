@@ -11,7 +11,7 @@ import { TypeScriptProvider } from './typescript-context';
 import { TypeScriptLayoutProvider, useTypeScriptLayout } from './typescript-layout-context';
 import { useLoading } from '@/hooks/use-loading';
 import { useUser } from '@/hooks/use-auth-compat';
-import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
+import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { getRouteParam } from '@/lib/params';
 
 function TypeScriptTopicLayoutContent({ children }: { children: React.ReactNode }) {
