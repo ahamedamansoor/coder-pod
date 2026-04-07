@@ -61,11 +61,6 @@ class UnifiedCompletionService {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY);
       const result = data ? JSON.parse(data) : {};
-      console.log('Unified Completion Service - getAllCompletionData():', {
-        data,
-        result,
-        storageKey: this.STORAGE_KEY
-      });
       return result;
     } catch (error) {
       console.error('Error reading unified completion data:', error);
