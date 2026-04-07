@@ -44,6 +44,7 @@ function LearningPathsPageContent() {
     const [blockedLang, setBlockedLang] = useState<{ slug: string; name: string } | null>(null);
     const [startedPaths, setStartedPaths] = useState<Set<string>>(new Set());
     const [completionData, setCompletionData] = useState<{ [language: string]: string[] }>({});
+    const [isCompletionLoading, setIsCompletionLoading] = useState(false);
 
     // Only show allowed slugs
     const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium', 'dsa']), []);
@@ -55,12 +56,27 @@ function LearningPathsPageContent() {
 
     const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium', 'dsa']), []);
 
-    // Load completion data from unified service (only from cache initially)
+    // Load completion data from unified service
     useEffect(() => {
         if (user) {
-            // Only get cached data initially, don't fetch from server
-            const data = unifiedCompletionService.getAllCompletionData();
-            setCompletionData(data);
+            // First fetch fresh data from server, then fall back to cache
+            const fetchInitialData = async () => {
+                setIsCompletionLoading(true);
+                try {
+                    console.log('🔄 Fetching initial completion data for user:', user.uid);
+                    await unifiedCompletionService.fetchAllCompletionData(user.uid);
+                    console.log('✅ Completion data fetched successfully');
+                } catch (error) {
+                    console.error('❌ Error fetching initial completion data:', error);
+                }
+                // Get the data (either fresh or from cache)
+                const data = unifiedCompletionService.getAllCompletionData();
+                console.log('📊 Setting completion data:', data);
+                setCompletionData(data);
+                setIsCompletionLoading(false);
+            };
+            
+            fetchInitialData();
         }
     }, [user?.uid]); // Use user.uid instead of user object
 
