@@ -22,9 +22,21 @@ export class SupabaseNotesService {
       }
 
       console.log(`Successfully fetched ${data?.length || 0} notes from Supabase for user ${userId}`);
+      
+      // Add detailed logging for debugging
+      if (data && data.length > 0) {
+        console.log('Sample note data:', JSON.stringify(data[0], null, 2));
+      }
+      
       return this.mapSupabaseNotesToNotes(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching user notes:', error);
+      console.error('Error details:', {
+        message: error?.message,
+        stack: error?.stack,
+        userId,
+        tableName: this.tableName
+      });
       throw error;
     }
   }
@@ -235,13 +247,27 @@ export class SupabaseNotesService {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching notes by language:', error);
+        console.error('Error fetching notes by language from Supabase:', error);
         throw new Error(`Failed to fetch notes: ${error.message}`);
       }
 
+      console.log(`Successfully fetched ${data?.length || 0} notes for language ${language}`);
+      
+      // Add detailed logging for debugging
+      if (data && data.length > 0) {
+        console.log('Sample note data for language:', JSON.stringify(data[0], null, 2));
+      }
+      
       return this.mapSupabaseNotesToNotes(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching notes by language:', error);
+      console.error('Error details:', {
+        message: error?.message,
+        stack: error?.stack,
+        userId,
+        language,
+        tableName: this.tableName
+      });
       throw error;
     }
   }
@@ -279,6 +305,27 @@ export class SupabaseNotesService {
    * Map Supabase note to app Note type
    */
   private mapSupabaseNoteToNote(supabaseNote: any): Note {
+    let tags: string[] = [];
+    
+    // Safely parse tags JSON string
+    if (supabaseNote.tags) {
+      try {
+        // Handle case where tags might be stored as array instead of JSON string
+        if (Array.isArray(supabaseNote.tags)) {
+          tags = supabaseNote.tags;
+        } else if (typeof supabaseNote.tags === 'string') {
+          // Only parse if it's a non-empty string
+          const trimmed = supabaseNote.tags.trim();
+          if (trimmed) {
+            tags = JSON.parse(trimmed);
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to parse tags JSON:', error, 'Raw value:', supabaseNote.tags);
+        tags = []; // Default to empty array on parse error
+      }
+    }
+
     return {
       id: supabaseNote.id,
       userId: supabaseNote.user_id,
@@ -289,7 +336,7 @@ export class SupabaseNotesService {
       url: supabaseNote.url || '',
       videoId: supabaseNote.video_id || '',
       content: supabaseNote.content || '',
-      tags: supabaseNote.tags ? JSON.parse(supabaseNote.tags) : [], // Parse JSON string to array
+      tags,
       favorited: supabaseNote.favorited ?? false,
       createdAt: new Date(supabaseNote.created_at),
       updatedAt: new Date(supabaseNote.updated_at || supabaseNote.created_at), // Handle missing updated_at

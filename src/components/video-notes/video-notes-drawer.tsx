@@ -95,9 +95,13 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
     fetchInProgressRef.current = true;
     setIsLoading(true);
     try {
+      console.log('Fetching notes for user:', user.uid, 'language:', languageSlug);
+      
       // Only use ServiceFactory for authenticated users
       const notesService = ServiceFactory.getNotesService();
       const allNotes = await notesService.getNotesByLanguage(user.uid, languageSlug, currentSupabaseClient);
+      
+      console.log('Successfully fetched notes:', allNotes.length);
       setNotes(allNotes);
 
       // Update cache
@@ -105,11 +109,19 @@ export function VideoNotesDrawer({ open, onOpenChange, languageSlug }: VideoNote
         data: allNotes,
         timestamp: now,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching notes:', error);
+      console.error('Full error details:', {
+        message: error?.message,
+        stack: error?.stack,
+        userId: user?.uid,
+        languageSlug,
+        hasCurrentSupabaseClient: !!currentSupabaseClient
+      });
+      
       toast({
         title: 'Error loading resources',
-        description: 'Failed to load your saved resources.',
+        description: error?.message || 'Failed to load your saved resources.',
         variant: 'destructive',
       });
       setNotes([]);
