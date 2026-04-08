@@ -81,7 +81,7 @@ export function PasswordRequirements({
         </div>
 
         {/* Requirements list */}
-        <div className="grid grid-cols-2 gap-1">
+        <div className="grid grid-cols-3 gap-1">
           {requirements.map((req, index) => {
             const Icon = getIcon(req.icon);
             return (

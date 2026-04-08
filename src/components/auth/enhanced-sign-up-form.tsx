@@ -41,6 +41,8 @@ export function EnhancedSignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setLoading] = useState<string | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<{
     isValid: boolean;
     errors: string[];
@@ -117,8 +119,45 @@ export function EnhancedSignUpForm() {
     }
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    setMousePosition({ x, y });
+  };
+
+  const calculateTransform = () => {
+    if (!isHovering) return '';
+    
+    const rect = 450; // Approximate card width (signup is wider)
+    const centerX = rect / 2;
+    const centerY = 350; // Approximate card height
+    
+    const rotateX = ((mousePosition.y - centerY) / centerY) * -3;
+    const rotateY = ((mousePosition.x - centerX) / centerX) * 3;
+    const translateX = ((mousePosition.x - centerX) / centerX) * -8;
+    const translateY = ((mousePosition.y - centerY) / centerY) * -8;
+    
+    return `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateX(${translateX}px) translateY(${translateY}px) scale(1.05)`;
+  };
+
   return (
-    <Card className="w-full max-w-lg shadow-2xl border-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl">
+    <Card 
+      className="w-full max-w-lg shadow-2xl border-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl transition-all duration-200 ease-out cursor-pointer"
+      style={{ 
+        transform: calculateTransform(),
+        boxShadow: isHovering ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' : '0 25px 50px -12px rgba(0, 0, 0, 0.15)'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => {
+        setIsHovering(false);
+        setMousePosition({ x: 0, y: 0 });
+      }}
+    >
       <CardHeader className="text-center space-y-2 pb-4">
         <CardTitle className="text-2xl font-bold">
           <span style={{ color: '#5B7FFF' }}>CODER</span>
@@ -264,15 +303,6 @@ export function EnhancedSignUpForm() {
                       </div>
                     </FormControl>
                     <FormMessage />
-                    {passwordStrength && (
-                      <div className="mt-3">
-                        <PasswordRequirements 
-                          requirements={passwordStrength.requirements}
-                          showTitle={false}
-                          compact={true}
-                        />
-                      </div>
-                    )}
                   </FormItem>
                 )}
               />
@@ -311,6 +341,15 @@ export function EnhancedSignUpForm() {
                 )}
               />
             </div>
+            {passwordStrength && (
+                <div className="mt-8">
+                  <PasswordRequirements
+                      requirements={passwordStrength.requirements}
+                      showTitle={false}
+                      compact={true}
+                  />
+                </div>
+            )}
 
             {/* Phone Number */}
             <div className="grid grid-cols-3 gap-2">

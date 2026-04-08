@@ -253,116 +253,116 @@ export function CheatsheetModal({
         className="max-w-full w-screen h-screen p-0 flex flex-col bg-slate-50 dark:bg-slate-950 border-0 rounded-none"
       >
         {/* Header */}
-        <DialogHeader className="px-8 py-6 border-b flex-shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
-                  <Icon className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <span className="text-emerald-600 dark:text-emerald-400">#</span>
-                    {title}
-                  </DialogTitle>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    {totalCommands} commands • {filteredSections.length} sections
-                  </p>
-                </div>
+        <DialogHeader className="px-6 py-3 border-b flex-shrink-0 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 border-slate-200/50 dark:border-slate-800/50">
+          <div className="flex items-center justify-between">
+            {/* Title Section */}
+            <div className="flex items-center gap-3">
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 shadow-sm">
+                <Icon className="h-4 w-4 text-white" />
               </div>
+              <div className="flex items-baseline gap-2">
+                <DialogTitle className="text-lg font-semibold text-slate-900 dark:text-white">
+                  {title}
+                </DialogTitle>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  {totalCommands} cmd
+                </span>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center gap-2">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                <Input
+                  placeholder="Search..."
+                  value={filters.searchQuery}
+                  onChange={(e) => {
+                    updateFilter('searchQuery', e.target.value);
+                  }}
+                  className="pl-8 pr-6 h-8 w-48 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20 text-sm"
+                />
+                {filters.searchQuery && (
+                  <button
+                    onClick={() => updateFilter('searchQuery', '')}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 h-5 w-5 p-0 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  >
+                    <X className="h-3 w-3 text-slate-400" />
+                  </button>
+                )}
+              </div>
+
+              {/* Filter Toggle */}
+              <button
+                onClick={() => setShowTopics(!showTopics)}
+                className={cn(
+                  "h-8 px-3 text-xs font-medium rounded-lg border transition-all",
+                  showTopics 
+                    ? "bg-emerald-500 text-white border-emerald-500 shadow-sm" 
+                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"
+                )}
+              >
+                <Filter className="w-3 h-3 mr-1 inline" />
+                {showTopics ? 'Filtered' : 'All'}
+              </button>
+
+              {/* Close */}
               <button
                 onClick={onClose}
-                className="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all hover:scale-110 shadow-lg"
+                className="h-8 w-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center"
               >
-                <X className="w-6 h-6 text-slate-600 dark:text-slate-400" />
+                <X className="w-4 h-4 text-slate-500" />
               </button>
             </div>
-
-            {/* Search Input and Advanced Filter */}
-            <div className="flex flex-col gap-4 items-center">
-              <div className="flex gap-3 items-center justify-center w-full">
-                <div className="relative flex-1 max-w-lg">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                  <Input
-                    placeholder="Filter commands..."
-                    value={filters.searchQuery}
-                    onChange={(e) => {
-                      updateFilter('searchQuery', e.target.value);
-                      // Keep selected sections when searching - they work together
-                    }}
-                    className="pl-12 pr-12 h-12 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20 text-base"
-                  />
-                  {filters.searchQuery && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => updateFilter('searchQuery', '')}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      <X className="h-4 w-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
-                    </Button>
-                  )}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowTopics(!showTopics)}
-                  className="h-12 px-6 text-sm border-slate-200 dark:border-slate-700 whitespace-nowrap"
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  {showTopics ? 'Hide Filters' : 'Advanced Filters'}
-                  <span className="ml-2 text-xs opacity-75">
-                    ({filters.selectedSections.length > 0 ? filters.selectedSections.length : sections.length})
-                  </span>
-                </Button>
-              </div>
-
-              {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
-              {showTopics && (
-                <div className="flex flex-wrap items-center justify-center gap-3 animate-in slide-in-from-top-2 duration-200">
-                  <span className="text-sm font-medium text-slate-500 dark:text-slate-400 mr-2">
-                    Topics:
-                  </span>
-                  {(filters.selectedSections.length > 0 || filters.searchQuery) && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearFilters}
-                      className="h-8 px-3 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-                    >
-                      Clear filters {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
-                    </Button>
-                  )}
-                  <div className="flex flex-wrap gap-3">
-                    {sections.map((section, index) => {
-                      const badgeColor = sectionColors[index % sectionColors.length];
-                      const isSelected = filters.selectedSections.includes(section.title);
-
-                      return (
-                        <button
-                          key={section.title}
-                          onClick={() => handleSectionClick(section.title)}
-                          className={cn(
-                            'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-                            'border border-slate-200 dark:border-slate-700',
-                            isSelected
-                              ? `${badgeColor} text-white border-transparent shadow-md scale-105`
-                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
-                          )}
-                          title={`${section.commands.length} commands - Click to ${isSelected ? 'deselect' : 'select'}`}
-                        >
-                          {section.title}
-                          <span className="ml-2 text-xs opacity-75">
-                            ({section.commands.length})
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
+
+          {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
+          {showTopics && (
+            <div className="px-6 py-3 border-t border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                  Filter by:
+                </span>
+                {(filters.selectedSections.length > 0 || filters.searchQuery) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="h-7 px-3 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                  >
+                    Clear {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
+                  </Button>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {sections.map((section, index) => {
+                    const badgeColor = sectionColors[index % sectionColors.length];
+                    const isSelected = filters.selectedSections.includes(section.title);
+
+                    return (
+                      <button
+                        key={section.title}
+                        onClick={() => handleSectionClick(section.title)}
+                        className={cn(
+                          'px-3 py-1 rounded-md text-xs font-medium transition-all duration-200',
+                          'border border-slate-200 dark:border-slate-700',
+                          isSelected
+                            ? `${badgeColor} text-white border-transparent shadow-sm scale-105`
+                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                        )}
+                        title={`${section.commands.length} commands`}
+                      >
+                        {section.title}
+                        <span className="ml-1 text-xs opacity-75">
+                          ({section.commands.length})
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </DialogHeader>
 
         {/* Content - Card Grid Layout */}
@@ -408,9 +408,10 @@ export function CheatsheetModal({
 
                           {/* Code Block */}
                           <div className="relative group">
-                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-                              <pre className="p-4 text-sm font-mono overflow-x-auto">
-                                <code className="text-gray-800 dark:text-gray-200">
+                            <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-950 dark:to-black rounded-xl border border-gray-600 dark:border-gray-800 shadow-lg overflow-hidden">
+                              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/3 to-transparent dark:from-emerald-400/5"></div>
+                              <pre className="p-4 text-sm font-mono overflow-x-auto relative">
+                                <code className="text-emerald-500 dark:text-emerald-300 font-semibold leading-relaxed">
                                   {highlightText(cmd.example || cmd.command, filters.searchQuery)}
                                 </code>
                               </pre>
@@ -419,12 +420,12 @@ export function CheatsheetModal({
                             {/* Copy Button */}
                             <button
                               onClick={() => copyToClipboard(cmd.command)}
-                              className="absolute top-3 right-3 p-2 rounded-lg bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-white dark:hover:bg-gray-600 shadow-sm"
+                              className="absolute top-3 right-3 p-2 rounded-lg bg-emerald-500/90 hover:bg-emerald-500 text-white backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all hover:scale-105 shadow-lg"
                             >
                               {copiedCommand === cmd.command ? (
-                                <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+                                <Check className="w-4 h-4" />
                               ) : (
-                                <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <Copy className="w-4 h-4" />
                               )}
                             </button>
                           </div>

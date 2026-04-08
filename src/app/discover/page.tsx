@@ -646,7 +646,7 @@ export default function DiscoverPage() {
           <LearningPathTitle
             icon={Sparkles}
             title="Discover"
-            subtitle="A comprehensive collection of articles, videos & podcasts from DEV Community — stay updated with the latest tech content"
+            subtitle="A comprehensive collection of articles & podcasts from DEV Community — stay updated with the latest tech content"
           />
         </div>
 
@@ -789,80 +789,78 @@ export default function DiscoverPage() {
 
                           {/* Author & Stats */}
                           <div className="flex items-center justify-between pt-3 border-t">
-                            {article.user ? (
-                              <div className="flex items-center gap-2">
-                                <img
-                                  src={article.user.profile_image}
-                                  alt={article.user.name}
-                                  className="w-8 h-8 rounded-full object-cover bg-muted"
-                                  onError={(e) => {
-                                    // Fallback to a colored circle with initials
-                                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(article.user?.name || 'User')}&background=random&color=fff&size=128`;
-                                  }}
-                                />
-                                <div className="min-w-0">
-                                  <p className="text-xs font-medium truncate">{article.user.name}</p>
-                                  {article.reading_time_minutes && (
-                                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                      <Clock className="w-3 h-3" />
-                                      {article.reading_time_minutes} min read
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                                  <Newspaper className="w-4 h-4 text-primary" />
-                                </div>
-                                <div className="min-w-0">
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                              {article.user ? (
+                                <>
+                                  <img
+                                    src={article.user.profile_image}
+                                    alt={article.user.name}
+                                    className="w-6 h-6 rounded-full object-cover bg-muted flex-shrink-0"
+                                    onError={(e) => {
+                                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(article.user?.name || 'User')}&background=random&color=fff&size=64`;
+                                    }}
+                                  />
+                                  <div className="min-w-0">
+                                    <p className="text-xs font-medium truncate">{article.user.name}</p>
+                                    {article.reading_time_minutes && (
+                                      <p className="text-xs text-muted-foreground">{article.reading_time_minutes} min</p>
+                                    )}
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <Newspaper className="w-3 h-3 text-primary" />
+                                  </div>
                                   <p className="text-xs font-medium text-muted-foreground">DEV Community</p>
-                                </div>
-                              </div>
-                            )}
+                                </>
+                              )}
+                            </div>
 
-                            {/* Read/Watch/Listen Button */}
-                            {article.type_of === 'video_article' ? (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => {
-                                  setContent({
-                                    id: article.id,
-                                    title: article.title,
-                                    url: article.url,
-                                    type: 'video',
-                                    coverImage: article.cover_image || undefined,
-                                    author: article.user?.name,
-                                  });
-                                }}
-                                className="gap-1"
-                              >
-                                <Video className="w-3 h-3" />
-                                Watch
-                              </Button>
-                            ) : (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                asChild
-                                className="gap-1"
-                              >
-                                <a href={article.url} target="_blank" rel="noopener noreferrer">
-                                  {article.type_of === 'podcast_episode' ? (
-                                    <>
-                                      <Podcast className="w-3 h-3" />
-                                      Listen
-                                    </>
-                                  ) : (
-                                    <>
-                                      <ExternalLink className="w-3 h-3" />
-                                      Read
-                                    </>
-                                  )}
-                                </a>
-                              </Button>
-                            )}
+                            {/* Action Button */}
+                            <div className="flex items-center gap-1">
+                              {article.type_of === 'video_article' ? (
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setContent({
+                                      id: article.id,
+                                      title: article.title,
+                                      url: article.url,
+                                      type: 'video',
+                                      coverImage: article.cover_image || undefined,
+                                      author: article.user?.name,
+                                    });
+                                  }}
+                                  className="h-8 px-2 gap-1"
+                                >
+                                  <Video className="w-3 h-3" />
+                                  <span className="text-xs">Watch</span>
+                                </Button>
+                              ) : (
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  asChild
+                                  className="h-8 px-2 gap-1"
+                                >
+                                  <a href={article.url} target="_blank" rel="noopener noreferrer">
+                                    {article.type_of === 'podcast_episode' ? (
+                                      <>
+                                        <Podcast className="w-3 h-3" />
+                                        <span className="text-xs">Listen</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <ExternalLink className="w-3 h-3" />
+                                        <span className="text-xs">Read</span>
+                                      </>
+                                    )}
+                                  </a>
+                                </Button>
+                              )}
+                            </div>
                           </div>
 
                           {/* Reactions */}

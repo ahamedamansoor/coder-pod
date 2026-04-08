@@ -26,8 +26,8 @@ export const LearningPathChartModal = ({
   showProgress = true,
   allLanguages = [],
 }: LearningPathChartModalProps) => {
-  const [compareLanguage, setCompareLanguage] = useState<string>('');
-  const [isComparing, setIsComparing] = useState(false);
+  const [secondRoadmap, setSecondRoadmap] = useState<string>('');
+  const [showSecondRoadmap, setShowSecondRoadmap] = useState(false);
   const roleBasedRoadmaps = ['frontend-developer', 'backend-developer'];
   const isRoleBasedRoadmap = roleBasedRoadmaps.includes(language.slug);
   
@@ -49,11 +49,11 @@ export const LearningPathChartModal = ({
 
   const categories = Object.entries(topicsByCategory);
 
-  // Get comparison language data
-  const compareLanguageData = allLanguages.find(lang => lang.slug === compareLanguage);
-  console.log('Compare language data:', compareLanguageData);
-  const compareTopicsByCategory = compareLanguageData ? 
-    compareLanguageData.topics
+  // Get second roadmap data
+  const secondRoadmapData = allLanguages.find(lang => lang.slug === secondRoadmap);
+  console.log('Second roadmap data:', secondRoadmapData);
+  const secondRoadmapTopicsByCategory = secondRoadmapData ? 
+    secondRoadmapData.topics
       .filter(t => !excludedSlugs.includes(t.slug))
       .reduce((acc, topic) => {
         const category = topic.category || 'Other';
@@ -63,7 +63,7 @@ export const LearningPathChartModal = ({
         acc[category].push(topic);
         return acc;
       }, {} as Record<string, Topic[]>) : null;
-  console.log('Compare topics by category:', compareTopicsByCategory);
+  console.log('Second roadmap topics by category:', secondRoadmapTopicsByCategory);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -172,16 +172,16 @@ export const LearningPathChartModal = ({
             <span className="font-bold text-sm text-slate-800 dark:text-white">{language.name}</span>
           </div>
 
-          {/* Comparison Dropdown */}
+          {/* Second Roadmap Dropdown */}
           <div className="flex items-center gap-2">
-            <Select value={compareLanguage} onValueChange={(value) => {
-              console.log('Selected comparison:', value);
-              setCompareLanguage(value);
-              setIsComparing(value !== '');
-              console.log('Is comparing:', value !== '');
+            <Select value={secondRoadmap} onValueChange={(value) => {
+              console.log('Selected second roadmap:', value);
+              setSecondRoadmap(value);
+              setShowSecondRoadmap(value !== '');
+              console.log('Show second roadmap:', value !== '');
             }}>
               <SelectTrigger className="w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-lg">
-                <SelectValue placeholder="Compare with..." />
+                <SelectValue placeholder="Add second roadmap..." />
               </SelectTrigger>
               <SelectContent>
                 {allLanguages
@@ -194,11 +194,11 @@ export const LearningPathChartModal = ({
               </SelectContent>
             </Select>
             
-            {isComparing && (
+            {showSecondRoadmap && (
               <button
                 onClick={() => {
-                  setCompareLanguage('');
-                  setIsComparing(false);
+                  setSecondRoadmap('');
+                  setShowSecondRoadmap(false);
                 }}
                 className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-lg"
               >
@@ -232,21 +232,21 @@ export const LearningPathChartModal = ({
         <div className="relative w-full h-full overflow-auto pt-20 pb-12">
           <div className={cn(
             "relative mx-auto px-8",
-            isComparing ? "max-w-7xl" : "max-w-5xl"
+            showSecondRoadmap ? "max-w-7xl" : "max-w-5xl"
           )}>
 
-            {/* Comparison Header */}
-            {isComparing && compareLanguageData && (
+            {/* Two Roadmaps Header */}
+            {showSecondRoadmap && secondRoadmapData && (
               <div className="flex justify-center mb-8 relative z-20">
                 <div className="flex items-center gap-4 px-6 py-3 rounded-xl bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-lg backdrop-blur-md">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-blue-500 rounded-full" />
                     <span className="font-bold text-sm text-slate-800 dark:text-white">{language.name}</span>
                   </div>
-                  <ArrowRightLeft className="w-4 h-4 text-slate-500" />
+                  <div className="text-slate-500 text-xs">+ </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                    <span className="font-bold text-sm text-slate-800 dark:text-white">{compareLanguageData.name}</span>
+                    <span className="font-bold text-sm text-slate-800 dark:text-white">{secondRoadmapData.name}</span>
                   </div>
                 </div>
               </div>
@@ -255,13 +255,13 @@ export const LearningPathChartModal = ({
             {/* Desktop View (Side by Side Layout) */}
             <div className="hidden md:block relative z-10">
               {/* Debug indicator */}
-              {isComparing && (
+              {showSecondRoadmap && (
                 <div className="fixed top-20 right-4 bg-green-500 text-white px-3 py-1 rounded-lg text-sm z-50">
-                  Comparison Mode: ON
+                  Two Roadmaps Mode: ON
                 </div>
               )}
-              {isComparing ? (
-                // Comparison View - Two complete roadmaps side by side
+              {showSecondRoadmap ? (
+                // Two Roadmaps View - Two complete roadmaps side by side
                 <div className="flex gap-8 border-2 border-red-500 p-4 w-full" style={{ display: 'flex', flexDirection: 'row' }}>
                   {/* Left Roadmap */}
                   <div className="space-y-24 border-2 border-blue-500 p-2 flex-1" style={{ flex: '1' }}>
@@ -416,7 +416,7 @@ export const LearningPathChartModal = ({
                   <div className="relative">
                     <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-300 to-transparent dark:via-slate-600" />
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white dark:bg-slate-800 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center">
-                      <ArrowRightLeft className="w-4 h-4 text-slate-500" />
+                      <div className="text-xs font-bold text-slate-500">&</div>
                     </div>
                   </div>
 
@@ -425,13 +425,13 @@ export const LearningPathChartModal = ({
                     <div className="text-center mb-8">
                       <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800">
                         <div className="w-3 h-3 bg-purple-500 rounded-full" />
-                        <span className="font-bold text-purple-800 dark:text-purple-200">{compareLanguageData?.name || 'Select a roadmap'}</span>
+                        <span className="font-bold text-purple-800 dark:text-purple-200">{secondRoadmapData?.name || 'Select a roadmap'}</span>
                       </div>
                     </div>
                     <div className="relative">
                       <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-purple-500 z-0" />
-                      {compareTopicsByCategory && Object.entries(compareTopicsByCategory).length > 0 ? (
-                        Object.entries(compareTopicsByCategory).map(([category, topics], categoryIndex) => {
+                      {secondRoadmapTopicsByCategory && Object.entries(secondRoadmapTopicsByCategory).length > 0 ? (
+                        Object.entries(secondRoadmapTopicsByCategory).map(([category, topics], categoryIndex) => {
                         const leftTopics = topics.filter((_, i) => i % 2 === 0);
                         const rightTopics = topics.filter((_, i) => i % 2 === 1);
 
