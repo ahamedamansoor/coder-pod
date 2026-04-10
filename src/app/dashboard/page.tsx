@@ -28,6 +28,7 @@ import { WebPlaygroundProvider } from '@/components/shared/playground/web-playgr
 import { ReactPlaygroundProvider, useReactPlayground } from '@/components/shared/playground/react-playground-context';
 import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
 import { ReactPlaygroundModal } from '@/components/shared/playground/react-playground-modal';
+import { BackendPlaygroundModal } from '@/components/shared/playground/backend-playground-modal';
 
 function TypingEffect({ text, speed = 50 }: { text: string; speed?: number }) {
   const [displayedText, setDisplayedText] = useState('');
@@ -522,6 +523,7 @@ try {
         {/* Playground Modals */}
         <WebPlaygroundModal />
         <ReactPlaygroundModal />
+        <BackendPlaygroundModal />
     </>
   );
 }
@@ -564,7 +566,10 @@ function DashboardMain() {
 
   const handleLogout = async () => {
     try {
-      showLoader();
+      showLoader({
+        title: 'Signing Out...',
+        subtitle: 'Securing your session and clearing data'
+      });
       await signOut();
       router.push('/');
     } catch (error) {

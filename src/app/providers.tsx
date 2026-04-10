@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/shared/layout/theme-provider';
 import { 
   WebPlaygroundProvider, 
   ReactPlaygroundProvider, 
+  BackendPlaygroundProvider,
   AngularPlaygroundProvider 
 } from '@/components/shared/playground';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -22,6 +23,8 @@ function GlobalLoadingIndicator() {
   
     if (!isLoading) return null;
 
+    const isLogout = loaderText.title?.includes('Signing Out');
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
         {/* Ambient orbs */}
@@ -31,12 +34,15 @@ function GlobalLoadingIndicator() {
 
         {/* Content */}
         <div className="relative flex flex-col items-center gap-6 text-center px-6">
-          <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/10 backdrop-blur shadow-lg shadow-emerald-500/10">
-            <Loader2 className="h-5 w-5 animate-spin text-emerald-200" />
-            <span className="text-[11px] font-semibold tracking-[0.32em] uppercase text-emerald-100">
-              Loading Coder Pod
-            </span>
-          </div>
+          {/* Only show "Loading Coder Pod" badge for non-logout operations */}
+          {!isLogout && (
+            <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/10 backdrop-blur shadow-lg shadow-emerald-500/10">
+              <Loader2 className="h-5 w-5 animate-spin text-emerald-200" />
+              <span className="text-[11px] font-semibold tracking-[0.32em] uppercase text-emerald-100">
+                Loading Coder Pod
+              </span>
+            </div>
+          )}
 
           <div className="flex items-center gap-3">
             <Rocket className="h-6 w-6 text-emerald-200 animate-pulse" />
@@ -50,13 +56,16 @@ function GlobalLoadingIndicator() {
             {loaderText.subtitle || 'Warming up workspaces and creative engines'}
           </p>
 
-          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-emerald-100">
-            <span className="animate-[pulse_1.6s_ease-in-out_infinite]">Compiling</span>
-            <span className="text-slate-500">•</span>
-            <span className="animate-[pulse_1.6s_ease-in-out_infinite] [animation-delay:0.18s]">Linking</span>
-            <span className="text-slate-500">•</span>
-            <span className="animate-[pulse_1.6s_ease-in-out_infinite] [animation-delay:0.36s]">Launching</span>
-          </div>
+          {/* Only show compiling animations for non-logout operations */}
+          {!isLogout && (
+            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-emerald-100">
+              <span className="animate-[pulse_1.6s_ease-in-out_infinite]">Compiling</span>
+              <span className="text-slate-500">•</span>
+              <span className="animate-[pulse_1.6s_ease-in-out_infinite] [animation-delay:0.18s]">Linking</span>
+              <span className="text-slate-500">•</span>
+              <span className="animate-[pulse_1.6s_ease-in-out_infinite] [animation-delay:0.36s]">Launching</span>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -73,9 +82,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                 <PlayerProvider>
                                     <WebPlaygroundProvider>
                                         <ReactPlaygroundProvider>
-                                            <AngularPlaygroundProvider>
-                                                {children}
-                                            </AngularPlaygroundProvider>
+                                            <BackendPlaygroundProvider>
+                                                <AngularPlaygroundProvider>
+                                                    {children}
+                                                </AngularPlaygroundProvider>
+                                            </BackendPlaygroundProvider>
                                         </ReactPlaygroundProvider>
                                     </WebPlaygroundProvider>
                                     <FloatingPlayer />

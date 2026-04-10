@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LucideIcon, X, Copy, Check, Search, Filter, Code, BookOpen, Terminal, Hash } from 'lucide-react';
+import { LucideIcon, X, Copy, Check, Search, Filter, Code, BookOpen, Terminal, Hash, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CheatsheetCommand {
@@ -125,9 +125,12 @@ export function CheatsheetModal({
   const filteredSections = useMemo(() => {
     let filtered = sections;
 
-    // Filter by selected sections
+    // Filter by selected sections (now filtering by individual patterns)
     if (filters.selectedSections.length > 0) {
-      filtered = filtered.filter(section => filters.selectedSections.includes(section.title));
+      filtered = filtered.map(section => ({
+        ...section,
+        commands: section.commands.filter(cmd => filters.selectedSections.includes(cmd.command))
+      })).filter(section => section.commands.length > 0);
     }
 
     // Filter by content type
@@ -208,13 +211,13 @@ export function CheatsheetModal({
     return filtered;
   }, [sections, filters]);
 
-  // Handle section filter click
-  const handleSectionClick = (sectionTitle: string) => {
+  // Handle section filter click (now for individual patterns)
+  const handleSectionClick = (patternName: string) => {
     setFilters(prev => ({
       ...prev,
-      selectedSections: prev.selectedSections.includes(sectionTitle)
-        ? prev.selectedSections.filter(title => title !== sectionTitle)
-        : [...prev.selectedSections, sectionTitle]
+      selectedSections: prev.selectedSections.includes(patternName)
+        ? prev.selectedSections.filter(title => title !== patternName)
+        : [...prev.selectedSections, patternName]
     }));
   };
 
@@ -293,20 +296,7 @@ export function CheatsheetModal({
                 )}
               </div>
 
-              {/* Filter Toggle */}
-              <button
-                onClick={() => setShowTopics(!showTopics)}
-                className={cn(
-                  "h-8 px-3 text-xs font-medium rounded-lg border transition-all",
-                  showTopics 
-                    ? "bg-emerald-500 text-white border-emerald-500 shadow-sm" 
-                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700"
-                )}
-              >
-                <Filter className="w-3 h-3 mr-1 inline" />
-                {showTopics ? 'Filtered' : 'All'}
-              </button>
-
+              
               {/* Close */}
               <button
                 onClick={onClose}
@@ -317,52 +307,63 @@ export function CheatsheetModal({
             </div>
           </div>
 
-          {/* Topics/Sections Filter - Hidden by default, shown when advanced filter is clicked */}
-          {showTopics && (
-            <div className="px-6 py-3 border-t border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                  Filter by:
-                </span>
-                {(filters.selectedSections.length > 0 || filters.searchQuery) && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearFilters}
-                    className="h-7 px-3 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
-                  >
-                    Clear {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
-                  </Button>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  {sections.map((section, index) => {
-                    const badgeColor = sectionColors[index % sectionColors.length];
-                    const isSelected = filters.selectedSections.includes(section.title);
-
-                    return (
-                      <button
-                        key={section.title}
-                        onClick={() => handleSectionClick(section.title)}
-                        className={cn(
-                          'px-3 py-1 rounded-md text-xs font-medium transition-all duration-200',
-                          'border border-slate-200 dark:border-slate-700',
-                          isSelected
-                            ? `${badgeColor} text-white border-transparent shadow-sm scale-105`
-                            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
-                        )}
-                        title={`${section.commands.length} commands`}
-                      >
-                        {section.title}
-                        <span className="ml-1 text-xs opacity-75">
-                          ({section.commands.length})
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+          {/* Pattern Filters - Always visible header, sub-filters toggleable */}
+          <div className="px-6 py-3 border-t border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => setShowTopics(!showTopics)}
+                className="group flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+              >
+                <span>Filter by:</span>
+                <ChevronDown className={cn(
+                  "w-4 h-4 transition-transform duration-200 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300",
+                  showTopics && "rotate-180"
+                )} />
+              </button>
+              {(filters.selectedSections.length > 0 || filters.searchQuery) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="h-7 px-3 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                >
+                  Clear {filters.selectedSections.length > 0 && `(${filters.selectedSections.length})`}
+                </Button>
+              )}
             </div>
-          )}
+            {/* All Pattern Buttons - Show when Filter by is clicked */}
+            {showTopics && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {sections.flatMap(section => 
+                  section.commands.map(cmd => ({
+                    ...cmd,
+                    sectionTitle: section.title,
+                    sectionIndex: sections.indexOf(section)
+                  }))
+                ).map((cmd, index) => {
+                  const isSelected = filters.selectedSections.includes(cmd.command);
+                  const badgeColor = sectionColors[cmd.sectionIndex % sectionColors.length];
+                  
+                  return (
+                    <button
+                      key={cmd.command}
+                      onClick={() => handleSectionClick(cmd.command)}
+                      className={cn(
+                        "px-2 py-1 rounded text-xs font-medium transition-all duration-200",
+                        "border border-slate-200 dark:border-slate-700",
+                        isSelected
+                          ? `${badgeColor} text-white border-transparent shadow-sm scale-105`
+                          : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
+                      )}
+                      title={`${cmd.sectionTitle} - ${cmd.description}`}
+                    >
+                      {cmd.command}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </DialogHeader>
 
         {/* Content - Card Grid Layout */}

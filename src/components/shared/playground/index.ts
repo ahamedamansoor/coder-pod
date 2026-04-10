@@ -4,6 +4,8 @@ export { WebPlaygroundProvider, useWebPlayground } from './web-playground-contex
 export { WebPlaygroundModal } from './web-playground-modal';
 export { ReactPlaygroundProvider, useReactPlayground } from './react-playground-context';
 export { ReactPlaygroundModal } from './react-playground-modal';
+export { BackendPlaygroundProvider, useBackendPlayground } from './backend-playground-context';
+export { BackendPlaygroundModal } from './backend-playground-modal';
 export { AngularPlaygroundProvider, useAngularPlayground } from './angular-playground-context';
 export { AngularPlaygroundModal } from './angular-playground-modal';
 export type { AngularPlaygroundData, AngularPlaygroundFile } from './angular-playground-context';

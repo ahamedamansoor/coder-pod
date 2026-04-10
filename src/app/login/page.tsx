@@ -2,6 +2,7 @@
 'use client';
 
 import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { EnhancedSignInForm } from '@/components/auth/enhanced-sign-in-form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader } from '@/components/ui/card';
@@ -24,13 +25,33 @@ function LoginSkeleton() {
   )
 }
 
-export default function LoginPage() {
+function LoginContent() {
     const { hideLoader } = useLoading();
-    const [quote] = useState(() => getRandomQuote());
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const [quote, setQuote] = useState<{text: string; author: string} | null>(null);
 
     useEffect(() => {
         hideLoader();
-    }, [hideLoader]);
+        
+        // Set quote only on client side to prevent hydration mismatch
+        setQuote(getRandomQuote());
+        
+        // Handle OAuth callback
+        const email = searchParams.get('email');
+        const code = searchParams.get('code');
+        
+        if (email && code) {
+         // Store email for client-side auth and redirect to dashboard
+            if (typeof window !== 'undefined') {
+                window.localStorage.setItem('last-login-email', email);
+            }
+            // Add a small delay to ensure session is established
+            setTimeout(() => {
+                router.replace('/dashboard');
+            }, 500);
+        }
+    }, [hideLoader, router, searchParams]);
 
     return (
         <div className="relative flex min-h-screen w-full overflow-hidden">
@@ -89,21 +110,23 @@ export default function LoginPage() {
                                 <Quote className="w-10 h-10 text-blue-400 dark:text-blue-500 mb-6" />
                                 
                                 {/* Quote text */}
-                                <blockquote className="space-y-6">
-                                    <p className="text-xl font-normal text-slate-700 dark:text-slate-300 leading-relaxed">
-                                        "{quote.text}"
-                                    </p>
-                                    
-                                    {/* Divider */}
-                                    <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 dark:from-blue-500 dark:to-purple-500 rounded-full" />
-                                    
-                                    {/* Author */}
-                                    <footer>
-                                        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                                            — {quote.author}
+                                {quote && (
+                                    <blockquote className="space-y-6">
+                                        <p className="text-xl font-normal text-slate-700 dark:text-slate-300 leading-relaxed">
+                                            "{quote.text}"
                                         </p>
-                                    </footer>
-                                </blockquote>
+                                        
+                                        {/* Divider */}
+                                        <div className="w-16 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 dark:from-blue-500 dark:to-purple-500 rounded-full" />
+                                        
+                                        {/* Author */}
+                                        <footer>
+                                            <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                                                — {quote.author}
+                                            </p>
+                                        </footer>
+                                    </blockquote>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -144,5 +167,13 @@ export default function LoginPage() {
                 </div>
             </div>
         </div>
+    )
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense>
+            <LoginContent />
+        </Suspense>
     )
 }

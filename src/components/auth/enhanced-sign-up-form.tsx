@@ -237,7 +237,7 @@ export function EnhancedSignUpForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem className="md:col-span-2">
-                    <FormLabel className="text-sm font-medium">Full Name</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Full Name</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter your full name"
@@ -255,7 +255,7 @@ export function EnhancedSignUpForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="md:col-span-2">
-                    <FormLabel className="text-sm font-medium">Email</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Email</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -274,7 +274,7 @@ export function EnhancedSignUpForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">Password</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Password</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -312,7 +312,7 @@ export function EnhancedSignUpForm() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">Confirm Password</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Confirm Password</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
@@ -358,7 +358,7 @@ export function EnhancedSignUpForm() {
                 name="countryCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">Country</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Country</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger className="h-11">
@@ -383,7 +383,7 @@ export function EnhancedSignUpForm() {
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem className="col-span-2">
-                    <FormLabel className="text-sm font-medium">Phone Number</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Phone Number</FormLabel>
                     <FormControl>
                       <Input
                         type="tel"
@@ -460,7 +460,7 @@ export function EnhancedSignUpForm() {
 
                 return (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium">Date of Birth</FormLabel>
+                    <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Date of Birth</FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-3 gap-2">
                         {/* Month Dropdown */}

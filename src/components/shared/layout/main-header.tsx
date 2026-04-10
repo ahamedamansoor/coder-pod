@@ -67,8 +67,14 @@ export function MainHeader({
   const currentLanguage = languages.find(lang => lang.slug === currentLanguageSlug);
 
   const handleSignOut = async () => {
-    showLoader();
-    await signOut();
+    showLoader({
+      title: 'Signing Out...',
+      subtitle: 'Securing your session and clearing data'
+    });
+    // await signOut(); // Disabled for debugging
+    
+    // Add delay to show loader before navigation
+    await new Promise(resolve => setTimeout(resolve, 1500));
     router.push('/login');
   };
   

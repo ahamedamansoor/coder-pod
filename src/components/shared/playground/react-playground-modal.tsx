@@ -628,51 +628,65 @@ export function ReactPlaygroundModal() {
       background: transparent !important;
     }
     
-    /* User-provided CSS with higher specificity */
+    /* User-provided CSS with proper scoping */
     ${cssCode.replace(/([^{}]+)\s*{/g, (match) => {
+      const selector = match.trim();
       // Don't prefix dark mode selectors since .dark is on html element
-      if (match.trim().startsWith('.dark')) {
+      if (selector.startsWith('.dark')) {
         return match;
       }
       // Don't prefix body selector since it's outside #root
-      if (match.trim().startsWith('body')) {
+      if (selector.startsWith('body')) {
         return match;
       }
       // Don't prefix html selector since it's outside #root
-      if (match.trim().startsWith('html')) {
+      if (selector.startsWith('html')) {
         return match;
       }
-      // Prefix all other selectors with #root
-      return '#root ' + match;
+      // Don't prefix :root selector
+      if (selector.startsWith(':root')) {
+        return match;
+      }
+      // Don't prefix @media, @keyframes, etc.
+      if (selector.startsWith('@')) {
+        return match;
+      }
+      // Don't prefix if already has #root
+      if (selector.includes('#root')) {
+        return match;
+      }
+      // For global styles and multiple selectors, handle each separately
+      if (selector.includes(',')) {
+        const selectors = selector.split(',').map(s => {
+          const trimmed = s.trim();
+          if (trimmed.startsWith('.dark') || trimmed.startsWith('body') || 
+              trimmed.startsWith('html') || trimmed.startsWith(':root') || 
+              trimmed.startsWith('@') || trimmed.includes('#root')) {
+            return trimmed;
+          }
+          return `#root ${trimmed}`;
+        });
+        return selectors.join(', ') + ' {';
+      }
+      // Prefix single selectors with #root
+      return `#root ${selector}{`;
     })}
     
-    /* Final dark mode overrides to ensure background is applied */
-    html.dark body,
-    html.dark #root,
-    html.dark .container {
-      background: ${initialBackground} !important;
+    /* Gentle dark mode base styles */
+    html.dark {
+      background: ${initialBackground};
+      color-scheme: dark;
     }
     
-    /* Maximum specificity overrides for dark mode */
-    html.dark body,
-    html.dark #root,
-    html.dark #root > *,
-    html.dark #root > div,
-    html.dark #root > div > *,
-    html.dark #root > div > div,
-    html.dark #root > div > div > *,
-    html.dark .container,
-    html.dark .container > *,
-    html.dark .container > div,
-    html.dark .container > div > *,
-    html.dark .container > div > div,
-    html.dark .container > div > div > * {
-      background: ${initialBackground} !important;
+    html.dark body {
+      background: ${initialBackground};
+      color: ${initialTextColor};
     }
     
-    /* Force dark background on all elements in dark mode */
-    html.dark * {
-      background-color: ${initialBackground} !important;
+    html.dark #root {
+      background: transparent;
+      color: inherit;
+      min-height: 100vh;
     }
     
     /* Restore specific element backgrounds that should be different */
@@ -814,16 +828,7 @@ export function ReactPlaygroundModal() {
           
           eval(transformedCode);
           
-          // Ensure theme is applied after React component renders
-          setTimeout(() => {
-            const isDark = '${isDarkTheme}' === 'true';
-            if (isDark) {
-              document.documentElement.classList.add('dark');
-              document.body.style.background = '${initialBackground}';
-              document.body.style.color = '${initialTextColor}';
-            }
-            console.log('🎨 [React Playground] Theme reapplied after render - isDark:', isDark);
-          }, 100);
+          // Theme is already applied in the initial setup, no need to reapply
           
           console.log('🎉 React component rendered!');
           
@@ -847,9 +852,11 @@ export function ReactPlaygroundModal() {
   }, [jsxCode, cssCode]);
 
   useEffect(() => {
-    if (isOpen && !hasInitialRunRef.current) {
-      // Only set hasChanges after initial load
-      setHasChanges(true);
+    if (isOpen && jsxCode) {
+      // Set hasChanges when code changes (but not on initial load)
+      if (hasInitialRunRef.current) {
+        setHasChanges(true);
+      }
     }
   }, [jsxCode, cssCode, isOpen]);
 

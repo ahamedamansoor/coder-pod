@@ -188,6 +188,7 @@ export default function CheatsheetBoard() {
     'developer-tools': Wrench,
     'editors-browsers': Monitor,
     'operating-systems': Cpu,
+    'design-patterns': Layers,
   };
 
   // Color mapping for cheatsheet categories
@@ -233,6 +234,12 @@ export default function CheatsheetBoard() {
       accent: 'bg-slate-500',
       bg: 'bg-slate-50 dark:bg-slate-950/30',
       icon: 'text-slate-600 dark:text-slate-400'
+    },
+    'design-patterns': {
+      border: 'border-teal-500',
+      accent: 'bg-teal-500',
+      bg: 'bg-teal-50 dark:bg-teal-950/30',
+      icon: 'text-teal-600 dark:text-teal-400'
     },
   };
 

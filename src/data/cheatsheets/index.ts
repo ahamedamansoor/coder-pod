@@ -6,7 +6,9 @@ export { dockerCheatsheet } from './docker';
 export { nodeCheatsheet } from './node';
 export { htmlCheatsheet } from './html';
 export { javascriptCheatsheet } from './javascript';
+export { typescriptCheatsheet } from './typescript';
 export { javaCheatsheet } from './java';
+export { pythonCheatsheet } from './python';
 export { springCheatsheet } from './spring';
 export { springBootCheatsheet } from './spring-boot';
 export { reactCheatsheet } from './react';
@@ -52,6 +54,9 @@ export { seleniumCheatsheet } from './selenium';
 export { expressCheatsheet } from './express';
 export { edgeCheatsheet } from './edge';
 export { d3Cheatsheet } from './d3';
+export { jsPatternsCheatsheet } from './js-patterns';
+export { tsPatternsCheatsheet } from './ts-patterns';
+export { javaPatternsCheatsheet } from './java-patterns';
 
 // Export all cheatsheets as an array
 import { linuxCheatsheet } from './linux';
@@ -112,6 +117,9 @@ import { seleniumCheatsheet } from './selenium';
 import { expressCheatsheet } from './express';
 import { edgeCheatsheet } from './edge';
 import { d3Cheatsheet } from './d3';
+import { jsPatternsCheatsheet } from './js-patterns';
+import { tsPatternsCheatsheet } from './ts-patterns';
+import { javaPatternsCheatsheet } from './java-patterns';
 
 export const allCheatsheets = [
   linuxCheatsheet,
@@ -172,11 +180,23 @@ export const allCheatsheets = [
   expressCheatsheet,
   edgeCheatsheet,
   d3Cheatsheet,
+  jsPatternsCheatsheet,
+  tsPatternsCheatsheet,
+  javaPatternsCheatsheet,
 ];
 
 // Categorized cheatsheets
 export const cheatsheetCategories = [
   {
+    id: 'design-patterns',
+    name: 'Design Patterns',
+    cheatsheets: [
+      jsPatternsCheatsheet,
+      tsPatternsCheatsheet,
+      javaPatternsCheatsheet,
+    ],
+  },
+    {
     id: 'web-development',
     name: 'Web Development',
     cheatsheets: [

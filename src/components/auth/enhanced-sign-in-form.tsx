@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Chrome, Github, Mail, Loader2, Eye, EyeOff, ArrowRight, User } from 'lucide-react';
 import { useEnhancedAuth } from '@/lib/auth/enhanced-auth-context';
+import { useLoading } from '@/hooks/use-loading';
 import { authSchemas } from '@/lib/auth/validation';
 import { AUTH_PROVIDERS } from '@/lib/auth/config';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,7 @@ export function EnhancedSignInForm() {
   const [isLoading, setLoading] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const { showLoader, hideLoader } = useLoading();
   const { 
     signInWithEmail, 
     signInWithGoogle, 
@@ -42,45 +44,110 @@ export function EnhancedSignInForm() {
 
   const onEmailSubmit = async (data: SignInFormData) => {
     setLoading('email');
+    let loaderShown = false;
+    const loaderTimeout = setTimeout(() => {
+      loaderShown = true;
+      showLoader({
+        title: 'Signing In...',
+        subtitle: 'Authenticating your credentials and preparing your workspace'
+      });
+    }, 1000); // Only show loader after 1 second
+    
     try {
       await signInWithEmail(data.email, data.password);
     } finally {
+      clearTimeout(loaderTimeout);
+      if (loaderShown) {
+        hideLoader();
+      }
       setLoading(null);
     }
   };
 
   const onGoogleSignIn = async () => {
     setLoading('google');
+    let loaderShown = false;
+    const loaderTimeout = setTimeout(() => {
+      loaderShown = true;
+      showLoader({
+        title: 'Signing In with Google...',
+        subtitle: 'Connecting to your Google account and preparing your workspace'
+      });
+    }, 1000); // Only show loader after 1 second
+    
     try {
       await signInWithGoogle();
     } finally {
+      clearTimeout(loaderTimeout);
+      if (loaderShown) {
+        hideLoader();
+      }
       setLoading(null);
     }
   };
 
   const onGitHubSignIn = async () => {
     setLoading('github');
+    let loaderShown = false;
+    const loaderTimeout = setTimeout(() => {
+      loaderShown = true;
+      showLoader({
+        title: 'Signing In with GitHub...',
+        subtitle: 'Connecting to your GitHub account and preparing your workspace'
+      });
+    }, 1000); // Only show loader after 1 second
+    
     try {
       await signInWithGitHub();
     } finally {
+      clearTimeout(loaderTimeout);
+      if (loaderShown) {
+        hideLoader();
+      }
       setLoading(null);
     }
   };
 
   const onMicrosoftSignIn = async () => {
     setLoading('microsoft');
+    let loaderShown = false;
+    const loaderTimeout = setTimeout(() => {
+      loaderShown = true;
+      showLoader({
+        title: 'Signing In with Microsoft...',
+        subtitle: 'Connecting to your Microsoft account and preparing your workspace'
+      });
+    }, 1000); // Only show loader after 1 second
+    
     try {
       await signInWithMicrosoft();
     } finally {
+      clearTimeout(loaderTimeout);
+      if (loaderShown) {
+        hideLoader();
+      }
       setLoading(null);
     }
   };
 
   const onGuestContinue = async () => {
     setLoading('guest');
+    let loaderShown = false;
+    const loaderTimeout = setTimeout(() => {
+      loaderShown = true;
+      showLoader({
+        title: 'Starting Guest Session...',
+        subtitle: 'Preparing your workspace and loading learning resources'
+      });
+    }, 1000); // Only show loader after 1 second
+    
     try {
       await continueAsGuest();
     } finally {
+      clearTimeout(loaderTimeout);
+      if (loaderShown) {
+        hideLoader();
+      }
       setLoading(null);
     }
   };
@@ -202,7 +269,7 @@ export function EnhancedSignInForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Email</FormLabel>
+                  <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -221,7 +288,7 @@ export function EnhancedSignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Password</FormLabel>
+                  <FormLabel className="text-sm font-medium !text-slate-700 dark:!text-slate-300">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
