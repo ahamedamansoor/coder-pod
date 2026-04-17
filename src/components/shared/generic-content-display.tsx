@@ -1,6 +1,7 @@
 'use client';
 
-import type { Language, Topic } from '@/data/languages';
+import type { Roadmap, Topic } from '@/data/roadmaps';
+import type { Language } from '@/data/languages';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { HelpCircle, BookmarkIcon, CheckCircle } from 'lucide-react';

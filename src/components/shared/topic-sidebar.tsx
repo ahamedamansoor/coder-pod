@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
+import type { Roadmap } from '@/data/roadmaps';
 import type { Language } from '@/data/languages';
 import {
   SidebarHeader,
@@ -265,26 +266,26 @@ export function TopicSidebar({
     ? ["1. Introduction & Setup", "2. Core Concepts", "3. Configuration", "4. Web Development", "5. Data Access", "6. Security", "7. Validation", "8. Testing", "9. Actuator & Monitoring", "10. Caching", "11. Messaging", "12. Scheduling", "13. Reactive Programming", "14. Documentation", "15. Logging", "16. Performance", "17. Deployment", "18. Spring Boot 3.x", "19. Best Practices"]
     : language.slug === 'react'
     ? [
-        '1. Getting Started', 
-        '2. Fundamentals', 
-        '3. Intermediate Concepts', 
-        '4. State Management', 
-        '5. Hooks Mastery',
-        '6. Advanced Hooks',
-        '7. Context API',
-        '8. Performance',
-        '9. Testing',
-        '10. Patterns',
-        '11. Advanced Concepts',
-        '12. Component APIs',
-        '13. Forms',
-        '14. Accessibility',
-        '15. Client Libraries',
-        '16. React 18+',
-        '17. TypeScript',
-        '18. Ecosystem - Routing',
-        '19. Ecosystem - State Management',
-        '20. Expert Level'
+        'Getting Started', 
+        'Fundamentals', 
+        'Intermediate Concepts', 
+        'State Management', 
+        'Hooks Mastery',
+        'Advanced Hooks',
+        'Context API',
+        'Performance',
+        'Testing',
+        'Patterns',
+        'Advanced Concepts',
+        'Component APIs',
+        'Forms',
+        'Accessibility',
+        'Client Libraries',
+        'React 18+',
+        'TypeScript',
+        'Ecosystem - Routing',
+        'Ecosystem - State Management',
+        'Expert Level'
       ]
     : language.slug === 'css'
     ? ["Fundamentals", "Styling Basics", "Box Model & Layout", "Advanced Selectors", "Modern Layout", "Responsive Design", "Animations & Effects", "Visual Effects", "Advanced CSS", "Modern Features", "Forms & UI", "Accessibility", "Print & Media", "Optimization", "Architecture", "Preprocessors & Tooling", "Browser Support", "Debugging & Testing", "Best Practices"]

@@ -24,6 +24,10 @@ export default function CertificatePage() {
   const language = getRouteParam(params, 'language') || '';
   const moduleSlug = getRouteParam(params, 'module') || '';
   
+  // Use same language filtering as learning paths page
+  const allowedSlugs = ['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa'];
+  const isLanguageAllowed = allowedSlugs.includes(language);
+  
   // Convert slug back to title case with better handling for numbered sections
   const moduleName = moduleSlug
     .replace(/^(\d+)-/, '') // Remove numbering at start: "2-text-&-content" -> "text-&-content"
@@ -107,6 +111,21 @@ export default function CertificatePage() {
 
   const userName = user.displayName || user.email || 'Valued Learner';
 
+  // Redirect if language is not allowed
+  if (!isLanguageAllowed) {
+    return (
+      <div className="min-h-screen w-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-blue-900 dark:to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Language Not Available</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">This certificate is not available for the selected language.</p>
+          <Button onClick={() => router.push('/learning-paths')}>
+            Back to Learning Paths
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Print Styles */}
@@ -115,12 +134,33 @@ export default function CertificatePage() {
           body {
             print-color-adjust: exact;
             -webkit-print-color-adjust: exact;
+            margin: 0;
+            padding: 0;
           }
           .no-print {
             display: none !important;
           }
           .print-break {
             page-break-inside: avoid;
+          }
+          /* Ensure certificate maintains same width in print */
+          .print-break .relative.w-full.max-w-6xl {
+            max-width: 72rem !important;
+            width: 100% !important;
+            margin: 0 auto !important;
+          }
+          .print-break .w-full.max-w-6xl {
+            max-width: 72rem !important;
+            width: 100% !important;
+          }
+          /* Remove background elements in print for cleaner certificate */
+          .print-break .absolute.inset-0 {
+            display: none !important;
+          }
+          /* Ensure certificate container maintains proper size */
+          @page {
+            size: A4;
+            margin: 0.5in;
           }
         }
       `}</style>
@@ -237,12 +277,25 @@ export default function CertificatePage() {
         
         {/* Certificate Container */}
         <div className="flex-1 flex items-center justify-center px-4 pb-4 relative z-10 print-break">
-          <Card className={`w-full max-w-6xl border-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl rounded-2xl overflow-hidden transform transition-all duration-1000 ${
-            isAnimating ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
-          }`}>
-            {/* Animated certificate border */}
-            <div className="absolute inset-0 border-6 border-double border-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 opacity-20 rounded-2xl pointer-events-none" />
-            <div className="absolute inset-0 border-2 border-gradient-to-r from-blue-400 via-blue-500 to-blue-600 opacity-30 rounded-2xl pointer-events-none animate-pulse" />
+          {/* Glowing victorious achievement border - shaded area */}
+          <div className="relative w-full max-w-6xl">
+            <div className="absolute -inset-2 bg-gradient-to-r from-blue-400/30 via-indigo-400/30 to-purple-400/30 rounded-2xl blur-xl animate-pulse" />
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-300/20 via-indigo-300/20 to-purple-300/20 rounded-2xl blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute -inset-6 bg-gradient-to-r from-blue-200/15 via-indigo-200/15 to-purple-200/15 rounded-2xl blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            
+            <div className="absolute inset-0 border-8 border-double border-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-60 rounded-2xl pointer-events-none animate-pulse" />
+            <div className="absolute inset-2 border-4 border-dotted border-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 opacity-70 rounded-2xl pointer-events-none animate-pulse" style={{ animationDelay: '0.3s' }} />
+            <div className="absolute inset-4 border-2 border-solid border-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 opacity-80 rounded-2xl pointer-events-none animate-pulse" style={{ animationDelay: '0.6s' }} />
+            
+            {/* Victory corner lights */}
+            <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-blue-400/80 to-transparent rounded-tl-2xl blur-md animate-pulse" />
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-indigo-400/80 to-transparent rounded-tr-2xl blur-md animate-pulse" style={{ animationDelay: '0.2s' }} />
+            <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-purple-400/80 to-transparent rounded-bl-2xl blur-md animate-pulse" style={{ animationDelay: '0.4s' }} />
+            <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-blue-400/80 to-transparent rounded-br-2xl blur-md animate-pulse" style={{ animationDelay: '0.6s' }} />
+            
+            <Card className={`w-full max-w-6xl border-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl rounded-2xl overflow-hidden transform transition-all duration-1000 relative ${
+              isAnimating ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+            }`}>
             
             <CardContent className="p-5 relative">
               {/* Certificate Header */}
@@ -337,6 +390,7 @@ export default function CertificatePage() {
               </div>
             </CardContent>
           </Card>
+          </div>
         </div>
 
         {/* Action Buttons */}

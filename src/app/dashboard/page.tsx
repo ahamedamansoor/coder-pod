@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
-import { enabledLanguages as languages } from '@/data/languages';
+import { enabledRoadmaps as roadmaps } from '@/data/roadmaps';
 import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, MessageSquare, TrendingUp, Award, Clock } from 'lucide-react';
 
 import { InnovativeHeader } from '@/components/shared';
@@ -303,7 +303,7 @@ try {
               <div className="max-w-[1920px] mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12">
                   <div className="group text-center p-8 rounded-2xl bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-gray-900 dark:via-blue-950/20 dark:to-gray-900 backdrop-blur-sm border-2 border-blue-200/50 dark:border-blue-800/30 hover:border-blue-400/50 dark:hover:border-blue-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-4 hover:rotate-3 hover:scale-105 cursor-pointer transform-gpu">
-                    <div className="text-5xl sm:text-6xl font-bold bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-3 group-hover:scale-125 group-hover:rotate-6 transition-all duration-500">{languages.length}</div>
+                    <div className="text-5xl sm:text-6xl font-bold bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent mb-3 group-hover:scale-125 group-hover:rotate-6 transition-all duration-500">{roadmaps.length}</div>
                     <div className="text-base text-muted-foreground font-semibold">Languages Available</div>
                   </div>
                   <div className="group text-center p-8 rounded-2xl bg-gradient-to-br from-white via-purple-50/30 to-white dark:from-gray-900 dark:via-purple-950/20 dark:to-gray-900 backdrop-blur-sm border-2 border-purple-200/50 dark:border-purple-800/30 hover:border-purple-400/50 dark:hover:border-purple-600/50 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-4 hover:-rotate-3 hover:scale-105 cursor-pointer transform-gpu">

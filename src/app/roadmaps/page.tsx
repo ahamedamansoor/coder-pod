@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain, Grid3x3, List, Smartphone, Sparkles } from 'lucide-react';
-import { languages, roleBasedRoadmaps } from '@/data/languages';
+import { MapPin, BookOpen, ArrowRight, Layers, Code2, Server, TestTube, Briefcase, Brain, Grid3x3, List, Smartphone, Sparkles, Database } from 'lucide-react';
+import { roadmaps, enabledRoadmaps, roleBasedRoadmaps } from '@/data/roadmaps';
 import { cn } from '@/lib/utils';
 import { LearningPathChartModal } from '@/components/shared/modals/learning-path-chart-modal';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
@@ -29,11 +29,16 @@ const accentColors: Record<string, string> = {
   'spring-boot': 'bg-green-600',
   'frontend-developer': 'bg-blue-600',
   'backend-developer': 'bg-slate-700',
+  'qa-engineer': 'bg-purple-600',
   playwright: 'bg-green-500',
   selenium: 'bg-green-600',
   python: 'bg-blue-600',
   rxjs: 'bg-purple-500',
   dsa: 'bg-violet-600',
+  postgresql: 'bg-blue-700',
+  mysql: 'bg-orange-700',
+  mongodb: 'bg-green-700',
+  redis: 'bg-red-600',
 };
 
 // Color mapping for roadmap categories - full border colors
@@ -76,13 +81,15 @@ const categories = [
   { id: 'frontend', label: 'Frontend', icon: Code2 },
   { id: 'backend', label: 'Backend', icon: Server },
   { id: 'testing', label: 'Testing', icon: TestTube },
+  { id: 'database', label: 'Database', icon: Database },
 ];
 
 const categoryMap: Record<string, string[]> = {
-  roles: ['frontend-developer', 'backend-developer'],
+  roles: ['frontend-developer', 'backend-developer', 'qa-engineer'],
   frontend: ['html', 'css', 'tailwind', 'scss', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs'],
   backend: ['java', 'spring', 'spring-boot', 'python'],
   testing: ['playwright', 'selenium'],
+  database: ['postgresql', 'mysql', 'mongodb', 'redis'],
 };
 
 // Function to get category for a roadmap
@@ -99,7 +106,7 @@ export default function RoadmapsPage() {
   const { user } = useUser();
   const { signOut } = useSupabaseAuth();
   const router = useRouter();
-  const [selectedLanguage, setSelectedLanguage] = useState<typeof languages[0] | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<typeof roadmaps[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'grouped'>('grouped');
@@ -107,7 +114,7 @@ export default function RoadmapsPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Combine all roadmaps
-  const allRoadmaps = [...(roleBasedRoadmaps || []), ...languages];
+  const allRoadmaps = [...(roleBasedRoadmaps || []), ...enabledRoadmaps];
 
   // Category icons mapping
   const categoryIcons: Record<string, any> = {
@@ -140,7 +147,7 @@ export default function RoadmapsPage() {
     }
   };
 
-  const handleLanguageClick = (language: typeof languages[0]) => {
+  const handleLanguageClick = (language: typeof roadmaps[0]) => {
     setSelectedLanguage(language);
     setIsModalOpen(true);
   };
@@ -518,7 +525,7 @@ export default function RoadmapsPage() {
           language={selectedLanguage}
           completedTopics={new Set()}
           showProgress={false}
-          allLanguages={languages}
+          allLanguages={enabledRoadmaps}
         />
       )}
     </div>

@@ -1,12 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { TopicTitle } from '@/components/shared/topic-title';
 import { PageHeader } from '@/components/shared/generic-page-header';
-import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
 import { 
   Blocks, 
   Sparkles, 
@@ -17,7 +15,25 @@ import {
   ArrowRight,
   Smile,
   Box,
-  TrendingUp
+  TrendingUp,
+  Play,
+  Shield,
+  Users,
+  Rocket,
+  Target,
+  CheckCircle2,
+  AlertTriangle,
+  Globe,
+  Smartphone,
+  Monitor,
+  Code,
+  Cpu,
+  Lightbulb,
+  Award,
+  Star,
+  ThumbsUp,
+  Clock,
+  Database
 } from 'lucide-react';
 
 export default function WhatIsReact() {
@@ -32,16 +48,18 @@ export default function WhatIsReact() {
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
       {/* Introduction: What is React? */}
-      <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
-        <CardContent className="space-y-6 pt-6">
-          <TopicTitle
-            icon={<Package className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-            title="What is React?"
-            description="Discover React - Facebook's powerful JavaScript library for building fast, interactive user interfaces with reusable components"
-            size="lg"
-          />
+      <Card className="bg-gradient-to-br from-cyan-50/60 to-blue-50/60 dark:from-cyan-950/10 dark:to-blue-950/10 border border-cyan-200/50 dark:border-cyan-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Package className="w-6 h-6 text-cyan-600/80 dark:text-cyan-400/80" />
+            What is React?
+          </CardTitle>
+          <CardDescription className="text-base">
+            Discover React - Facebook's powerful JavaScript library for building fast, interactive user interfaces with reusable components
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
           <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300">
             <strong>React</strong> is a <strong>JavaScript library</strong> created by Facebook (Meta) for building user interfaces. 
             Think of it as a smart toolbox that helps you create interactive websites and apps more easily!
@@ -58,11 +76,11 @@ export default function WhatIsReact() {
           </Alert>
 
           {/* Key Facts Grid */}
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
-                  <Package className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
+                  <Package className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <h4 className="font-bold text-cyan-700 dark:text-cyan-400">Library, Not Framework</h4>
               </div>
@@ -71,10 +89,10 @@ export default function WhatIsReact() {
               </p>
             </div>
 
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <h4 className="font-bold text-cyan-700 dark:text-cyan-400">Powered by Meta</h4>
               </div>
@@ -83,10 +101,10 @@ export default function WhatIsReact() {
               </p>
             </div>
 
-            <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-cyan-200 dark:border-cyan-700 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-cyan-100 dark:bg-cyan-900 flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <h4 className="font-bold text-cyan-700 dark:text-cyan-400">Industry Standard</h4>
               </div>
@@ -127,356 +145,664 @@ export default function WhatIsReact() {
         </CardContent>
       </Card>
 
-      {/* Think of React Like Building with LEGO Blocks */}
-      <Card className="border-2 border-cyan-200 dark:border-cyan-800">
-        <CardContent className="space-y-6 pt-6">
-          <TopicTitle
-            icon={<Blocks className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-            title="Think of React Like... Building with LEGO! 🧱"
-            description="React gives you organized building blocks to create your UI, just like LEGO sets help you build amazing things!"
-            size="lg"
-          />
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-6 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30 rounded-xl border-2 border-cyan-200 dark:border-cyan-800">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <span className="text-3xl">🔨</span> Traditional Way (HTML/JS)
-              </h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Imagine building with loose bricks scattered everywhere. Every time you want to make something, you have to start from scratch. Want another button? Write all the code again! 😰
-              </p>
-            </div>
+      {/* Core Concepts */}
+      <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/50 dark:border-purple-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Blocks className="w-6 h-6 text-purple-600/80 dark:text-purple-400/80" />
+            Core Concepts: How React Works
+          </CardTitle>
+          <CardDescription className="text-base">
+            Understanding the fundamental building blocks that make React so powerful
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* Components */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-purple-600 dark:text-purple-400">🧱 Components: The Building Blocks</h4>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-purple-200 dark:border-purple-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Component className="w-5 h-5 text-purple-500" />
+                  What are Components?
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Components are reusable, independent pieces of UI that can be combined to build complex interfaces. Think of them as LEGO blocks for your website!
+                </p>
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                  <p className="text-xs font-mono text-purple-700 dark:text-purple-300">
+                    function Button() {`{ return <button>Click me</button>; }`}
+                  </p>
+                </div>
+              </div>
 
-            <div className="p-6 bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 rounded-xl border-2 border-emerald-300 dark:border-emerald-700">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <span className="text-3xl">✨</span> React Way
-              </h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                React gives you organized LEGO sets! Create a "Button" component once, use it everywhere. Need 100 buttons? Just copy the same block! It's like magic! 🪄
-              </p>
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-purple-200 dark:border-purple-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <RefreshCw className="w-5 h-5 text-purple-500" />
+                  Reusability Power
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Create once, use everywhere! Components can accept props (properties) to customize their appearance and behavior.
+                </p>
+                <div className="space-y-2">
+                  <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">
+                    Button text="Save"
+                  </Badge>
+                  <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                    Button text="Cancel"
+                  </Badge>
+                  <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                    Button text="Submit"
+                  </Badge>
+                </div>
+              </div>
             </div>
           </div>
 
-          <Alert className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-300 dark:border-cyan-700">
-            <Sparkles className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-            <AlertTitle className="text-cyan-900 dark:text-cyan-100">The Big Idea</AlertTitle>
-            <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-              React lets you build UIs from <strong>reusable pieces</strong> called <strong>components</strong>. It's like having a toolbox of ready-made parts you can snap together!
+          {/* Virtual DOM */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-pink-600 dark:text-pink-400">⚡ Virtual DOM: The Speed Secret</h4>
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-pink-200 dark:border-pink-700">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Box className="w-8 h-8 text-white" />
+                  </div>
+                  <h5 className="font-semibold mb-2">Real DOM</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Slow and expensive to update. Every change requires full page re-render.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <RefreshCw className="w-8 h-8 text-white animate-spin" />
+                  </div>
+                  <h5 className="font-semibold mb-2">Virtual DOM</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Lightweight copy of the real DOM. Fast updates and smart diffing.
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Zap className="w-8 h-8 text-white" />
+                  </div>
+                  <h5 className="font-semibold mb-2">Lightning Fast</h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Only updates what actually changed. Users see instant results!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* State & Props */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-indigo-600 dark:text-indigo-400">💾 State & Props: The Dynamic Duo</h4>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-indigo-200 dark:border-indigo-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Database className="w-5 h-5 text-indigo-500" />
+                  State
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Data that can change over time within a component. When state changes, React automatically re-renders the component.
+                </p>
+                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+                  <li>• Component's internal memory</li>
+                  <li>• Triggers re-renders when changed</li>
+                  <li>• Managed with useState hook</li>
+                </ul>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-indigo-200 dark:border-indigo-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <ArrowRight className="w-5 h-5 text-indigo-500" />
+                  Props
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Data passed from parent to child components. Props are read-only and help customize components.
+                </p>
+                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+                  <li>• Data passed from parent to child</li>
+                  <li>• Read-only (immutable)</li>
+                  <li>• Enables component communication</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* React vs Competitors */}
+      <Card className="bg-gradient-to-br from-orange-50/60 to-red-50/60 dark:from-orange-950/10 dark:to-red-950/10 border border-orange-200/50 dark:border-orange-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Target className="w-6 h-6 text-orange-600/80 dark:text-orange-400/80" />
+            React vs Other Frameworks: Why Choose React?
+          </CardTitle>
+          <CardDescription className="text-base">
+            A comprehensive comparison of React with other popular JavaScript frameworks
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <Alert>
+            <Lightbulb className="h-4 w-4" />
+            <AlertTitle>The Framework Landscape</AlertTitle>
+            <AlertDescription>
+              Each framework has its strengths. React's philosophy is "learn once, write anywhere" - giving you maximum flexibility and control.
             </AlertDescription>
           </Alert>
-        </CardContent>
-      </Card>
 
-      {/* Animated How React Works */}
-      <Card className="border-2">
-        <CardContent className="space-y-6 pt-6">
-          <TopicTitle
-            icon={<RefreshCw className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-            title="How Does React Actually Work? 🔄"
-            description="Let's visualize the magic behind React's reactive updates and component rendering"
-            size="lg"
-          />
-          <div className="relative max-w-5xl mx-auto">
-            {/* The Flow Diagram */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-              {/* Step 1: Data Changes */}
-              <div className="relative group">
-                <div className="absolute inset-0 bg-purple-400/20 rounded-2xl blur-xl animate-pulse"></div>
-                <div className="relative bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 p-8 rounded-2xl border-2 border-purple-300 dark:border-purple-700">
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-purple-500 dark:bg-purple-600 flex items-center justify-center animate-bounce">
-                      <Box className="w-10 h-10 text-white" />
-                    </div>
-                    <Badge className="bg-purple-500 text-white text-sm">1. Data Changes</Badge>
-                    <p className="text-center text-sm font-medium">User clicks<br/>or data updates</p>
+          {/* Comparison Table */}
+          <div className="overflow-x-auto">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+              <div className="grid grid-cols-5 gap-0">
+                {/* Header */}
+                <div className="p-4 bg-orange-100 dark:bg-orange-900/30 font-semibold text-orange-800 dark:text-orange-200 border-r border-orange-200 dark:border-orange-700">
+                  Feature
+                </div>
+                <div className="p-4 bg-cyan-100 dark:bg-cyan-900/30 font-semibold text-cyan-800 dark:text-cyan-200 border-r border-orange-200 dark:border-orange-700">
+                  React
+                </div>
+                <div className="p-4 bg-green-100 dark:bg-green-900/30 font-semibold text-green-800 dark:text-green-200 border-r border-orange-200 dark:border-orange-700">
+                  Vue
+                </div>
+                <div className="p-4 bg-purple-100 dark:bg-purple-900/30 font-semibold text-purple-800 dark:text-purple-200 border-r border-orange-200 dark:border-orange-700">
+                  Angular
+                </div>
+                <div className="p-4 bg-gray-100 dark:bg-gray-800 font-semibold text-gray-800 dark:text-gray-200">
+                  Svelte
+                </div>
+
+                {/* Learning Curve */}
+                <div className="p-4 bg-gray-50 dark:bg-gray-800 font-medium border-r border-t border-orange-200 dark:border-orange-700">
+                  Learning Curve
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-green-100 text-green-700">Easy</Badge>
+                    <span className="text-sm">JSX + Hooks</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Arrow */}
-              <div className="flex items-center">
-                <ArrowRight className="w-8 h-8 text-cyan-500 animate-pulse" />
-              </div>
-
-              {/* Step 2: React Updates */}
-              <div className="relative group">
-                <div className="absolute inset-0 bg-cyan-400/20 rounded-2xl blur-xl animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                <div className="relative bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/30 dark:to-blue-950/30 p-8 rounded-2xl border-2 border-cyan-300 dark:border-cyan-700">
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-cyan-500 dark:bg-cyan-600 flex items-center justify-center animate-bounce" style={{animationDelay: '0.3s'}}>
-                      <RefreshCw className="w-10 h-10 text-white animate-spin" style={{animationDuration: '2s'}} />
-                    </div>
-                    <Badge className="bg-cyan-500 text-white text-sm">2. React Reacts!</Badge>
-                    <p className="text-center text-sm font-medium">Auto-updates<br/>only what changed</p>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-green-100 text-green-700">Easiest</Badge>
+                    <span className="text-sm">HTML-like</span>
                   </div>
                 </div>
-              </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-orange-100 text-orange-700">Steep</Badge>
+                    <span className="text-sm">TypeScript + RxJS</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-green-100 text-green-700">Easy</Badge>
+                    <span className="text-sm">Simple syntax</span>
+                  </div>
+                </div>
 
-              {/* Arrow */}
-              <div className="flex items-center">
-                <ArrowRight className="w-8 h-8 text-emerald-500 animate-pulse" style={{animationDelay: '0.5s'}} />
-              </div>
+                {/* Performance */}
+                <div className="p-4 bg-gray-50 dark:bg-gray-800 font-medium border-r border-t border-orange-200 dark:border-orange-700">
+                  Performance
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Virtual DOM</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Reactive system</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm">Good, but heavy</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Compile-time</span>
+                  </div>
+                </div>
 
-              {/* Step 3: UI Updates */}
-              <div className="relative group">
-                <div className="absolute inset-0 bg-emerald-400/20 rounded-2xl blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
-                <div className="relative bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 p-8 rounded-2xl border-2 border-emerald-300 dark:border-emerald-700">
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-20 h-20 rounded-full bg-emerald-500 dark:bg-emerald-600 flex items-center justify-center">
-                      <Smile className="w-10 h-10 text-white animate-pulse" />
-                    </div>
-                    <Badge className="bg-emerald-500 text-white text-sm">3. User Sees It!</Badge>
-                    <p className="text-center text-sm font-medium">Screen updates<br/>instantly ⚡</p>
+                {/* Flexibility */}
+                <div className="p-4 bg-gray-50 dark:bg-gray-800 font-medium border-r border-t border-orange-200 dark:border-orange-700">
+                  Flexibility
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm">Library - Unopinionated</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm">Progressive framework</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-orange-500" />
+                    <span className="text-sm">Opinionated</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Star className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm">Compiler-based</span>
+                  </div>
+                </div>
+
+                {/* Ecosystem */}
+                <div className="p-4 bg-gray-50 dark:bg-gray-800 font-medium border-r border-t border-orange-200 dark:border-orange-700">
+                  Ecosystem
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Largest community</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Growing fast</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">Enterprise-focused</span>
+                  </div>
+                </div>
+                <div className="p-4 border-r border-t border-orange-200 dark:border-orange-700">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm">Smaller but active</span>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="mt-8 text-center">
-              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                ⚡ All of this happens in <span className="text-cyan-600 dark:text-cyan-400">milliseconds</span>!
-              </p>
+          {/* React's Unique Advantages */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-orange-600 dark:text-orange-400">🏆 React's Unique Advantages</h4>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <ThumbsUp className="w-5 h-5 text-orange-500" />
+                  Maximum Flexibility
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  React is a library, not a framework. You choose your tools, routing, state management, and styling approach.
+                </p>
+                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+                  <li>• Use any router (React Router, Next.js, etc.)</li>
+                  <li>• Choose state management (Redux, Zustand, Context)</li>
+                  <li>• Pick styling (CSS Modules, Tailwind, Styled Components)</li>
+                </ul>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-orange-500" />
+                  Cross-Platform
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Learn React once and build for web, mobile, and desktop with the same knowledge.
+                </p>
+                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+                  <li>• Web: React.js</li>
+                  <li>• Mobile: React Native</li>
+                  <li>• Desktop: Electron + React</li>
+                </ul>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Rocket className="w-5 h-5 text-orange-500" />
+                  Industry Adoption
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  Used by the world's biggest companies for production applications.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-blue-100 text-blue-700">Facebook</Badge>
+                  <Badge className="bg-pink-100 text-pink-700">Instagram</Badge>
+                  <Badge className="bg-red-100 text-red-700">Netflix</Badge>
+                  <Badge className="bg-green-100 text-green-700">Uber</Badge>
+                  <Badge className="bg-purple-100 text-purple-700">Airbnb</Badge>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Award className="w-5 h-5 text-orange-500" />
+                  Job Market
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  React developers are in high demand with excellent salary prospects.
+                </p>
+                <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-400">
+                  <li>• #1 most requested skill</li>
+                  <li>• 40% higher average salary</li>
+                  <li>• 100,000+ job openings worldwide</li>
+                </ul>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Your First React Component */}
-      <div className="space-y-6">
-        <TopicTitle
-          icon={<Component className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />}
-          title="Your First React Component"
-          description="Here's a simple React component. Notice how clean and readable it is!"
-          size="lg"
-        />
+      {/* When to Use React */}
+      <Card className="bg-gradient-to-br from-emerald-50/60 to-teal-50/60 dark:from-emerald-950/10 dark:to-teal-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Target className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+            When to Use React: Perfect Use Cases
+          </CardTitle>
+          <CardDescription className="text-base">
+            Discover when React is the right choice for your project and when you might consider alternatives
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* Ideal Use Cases */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-emerald-600 dark:text-emerald-400">✅ Perfect for These Projects</h4>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <Monitor className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="font-semibold mb-2">Single Page Applications</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Complex web apps like Gmail, Trello, or Facebook where user experience matters most.
+                </p>
+              </div>
 
-        <FrontendCodePreview learningContext="react"
-          title="Simple Greeting Component"
-          description="A basic React component that displays a greeting message"
-          colorTheme="cyan"
-          react={`function Greeting() {
-  return (
-    <div>
-      <h1>Hello, React!</h1>
-      <p>Welcome to the world of components! 🎉</p>
-    </div>
-  );
-}
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <Smartphone className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="font-semibold mb-2">Mobile Apps</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Native mobile apps using React Native - share code between iOS and Android.
+                </p>
+              </div>
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Greeting />);`}
-          html={`<div id="root"></div>`}
-          css={`body {
-  font-family: system-ui, -apple-system, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#root > div {
-  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-  padding: 40px;
-  border-radius: 16px;
-  color: white;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 800px;
-}
-
-#root h1 {
-  font-size: 2.5rem;
-  margin: 0 0 16px 0;
-  font-weight: bold;
-}
-
-#root p {
-  font-size: 1.25rem;
-  margin: 0;
-  opacity: 0.95;
-}`}
-          js={`// Load React from CDN
-const script1 = document.createElement('script');
-script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
-script1.crossOrigin = 'anonymous';
-
-const script2 = document.createElement('script');
-script2.src = 'https://unpkg.com/react-dom@18/umd/react-dom.development.js';
-script2.crossOrigin = 'anonymous';
-
-script2.onload = () => {
-  const { createElement: h } = React;
-  const { createRoot } = ReactDOM;
-
-  function Greeting() {
-    return h('div', null,
-      h('h1', null, 'Hello, React!'),
-      h('p', null, 'Welcome to the world of components! 🎉')
-    );
-  }
-
-  const root = createRoot(document.getElementById('root'));
-  root.render(h(Greeting));
-};
-
-document.head.appendChild(script1);
-document.head.appendChild(script2);`}
-        />
-      </div>
-
-      {/* Interactive Example with State */}
-      <div className="space-y-6">
-        <TopicTitle
-          icon={<Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
-          title="Interactive Component with State"
-          description="This is where React shines! Watch how state makes components interactive:"
-          size="lg"
-        />
-
-        <FrontendCodePreview learningContext="react"
-          title="Counter Component"
-          description="Click the button and count updates automatically!"
-          colorTheme="purple"
-          react={`const { useState } = React;
-
-function Counter() {
-  const [count, setCount] = useState(0);
-  
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me!
-      </button>
-    </div>
-  );
-}
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Counter />);`}
-          html={`<div id="root"></div>`}
-          css={`body {
-  font-family: system-ui, -apple-system, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#root > div {
-  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-  padding: 50px;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
-  width: 100%;
-  max-width: 800px;
-}
-
-#root > div p {
-  font-size: 1.5rem;
-  margin: 0 0 30px 0;
-  font-weight: 500;
-}
-
-#root > div button {
-  padding: 15px 50px;
-  font-size: 1.2rem;
-  background: white;
-  color: #8b5cf6;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-#root > div button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-#root > div button:active {
-  transform: translateY(0);
-}`}
-          js={`// Load React from CDN
-const script1 = document.createElement('script');
-script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
-script1.crossOrigin = 'anonymous';
-
-const script2 = document.createElement('script');
-script2.src = 'https://unpkg.com/react-dom@18/umd/react-dom.development.js';
-script2.crossOrigin = 'anonymous';
-
-script2.onload = () => {
-  const { createElement: h, useState } = React;
-  const { createRoot } = ReactDOM;
-
-  function Counter() {
-    const [count, setCount] = useState(0);
-    
-    return h('div', { className: 'counter-box' },
-      h('p', null, \`You clicked \${count} times\`),
-      h('button', { 
-        onClick: () => setCount(count + 1) 
-      }, 'Click me!')
-    );
-  }
-
-  const root = createRoot(document.getElementById('root'));
-  root.render(h(Counter));
-};
-
-document.head.appendChild(script1);
-document.head.appendChild(script2);`}
-        />
-      </div>
-
-
-      {/* What Makes React Special? */}
-      <Card>
-        <CardContent className="space-y-6 pt-6">
-          <TopicTitle
-            icon={<Sparkles className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-            title="Why Developers Love React"
-            description="Discover the key features that make React one of the most popular JavaScript libraries"
-            size="lg"
-          />
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-muted rounded-lg border">
-              <h4 className="font-bold mb-2">✅ Reusable & Organized</h4>
-              <p className="text-sm text-muted-foreground">Build components once, use them everywhere. Your code stays clean and manageable.</p>
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="font-semibold mb-2">Progressive Web Apps</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Fast, reliable web apps that work offline and feel like native apps.
+                </p>
+              </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg border">
-              <h4 className="font-bold mb-2">⚡ Lightning Fast</h4>
-              <p className="text-sm text-muted-foreground">React's "Virtual DOM" makes updates super quick. Users never wait!</p>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="font-semibold mb-2">Social Media Platforms</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Real-time updates, complex interactions, and dynamic content feeds.
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+                <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <Database className="w-6 h-6 text-white" />
+                </div>
+                <h5 className="font-semibold mb-2">Data Dashboards</h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Complex data visualization and real-time analytics interfaces.
+                </p>
+              </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg border">
-              <h4 className="font-bold mb-2">🌍 Huge Community</h4>
-              <p className="text-sm text-muted-foreground">Millions of developers use React. Need help? There's always someone to ask!</p>
+          </div>
+
+          {/* When NOT to Use React */}
+          <div className="space-y-6">
+            <h4 className="font-bold text-lg text-orange-600 dark:text-orange-400">⚠️ Consider Alternatives When...</h4>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-orange-500" />
+                  Simple Static Websites
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  For basic websites with minimal interactivity, React might be overkill.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-orange-700 dark:text-orange-300">Better alternatives:</p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400">
+                    <li>• Plain HTML/CSS/JS</li>
+                    <li>• Static site generators (Hugo, Jekyll)</li>
+                    <li>• Lightweight frameworks (Alpine.js)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <h5 className="font-semibold mb-3 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-orange-500" />
+                  Quick Prototypes
+                </h5>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  When you need to build something quickly without complex setup.
+                </p>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-orange-700 dark:text-orange-300">Better alternatives:</p>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400">
+                    <li>• Vue.js (easier learning curve)</li>
+                    <li>• jQuery for simple interactions</li>
+                    <li>• No-code/Low-code platforms</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg border">
-              <h4 className="font-bold mb-2">📱 Works Everywhere</h4>
-              <p className="text-sm text-muted-foreground">Web, mobile (React Native), desktop - same skills, different platforms!</p>
+          </div>
+
+          {/* Decision Matrix */}
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-emerald-200 dark:border-emerald-700">
+            <h5 className="font-semibold mb-4">🤔 Quick Decision Guide</h5>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Choose React if:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    You need a scalable, flexible solution with strong community support and don't mind the learning curve.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Choose Vue if:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    You want something easier to learn with great documentation and progressive adoption.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-purple-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Choose Angular if:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    You're building enterprise applications and need a complete, opinionated framework.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-yellow-500 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium">Choose Svelte if:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    You want the best performance with a compiler-based approach and minimal runtime overhead.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
-      </div>
+
+      {/* Why React Dominates */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-indigo-50/60 dark:from-blue-950/10 dark:to-indigo-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Star className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Why React Dominates the Industry
+          </CardTitle>
+          <CardDescription className="text-base">
+            The strategic advantages that make React the preferred choice for modern web development
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Technical Excellence */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-blue-600 dark:text-blue-400">🔧 Technical Excellence</h4>
+              
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-blue-500" />
+                    Backward Compatibility
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    React rarely breaks existing code. Your investment in learning React pays off for years.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-blue-500" />
+                    Performance Optimizations
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Concurrent Mode, Suspense, and automatic batching make React incredibly fast.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Code className="w-4 h-4 text-blue-500" />
+                    Developer Experience
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Excellent debugging tools, hot reloading, and clear error messages.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Business Advantages */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-indigo-600 dark:text-indigo-400">💼 Business Advantages</h4>
+              
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-indigo-500" />
+                    Talent Availability
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Largest pool of developers makes hiring easier and reduces costs.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Rocket className="w-4 h-4 text-indigo-500" />
+                    Faster Development
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Component reusability and rich ecosystem accelerate time-to-market.
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Award className="w-4 h-4 text-indigo-500" />
+                    Future-Proof
+                  </h5>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Continuous innovation with React Server Components and the React Compiler.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Success Stories */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
+            <h5 className="font-semibold mb-4 text-blue-800 dark:text-blue-200">🏆 Real-World Success Stories</h5>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">2B+</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Daily active users on Facebook</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">1B+</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Monthly active users on Instagram</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">500M+</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Downloads of React apps</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Final Summary */}
+      <Card className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white border-0">
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+              <Star className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold">React: The Smart Choice for Modern Web Development</h2>
+            <p className="text-lg opacity-90 max-w-3xl mx-auto">
+              React combines flexibility, performance, and an incredible ecosystem to help you build amazing user experiences. 
+              Whether you're a beginner or an experienced developer, React provides the tools you need to succeed.
+            </p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                🚀 Fast Performance
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                🧱 Component-Based
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                🌍 Huge Community
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                💼 Career Opportunities
+              </Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

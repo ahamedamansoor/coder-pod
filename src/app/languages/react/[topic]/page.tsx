@@ -32,7 +32,7 @@ function TopicPageContent() {
   return (
     <ResizablePanelGroup direction="horizontal" className="w-full">
       <ResizablePanel defaultSize={100} minSize={30}>
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 h-full bg-background">
+        <div className="flex-1 overflow-y-auto px-4 md:px-6 lg:px-8 py-4 md:py-6 lg:py-8 h-full bg-background">
           {isLearningPlanTopic ? (
             <ReactLearningRoadmap language={language} />
           ) : (

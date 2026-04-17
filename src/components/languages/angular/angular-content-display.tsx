@@ -1,6 +1,6 @@
 'use client';
 
-import type { Language, Topic } from '@/data/languages';
+import type { Topic, Language } from '@/data/languages';
 import React, { lazy, Suspense } from 'react';
 import { GenericContentDisplay } from '@/components/shared/generic-content-display';
 import { TopicUnderDevelopment } from '@/components/shared/topic-under-development';

@@ -3,7 +3,7 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Code, LogOut, User, LogIn, LayoutGrid, Home, ToyBrick } from 'lucide-react';
+import { Code, LogOut, User, LogIn, LayoutGrid, Home, ToyBrick, Sun, Moon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -138,6 +138,25 @@ export function MainHeader({
             Code Editor
           </Button>
         )}
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={() => {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+              html.classList.remove('dark');
+              html.classList.add('light');
+            } else {
+              html.classList.remove('light');
+              html.classList.add('dark');
+            }
+          }}
+          title="Toggle theme"
+          className="relative"
+        >
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+        </Button>
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

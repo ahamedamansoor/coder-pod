@@ -31,7 +31,7 @@ export default function YouMightNotNeedAnEffect() {
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
         {/* Why Avoid Unnecessary Effects */}
         <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">

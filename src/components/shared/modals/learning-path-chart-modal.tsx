@@ -2,20 +2,22 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { useTheme } from 'next-themes';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { X, MapPin, BookOpen, Check, ArrowRightLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Language, Topic } from '@/data/languages';
+import type { Roadmap, Topic } from '@/data/roadmaps';
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
 
 interface LearningPathChartModalProps {
   isOpen: boolean;
   onClose: () => void;
-  language: Language;
+  language: Roadmap;
   completedTopics?: Set<string>;
   showProgress?: boolean;
-  allLanguages?: Language[];
+  allLanguages?: Roadmap[];
 }
 
 export const LearningPathChartModal = ({
@@ -26,8 +28,23 @@ export const LearningPathChartModal = ({
   showProgress = true,
   allLanguages = [],
 }: LearningPathChartModalProps) => {
+  const { setTheme } = useTheme();
   const [secondRoadmap, setSecondRoadmap] = useState<string>('');
   const [showSecondRoadmap, setShowSecondRoadmap] = useState(false);
+
+  // Get all available roadmap slugs to check if a topic has a dedicated roadmap
+  const availableRoadmapSlugs = allLanguages.map(lang => lang.slug);
+
+  // Check if a topic has a dedicated roadmap
+  const hasDedicatedRoadmap = (topic: Topic) => {
+    return topic.connectedRoadmap && availableRoadmapSlugs.includes(topic.connectedRoadmap);
+  };
+
+  // Handle clicking on a topic with connected roadmap
+  const handleConnectedRoadmapClick = (connectedRoadmapSlug: string) => {
+    setSecondRoadmap(connectedRoadmapSlug);
+    setShowSecondRoadmap(true);
+  };
   const roleBasedRoadmaps = ['frontend-developer', 'backend-developer'];
   const isRoleBasedRoadmap = roleBasedRoadmaps.includes(language.slug);
   
@@ -159,6 +176,24 @@ export const LearningPathChartModal = ({
             background-size: 200% 100%;
             animation: shimmer 2s linear infinite;
           }
+          
+          /* Pulse slow animation */
+          @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+          }
+          .animate-pulse-slow {
+            animation: pulse-slow 3s ease-in-out infinite;
+          }
+          
+          /* Bounce slow animation */
+          @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+          }
+          .animate-bounce-slow {
+            animation: bounce-slow 2s ease-in-out infinite;
+          }
         `}</style>
 
         <VisuallyHidden>
@@ -210,6 +245,16 @@ export const LearningPathChartModal = ({
           {showLearningPathButton && (
             <Link
               href={`/languages/${language.slug}/introduction`}
+              onClick={async () => {
+                // Force dark mode multiple ways
+                setTheme('dark');
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                toast.success('We support dark mode only for learning path');
+                // Add small delay to ensure theme is applied before navigation
+                await new Promise(resolve => setTimeout(resolve, 100));
+              }}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition-all hover:scale-105"
             >
               <BookOpen className="w-4 h-4 text-white" />
@@ -248,6 +293,16 @@ export const LearningPathChartModal = ({
                     <div className="w-3 h-3 bg-purple-500 rounded-full" />
                     <span className="font-bold text-sm text-slate-800 dark:text-white">{secondRoadmapData.name}</span>
                   </div>
+                  <button
+                    onClick={() => {
+                      setSecondRoadmap('');
+                      setShowSecondRoadmap(false);
+                    }}
+                    className="ml-4 p-1 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                    title="Close comparison"
+                  >
+                    <X className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                  </button>
                 </div>
               </div>
             )}
@@ -302,6 +357,7 @@ export const LearningPathChartModal = ({
                               <div className="flex flex-col gap-4 items-end">
                                 {leftTopics.map((topic, i) => {
                                   const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
+                                  const hasDedicated = hasDedicatedRoadmap(topic);
                                   return (
                                     <div
                                       key={topic.slug}
@@ -309,29 +365,53 @@ export const LearningPathChartModal = ({
                                       style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
                                     >
                                       {/* Topic Box */}
-                                      <div className={cn(
-                                        "group relative w-56 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                        isCompleted
-                                          ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                          : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-blue-400/70 hover:shadow-xl hover:shadow-blue-500/10"
-                                      )}>
+                                      <div 
+                                        className={cn(
+                                          "group relative w-56 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
+                                          hasDedicated
+                                            ? "bg-gradient-to-br from-amber-400/15 via-orange-500/15 to-rose-500/15 dark:from-amber-400/25 dark:via-orange-500/25 dark:to-rose-500/25 border-2 border-amber-400/60 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/40 cursor-pointer animate-pulse-slow"
+                                            : isCompleted
+                                              ? "bg-gradient-to-br from-emerald-400/20 to-teal-500/20 dark:from-emerald-400/30 dark:to-teal-500/30 border-emerald-400/60 dark:border-emerald-500/50"
+                                              : "bg-gradient-to-br from-blue-50/90 via-indigo-50/90 to-purple-50/90 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 border-blue-200/60 dark:border-indigo-700/50 hover:border-violet-400/70 hover:shadow-xl hover:shadow-violet-500/20"
+                                        )}
+                                        onClick={() => hasDedicated && handleConnectedRoadmapClick(topic.connectedRoadmap!)}
+                                      >
+                                        {hasDedicated && (
+                                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                        )}
                                         <div className="p-3">
-                                          <div className={cn(
-                                            "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                            isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                          )}>
-                                            {topic.title}
+                                          <div className="flex items-start justify-between mb-1.5">
+                                            <div className={cn(
+                                              "text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2 flex-1",
+                                              isCompleted ? "text-emerald-800 dark:text-emerald-100" : 
+                                              hasDedicated ? "text-amber-800 dark:text-amber-100" : "text-slate-800 dark:text-slate-100"
+                                            )}>
+                                              {topic.title}
+                                            </div>
+                                            {hasDedicated && (
+                                              <div className="ml-2 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center gap-1 flex-shrink-0 animate-bounce-slow">
+                                                <span>⚡</span>
+                                              </div>
+                                            )}
                                           </div>
                                           <div className={cn(
                                             "text-xs leading-relaxed line-clamp-2",
-                                            isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                            isCompleted ? "text-emerald-700/80 dark:text-emerald-200/70" : 
+                                            hasDedicated ? "text-amber-700/80 dark:text-amber-300/70" : "text-slate-500 dark:text-slate-400"
                                           )}>
                                             {topic.explanation}
                                           </div>
+                                          {hasDedicated && (
+                                            <div className="mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1">
+                                              <span className="animate-pulse">▶</span>
+                                              <span>Click to explore {topic.connectedRoadmap} roadmap</span>
+                                            </div>
+                                          )}
                                         </div>
                                         <div className={cn(
                                           "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                          isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-blue-400 transition-colors"
+                                          isCompleted ? "bg-emerald-500" : 
+                                          hasDedicated ? "bg-amber-500 animate-ping" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-violet-400 transition-colors"
                                         )} />
                                       </div>
                                     </div>
@@ -376,29 +456,53 @@ export const LearningPathChartModal = ({
                                       </svg>
 
                                       {/* Topic Box */}
-                                      <div className={cn(
-                                        "group relative w-56 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                        isCompleted
-                                          ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                          : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-blue-400/70 hover:shadow-xl hover:shadow-blue-500/10"
-                                      )}>
+                                      <div 
+                                        className={cn(
+                                          "group relative w-56 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
+                                          hasDedicatedRoadmap(topic)
+                                            ? "bg-gradient-to-br from-amber-400/15 via-orange-500/15 to-rose-500/15 dark:from-amber-400/25 dark:via-orange-500/25 dark:to-rose-500/25 border-2 border-amber-400/60 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/40 cursor-pointer animate-pulse-slow"
+                                            : isCompleted
+                                              ? "bg-gradient-to-br from-emerald-400/20 to-teal-500/20 dark:from-emerald-400/30 dark:to-teal-500/30 border-emerald-400/60 dark:border-emerald-500/50"
+                                              : "bg-gradient-to-br from-blue-50/90 via-indigo-50/90 to-purple-50/90 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 border-blue-200/60 dark:border-indigo-700/50 hover:border-violet-400/70 hover:shadow-xl hover:shadow-violet-500/20"
+                                        )}
+                                        onClick={() => hasDedicatedRoadmap(topic) && handleConnectedRoadmapClick(topic.connectedRoadmap!)}
+                                      >
+                                        {hasDedicatedRoadmap(topic) && (
+                                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                        )}
                                         <div className="p-3">
-                                          <div className={cn(
-                                            "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                            isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                          )}>
-                                            {topic.title}
+                                          <div className="flex items-start justify-between mb-1.5">
+                                            <div className={cn(
+                                              "text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2 flex-1",
+                                              isCompleted ? "text-emerald-800 dark:text-emerald-100" : 
+                                              hasDedicatedRoadmap(topic) ? "text-amber-800 dark:text-amber-100" : "text-slate-800 dark:text-slate-100"
+                                            )}>
+                                              {topic.title}
+                                            </div>
+                                            {hasDedicatedRoadmap(topic) && (
+                                              <div className="ml-2 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center gap-1 flex-shrink-0 animate-bounce-slow">
+                                                <span>⚡</span>
+                                              </div>
+                                            )}
                                           </div>
                                           <div className={cn(
                                             "text-xs leading-relaxed line-clamp-2",
-                                            isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                            isCompleted ? "text-emerald-700/80 dark:text-emerald-200/70" : 
+                                            hasDedicatedRoadmap(topic) ? "text-amber-700/80 dark:text-amber-300/70" : "text-slate-500 dark:text-slate-400"
                                           )}>
                                             {topic.explanation}
                                           </div>
+                                          {hasDedicatedRoadmap(topic) && (
+                                            <div className="mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1">
+                                              <span className="animate-pulse">▶</span>
+                                              <span>Click to explore {topic.connectedRoadmap} roadmap</span>
+                                            </div>
+                                          )}
                                         </div>
                                         <div className={cn(
                                           "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                          isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-blue-400 transition-colors"
+                                          isCompleted ? "bg-emerald-500" : 
+                                          hasDedicatedRoadmap(topic) ? "bg-amber-500 animate-ping" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-violet-400 transition-colors"
                                         )} />
                                       </div>
                                     </div>
@@ -422,11 +526,21 @@ export const LearningPathChartModal = ({
 
                   {/* Right Roadmap */}
                   <div className="space-y-24 border-2 border-purple-500 p-2 flex-1" style={{ flex: '1' }}>
-                    <div className="text-center mb-8">
+                    <div className="text-center mb-8 relative">
                       <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800">
                         <div className="w-3 h-3 bg-purple-500 rounded-full" />
                         <span className="font-bold text-purple-800 dark:text-purple-200">{secondRoadmapData?.name || 'Select a roadmap'}</span>
                       </div>
+                      <button
+                        onClick={() => {
+                          setSecondRoadmap('');
+                          setShowSecondRoadmap(false);
+                        }}
+                        className="absolute top-2 right-2 p-1.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-lg z-10"
+                        title="Close comparison"
+                      >
+                        <X className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
+                      </button>
                     </div>
                     <div className="relative">
                       <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0.5 bg-purple-500 z-0" />
@@ -576,6 +690,7 @@ export const LearningPathChartModal = ({
                           <div className="flex flex-col gap-4 items-end">
                             {leftTopics.map((topic, i) => {
                               const isCompleted = effectiveShowProgress && completedTopics.has(topic.slug);
+                              const hasDedicated = hasDedicatedRoadmap(topic);
                               return (
                                 <div
                                   key={topic.slug}
@@ -583,29 +698,53 @@ export const LearningPathChartModal = ({
                                   style={{ animationDelay: `${0.3 + i * 0.1}s`, opacity: 0 }}
                                 >
                                   {/* Topic Box */}
-                                  <div className={cn(
-                                    "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                    isCompleted
-                                      ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                      : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
-                                  )}>
+                                  <div 
+                                    className={cn(
+                                      "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden cursor-pointer",
+                                      hasDedicated
+                                        ? "bg-gradient-to-br from-amber-400/15 via-orange-500/15 to-rose-500/15 dark:from-amber-400/25 dark:via-orange-500/25 dark:to-rose-500/25 border-2 border-amber-400/60 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/40 animate-pulse-slow"
+                                        : isCompleted
+                                          ? "bg-gradient-to-br from-emerald-400/20 to-teal-500/20 dark:from-emerald-400/30 dark:to-teal-500/30 border-emerald-400/60 dark:border-emerald-500/50"
+                                          : "bg-gradient-to-br from-blue-50/90 via-indigo-50/90 to-purple-50/90 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 border-blue-200/60 dark:border-indigo-700/50 hover:border-violet-400/70 hover:shadow-xl hover:shadow-violet-500/20"
+                                    )}
+                                    onClick={() => hasDedicated && handleConnectedRoadmapClick(topic.connectedRoadmap!)}
+                                  >
+                                    {hasDedicated && (
+                                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                    )}
                                     <div className="p-4">
-                                      <div className={cn(
-                                        "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                        isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                      )}>
-                                        {topic.title}
+                                      <div className="flex items-start justify-between mb-1.5">
+                                        <div className={cn(
+                                          "text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2 flex-1",
+                                          isCompleted ? "text-emerald-800 dark:text-emerald-100" : 
+                                          hasDedicated ? "text-amber-800 dark:text-amber-100" : "text-slate-800 dark:text-slate-100"
+                                        )}>
+                                          {topic.title}
+                                        </div>
+                                        {hasDedicated && (
+                                          <div className="ml-2 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center gap-1 flex-shrink-0 animate-bounce-slow">
+                                            <span>⚡</span>
+                                          </div>
+                                        )}
                                       </div>
                                       <div className={cn(
                                         "text-xs leading-relaxed line-clamp-3",
-                                        isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                        isCompleted ? "text-emerald-700/80 dark:text-emerald-200/70" : 
+                                        hasDedicated ? "text-amber-700/80 dark:text-amber-300/70" : "text-slate-500 dark:text-slate-400"
                                       )}>
                                         {topic.explanation}
                                       </div>
+                                      {hasDedicated && (
+                                        <div className="mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1">
+                                          <span className="animate-pulse">▶</span>
+                                          <span>Click to explore {topic.connectedRoadmap} roadmap</span>
+                                        </div>
+                                      )}
                                     </div>
                                     <div className={cn(
                                       "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                      isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
+                                      isCompleted ? "bg-emerald-500" : 
+                                      hasDedicated ? "bg-amber-500 animate-ping" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-violet-400 transition-colors"
                                     )} />
                                   </div>
 
@@ -671,29 +810,53 @@ export const LearningPathChartModal = ({
                                   </svg>
 
                                   {/* Topic Box */}
-                                  <div className={cn(
-                                    "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden",
-                                    isCompleted
-                                      ? "bg-green-100/80 dark:bg-green-900/40 border-green-400/50"
-                                      : "bg-white/80 dark:bg-slate-800/80 border-white/60 dark:border-slate-600/50 hover:border-purple-400/70 hover:shadow-xl hover:shadow-purple-500/10"
-                                  )}>
+                                  <div 
+                                    className={cn(
+                                      "group relative w-64 p-0 rounded-xl border text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 backdrop-blur-md shadow-lg overflow-hidden cursor-pointer",
+                                      hasDedicatedRoadmap(topic)
+                                        ? "bg-gradient-to-br from-amber-400/15 via-orange-500/15 to-rose-500/15 dark:from-amber-400/25 dark:via-orange-500/25 dark:to-rose-500/25 border-2 border-amber-400/60 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/40 animate-pulse-slow"
+                                        : isCompleted
+                                          ? "bg-gradient-to-br from-emerald-400/20 to-teal-500/20 dark:from-emerald-400/30 dark:to-teal-500/30 border-emerald-400/60 dark:border-emerald-500/50"
+                                          : "bg-gradient-to-br from-blue-50/90 via-indigo-50/90 to-purple-50/90 dark:from-blue-900/30 dark:via-indigo-900/30 dark:to-purple-900/30 border-blue-200/60 dark:border-indigo-700/50 hover:border-violet-400/70 hover:shadow-xl hover:shadow-violet-500/20"
+                                    )}
+                                    onClick={() => hasDedicatedRoadmap(topic) && handleConnectedRoadmapClick(topic.connectedRoadmap!)}
+                                  >
+                                    {hasDedicatedRoadmap(topic) && (
+                                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                    )}
                                     <div className="p-4">
-                                      <div className={cn(
-                                        "mb-1.5 text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                        isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                                      )}>
-                                        {topic.title}
+                                      <div className="flex items-start justify-between mb-1.5">
+                                        <div className={cn(
+                                          "text-sm font-bold line-clamp-1 border-b border-dashed border-slate-200 dark:border-slate-700 pb-2 flex-1",
+                                          isCompleted ? "text-emerald-800 dark:text-emerald-100" : 
+                                          hasDedicatedRoadmap(topic) ? "text-amber-800 dark:text-amber-100" : "text-slate-800 dark:text-slate-100"
+                                        )}>
+                                          {topic.title}
+                                        </div>
+                                        {hasDedicatedRoadmap(topic) && (
+                                          <div className="ml-2 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs rounded-full flex items-center gap-1 flex-shrink-0 animate-bounce-slow">
+                                            <span>⚡</span>
+                                          </div>
+                                        )}
                                       </div>
                                       <div className={cn(
                                         "text-xs leading-relaxed line-clamp-3",
-                                        isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                        isCompleted ? "text-emerald-700/80 dark:text-emerald-200/70" : 
+                                        hasDedicatedRoadmap(topic) ? "text-amber-700/80 dark:text-amber-300/70" : "text-slate-500 dark:text-slate-400"
                                       )}>
                                         {topic.explanation}
                                       </div>
+                                      {hasDedicatedRoadmap(topic) && (
+                                        <div className="mt-2 text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1">
+                                          <span className="animate-pulse">▶</span>
+                                          <span>Click to explore {topic.connectedRoadmap} roadmap</span>
+                                        </div>
+                                      )}
                                     </div>
                                     <div className={cn(
                                       "absolute top-3 right-3 w-2 h-2 rounded-full",
-                                      isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-purple-400 transition-colors"
+                                      isCompleted ? "bg-emerald-500" : 
+                                      hasDedicatedRoadmap(topic) ? "bg-amber-500 animate-ping" : "bg-slate-300 dark:bg-slate-600 group-hover:bg-violet-400 transition-colors"
                                     )} />
                                   </div>
                                 </div>
@@ -740,28 +903,52 @@ export const LearningPathChartModal = ({
                             <div className="absolute top-1/2 -left-8 w-8 h-0.5 bg-blue-300/50" />
                             <div className="absolute top-1/2 -left-8 w-2 h-2 rounded-full bg-blue-500 -translate-y-1/2 -translate-x-1/2 shadow-sm ring-2 ring-white dark:ring-slate-900" />
 
-                            <div className={cn(
-                              "group relative w-full p-4 rounded-xl border text-sm font-medium transition-all backdrop-blur-md shadow-sm",
-                              isCompleted
-                                ? "bg-green-50/90 dark:bg-green-900/30 border-green-200"
-                                : "bg-white/90 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700"
-                            )}>
-                              <div className={cn(
-                                "mb-2 text-sm font-bold border-b border-dashed border-slate-200 dark:border-slate-700 pb-2",
-                                isCompleted ? "text-green-800 dark:text-green-100" : "text-slate-800 dark:text-slate-100"
-                              )}>
-                                {topic.title}
+                            <div 
+                              className={cn(
+                                "group relative w-full p-4 rounded-xl border text-sm font-medium transition-all backdrop-blur-md shadow-sm cursor-pointer",
+                                hasDedicatedRoadmap(topic)
+                                  ? "bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 dark:from-indigo-500/20 dark:via-purple-500/20 dark:to-pink-500/20 border-2 border-indigo-400/50 hover:border-indigo-400 hover:shadow-2xl hover:shadow-indigo-500/30 animate-pulse-slow"
+                                  : isCompleted
+                                    ? "bg-green-50/90 dark:bg-green-900/30 border-green-200"
+                                    : "bg-white/90 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700"
+                              )}
+                              onClick={() => hasDedicatedRoadmap(topic) && handleConnectedRoadmapClick(topic.connectedRoadmap!)}
+                            >
+                              {hasDedicatedRoadmap(topic) && (
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                              )}
+                              <div className="flex items-start justify-between mb-2">
+                                <div className={cn(
+                                  "text-sm font-bold border-b border-dashed border-slate-200 dark:border-slate-700 pb-2 flex-1",
+                                  isCompleted ? "text-green-800 dark:text-green-100" : 
+                                  hasDedicatedRoadmap(topic) ? "text-indigo-800 dark:text-indigo-100" : "text-slate-800 dark:text-slate-100"
+                                )}>
+                                  {topic.title}
+                                </div>
+                                {hasDedicatedRoadmap(topic) && (
+                                  <div className="ml-2 px-2 py-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs rounded-full flex items-center gap-1 flex-shrink-0 animate-bounce-slow">
+                                    <span>⚡</span>
+                                  </div>
+                                )}
                               </div>
                               <div className={cn(
                                 "text-xs leading-relaxed",
-                                isCompleted ? "text-green-700/80 dark:text-green-200/70" : "text-slate-500 dark:text-slate-400"
+                                isCompleted ? "text-green-700/80 dark:text-green-200/70" : 
+                                hasDedicatedRoadmap(topic) ? "text-indigo-700/80 dark:text-indigo-300/70" : "text-slate-500 dark:text-slate-400"
                               )}>
                                 {topic.explanation}
                               </div>
+                              {hasDedicatedRoadmap(topic) && (
+                                <div className="mt-2 text-xs text-indigo-600 dark:text-indigo-400 font-medium flex items-center gap-1">
+                                  <span className="animate-pulse">▶</span>
+                                  <span>Click to explore {topic.connectedRoadmap} roadmap</span>
+                                </div>
+                              )}
 
                               <div className={cn(
                                 "absolute top-4 right-4 w-2 h-2 rounded-full",
-                                isCompleted ? "bg-green-500" : "bg-slate-300 dark:bg-slate-600"
+                                isCompleted ? "bg-green-500" : 
+                                hasDedicatedRoadmap(topic) ? "bg-indigo-500 animate-ping" : "bg-slate-300 dark:bg-slate-600"
                               )} />
                             </div>
                           </div>

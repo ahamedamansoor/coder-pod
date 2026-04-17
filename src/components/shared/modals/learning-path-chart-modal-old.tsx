@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { useTheme } from 'next-themes';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { X, MapPin, BookOpen, Check, ArrowRightLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Language, Topic } from '@/data/languages';
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { toast } from 'sonner';
 
 interface LearningPathChartModalProps {
   isOpen: boolean;
@@ -26,6 +28,7 @@ export const LearningPathChartModal = ({
   showProgress = true,
   allLanguages = [],
 }: LearningPathChartModalProps) => {
+  const { setTheme } = useTheme();
   const [compareLanguage, setCompareLanguage] = useState<string>('');
   const [isComparing, setIsComparing] = useState(false);
   const roleBasedRoadmaps = ['frontend-developer', 'backend-developer'];
@@ -211,6 +214,16 @@ export const LearningPathChartModal = ({
           {showLearningPathButton && (
             <Link
               href={`/languages/${language.slug}/introduction`}
+              onClick={async () => {
+                // Force dark mode multiple ways
+                setTheme('dark');
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                toast.success('We support dark mode only for learning path');
+                // Add small delay to ensure theme is applied before navigation
+                await new Promise(resolve => setTimeout(resolve, 100));
+              }}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition-all hover:scale-105"
             >
               <BookOpen className="w-4 h-4 text-white" />

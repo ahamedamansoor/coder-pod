@@ -10,7 +10,6 @@ import {
   Terminal,
   CheckCircle2,
   AlertCircle,
-  Play,
   Code,
   FolderOpen,
   Zap,
@@ -24,6 +23,13 @@ import {
   Cpu,
   FileText,
   Settings,
+  Play,
+  Lightbulb,
+  Target,
+  Wrench,
+  BookOpen,
+  Star,
+  Palette,
 } from 'lucide-react';
 
 export default function InstallationAndSetup() {
@@ -32,59 +38,66 @@ export default function InstallationAndSetup() {
       {/* Page Header */}
       <PageHeader
         icon={Download}
-        category="React · Installation"
-        title="Installation & Setup"
-        description="Get React running on your machine in minutes. Follow these visual steps to create your first React application."
+        category="React · Getting Started"
+        title="Installation & Setup Guide"
+        description="Complete step-by-step guide to installing React and setting up your first development environment. Perfect for beginners!"
         colorTheme="green"
       />
 
-      {/* Visual Installation Journey */}
+      {/* Quick Start Overview */}
       <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
             <Rocket className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Your React Journey Starts Here! 🚀
+            Quick Start: 5 Minutes to Your First React App! 🚀
           </CardTitle>
           <CardDescription className="text-base">
-            Follow these 4 simple steps to get React running on your computer.
+            Follow these simple steps to get React running on your computer. We'll guide you through everything!
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Step Overview */}
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
+          {/* Step Cards */}
+          <div className="grid md:grid-cols-4 gap-6 mb-8">
             {[
               {
                 step: 1,
-                title: "Check Prerequisites",
-                description: "Make sure you have what you need",
-                icon: "🔍",
-                color: "from-blue-400 to-blue-600"
+                title: "Install Node.js",
+                description: "JavaScript runtime that powers React",
+                icon: Package,
+                color: "from-green-400 to-green-600",
+                time: "2 min"
               },
               {
                 step: 2,
-                title: "Install Node.js",
-                description: "Get the JavaScript runtime",
-                icon: "📦",
-                color: "from-green-400 to-green-600"
+                title: "Choose Your Setup",
+                description: "Select the best installation method",
+                icon: Settings,
+                color: "from-blue-400 to-blue-600",
+                time: "1 min"
               },
               {
                 step: 3,
                 title: "Create React App",
-                description: "Set up your first project",
-                icon: "⚡",
-                color: "from-purple-400 to-purple-600"
+                description: "Generate your first React project",
+                icon: FolderOpen,
+                color: "from-purple-400 to-purple-600",
+                time: "2 min"
               },
               {
                 step: 4,
-                title: "Run Your App",
-                description: "See it in action!",
-                icon: "🎉",
-                color: "from-orange-400 to-orange-600"
+                title: "Run & Explore",
+                description: "Start your app and begin coding!",
+                icon: Play,
+                color: "from-orange-400 to-orange-600",
+                time: "1 min"
               }
             ].map((item) => (
-              <div key={item.step} className="text-center group">
+              <div key={item.step} className="text-center group relative">
+                <div className="absolute -top-2 -right-2 bg-gray-900 text-white text-xs px-2 py-1 rounded-full">
+                  {item.time}
+                </div>
                 <div className={`w-20 h-20 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all duration-300 shadow-lg`}>
-                  <span className="text-3xl">{item.icon}</span>
+                  <item.icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-2 text-lg font-bold">
                   {item.step}
@@ -95,10 +108,10 @@ export default function InstallationAndSetup() {
             ))}
           </div>
 
-          {/* Visual Flow Diagram */}
+          {/* Visual Flow */}
           <div className="bg-white dark:bg-gray-900 p-8 rounded-xl border-2 border-gray-200 dark:border-gray-700">
-            <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Installation Flow</h3>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+            <h3 className="text-xl font-bold mb-6 text-center text-gray-800 dark:text-gray-200">Installation Journey</h3>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
               {[
                 { icon: Monitor, label: "Your Computer", color: "bg-blue-500" },
                 { icon: ArrowRight, label: "Install", color: "bg-gray-400" },
@@ -120,276 +133,315 @@ export default function InstallationAndSetup() {
         </CardContent>
       </Card>
 
-      {/* Step 1: Prerequisites */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Monitor className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
-            Step 1: Check Your Prerequisites
-          </CardTitle>
-          <CardDescription className="text-base">
-            Before we start, make sure you have these tools ready.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Essential Tools */}
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg text-green-600 dark:text-green-400 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                Must Have Tools
-              </h4>
-              
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-gray-900 dark:bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Terminal className="w-6 h-6 text-white dark:text-gray-900" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">Terminal/Command Prompt</h5>
-                      <p className="text-sm text-muted-foreground">Your command center for installation</p>
-                      <div className="mt-2 flex gap-2">
-                        <Badge className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Mac: Terminal</Badge>
-                        <Badge className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Windows: cmd/PowerShell</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Globe className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">Internet Connection</h5>
-                      <p className="text-sm text-muted-foreground">For downloading Node.js and packages</p>
-                      <div className="mt-2">
-                        <Badge className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">Required</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Code className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">Code Editor</h5>
-                      <p className="text-sm text-muted-foreground">Where you'll write your React code</p>
-                      <div className="mt-2 flex gap-2">
-                        <Badge className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">VS Code</Badge>
-                        <Badge className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Recommended</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Helpful Knowledge */}
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                <AlertCircle className="w-5 h-5" />
-                Helpful to Know
-              </h4>
-              
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Zap className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">Basic JavaScript</h5>
-                      <p className="text-sm text-muted-foreground">Variables, functions, arrays, objects</p>
-                      <div className="mt-2">
-                        <Badge className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">Foundation</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">HTML & CSS Basics</h5>
-                      <p className="text-sm text-muted-foreground">Understanding of web structure</p>
-                      <div className="mt-2">
-                        <Badge className="text-xs bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300">Web Basics</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-5 rounded-xl border hover:shadow-lg transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Smartphone className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-semibold mb-1">Modern Browser</h5>
-                      <p className="text-sm text-muted-foreground">Chrome, Firefox, Safari, or Edge</p>
-                      <div className="mt-2 flex gap-2">
-                        <Badge className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">Chrome</Badge>
-                        <Badge className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">Firefox</Badge>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Alert>
-            <CheckCircle2 className="h-4 w-4" />
-            <AlertTitle>Ready to Start?</AlertTitle>
-            <AlertDescription>
-              If you have all the "Must Have" tools, you're ready to move to the next step! The "Helpful to Know" items will make your journey easier but aren't required.
-            </AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
-
-      {/* Step 2: Install Node.js */}
+      {/* Step 1: Install Node.js */}
       <Card className="bg-gradient-to-br from-green-50/60 to-emerald-50/60 dark:from-green-950/10 dark:to-emerald-950/10 border border-green-200/50 dark:border-green-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Download className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
-            Step 2: Install Node.js
+            <Package className="w-6 h-6 text-green-600/80 dark:text-green-400/80" />
+            Step 1: Install Node.js
           </CardTitle>
           <CardDescription className="text-base">
-            Node.js is JavaScript running outside your browser. React needs it to work.
+            Node.js is the foundation that runs React. Let's get it installed properly.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          {/* Why Node.js */}
-          <div className="bg-blue-50 dark:bg-blue-900/30 p-6 rounded-xl">
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              Why Does React Need Node.js?
-            </h3>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-lg text-center">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Package className="w-6 h-6 text-white" />
-                </div>
-                <h5 className="font-semibold mb-2">Bundle Code</h5>
-                <p className="text-sm text-muted-foreground">Packages your JavaScript for browsers</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-lg text-center">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Play className="w-6 h-6 text-white" />
-                </div>
-                <h5 className="font-semibold mb-2">Dev Server</h5>
-                <p className="text-sm text-muted-foreground">Runs your app locally</p>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-lg text-center">
-                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Settings className="w-6 h-6 text-white" />
-                </div>
-                <h5 className="font-semibold mb-2">Manage Packages</h5>
-                <p className="text-sm text-muted-foreground">Installs React and tools</p>
-              </div>
-            </div>
-          </div>
+          <Alert>
+            <Lightbulb className="h-4 w-4" />
+            <AlertTitle>Why Node.js?</AlertTitle>
+            <AlertDescription>
+              React uses Node.js to run development tools, manage packages, and serve your app during development. 
+              It's like the engine that powers your React development experience.
+            </AlertDescription>
+          </Alert>
 
-          {/* Installation Options */}
           <div className="grid md:grid-cols-2 gap-8">
-            {/* Option 1: Download */}
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
-                Download from Website (Recommended)
-              </h4>
+            {/* Installation Methods */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-green-600 dark:text-green-400">Choose Your Installation Method</h4>
               
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border">
-                <div className="space-y-4">
-                  {[
-                    { step: "Visit", desc: "Go to nodejs.org", highlight: "nodejs.org" },
-                    { step: "Choose", desc: "Click the LTS version", highlight: "LTS" },
-                    { step: "Download", desc: "Download the installer", highlight: "" },
-                    { step: "Install", desc: "Run the installer", highlight: "" }
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-sm">
-                        {index + 1}
+              {/* Official Installer */}
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-green-200 dark:border-green-700">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Download className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold mb-2">Official Installer (Recommended for Beginners)</h5>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Download and install Node.js directly from the official website. This is the easiest method.
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                        <p className="text-sm font-medium mb-2">Steps:</p>
+                        <ol className="text-sm space-y-1 list-decimal list-inside">
+                          <li>Visit <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 rounded">nodejs.org</span></li>
+                          <li>Click the LTS version (Long Term Support)</li>
+                          <li>Download the installer for your OS</li>
+                          <li>Run the installer and follow the prompts</li>
+                          <li>Restart your terminal/command prompt</li>
+                        </ol>
                       </div>
-                      <div className="flex-1">
-                        <div className="font-medium">{item.step}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {item.desc} {item.highlight && <span className="font-mono bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{item.highlight}</span>}
-                        </div>
+                      
+                      <div className="flex gap-2">
+                        <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">Easy</Badge>
+                        <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Recommended</Badge>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Version Manager */}
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Settings className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h5 className="font-semibold mb-2">Version Manager (Advanced)</h5>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Use a version manager like nvm to switch between Node.js versions easily.
+                    </p>
+                    
+                    <div className="space-y-3">
+                      <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                        <p className="text-sm font-medium mb-2">Using nvm:</p>
+                        <pre className="text-xs bg-gray-900 text-gray-100 p-2 rounded overflow-x-auto">
+{`# Install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# Install latest LTS Node.js
+nvm install --lts
+
+# Use the installed version
+nvm use --lts`}
+                        </pre>
+                      </div>
+                      
+                      <div className="flex gap-2">
+                        <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">Advanced</Badge>
+                        <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">Flexible</Badge>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Option 2: Homebrew */}
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg flex items-center gap-2">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
-                Using Homebrew (Mac Only)
-              </h4>
+            {/* Verification */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-blue-600 dark:text-blue-400">Verify Your Installation</h4>
               
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border">
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
+                <h5 className="font-semibold mb-4 flex items-center gap-2">
+                  <Terminal className="w-5 h-5" />
+                  Installation Verification
+                </h5>
+                
                 <div className="space-y-4">
-                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-                    <div className="font-mono text-sm text-gray-900 dark:text-gray-100">
-                      brew install node
-                    </div>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <p>• Install Homebrew first if you don't have it</p>
-                    <p>• Run the command in Terminal</p>
-                    <p>• Homebrew handles everything automatically</p>
+                  <p className="text-sm text-muted-foreground">
+                    After installation, you should have Node.js and npm ready to use for React development.
+                  </p>
+                  
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-700">
+                    <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                      ⚠️ Version Requirements
+                    </p>
+                    <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                      <li>• Minimum: Node.js 16.0.0 or higher</li>
+                      <li>• Recommended: Latest LTS version</li>
+                      <li>• npm comes bundled with Node.js</li>
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Verification */}
-          <div className="bg-yellow-50 dark:bg-yellow-900/30 p-6 rounded-xl border-2 border-yellow-200 dark:border-yellow-700">
-            <h4 className="font-bold text-lg mb-4 text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5" />
-              Verify Your Installation
-            </h4>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Open your terminal and run these commands to check if Node.js is working:
-            </p>
-            <div className="space-y-3">
-              <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg font-mono text-sm">
-                <div className="flex items-center justify-between">
-                  <span>node --version</span>
-                  <Badge className="bg-green-600 text-white text-xs">Copy & Run</Badge>
+              {/* Troubleshooting */}
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-red-200 dark:border-red-700">
+                <h5 className="font-semibold mb-4 flex items-center gap-2">
+                  <AlertCircle className="w-5 h-5 text-red-500" />
+                  Common Issues & Solutions
+                </h5>
+                
+                <div className="space-y-3">
+                  <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">Command not found</p>
+                    <p className="text-xs text-red-700 dark:text-red-300">
+                      Restart your terminal or add Node.js to your PATH
+                    </p>
+                  </div>
+                  
+                  <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">Permission denied</p>
+                    <p className="text-xs text-red-700 dark:text-red-300">
+                      Run installer as administrator (Windows) or use sudo (Mac/Linux)
+                    </p>
+                  </div>
+                  
+                  <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+                    <p className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">Old version detected</p>
+                    <p className="text-xs text-red-700 dark:text-red-300">
+                      Uninstall old version first, then reinstall the latest LTS
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg font-mono text-sm">
-                <div className="flex items-center justify-between">
-                  <span>npm --version</span>
-                  <Badge className="bg-green-600 text-white text-xs">Copy & Run</Badge>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 bg-green-100 dark:bg-green-900/30 p-4 rounded-lg">
-              <p className="text-sm font-semibold text-green-800 dark:text-green-200">
-                ✅ Success! You should see version numbers like v18.17.0 and 9.6.7
-              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Step 3: Create React App */}
+      {/* Step 2: Choose Your Setup Method */}
+      <Card className="bg-gradient-to-br from-blue-50/60 to-cyan-50/60 dark:from-blue-950/10 dark:to-cyan-950/10 border border-blue-200/50 dark:border-blue-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Settings className="w-6 h-6 text-blue-600/80 dark:text-blue-400/80" />
+            Step 2: Choose Your Setup Method
+          </CardTitle>
+          <CardDescription className="text-base">
+            There are several ways to create a React app. Let's explore the best options for different needs.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <Alert>
+            <Target className="h-4 w-4" />
+            <AlertTitle>Which Method Should You Choose?</AlertTitle>
+            <AlertDescription>
+              <strong>For Beginners:</strong> Start with Vite (fastest) or Create React App (most popular).<br/>
+              <strong>For Learning:</strong> Vite gives you a better understanding of modern React tools.<br/>
+              <strong>For Production:</strong> Next.js for full-featured apps, Vite for lightweight projects.
+            </AlertDescription>
+          </Alert>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Vite */}
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-purple-200 dark:border-purple-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h5 className="font-bold text-lg">Vite</h5>
+                  <p className="text-sm text-muted-foreground">Modern & Fast</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-sm">
+                  Lightning-fast development server with modern tooling. Perfect for new projects.
+                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Fastest development server</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Modern build tools</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Great for learning</span>
+                  </div>
+                </div>
+                
+                <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-700">
+                  <h6 className="font-semibold text-purple-800 dark:text-purple-200 mb-2">Command:</h6>
+                  <code className="text-sm bg-purple-100 dark:bg-purple-800 px-2 py-1 rounded">
+                    npm create vite@latest my-react-app -- --template react
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* Create React App */}
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-blue-200 dark:border-blue-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <Code className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h5 className="font-bold text-lg">Create React App</h5>
+                  <p className="text-sm text-muted-foreground">Classic & Stable</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-sm">
+                  The official React tool. Battle-tested with extensive documentation and community support.
+                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Official React tool</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Huge community</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Lots of tutorials</span>
+                  </div>
+                </div>
+                
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                  <h6 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Command:</h6>
+                  <code className="text-sm bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">
+                    npx create-react-app my-react-app
+                  </code>
+                </div>
+              </div>
+            </div>
+
+            {/* Next.js */}
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center">
+                  <Rocket className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h5 className="font-bold text-lg">Next.js</h5>
+                  <p className="text-sm text-muted-foreground">Full-Featured</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <p className="text-sm">
+                  Production-ready framework with server-side rendering, routing, and more built-in.
+                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Server-side rendering</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Built-in routing</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    <span>Production ready</span>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <h6 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">Command:</h6>
+                  <code className="text-sm bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    npx create-next-app@latest my-react-app
+                  </code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Step 3: Create Your React App */}
       <Card className="bg-gradient-to-br from-purple-50/60 to-pink-50/60 dark:from-purple-950/10 dark:to-pink-950/10 border border-purple-200/50 dark:border-purple-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
@@ -397,273 +449,386 @@ export default function InstallationAndSetup() {
             Step 3: Create Your React App
           </CardTitle>
           <CardDescription className="text-base">
-            Use Create React App to set up your first React project with all the tools you need.
+            Let's create your first React project using Vite (recommended for beginners).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          {/* Visual Process */}
-          <div className="bg-purple-50 dark:bg-purple-900/30 p-6 rounded-xl">
-            <h3 className="font-bold text-lg mb-4">The Magic Command</h3>
-            <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-xl text-center">
-              <div className="font-mono text-xl mb-2">npx create-react-app my-first-app</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">This one command does everything!</p>
-            </div>
-          </div>
+          <Alert>
+            <BookOpen className="h-4 w-4" />
+            <AlertTitle>Learning Focus</AlertTitle>
+            <AlertDescription>
+              We're using Vite because it's fast, modern, and helps you understand how React development tools work. 
+              The concepts you learn apply to all React setups!
+            </AlertDescription>
+          </Alert>
 
-          {/* Step by Step */}
-          <div className="space-y-6">
-            <h4 className="font-bold text-xl">Follow These Steps:</h4>
-            
-            <div className="space-y-4">
-              {/* Step 1 */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-l-4 border-blue-500 hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
-                  <div className="flex-1">
-                    <h5 className="font-bold text-lg mb-2">Navigate to Your Projects Folder</h5>
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
-                      Go to where you want to create your project (Desktop, Documents, etc.)
-                    </p>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg font-mono text-sm">
-                      cd Desktop
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 2 */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-l-4 border-green-500 hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
-                  <div className="flex-1">
-                    <h5 className="font-bold text-lg mb-2">Create the React App</h5>
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
-                      This command creates a new folder with everything you need
-                    </p>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg font-mono text-sm">
-                      npx create-react-app my-first-app
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                      💡 Replace "my-first-app" with your preferred project name
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 3 */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-l-4 border-purple-500 hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
-                  <div className="flex-1">
-                    <h5 className="font-bold text-lg mb-2">Wait for Installation</h5>
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
-                      This will take a few minutes as it downloads all dependencies
-                    </p>
-                    <div className="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg border">
-                      <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                        ⏳ Installing packages... This might take a couple of minutes.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-l-4 border-orange-500 hover:shadow-lg transition-all">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
-                  <div className="flex-1">
-                    <h5 className="font-bold text-lg mb-2">Navigate to Your Project</h5>
-                    <p className="text-gray-600 dark:text-gray-400 mb-3">
-                      Move into the newly created project folder
-                    </p>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg font-mono text-sm">
-                      cd my-first-app
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Step 4: Run Your App */}
-      <Card className="bg-gradient-to-br from-orange-50/60 to-red-50/60 dark:from-orange-950/10 dark:to-red-950/10 border border-orange-200/50 dark:border-orange-800/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <Play className="w-6 h-6 text-orange-600/80 dark:text-orange-400/80" />
-            Step 4: Run Your React App
-          </CardTitle>
-          <CardDescription className="text-base">
-            The exciting moment - see your React app come to life!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          {/* Start Command */}
-          <div className="bg-orange-50 dark:bg-orange-900/30 p-6 rounded-xl">
-            <h3 className="font-bold text-lg mb-4">Start the Development Server</h3>
-            <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-xl text-center">
-              <div className="font-mono text-xl mb-2">npm start</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Run this in your project folder</p>
-            </div>
-          </div>
-
-          {/* What Happens */}
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg">What This Command Does</h4>
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span className="text-sm">Compiles your code</span>
+            {/* Step-by-Step Guide */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-purple-600 dark:text-purple-400">Step-by-Step Guide</h4>
+              
+              <div className="space-y-4">
+                {[
+                  {
+                    step: 1,
+                    title: "Open Terminal",
+                    description: "Navigate to where you want to create your project",
+                    command: "cd ~/Documents",
+                    icon: Terminal
+                  },
+                  {
+                    step: 2,
+                    title: "Create React App",
+                    description: "Use Vite to create a new React project",
+                    command: "npm create vite@latest my-first-react-app -- --template react",
+                    icon: Package
+                  },
+                  {
+                    step: 3,
+                    title: "Navigate to Project",
+                    description: "Move into your new project directory",
+                    command: "cd my-first-react-app",
+                    icon: FolderOpen
+                  },
+                  {
+                    step: 4,
+                    title: "Install Dependencies",
+                    description: "Download all the necessary packages",
+                    command: "npm install",
+                    icon: Download
+                  },
+                  {
+                    step: 5,
+                    title: "Start Development Server",
+                    description: "Launch your React app in development mode",
+                    command: "npm run dev",
+                    icon: Play
+                  }
+                ].map((item) => (
+                  <div key={item.step} className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="w-6 h-6 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full flex items-center justify-center text-xs font-bold">
+                            {item.step}
+                          </span>
+                          <h5 className="font-semibold">{item.title}</h5>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                        <div className="bg-gray-100 dark:bg-gray-800 p-2 rounded font-mono text-xs">
+                          {item.command}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span className="text-sm">Starts a local server</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span className="text-sm">Opens your browser automatically</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span className="text-sm">Watches for file changes</span>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-            
-            <div className="space-y-4">
-              <h4 className="font-bold text-lg">What You'll See</h4>
-              <div className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-xl font-mono text-xs">
-                <div>Compiled successfully!</div>
-                <div></div>
-                <div>You can now view my-first-app in the browser.</div>
-                <div></div>
-                <div>  Local:            http://localhost:3000</div>
-                <div>  On Your Network:  http://192.168.1.100:3000</div>
-                <div></div>
-                <div>Note that the development build is not optimized.</div>
-                <div>To create a production build, use npm run build.</div>
-              </div>
-            </div>
-          </div>
 
-          {/* Success Message */}
-          <div className="bg-green-50 dark:bg-green-900/30 p-8 rounded-xl border-2 border-green-200 dark:border-green-700 text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">
-              🎉 Congratulations!
-            </h3>
-            <p className="text-lg text-green-700 dark:text-green-300 mb-4">
-              Your React app is now running at <span className="font-mono bg-white dark:bg-gray-900 px-2 py-1 rounded">http://localhost:3000</span>
-            </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <Badge className="px-4 py-2 bg-green-500 text-white">React Installed</Badge>
-              <Badge className="px-4 py-2 bg-blue-500 text-white">Server Running</Badge>
-              <Badge className="px-4 py-2 bg-purple-500 text-white">Ready to Code!</Badge>
-            </div>
-          </div>
-
-          {/* Important Tips */}
-          <div className="bg-yellow-50 dark:bg-yellow-900/30 p-6 rounded-xl border-2 border-yellow-200 dark:border-yellow-700">
-            <h4 className="font-bold text-lg mb-4 text-yellow-800 dark:text-yellow-200">Important Tips</h4>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h5 className="font-semibold mb-2">While the Server is Running:</h5>
-                <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                  <li>• Changes to code auto-reload the page</li>
-                  <li>• Keep the terminal window open</li>
-                  <li>• Press Ctrl+C to stop the server</li>
+            {/* Live Demo */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-pink-600 dark:text-pink-400">What You'll Get</h4>
+              
+              <div className="bg-pink-50 dark:bg-pink-900/20 p-6 rounded-lg border border-pink-200 dark:border-pink-700">
+                <h6 className="font-semibold text-pink-800 dark:text-pink-200 mb-3">What You'll See:</h6>
+                <ul className="text-sm text-pink-700 dark:text-pink-300 space-y-2">
+                  <li>• A welcome page with React logo</li>
+                  <li>• Links to React documentation</li>
+                  <li>• Interactive elements to explore</li>
+                  <li>• Live reload capability</li>
                 </ul>
               </div>
-              <div>
-                <h5 className="font-semibold mb-2">Common Issues:</h5>
-                <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
-                  <li>• Port 3000 busy? It will try 3001, 3002...</li>
-                  <li>• Firewall might ask for permission</li>
-                  <li>• Make sure you're in the right folder</li>
-                </ul>
+              
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                <h5 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">🎉 Success!</h5>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Once you run <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">npm run dev</code>, 
+                  open your browser and go to <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">http://localhost:5173</code> 
+                  to see your app running!
+                </p>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Project Structure Overview */}
-      <Card className="bg-gradient-to-br from-indigo-50/60 to-purple-50/60 dark:from-indigo-950/10 dark:to-purple-950/10 border border-indigo-200/50 dark:border-indigo-800/30">
+      {/* Step 4: Understanding Your Project */}
+      <Card className="bg-gradient-to-br from-orange-50/60 to-yellow-50/60 dark:from-orange-950/10 dark:to-yellow-950/10 border border-orange-200/50 dark:border-orange-800/30">
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <FolderOpen className="w-6 h-6 text-indigo-600/80 dark:text-indigo-400/80" />
-            Your Project Structure
+            <Wrench className="w-6 h-6 text-orange-600/80 dark:text-orange-400/80" />
+            Step 4: Understanding Your Project Structure
           </CardTitle>
           <CardDescription className="text-base">
-            Understanding what Create React App gives you.
+            Let's explore the files and folders that were created in your React project.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl">
-            <div className="font-mono text-sm space-y-2">
-              <div className="flex items-center gap-2">
-                <FolderOpen className="w-4 h-4 text-yellow-600" />
-                <span className="font-bold">my-first-app/</span>
+        <CardContent className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Project Structure */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-orange-600 dark:text-orange-400">Project Files & Folders</h4>
+              
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border-2 border-orange-200 dark:border-orange-700">
+                <div className="space-y-4">
+                  {[
+                    {
+                      name: "src/",
+                      description: "Your React components and code",
+                      icon: FolderOpen,
+                      important: true
+                    },
+                    {
+                      name: "public/",
+                      description: "Static files (images, icons)",
+                      icon: Globe,
+                      important: false
+                    },
+                    {
+                      name: "package.json",
+                      description: "Project dependencies and scripts",
+                      icon: FileText,
+                      important: true
+                    },
+                    {
+                      name: "vite.config.js",
+                      description: "Vite configuration",
+                      icon: Settings,
+                      important: false
+                    },
+                    {
+                      name: "index.html",
+                      description: "Main HTML file",
+                      icon: Code,
+                      important: true
+                    }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <item.icon className={`w-5 h-5 mt-0.5 ${item.important ? 'text-orange-500' : 'text-gray-400'}`} />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <code className="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                            {item.name}
+                          </code>
+                          {item.important && (
+                            <Badge className="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                              Important
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="ml-4 flex items-center gap-2">
-                <FolderOpen className="w-4 h-4 text-yellow-600" />
-                <span>node_modules/</span>
-                <Badge className="ml-2 text-xs bg-gray-500">All packages</Badge>
-              </div>
-              <div className="ml-4 flex items-center gap-2">
-                <FolderOpen className="w-4 h-4 text-blue-600" />
-                <span>public/</span>
-                <Badge className="ml-2 text-xs bg-blue-500">Static files</Badge>
-              </div>
-              <div className="ml-8 text-gray-600">├── index.html</div>
-              <div className="ml-8 text-gray-600">├── favicon.ico</div>
-              <div className="ml-8 text-gray-600">└── manifest.json</div>
-              <div className="ml-4 flex items-center gap-2">
-                <FolderOpen className="w-4 h-4 text-green-600" />
-                <span className="font-bold">src/</span>
-                <Badge className="ml-2 text-xs bg-green-500">Your code!</Badge>
-              </div>
-              <div className="ml-8 text-green-600 font-semibold">├── App.js</div>
-              <div className="ml-8 text-green-600 font-semibold">├── index.js</div>
-              <div className="ml-8 text-green-600 font-semibold">└── App.css</div>
-              <div className="ml-4 text-gray-600">├── package.json</div>
-              <div className="ml-4 text-gray-600">└── README.md</div>
             </div>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6 mt-6">
-            <div className="bg-green-50 dark:bg-green-900/30 p-4 rounded-xl">
-              <h5 className="font-semibold text-green-800 dark:text-green-200 mb-2">📁 src/ Folder</h5>
-              <p className="text-sm text-gray-700 dark:text-gray-300">Where you'll write all your React components</p>
-            </div>
-            <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl">
-              <h5 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">📦 package.json</h5>
-              <p className="text-sm text-gray-700 dark:text-gray-300">Lists your project dependencies and scripts</p>
+
+            {/* Key Files Explained */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-yellow-600 dark:text-yellow-400">Key Files Explained</h4>
+              
+              <div className="space-y-4">
+                {/* src/App.jsx */}
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Code className="w-4 h-4" />
+                    src/App.jsx
+                  </h5>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    This is your main React component. All other components will be built around this.
+                  </p>
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-700">
+                    <h6 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Basic Structure:</h6>
+                    <pre className="text-xs bg-yellow-100 dark:bg-yellow-800 p-3 rounded overflow-x-auto">
+{`function App() {
+  return (
+    <div>
+      <h1>Welcome to React</h1>
+      <p>Start editing to see some magic happen!</p>
+    </div>
+  );
+}
+
+export default App;`}
+                    </pre>
+                  </div>
+                </div>
+
+                {/* src/main.jsx */}
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-2 flex items-center gap-2">
+                    <Cpu className="w-4 h-4" />
+                    src/main.jsx
+                  </h5>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    This file connects your React app to the HTML document.
+                  </p>
+                  <div className="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border border-orange-200 dark:border-orange-700">
+                    <h6 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">Entry Point:</h6>
+                    <pre className="text-xs bg-orange-100 dark:bg-orange-800 p-3 rounded overflow-x-auto">
+{`import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+// Create root and render App
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);`}
+                    </pre>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Next Steps */}
-      <Card className="bg-gradient-to-br from-blue-50/60 to-purple-50/60 dark:from-blue-950/10 dark:to-purple-950/10 border border-blue-200/50 dark:border-blue-800/30">
-        <CardContent className="p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">🎯 What's Next?</h3>
-          <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Congratulations! You now have a working React development environment. 
-            You're ready to start building amazing React applications!
-          </p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <Badge className="px-4 py-2 text-sm bg-green-500 text-white">✅ Node.js Installed</Badge>
-            <Badge className="px-4 py-2 text-sm bg-blue-500 text-white">✅ React App Created</Badge>
-            <Badge className="px-4 py-2 text-sm bg-purple-500 text-white">✅ Server Running</Badge>
-            <Badge className="px-4 py-2 text-sm bg-orange-500 text-white">✅ Ready to Code!</Badge>
+      <Card className="bg-gradient-to-br from-emerald-50/60 to-teal-50/60 dark:from-emerald-950/10 dark:to-teal-950/10 border border-emerald-200/50 dark:border-emerald-800/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl">
+            <Star className="w-6 h-6 text-emerald-600/80 dark:text-emerald-400/80" />
+            🎉 Congratulations! What's Next?
+          </CardTitle>
+          <CardDescription className="text-base">
+            You've successfully set up your React development environment. Here's what to do next.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Immediate Next Steps */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-emerald-600 dark:text-emerald-400">Start Learning React</h4>
+              
+              <div className="space-y-4">
+                {[
+                  {
+                    title: "Explore Components",
+                    description: "Modify App.jsx and see how changes appear instantly",
+                    action: "Edit the welcome message",
+                    icon: Code
+                  },
+                  {
+                    title: "Add Styling",
+                    description: "Try adding colors and styles to your components",
+                    action: "Experiment with inline styles",
+                    icon: Palette
+                  },
+                  {
+                    title: "Create Components",
+                    description: "Build your first custom React component",
+                    action: "Create a Header component",
+                    icon: Package
+                  },
+                  {
+                    title: "Use Props",
+                    description: "Pass data between components",
+                    action: "Add props to your components",
+                    icon: ArrowRight
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <item.icon className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h5 className="font-semibold mb-1">{item.title}</h5>
+                        <p className="text-sm text-muted-foreground mb-2">{item.description}</p>
+                        <div className="bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded text-xs text-emerald-700 dark:text-emerald-300">
+                          💡 {item.action}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Resources */}
+            <div className="space-y-6">
+              <h4 className="font-bold text-lg text-teal-600 dark:text-teal-400">Helpful Resources</h4>
+              
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-3 flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" />
+                    Official Documentation
+                  </h5>
+                  <div className="space-y-2">
+                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="block text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200">
+                      📚 React Documentation (react.dev)
+                    </a>
+                    <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer" className="block text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200">
+                      ⚡ Vite Documentation
+                    </a>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-xl border hover:shadow-lg transition-all">
+                  <h5 className="font-semibold mb-3 flex items-center gap-2">
+                    <Globe className="w-4 h-4" />
+                    Community & Learning
+                  </h5>
+                  <div className="space-y-2">
+                    <div className="text-sm text-muted-foreground">
+                      <span className="font-medium">YouTube:</span> React tutorials, coding challenges
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      <span className="font-medium">Stack Overflow:</span> Ask questions and get help
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      <span className="font-medium">GitHub:</span> Explore React projects
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-xl border border-emerald-200 dark:border-emerald-700">
+                  <h5 className="font-semibold mb-2 text-emerald-800 dark:text-emerald-200">🚀 Pro Tips</h5>
+                  <ul className="text-sm text-emerald-700 dark:text-emerald-300 space-y-1">
+                    <li>• Save your work frequently with Git</li>
+                    <li>• Use browser DevTools to inspect your app</li>
+                    <li>• Read error messages carefully</li>
+                    <li>• Start small and build gradually</li>
+                    <li>• Join React communities for support</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Final Success Message */}
+      <Card className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-white border-0">
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto">
+              <Star className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold">🎉 You're Ready to Build with React!</h2>
+            <p className="text-lg opacity-90">
+              Your development environment is set up and you've created your first React app. 
+              The journey to becoming a React developer starts now!
+            </p>
+            <div className="flex justify-center gap-4">
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                ✅ Node.js Installed
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                ✅ React App Created
+              </Badge>
+              <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                ✅ Ready to Code
+              </Badge>
+            </div>
           </div>
         </CardContent>
       </Card>

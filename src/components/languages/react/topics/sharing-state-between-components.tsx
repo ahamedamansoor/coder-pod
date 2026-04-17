@@ -19,7 +19,7 @@ import {
   Users,
   Zap,
   GitBranch,
-  ArrowDown,
+  RefreshCw,
 } from 'lucide-react';
 
 export default function SharingStateBetweenComponents() {
@@ -27,290 +27,228 @@ export default function SharingStateBetweenComponents() {
     <div className="w-full min-h-screen space-y-12 pb-16">
       <PageHeader
         icon={Share2}
-        category="React · Managing State"
+        category="React · State Management"
         title="Sharing State Between Components"
-        description="Learn how to share state between multiple components by lifting state up to their common parent. Master the most common pattern in React."
+        description="Master the art of state sharing in React. Learn lifting state up, prop drilling, and best practices for component communication."
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
-        {/* The Problem */}
+        {/* What is State Sharing */}
         <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
-              icon={<AlertCircle className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-              title="The Problem: Components Need to Share State"
-              description="When two components need the same data"
+              icon={<Users className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
+              title="What is State Sharing?"
+              description="Understanding how components communicate and share data"
               size="lg"
             />
 
             <p className="text-base text-gray-700 dark:text-gray-300">
-              Sometimes, you want the state of <strong>two components to always change together</strong>. To do it, remove state from both of them, move it to their closest common parent, and then pass it down via props.
+              <strong>State sharing</strong> is the process of making the same data available to multiple components that need it. In React, the most common pattern for sharing state is <strong>"lifting state up"</strong> - moving state to the closest common ancestor component.
             </p>
 
-            <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-orange-200 dark:border-orange-800">
-              <h4 className="font-bold mb-4 text-orange-700 dark:text-orange-300">❌ Problem: Independent State</h4>
-              
-              <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-lg mb-4">
-                <pre className="text-sm text-slate-800 dark:text-slate-200 font-mono">
-                  <code>{`function Panel1() {
-  const [isActive, setIsActive] = useState(false);
-  // Panel has its own state
-}
-
-function Panel2() {
-  const [isActive, setIsActive] = useState(false);
-  // Separate state - can't communicate!
-}`}</code>
-                </pre>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <div className="flex items-center gap-2 mb-3">
+                  <XCircle className="w-6 h-6 text-red-500" />
+                  <h4 className="font-bold text-red-700 dark:text-red-300">❌ Isolated State</h4>
+                </div>
+                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-3">
+                  <div className="text-slate-800 dark:text-slate-200">
+                    <div>{`<Parent>`}</div>
+                    <div className="pl-2">{`  <ChildA count={0} />`}</div>
+                    <div className="pl-2">{`  <ChildB count={0} />`}</div>
+                    <div>{`</Parent>`}</div>
+                    <div className="mt-2 text-red-600 dark:text-red-400">// Each child has its own count!</div>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Components have separate state that can't synchronize.
+                </p>
               </div>
 
-              <div className="p-4 bg-orange-50 dark:bg-orange-950/20 rounded-lg">
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <h4 className="font-bold text-green-700 dark:text-green-300">✅ Shared State</h4>
+                </div>
+                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-3">
+                  <div className="text-slate-800 dark:text-slate-200">
+                    <div>{`<Parent count={0}>`}</div>
+                    <div className="pl-2">{`  <ChildA />`}</div>
+                    <div className="pl-2">{`  <ChildB />`}</div>
+                    <div>{`</Parent>`}</div>
+                    <div className="mt-2 text-green-600 dark:text-green-400">// Both children share the same count!</div>
+                  </div>
+                </div>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                  <strong className="text-orange-700 dark:text-orange-400">The issue:</strong> If you want only one panel to be active at a time, you can't coordinate between them because each has its own independent state!
+                  State lives in parent, passed down to children.
                 </p>
               </div>
             </div>
-
-            <Alert className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-300 dark:border-cyan-700">
-              <Lightbulb className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-              <AlertTitle className="text-cyan-900 dark:text-cyan-100">The Solution: Lift State Up</AlertTitle>
-              <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-                Move the state to their common parent component, then pass it down as props. This is called "lifting state up"!
-              </AlertDescription>
-            </Alert>
           </CardContent>
         </Card>
 
-        {/* Lifting State Up */}
+        {/* Lifting State Up Pattern */}
         <Card className="border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-950/10 dark:to-pink-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
               icon={<ArrowUp className="w-7 h-7 text-purple-600 dark:text-purple-400" />}
               title="Lifting State Up"
-              description="Move state to the common parent"
+              description="The fundamental pattern for sharing state between components"
               size="lg"
             />
 
             <p className="text-base text-gray-700 dark:text-gray-300">
-              To coordinate two components, move their state to their common parent in three steps:
+              <strong>Lifting state up</strong> means moving state from child components to their closest common parent. The parent becomes the "source of truth" and passes the state down as props.
             </p>
 
             <div className="space-y-4">
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-200 dark:border-purple-800">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-bold">
-                    1
-                  </div>
-                  <h4 className="font-bold text-purple-700 dark:text-purple-300">Remove State from Child Components</h4>
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white font-bold flex-shrink-0">
+                  1
                 </div>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div className="text-red-600 dark:text-red-400">// Remove this from children:</div>
-                    <div>const [isActive, setIsActive] = useState(false);</div>
-                  </div>
+                <div className="flex-1 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                  <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-1">Identify Shared State</h5>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Find data that multiple components need to access or modify
+                  </p>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Delete the state from child components that need to share data.
-                </p>
               </div>
 
               <div className="flex justify-center">
-                <ArrowDown className="w-6 h-6 text-purple-500" />
+                <ArrowRight className="w-6 h-6 text-purple-500" />
               </div>
 
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-200 dark:border-purple-800">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
-                    2
-                  </div>
-                  <h4 className="font-bold text-purple-700 dark:text-purple-300">Pass State from Common Parent</h4>
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500 text-white font-bold flex-shrink-0">
+                  2
                 </div>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div className="text-green-600 dark:text-green-400">// Add to parent:</div>
-                    <div>const [activeIndex, setActiveIndex] =</div>
-                    <div className="pl-2">useState(0);</div>
-                  </div>
+                <div className="flex-1 p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
+                  <h5 className="font-semibold text-purple-700 dark:text-purple-300 mb-1">Move State to Common Parent</h5>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Remove state from children, add it to their closest ancestor
+                  </p>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Add state to the common parent that holds all children.
-                </p>
               </div>
 
               <div className="flex justify-center">
-                <ArrowDown className="w-6 h-6 text-purple-500" />
+                <ArrowRight className="w-6 h-6 text-purple-500" />
               </div>
 
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-200 dark:border-purple-800">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">
-                    3
-                  </div>
-                  <h4 className="font-bold text-purple-700 dark:text-purple-300">Pass Props and Event Handlers Down</h4>
+              <div className="flex items-start gap-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white font-bold flex-shrink-0">
+                  3
                 </div>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div className="text-green-600 dark:text-green-400">// Pass to children:</div>
-                    <div>&lt;Panel</div>
-                    <div className="pl-2">isActive={'{'}activeIndex === 0{'}'}</div>
-                    <div className="pl-2">onShow={'{'} () =&gt; setActiveIndex(0) {'}'}</div>
-                    <div>/&gt;</div>
-                  </div>
+                <div className="flex-1 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                  <h5 className="font-semibold text-green-700 dark:text-green-300 mb-1">Pass State & Handlers Down</h5>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Send state as props and update functions as callbacks
+                  </p>
                 </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Children receive state and callbacks as props.
-                </p>
               </div>
             </div>
+
+            <Alert className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-300 dark:border-amber-700">
+              <Lightbulb className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              <AlertTitle className="text-amber-900 dark:text-amber-100">Key Insight</AlertTitle>
+              <AlertDescription className="text-amber-800 dark:text-amber-200">
+                State should live with the component that "owns" it - the one that needs it or modifies it most. Other components receive it as props.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
-        {/* Visual Diagram */}
-        <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/10 dark:to-purple-950/10">
-          <CardContent className="space-y-6 pt-6">
-            <TopicTitle
-              icon={<GitBranch className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />}
-              title="How Data Flows"
-              description="State down, events up"
-              size="lg"
-            />
-
-            <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-indigo-200 dark:border-indigo-800">
-              <div className="space-y-6">
-                <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border-2 border-blue-300 dark:border-blue-700">
-                  <h4 className="font-bold text-blue-700 dark:text-blue-300 mb-3 text-center">Parent Component</h4>
-                  <div className="bg-white dark:bg-gray-900 p-3 rounded text-center">
-                    <code className="text-sm font-mono text-slate-800 dark:text-slate-200">
-                      const [activeIndex, setActiveIndex] = useState(0);
-                    </code>
-                  </div>
-                </div>
-
-                <div className="flex justify-center gap-12">
-                  <div className="flex flex-col items-center">
-                    <ArrowDown className="w-6 h-6 text-green-500 mb-2" />
-                    <Badge className="bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700">
-                      Props Down
-                    </Badge>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <ArrowUp className="w-6 h-6 text-purple-500 mb-2" />
-                    <Badge className="bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700">
-                      Events Up
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl border-2 border-green-300 dark:border-green-700">
-                    <h4 className="font-bold text-green-700 dark:text-green-300 mb-2 text-center">Child 1</h4>
-                    <div className="bg-white dark:bg-gray-900 p-2 rounded text-xs font-mono text-center">
-                      <div className="text-slate-800 dark:text-slate-200">isActive={'{'} true {'}'}</div>
-                      <div className="text-slate-800 dark:text-slate-200 mt-1">onShow={'{'} ... {'}'}</div>
-                    </div>
-                  </div>
-
-                  <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-xl border-2 border-green-300 dark:border-green-700">
-                    <h4 className="font-bold text-green-700 dark:text-green-300 mb-2 text-center">Child 2</h4>
-                    <div className="bg-white dark:bg-gray-900 p-2 rounded text-xs font-mono text-center">
-                      <div className="text-slate-800 dark:text-slate-200">isActive{'{'} false {'}'}</div>
-                      <div className="text-slate-800 dark:text-slate-200 mt-1">onShow={'{'} ... {'}'}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-xl border-2 border-indigo-300 dark:border-indigo-700">
-              <h4 className="font-bold text-indigo-700 dark:text-indigo-300 mb-3">💡 Key Concept</h4>
-              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                <li>• <strong>State flows down:</strong> Parent passes state to children via props</li>
-                <li>• <strong>Events flow up:</strong> Children call parent's functions via callbacks</li>
-                <li>• <strong>Single source of truth:</strong> Parent owns the state</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Interactive Example */}
+        {/* Interactive Playground 1: Counter Sync */}
         <div className="space-y-6">
           <TopicTitle
-            icon={<Sparkles className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />}
-            title="Accordion Example"
-            description="Only one panel can be active at a time"
+            icon={<Zap className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />}
+            title="Interactive Playground: Synchronized Counters"
+            description="See how lifting state up keeps multiple components in sync"
             size="lg"
           />
 
           <FrontendCodePreview learningContext="react"
-            title="Controlled Accordion"
-            description="Click panels to expand - only one can be open"
+            title="Synchronized Counter Components"
+            description="Multiple counters sharing the same state through lifting state up"
             colorTheme="cyan"
-            react={`function Accordion() {
-  const [activeIndex, setActiveIndex] = React.useState(0);
+            react={`import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+function App() {
+  const [count, setCount] = React.useState(0);
+
+  const increment = () => setCount(count + 1);
+  const decrement = () => setCount(count - 1);
+  const reset = () => setCount(0);
 
   return (
-    <div className="container">
-      <h1>🎵 Popular Cities</h1>
+    <div className="app">
+      <h1>🔄 Synchronized Counters</h1>
+      <p className="description">
+        All counters share the same state from the parent component
+      </p>
       
-      <Panel
-        title="New York"
-        isActive={activeIndex === 0}
-        onShow={() => setActiveIndex(0)}
-      >
-        With a population of about 8.5 million, New York City is the most populous city in the US.
-      </Panel>
-      
-      <Panel
-        title="Tokyo"
-        isActive={activeIndex === 1}
-        onShow={() => setActiveIndex(1)}
-      >
-        Tokyo is the capital of Japan and the most populous metropolitan area in the world.
-      </Panel>
-      
-      <Panel
-        title="London"
-        isActive={activeIndex === 2}
-        onShow={() => setActiveIndex(2)}
-      >
-        London is the capital and largest city of England and the United Kingdom.
-      </Panel>
+      <div className="controls">
+        <button onClick={decrement} className="btn btn-danger">
+          ➖ Decrease
+        </button>
+        <button onClick={reset} className="btn btn-secondary">
+          🔄 Reset
+        </button>
+        <button onClick={increment} className="btn btn-primary">
+          ➕ Increase
+        </button>
+      </div>
 
-      <div className="info">
-        💡 State is lifted to Accordion - only one panel active!
+      <div className="counters-grid">
+        <CounterDisplay 
+          label="Counter A" 
+          count={count} 
+          color="blue"
+        />
+        <CounterDisplay 
+          label="Counter B" 
+          count={count} 
+          color="green"
+        />
+        <CounterDisplay 
+          label="Counter C" 
+          count={count} 
+          color="purple"
+        />
+      </div>
+
+      <div className="state-info">
+        <h3>🔍 State Location</h3>
+        <p>
+          <strong>Parent Component:</strong> Holds the count state
+        </p>
+        <p>
+          <strong>Child Components:</strong> Receive count as props
+        </p>
+        <p>
+          <strong>Update Flow:</strong> Child → Parent → All Children
+        </p>
       </div>
     </div>
   );
 }
 
-function Panel({ title, children, isActive, onShow }) {
+function CounterDisplay({ label, count, color }) {
   return (
-    <div className="panel">
-      <div className="panel-header">
-        <h3>{title}</h3>
-        {isActive ? (
-          <button onClick={onShow} className="btn-active">
-            Hide
-          </button>
-        ) : (
-          <button onClick={onShow} className="btn-show">
-            Show
-          </button>
-        )}
-      </div>
-      {isActive && (
-        <div className="panel-content">
-          {children}
-        </div>
-      )}
+    <div className={'counter-display counter-' + color}>
+      <h3>{label}</h3>
+      <div className="count-value">{count}</div>
+      <p className="count-label">Current Value</p>
     </div>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Accordion />);`}
+const root = createRoot(document.getElementById('root'));
+root.render(React.createElement(App));`}
             html={`<div id="root"></div>`}
             js={`const script1 = document.createElement('script');
 script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
@@ -324,50 +262,50 @@ script2.onload = () => {
   const { createElement: h, useState } = React;
   const { createRoot } = ReactDOM;
 
-  function Panel({ title, children, isActive, onShow }) {
-    return h('div', { className: 'panel' },
-      h('div', { className: 'panel-header' },
-        h('h3', null, title),
-        isActive
-          ? h('button', { onClick: onShow, className: 'btn-active' }, 'Hide')
-          : h('button', { onClick: onShow, className: 'btn-show' }, 'Show')
+  function App() {
+    const [count, setCount] = useState(0);
+
+    const increment = () => setCount(count + 1);
+    const decrement = () => setCount(count - 1);
+    const reset = () => setCount(0);
+
+    return h('div', { className: 'app' },
+      h('h1', null, '🔄 Synchronized Counters'),
+      h('p', { className: 'description' },
+        'All counters share the same state from the parent component'
       ),
-      isActive && h('div', { className: 'panel-content' }, children)
-    );
-  }
-
-  function Accordion() {
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    return h('div', { className: 'container' },
-      h('h1', null, '🎵 Popular Cities'),
       
-      h(Panel, {
-        title: 'New York',
-        isActive: activeIndex === 0,
-        onShow: () => setActiveIndex(0)
-      }, 'With a population of about 8.5 million, New York City is the most populous city in the US.'),
-      
-      h(Panel, {
-        title: 'Tokyo',
-        isActive: activeIndex === 1,
-        onShow: () => setActiveIndex(1)
-      }, 'Tokyo is the capital of Japan and the most populous metropolitan area in the world.'),
-      
-      h(Panel, {
-        title: 'London',
-        isActive: activeIndex === 2,
-        onShow: () => setActiveIndex(2)
-      }, 'London is the capital and largest city of England and the United Kingdom.'),
+      h('div', { className: 'controls' },
+        h('button', { onClick: decrement, className: 'btn btn-danger' }, '➖ Decrease'),
+        h('button', { onClick: reset, className: 'btn btn-secondary' }, '🔄 Reset'),
+        h('button', { onClick: increment, className: 'btn btn-primary' }, '➕ Increase')
+      ),
 
-      h('div', { className: 'info' },
-        '💡 State is lifted to Accordion - only one panel active!'
+      h('div', { className: 'counters-grid' },
+        h(CounterDisplay, { label: 'Counter A', count: count, color: 'blue' }),
+        h(CounterDisplay, { label: 'Counter B', count: count, color: 'green' }),
+        h(CounterDisplay, { label: 'Counter C', count: count, color: 'purple' })
+      ),
+
+      h('div', { className: 'state-info' },
+        h('h3', null, '🔍 State Location'),
+        h('p', null, h('strong', null, 'Parent Component: '), 'Holds the count state'),
+        h('p', null, h('strong', null, 'Child Components: '), 'Receive count as props'),
+        h('p', null, h('strong', null, 'Update Flow: '), 'Child → Parent → All Children')
       )
     );
   }
 
+  function CounterDisplay({ label, count, color }) {
+    return h('div', { className: 'counter-display counter-' + color },
+      h('h3', null, label),
+      h('div', { className: 'count-value' }, count),
+      h('p', { className: 'count-label' }, 'Current Value')
+    );
+  }
+
   const root = createRoot(document.getElementById('root'));
-  root.render(h(Accordion));
+  root.render(h(App));
 };
 
 document.head.appendChild(script1);
@@ -394,112 +332,147 @@ body {
   justify-content: center;
 }
 
-.container {
+.app {
   background: white;
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
   width: 100%;
 }
 
 h1 {
   color: #667eea;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   font-size: 2rem;
 }
 
-.panel {
-  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.panel:hover {
-  border-color: #667eea;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.panel-header h3 {
-  color: white;
-  font-size: 18px;
-  margin: 0;
-}
-
-.btn-show {
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.btn-show:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-.btn-active {
-  padding: 8px 20px;
-  background: white;
-  color: #667eea;
-  border: 2px solid white;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-active:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-}
-
-.panel-content {
-  padding: 20px;
-  color: #1f2937;
-  line-height: 1.6;
-  font-size: 15px;
-  animation: slideDown 0.3s ease;
-  background: white;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.info {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  padding: 15px;
-  border-radius: 12px;
-  border: 2px solid #f59e0b;
+.description {
   text-align: center;
-  font-size: 14px;
-  color: #92400e;
+  color: #6b7280;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: white;
+}
+
+.counters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.counter-display {
+  text-align: center;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.counter-display:hover {
+  transform: translateY(-5px);
+}
+
+.counter-blue {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.counter-green {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.counter-purple {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+  color: white;
+}
+
+.count-value {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.count-label {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.state-info {
+  background: #f3f4f6;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.state-info h3 {
+  color: #667eea;
+  margin-bottom: 15px;
+}
+
+.state-info p {
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.state-info strong {
+  color: #1f2937;
+}
+
+@media (max-width: 768px) {
+  .counters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn {
+    width: 200px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -507,224 +480,891 @@ h1 {
     background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
   }
 
-  .container {
+  .app {
     background: #1f2937;
+    color: #f9fafb;
   }
 
   h1 {
     color: #60a5fa;
   }
 
-  .panel {
-    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-    border-color: #6b7280;
+  .description {
+    color: #9ca3af;
   }
 
-  .panel:hover {
-    border-color: #60a5fa;
+  .state-info {
+    background: #374151;
+    color: #f9fafb;
   }
 
-  .panel-content {
-    background: #1f2937;
-    color: #e5e7eb;
+  .state-info p {
+    color: #d1d5db;
   }
 
-  .info {
-    background: linear-gradient(135deg, #92400e 0%, #b45309 100%);
-    border-color: #f59e0b;
-    color: #fef3c7;
+  .state-info strong {
+    color: #f9fafb;
   }
 }`}
           />
         </div>
 
-        {/* Controlled vs Uncontrolled */}
-        <Card className="border-2 border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50/50 to-green-50/50 dark:from-emerald-950/10 dark:to-green-950/10">
+        {/* Interactive Playground 2: Todo List */}
+        <div className="space-y-6">
+          <TopicTitle
+            icon={<Sparkles className="w-8 h-8 text-purple-600 dark:text-purple-400" />}
+            title="Interactive Playground: Todo List with Shared State"
+            description="Complex state sharing with multiple components working together"
+            size="lg"
+          />
+
+          <FrontendCodePreview learningContext="react"
+            title="Todo List with Shared State"
+            description="Multiple components sharing and manipulating the same todo data"
+            colorTheme="purple"
+            react={`import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+function TodoApp() {
+  const [todos, setTodos] = React.useState([
+    { id: 1, text: 'Learn React state sharing', completed: false },
+    { id: 2, text: 'Build a todo app', completed: true },
+    { id: 3, text: 'Master lifting state up', completed: false }
+  ]);
+  const [filter, setFilter] = React.useState('all');
+
+  const addTodo = (text) => {
+    const newTodo = {
+      id: Date.now(),
+      text: text.trim(),
+      completed: false
+    };
+    setTodos([...todos, newTodo]);
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  const clearCompleted = () => {
+    setTodos(todos.filter(todo => !todo.completed));
+  };
+
+  // Derived state - calculated from todos
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
+
+  const stats = {
+    total: todos.length,
+    active: todos.filter(todo => !todo.completed).length,
+    completed: todos.filter(todo => todo.completed).length
+  };
+
+  return (
+    <div className="todo-app">
+      <h1>📝 Shared Todo List</h1>
+      <p className="subtitle">
+        All components share the same todos array from the parent
+      </p>
+
+      <TodoInput onAdd={addTodo} />
+      
+      <TodoStats stats={stats} />
+      
+      <TodoFilter 
+        currentFilter={filter} 
+        onFilterChange={setFilter} 
+      />
+      
+      <TodoList 
+        todos={filteredTodos}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+      />
+
+      {stats.completed > 0 && (
+        <div className="clear-section">
+          <button 
+            onClick={clearCompleted}
+            className="clear-btn"
+          >
+            🧹 Clear {stats.completed} completed
+          </button>
+        </div>
+      )}
+
+      <div className="state-flow">
+        <h3>🔄 State Flow Diagram</h3>
+        <div className="flow-diagram">
+          <div className="flow-box parent">TodoApp (State Owner)</div>
+          <div className="flow-arrows">
+            <span>↓ props ↓</span>
+          </div>
+          <div className="flow-children">
+            <div className="flow-box child">TodoInput</div>
+            <div className="flow-box child">TodoStats</div>
+            <div className="flow-box child">TodoFilter</div>
+            <div className="flow-box child">TodoList</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TodoInput({ onAdd }) {
+  const [input, setInput] = React.useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (input.trim()) {
+      onAdd(input);
+      setInput('');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="todo-input">
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="What needs to be done?"
+        className="input-field"
+      />
+      <button type="submit" className="add-btn">
+        ➕ Add
+      </button>
+    </form>
+  );
+}
+
+function TodoStats({ stats }) {
+  return (
+    <div className="todo-stats">
+      <div className="stat-item">
+        <span className="stat-number">{stats.total}</span>
+        <span className="stat-label">Total</span>
+      </div>
+      <div className="stat-item">
+        <span className="stat-number">{stats.active}</span>
+        <span className="stat-label">Active</span>
+      </div>
+      <div className="stat-item">
+        <span className="stat-number">{stats.completed}</span>
+        <span className="stat-label">Done</span>
+      </div>
+    </div>
+  );
+}
+
+function TodoFilter({ currentFilter, onFilterChange }) {
+  return (
+    <div className="todo-filter">
+      {['all', 'active', 'completed'].map(filter => (
+        <button
+          key={filter}
+          onClick={() => onFilterChange(filter)}
+          className={'filter-btn ' + (currentFilter === filter ? 'active' : '')}
+        >
+          {filter.charAt(0).toUpperCase() + filter.slice(1)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function TodoList({ todos, onToggle, onDelete }) {
+  if (todos.length === 0) {
+    return (
+      <div className="empty-state">
+        <p>🎉 No todos to show!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="todo-list">
+      {todos.map(todo => (
+        <div key={todo.id} className={'todo-item ' + (todo.completed ? 'completed' : '')}>
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => onToggle(todo.id)}
+            className="todo-checkbox"
+          />
+          <span className="todo-text">{todo.text}</span>
+          <button
+            onClick={() => onDelete(todo.id)}
+            className="delete-btn"
+          >
+            🗑️
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const root = createRoot(document.getElementById('root'));
+root.render(React.createElement(TodoApp));`}
+            html={`<div id="root"></div>`}
+            js={`const script1 = document.createElement('script');
+script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
+script1.crossOrigin = 'anonymous';
+
+const script2 = document.createElement('script');
+script2.src = 'https://unpkg.com/react-dom@18/umd/react-dom.development.js';
+script2.crossOrigin = 'anonymous';
+
+script2.onload = () => {
+  const { createElement: h, useState } = React;
+  const { createRoot } = ReactDOM;
+
+  function TodoApp() {
+    const [todos, setTodos] = useState([
+      { id: 1, text: 'Learn React state sharing', completed: false },
+      { id: 2, text: 'Build a todo app', completed: true },
+      { id: 3, text: 'Master lifting state up', completed: false }
+    ]);
+    const [filter, setFilter] = useState('all');
+
+    const addTodo = (text) => {
+      const newTodo = {
+        id: Date.now(),
+        text: text.trim(),
+        completed: false
+      };
+      setTodos([...todos, newTodo]);
+    };
+
+    const toggleTodo = (id) => {
+      setTodos(todos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      ));
+    };
+
+    const deleteTodo = (id) => {
+      setTodos(todos.filter(todo => todo.id !== id));
+    };
+
+    const clearCompleted = () => {
+      setTodos(todos.filter(todo => !todo.completed));
+    };
+
+    const filteredTodos = todos.filter(todo => {
+      if (filter === 'active') return !todo.completed;
+      if (filter === 'completed') return todo.completed;
+      return true;
+    });
+
+    const stats = {
+      total: todos.length,
+      active: todos.filter(todo => !todo.completed).length,
+      completed: todos.filter(todo => todo.completed).length
+    };
+
+    return h('div', { className: 'todo-app' },
+      h('h1', null, '📝 Shared Todo List'),
+      h('p', { className: 'subtitle' },
+        'All components share the same todos array from the parent'
+      ),
+
+      h(TodoInput, { onAdd: addTodo }),
+      h(TodoStats, { stats: stats }),
+      h(TodoFilter, { currentFilter: filter, onFilterChange: setFilter }),
+      h(TodoList, { todos: filteredTodos, onToggle: toggleTodo, onDelete: deleteTodo }),
+
+      stats.completed > 0 && h('div', { className: 'clear-section' },
+        h('button', { onClick: clearCompleted, className: 'clear-btn' },
+          '🧹 Clear ' + stats.completed + ' completed'
+        )
+      ),
+
+      h('div', { className: 'state-flow' },
+        h('h3', null, '🔄 State Flow Diagram'),
+        h('div', { className: 'flow-diagram' },
+          h('div', { className: 'flow-box parent' }, 'TodoApp (State Owner)'),
+          h('div', { className: 'flow-arrows' }, h('span', null, '↓ props ↓')),
+          h('div', { className: 'flow-children' },
+            h('div', { className: 'flow-box child' }, 'TodoInput'),
+            h('div', { className: 'flow-box child' }, 'TodoStats'),
+            h('div', { className: 'flow-box child' }, 'TodoFilter'),
+            h('div', { className: 'flow-box child' }, 'TodoList')
+          )
+        )
+      )
+    );
+  }
+
+  function TodoInput({ onAdd }) {
+    const [input, setInput] = useState('');
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (input.trim()) {
+        onAdd(input);
+        setInput('');
+      }
+    };
+
+    return h('form', { onSubmit: handleSubmit, className: 'todo-input' },
+      h('input', {
+        type: 'text',
+        value: input,
+        onChange: (e) => setInput(e.target.value),
+        placeholder: 'What needs to be done?',
+        className: 'input-field'
+      }),
+      h('button', { type: 'submit', className: 'add-btn' }, '➕ Add')
+    );
+  }
+
+  function TodoStats({ stats }) {
+    return h('div', { className: 'todo-stats' },
+      h('div', { className: 'stat-item' },
+        h('span', { className: 'stat-number' }, stats.total),
+        h('span', { className: 'stat-label' }, 'Total')
+      ),
+      h('div', { className: 'stat-item' },
+        h('span', { className: 'stat-number' }, stats.active),
+        h('span', { className: 'stat-label' }, 'Active')
+      ),
+      h('div', { className: 'stat-item' },
+        h('span', { className: 'stat-number' }, stats.completed),
+        h('span', { className: 'stat-label' }, 'Done')
+      )
+    );
+  }
+
+  function TodoFilter({ currentFilter, onFilterChange }) {
+    return h('div', { className: 'todo-filter' },
+      ['all', 'active', 'completed'].map(filter =>
+        h('button', {
+          key: filter,
+          onClick: () => onFilterChange(filter),
+          className: 'filter-btn ' + (currentFilter === filter ? 'active' : '')
+        }, filter.charAt(0).toUpperCase() + filter.slice(1))
+      )
+    );
+  }
+
+  function TodoList({ todos, onToggle, onDelete }) {
+    if (todos.length === 0) {
+      return h('div', { className: 'empty-state' },
+        h('p', null, '🎉 No todos to show!')
+      );
+    }
+
+    return h('div', { className: 'todo-list' },
+      todos.map(todo =>
+        h('div', { 
+          key: todo.id, 
+          className: 'todo-item ' + (todo.completed ? 'completed' : '')
+        },
+          h('input', {
+            type: 'checkbox',
+            checked: todo.completed,
+            onChange: () => onToggle(todo.id),
+            className: 'todo-checkbox'
+          }),
+          h('span', { className: 'todo-text' }, todo.text),
+          h('button', {
+            onClick: () => onDelete(todo.id),
+            className: 'delete-btn'
+          }, '🗑️')
+        )
+      )
+    );
+  }
+
+  const root = createRoot(document.getElementById('root'));
+  root.render(h(TodoApp));
+};
+
+document.head.appendChild(script1);
+document.head.appendChild(script2);`}
+            css={`* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.todo-app {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+}
+
+h1 {
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+}
+
+.todo-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.add-btn {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+}
+
+.todo-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.todo-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.todo-list {
+  margin-bottom: 20px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: #f9fafb;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  background: #f3f4f6;
+}
+
+.todo-item.completed {
+  opacity: 0.6;
+}
+
+.todo-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 16px;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.clear-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.clear-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.clear-btn:hover {
+  transform: translateY(-2px);
+}
+
+.state-flow {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.state-flow h3 {
+  color: #667eea;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.flow-box {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 14px;
+}
+
+.flow-box.parent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  min-width: 200px;
+}
+
+.flow-box.child {
+  background: #e5e7eb;
+  color: #374151;
+  min-width: 120px;
+}
+
+.flow-children {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.flow-arrows {
+  color: #667eea;
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .todo-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .flow-children {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  }
+
+  .todo-app {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+
+  h1 {
+    color: #60a5fa;
+  }
+
+  .subtitle {
+    color: #9ca3af;
+  }
+
+  .input-field {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .input-field:focus {
+    border-color: #60a5fa;
+  }
+
+  .todo-stats {
+    background: #374151;
+  }
+
+  .stat-number {
+    color: #60a5fa;
+  }
+
+  .stat-label {
+    color: #9ca3af;
+  }
+
+  .filter-btn {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .todo-item {
+    background: #374151;
+  }
+
+  .todo-item:hover {
+    background: #4b5563;
+  }
+
+  .empty-state {
+    color: #9ca3af;
+  }
+
+  .state-flow {
+    background: #374151;
+  }
+
+  .state-flow h3 {
+    color: #60a5fa;
+  }
+
+  .flow-box.child {
+    background: #4b5563;
+    color: #f9fafb;
+  }
+}`}
+          />
+        </div>
+
+        {/* Best Practices */}
+        <Card className="border-2 border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/10 dark:to-teal-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
-              icon={<Users className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />}
-              title="Controlled vs Uncontrolled Components"
-              description="Who owns the state?"
+              icon={<Lightbulb className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />}
+              title="Best Practices for State Sharing"
+              description="Guidelines for clean and maintainable component architecture"
               size="lg"
             />
-
-            <p className="text-base text-gray-700 dark:text-gray-300">
-              A component is <strong>"controlled"</strong> when its important information is driven by props rather than its own local state. This lets the parent component fully control its behavior.
-            </p>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-orange-300 dark:border-orange-700">
-                <div className="flex items-center gap-2 mb-3">
-                  <h4 className="font-bold text-orange-700 dark:text-orange-300">Uncontrolled Component</h4>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-3">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div>function Panel() {'{'}</div>
-                    <div className="pl-2 text-orange-600 dark:text-orange-400">// Owns its state</div>
-                    <div className="pl-2">const [isActive, setIsActive] =</div>
-                    <div className="pl-4">useState(false);</div>
-                    <div>{'}'}</div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Component manages its own state - more flexible but harder to coordinate.
-                </p>
+              <div className="space-y-4">
+                <h4 className="font-bold text-emerald-700 dark:text-emerald-300">✅ Do's</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Keep state as close to where it's needed as possible
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Pass functions down for child components to update state
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Use derived state instead of duplicating data
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Consider Context API for deeply nested components
+                    </span>
+                  </li>
+                </ul>
               </div>
 
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-emerald-300 dark:border-emerald-700">
-                <div className="flex items-center gap-2 mb-3">
-                  <h4 className="font-bold text-emerald-700 dark:text-emerald-300">Controlled Component</h4>
-                </div>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-3">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div>function Panel({'{'} isActive, onShow {'}'}) {'{'}</div>
-                    <div className="pl-2 text-emerald-600 dark:text-emerald-400">// Controlled by props</div>
-                    <div className="pl-2">// No local state!</div>
-                    <div>{'}'}</div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Parent controls behavior via props - easier to coordinate multiple components.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-5 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20 rounded-xl border-2 border-emerald-300 dark:border-emerald-700">
-              <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-3">💡 When to Use Each</h4>
-              <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
-                <div>
-                  <p className="font-semibold mb-2">Use Uncontrolled when:</p>
-                  <ul className="space-y-1 ml-4">
-                    <li>• Component is used in isolation</li>
-                    <li>• No coordination needed</li>
-                    <li>• Simpler implementation</li>
-                  </ul>
-                </div>
-                <div>
-                  <p className="font-semibold mb-2">Use Controlled when:</p>
-                  <ul className="space-y-1 ml-4">
-                    <li>• Need to coordinate multiple components</li>
-                    <li>• Parent needs to know the state</li>
-                    <li>• Want single source of truth</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Common Patterns */}
-        <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-cyan-50/50 dark:from-blue-950/10 dark:to-cyan-950/10">
-          <CardContent className="space-y-6 pt-6">
-            <TopicTitle
-              icon={<GitBranch className="w-7 h-7 text-blue-600 dark:text-blue-400" />}
-              title="Common Patterns"
-              description="How to structure shared state"
-              size="lg"
-            />
-
-            <div className="space-y-4">
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-blue-300 dark:border-blue-700">
-                <h4 className="font-bold mb-3 text-blue-700 dark:text-blue-300">1. Single Selection (Radio)</h4>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div>const [selected, setSelected] = useState(0);</div>
-                    <div className="mt-1 text-gray-500 dark:text-gray-400">// Only one item can be selected</div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Store the index or ID of the selected item. Good for tabs, accordions, radio buttons.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-300 dark:border-purple-700">
-                <h4 className="font-bold mb-3 text-purple-700 dark:text-purple-300">2. Multiple Selection (Checkbox)</h4>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div>const [selectedIds, setSelectedIds] = useState([]);</div>
-                    <div className="mt-1 text-gray-500 dark:text-gray-400">// Array of selected IDs</div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Store an array of selected IDs. Good for multi-select lists, checkboxes.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
-                <h4 className="font-bold mb-3 text-green-700 dark:text-green-300">3. Form Coordination</h4>
-                <div className="bg-slate-100 dark:bg-slate-900 p-3 rounded font-mono text-xs mb-2">
-                  <div className="text-slate-800 dark:text-slate-200">
-                    <div>const [formData, setFormData] = useState({'{'} ... {'}'});</div>
-                    <div className="mt-1 text-gray-500 dark:text-gray-400">// Single object for all form fields</div>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Store all form values in one object. Makes it easy to validate and submit.
-                </p>
+              <div className="space-y-4">
+                <h4 className="font-bold text-emerald-700 dark:text-emerald-300">❌ Don'ts</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Don't lift state higher than necessary
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Avoid duplicating the same state in multiple places
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Don't pass state through unrelated components
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <XCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Avoid complex prop drilling when Context would be better
+                    </span>
+                  </li>
+                </ul>
               </div>
             </div>
+
+            <Alert className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-300 dark:border-blue-700">
+              <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <AlertTitle className="text-blue-900 dark:text-blue-100">Performance Tip</AlertTitle>
+              <AlertDescription className="text-blue-800 dark:text-blue-200">
+                When lifting state causes performance issues, consider using React.memo for child components or the Context API for complex state sharing scenarios.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
         {/* Key Takeaways */}
-        <Card className="border-2 border-orange-200 dark:border-orange-800 bg-gradient-to-br from-orange-50/50 to-amber-50/50 dark:from-orange-950/10 dark:to-amber-950/10">
+        <Card className="border-2 border-amber-200 dark:border-amber-800 bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-950/10 dark:to-orange-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
-              icon={<Zap className="w-7 h-7 text-orange-600 dark:text-orange-400" />}
+              icon={<Sparkles className="w-7 h-7 text-amber-600 dark:text-amber-400" />}
               title="Key Takeaways"
-              description="Remember these important points"
+              description="Essential concepts to remember about state sharing"
               size="lg"
             />
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-cyan-300 dark:border-cyan-700">
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle2 className="w-6 h-6 text-cyan-500" />
-                  <h4 className="font-bold text-cyan-700 dark:text-cyan-300">Lift State Up</h4>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  When components need to share state, move it to their closest common parent.
-                </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h4 className="font-bold text-amber-700 dark:text-amber-300">🎯 Core Concepts</h4>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li>• <strong>Single Source of Truth:</strong> State lives in one place</li>
+                  <li>• <strong>Top-Down Data Flow:</strong> Props flow down, actions flow up</li>
+                  <li>• <strong>Lifting State Up:</strong> Move state to common ancestor</li>
+                  <li>• <strong>Callback Props:</strong> Functions passed down for updates</li>
+                </ul>
               </div>
 
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-300 dark:border-purple-700">
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle2 className="w-6 h-6 text-purple-500" />
-                  <h4 className="font-bold text-purple-700 dark:text-purple-300">Props Down, Events Up</h4>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Parent passes state as props. Children call callbacks to update state.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle2 className="w-6 h-6 text-green-500" />
-                  <h4 className="font-bold text-green-700 dark:text-green-300">Single Source of Truth</h4>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  State lives in one place (the parent), making it easy to keep components in sync.
-                </p>
-              </div>
-
-              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-orange-300 dark:border-orange-700">
-                <div className="flex items-center gap-3 mb-3">
-                  <CheckCircle2 className="w-6 h-6 text-orange-500" />
-                  <h4 className="font-bold text-orange-700 dark:text-orange-300">Controlled Components</h4>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  Components controlled by props are easier to coordinate and test.
-                </p>
+              <div className="space-y-3">
+                <h4 className="font-bold text-amber-700 dark:text-amber-300">🔄 When to Use</h4>
+                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                  <li>• Multiple components need the same data</li>
+                  <li>• Components need to stay synchronized</li>
+                  <li>• One component controls another's data</li>
+                  <li>• Shared calculations or derived state needed</li>
+                </ul>
               </div>
             </div>
 
-            <Alert className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-orange-300 dark:border-orange-700">
-              <Lightbulb className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-              <AlertTitle className="text-orange-900 dark:text-orange-100">Most Common Pattern in React</AlertTitle>
-              <AlertDescription className="text-orange-800 dark:text-orange-200">
-                Lifting state up is one of the most important patterns in React. It's how you coordinate multiple components that need to share data!
-              </AlertDescription>
-            </Alert>
+            <div className="p-4 bg-amber-100 dark:bg-amber-900/20 rounded-lg border-2 border-amber-300 dark:border-amber-700">
+              <h4 className="font-bold text-amber-800 dark:text-amber-200 mb-2">💡 Remember</h4>
+              <p className="text-amber-700 dark:text-amber-300 text-sm">
+                State sharing through lifting state up is React's fundamental pattern for component communication. 
+                Master this concept before moving to advanced solutions like Context API or state management libraries.
+              </p>
+            </div>
           </CardContent>
         </Card>
 

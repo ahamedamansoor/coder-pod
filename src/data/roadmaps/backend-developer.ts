@@ -1,9 +1,10 @@
-import type { Language } from './types';
+import type { Roadmap } from './types';
 
-export const backendDeveloper: Language = {
+export const backendDeveloper: Roadmap = {
   slug: 'backend-developer',
   name: 'Backend Developer',
   topics: [
+    // CAREER PATH JOURNEY
     // INTERNET & FUNDAMENTALS
     { slug: 'how-does-internet-work', title: 'How Does the Internet Work?', explanation: 'Understanding TCP/IP, DNS, HTTP/HTTPS protocols.', category: 'Internet Fundamentals' },
     { slug: 'what-is-http', title: 'What is HTTP?', explanation: 'HTTP methods, status codes, headers, and HTTPS.', category: 'Internet Fundamentals' },
@@ -13,10 +14,10 @@ export const backendDeveloper: Language = {
     { slug: 'hosting', title: 'Hosting', explanation: 'Shared, VPS, dedicated, and cloud hosting options.', category: 'Internet Fundamentals' },
 
     // PROGRAMMING LANGUAGES
-    { slug: 'javascript-backend', title: 'JavaScript (Node.js)', explanation: 'Event-driven, non-blocking I/O for backend development.', category: 'Programming Languages' },
-    { slug: 'typescript-backend', title: 'TypeScript', explanation: 'Static typing for JavaScript applications.', category: 'Programming Languages' },
-    { slug: 'python-backend', title: 'Python', explanation: 'Django, Flask, FastAPI for web development.', category: 'Programming Languages' },
-    { slug: 'java-backend', title: 'Java', explanation: 'Spring Boot, enterprise application development.', category: 'Programming Languages' },
+    { slug: 'javascript-backend', title: 'JavaScript (Node.js)', explanation: 'Event-driven, non-blocking I/O for backend development.', category: 'Programming Languages', connectedRoadmap: 'javascript' },
+    { slug: 'typescript-backend', title: 'TypeScript', explanation: 'Static typing for JavaScript applications.', category: 'Programming Languages', connectedRoadmap: 'typescript' },
+    { slug: 'python-backend', title: 'Python', explanation: 'Django, Flask, FastAPI for web development.', category: 'Programming Languages', connectedRoadmap: 'python' },
+    { slug: 'java-backend', title: 'Java', explanation: 'Spring Boot, enterprise application development.', category: 'Programming Languages', connectedRoadmap: 'java' },
     { slug: 'csharp-backend', title: 'C# (.NET)', explanation: 'ASP.NET Core for modern web applications.', category: 'Programming Languages' },
     { slug: 'go-backend', title: 'Go (Golang)', explanation: 'High-performance concurrent backend services.', category: 'Programming Languages' },
     { slug: 'rust-backend', title: 'Rust', explanation: 'Memory-safe systems programming for web.', category: 'Programming Languages' },

@@ -20,8 +20,6 @@ import { python } from './python';
 import { git } from './git';
 import { postgresql } from './postgresql';
 import { frontendSystemDesign } from './frontend-system-design';
-import { frontendDeveloper } from './frontend-developer';
-import { backendDeveloper } from './backend-developer';
 import type { Language } from './types';
 
 export const languages: Language[] = [
@@ -31,7 +29,7 @@ export const languages: Language[] = [
     { ...tailwind, enabled: true },
     { ...javascript, enabled: true },
     { ...typescript, enabled: false },
-    { ...react, enabled: false },
+    { ...react, enabled: true },
     { ...vue, enabled: false },
     { ...nextjs, enabled: false },
     { ...angular, enabled: false },
@@ -46,6 +44,7 @@ export const languages: Language[] = [
     { ...git, enabled: false },
     { ...postgresql, enabled: false },
     { ...frontendSystemDesign, enabled: false },
+
 ];
 
 // Filtered list for display (dashboard, dropdowns, etc.)
@@ -53,8 +52,6 @@ export const enabledLanguages = languages.filter(lang => lang.enabled !== false)
 
 // Role-based roadmaps (for display in roadmaps page only, not learnable languages)
 export const roleBasedRoadmaps: Language[] = [
-    frontendDeveloper,
-    backendDeveloper,
 ];
 
 export * from './types';

@@ -17,6 +17,10 @@ import {
   RefreshCw,
   Database,
   TrendingUp,
+  Target,
+  Eye,
+  MousePointer,
+  Settings,
 } from 'lucide-react';
 
 export default function UseStateHook() {
@@ -30,7 +34,7 @@ export default function UseStateHook() {
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
         {/* What is useState */}
         <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
@@ -76,6 +80,236 @@ export default function UseStateHook() {
                 When you call <code className="px-1 py-0.5 bg-cyan-100 dark:bg-cyan-900 rounded text-xs">setState</code>, React re-renders your component with the new value!
               </AlertDescription>
             </Alert>
+          </CardContent>
+        </Card>
+
+        {/* Step by Step Guide */}
+        <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/10 dark:to-blue-950/10">
+          <CardContent className="space-y-6 pt-6">
+            <TopicTitle
+              icon={<Settings className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />}
+              title="Step-by-Step Guide"
+              description="Learn useState progressively"
+              size="lg"
+            />
+
+            <div className="space-y-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-2xl transform rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-indigo-200 dark:border-indigo-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">1</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
+                          <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-indigo-700 dark:text-indigo-300">Step 1: Import useState</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        First, import useState from React at the top of your component file.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">import</span> <span className="text-blue-400">React</span>, {'{'} <span className="text-blue-600">useState</span> {'}'} <span className="text-purple-600">from</span> <span className="text-green-600">'react'</span>;
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-indigo-200 dark:border-indigo-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Lightbulb className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-indigo-800 dark:text-indigo-200 mb-1">Pro Tip</p>
+                            <p className="text-sm text-indigo-700 dark:text-indigo-300">
+                              You can import multiple hooks: {'{'} useState, useEffect, useContext {'}'}.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl transform -rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-purple-200 dark:border-purple-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">2</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                          <Eye className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-purple-700 dark:text-purple-300">Step 2: Initialize State</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        Call useState with an initial value to create a state variable.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> [count, setCount] = <span className="text-blue-600">useState</span>(<span className="text-green-600">0</span>);
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> [name, setName] = <span className="text-blue-600">useState</span>(<span className="text-green-600">''</span>);
+                          </div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> [user, setUser] = <span className="text-blue-600">useState</span>(<span className="text-red-600">null</span>);
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 p-4 rounded-xl border border-purple-200 dark:border-purple-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Zap className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-purple-800 dark:text-purple-200 mb-1">Key Point</p>
+                            <p className="text-sm text-purple-700 dark:text-purple-300">
+                              useState returns an array: [currentValue, setterFunction]. Use array destructuring!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-rose-500/20 rounded-2xl transform rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-pink-200 dark:border-pink-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">3</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center">
+                          <MousePointer className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-pink-700 dark:text-pink-300">Step 3: Use State in JSX</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        Display the state value in your component's JSX.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">function</span> <span className="text-blue-400">Counter</span>() {'{}'}
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> [count, setCount] = <span className="text-blue-600">useState</span>(<span className="text-green-600">0</span>);
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">return</span> (
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            &lt;<span className="text-red-400">div</span>&gt;
+                          </div>
+                          <div className="ml-12 text-slate-800 dark:text-slate-200">
+                            Current count: {'{}'}count{'}'}
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            &lt;/<span className="text-red-400">div</span>&gt;
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            );
+                          </div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            {'}'};
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 p-4 rounded-xl border border-pink-200 dark:border-pink-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <AlertCircle className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-pink-800 dark:text-pink-200 mb-1">Important</p>
+                            <p className="text-sm text-pink-700 dark:text-pink-300">
+                              Use curly braces {'{}'} to embed JavaScript values in JSX. State values are reactive!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-2xl transform -rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-blue-200 dark:border-blue-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">4</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                          <RefreshCw className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-blue-700 dark:text-blue-300">Step 4: Update State</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        Use the setter function to update the state value.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> <span className="text-blue-400">handleClick</span> = () {'=>'} {'{}'}
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            setCount(count + <span className="text-green-600">1</span>); <span className="text-slate-500">// Direct update</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            setCount(<span className="text-orange-400">prevCount</span> {'=>'} prevCount + <span className="text-green-600">1</span>); <span className="text-slate-500">// Functional update</span>
+                          </div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            {'})'};
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            &lt;<span className="text-red-400">button</span> <span className="text-green-400">onClick</span>={'{'}handleClick{'}'}&gt;
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            Click me
+                          </div>
+                          <div className="text-slate-800 dark:text-slate-200">
+                            &lt;/<span className="text-red-400">button</span>&gt;
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">Key Point</p>
+                            <p className="text-sm text-blue-700 dark:text-blue-300">
+                              State updates trigger re-renders! Use functional updates when new state depends on previous state.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 

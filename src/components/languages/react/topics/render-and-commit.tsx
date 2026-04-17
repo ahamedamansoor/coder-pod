@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { TopicTitle } from '@/components/shared/topic-title';
-import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
+import { FrontendCodePreviewReact } from '@/components/shared/frontend-code-preview-react';
 import {
   Zap,
   Lightbulb,
@@ -35,7 +35,7 @@ export default function RenderAndCommit() {
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
         {/* Introduction */}
         <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
@@ -197,46 +197,42 @@ root.render(<App />); // Triggers initial render!`}</code>
             <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-200 dark:border-purple-800">
               <h4 className="font-bold mb-4 text-purple-700 dark:text-purple-300">The Rendering Process</h4>
               
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white font-bold flex-shrink-0">
+              <div className="flex items-center gap-2 md:gap-4 flex-wrap">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-500 text-white font-bold flex-shrink-0 text-sm md:text-base">
                     1
                   </div>
-                  <div className="flex-1">
-                    <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-1">Initial Render</h5>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      React calls the <strong>root component</strong>. For example, if you render <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">&lt;App /&gt;</code>, React calls the <code className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">App</code> function.
+                  <div className="flex-1 min-w-0">
+                    <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-1 text-sm md:text-base">Initial Render</h5>
+                    <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300">
+                      React calls the <strong>root component</strong>
                     </p>
                   </div>
                 </div>
 
-                <div className="flex justify-center my-2">
-                  <ArrowRight className="w-6 h-6 text-purple-500" />
-                </div>
+                <ArrowRight className="w-4 h-4 md:w-6 md:h-6 text-purple-500 flex-shrink-0" />
 
-                <div className="flex items-start gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500 text-white font-bold flex-shrink-0">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-purple-500 text-white font-bold flex-shrink-0 text-sm md:text-base">
                     2
                   </div>
-                  <div className="flex-1">
-                    <h5 className="font-semibold text-purple-700 dark:text-purple-300 mb-1">Re-render</h5>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
-                      React calls the component whose state update <strong>triggered the render</strong>, and then recursively renders any child components.
+                  <div className="flex-1 min-w-0">
+                    <h5 className="font-semibold text-purple-700 dark:text-purple-300 mb-1 text-sm md:text-base">Re-render</h5>
+                    <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300">
+                      State update <strong>triggers render</strong>
                     </p>
                   </div>
                 </div>
 
-                <div className="flex justify-center my-2">
-                  <ArrowRight className="w-6 h-6 text-purple-500" />
-                </div>
+                <ArrowRight className="w-4 h-4 md:w-6 md:h-6 text-purple-500 flex-shrink-0" />
 
-                <div className="flex items-start gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-pink-500 text-white font-bold flex-shrink-0">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-pink-500 text-white font-bold flex-shrink-0 text-sm md:text-base">
                     3
                   </div>
-                  <div className="flex-1">
-                    <h5 className="font-semibold text-pink-700 dark:text-pink-300 mb-1">Recursive Process</h5>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <div className="flex-1 min-w-0">
+                    <h5 className="font-semibold text-pink-700 dark:text-pink-300 mb-1 text-sm md:text-base">Recursive Process</h5>
+                    <p className="text-xs md:text-sm text-gray-700 dark:text-gray-300">
                       If any child component returns other components, React will render those next. This continues until there are no more nested components.
                     </p>
                   </div>
@@ -369,80 +365,140 @@ root.render(<App />); // Triggers initial render!`}</code>
             size="lg"
           />
 
-          <FrontendCodePreview learningContext="react"
+          <FrontendCodePreviewReact
             title="Render and Commit Visualizer"
             description="Click the button to trigger renders and see what updates"
             colorTheme="cyan"
-            react={`function RenderVisualizer() {
-  const [count, setCount] = React.useState(0);
-  const [name, setName] = React.useState('React');
+            react={`function RenderAndCommitVisualizer() {
+  const [step, setStep] = React.useState(1);
+  const [renderCount, setRenderCount] = React.useState(0);
+  const [isAnimating, setIsAnimating] = React.useState(false);
+  
+  const triggerStep = () => {
+    setIsAnimating(true);
+    setStep(1);
+    setTimeout(() => {
+      setStep(2);
+      setTimeout(() => {
+        setStep(3);
+        setTimeout(() => {
+          setRenderCount(renderCount + 1);
+          setIsAnimating(false);
+        }, 800);
+      }, 800);
+    }, 800);
+  };
 
   return (
-    <div className="container">
-      <h1>🔄 Render and Commit Demo</h1>
-      
-      <div className="status-panel">
-        <div className="status-item trigger">
-          <span className="label">1. Trigger</span>
-          <p>Click button → State updates</p>
-        </div>
-        <div className="arrow">→</div>
-        <div className="status-item render">
-          <span className="label">2. Render</span>
-          <p>React calls component</p>
-        </div>
-        <div className="arrow">→</div>
-        <div className="status-item commit">
-          <span className="label">3. Commit</span>
-          <p>Updates DOM changes only</p>
-        </div>
-      </div>
-
-      <div className="demo-section">
-        <div className="info-box">
-          <h3>Static Content (Never Changes)</h3>
-          <p className="static-text">
-            Hello, {name}! 👋
-          </p>
-          <p className="hint">
-            This text stays the same every render
-          </p>
-        </div>
-
-        <div className="info-box dynamic">
-          <h3>Dynamic Content (Changes)</h3>
-          <p className="count-display">
-            Count: <strong>{count}</strong>
-          </p>
-          <p className="hint">
-            Only this number updates in the DOM!
-          </p>
-        </div>
-      </div>
-
-      <button 
-        className="btn-increment"
-        onClick={() => setCount(count + 1)}
-      >
-        ➕ Increment Count (Trigger Render)
-      </button>
-
-      <div className="explanation">
-        <h4>What Just Happened?</h4>
-        <ul>
-          <li>✅ <strong>Trigger:</strong> You clicked the button</li>
-          <li>✅ <strong>Render:</strong> React called this component</li>
-          <li>✅ <strong>Commit:</strong> Only the count number updated!</li>
-        </ul>
-        <p className="note">
-          💡 Notice: The greeting "Hello, React!" does not re-render in the DOM because it did not change!
+    <div className="visualizer-container">
+      <div className="visualizer-header">
+        <h1 className="visualizer-title">
+          🔄 React's Render & Commit Process
+        </h1>
+        <p className="visualizer-subtitle">
+          Watch how React updates your screen in 3 steps
         </p>
+      </div>
+      
+      <div className="step-container">
+        <div className={'step-box step-' + step}>
+          <div className="step-icon">⚡</div>
+          <div className="step-title">1. TRIGGER</div>
+          <div className="step-status">
+            {step === 1 ? 'State changes!' : step > 1 ? '✅ Done' : 'Waiting...'}
+          </div>
+        </div>
+        
+        <div className={'step-arrow ' + (step > 1 ? 'active' : '')}>
+          →
+        </div>
+        
+        <div className={'step-box step-' + step}>
+          <div className="step-icon">🎨</div>
+          <div className="step-title">2. RENDER</div>
+          <div className="step-status">
+            {step === 2 ? 'React calls component!' : step > 2 ? '✅ Done' : 'Waiting...'}
+          </div>
+        </div>
+        
+        <div className={'step-arrow ' + (step > 2 ? 'active' : '')}>
+          →
+        </div>
+        
+        <div className={'step-box step-' + step}>
+          <div className="step-icon">🖥️</div>
+          <div className="step-title">3. COMMIT</div>
+          <div className="step-status">
+            {step === 3 ? 'DOM updated!' : step > 3 ? '✅ Done' : 'Waiting...'}
+          </div>
+        </div>
+      </div>
+
+      <div className="demo-box">
+        <h3 className="demo-title">
+          📱 Live Component Demo
+        </h3>
+        <div className="demo-content">
+          <div className="demo-label">
+            Render Count:
+          </div>
+          <div className={'demo-count ' + (isAnimating ? 'animating' : '')}>
+            {renderCount}
+          </div>
+          <div className="demo-note">
+            This number only updates during COMMIT phase
+          </div>
+        </div>
+      </div>
+
+      <div className="button-container">
+        <button 
+          className={'trigger-button ' + (isAnimating ? 'disabled' : '')}
+          onClick={triggerStep}
+          disabled={isAnimating}
+        >
+          {isAnimating ? '⏳ Processing...' : '🚀 Trigger Render Process'}
+        </button>
+        
+        <button 
+          className="reset-button"
+          onClick={() => {
+            setStep(1);
+            setRenderCount(0);
+            setIsAnimating(false);
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+
+      <div className="explanation-box">
+        <h4 className="explanation-title">
+          💡 What's Happening?
+        </h4>
+        <div className="explanation-content">
+          <div className="explanation-step">
+            <strong className="trigger-text">1. TRIGGER:</strong> You click the button → React detects state change
+          </div>
+          <div className="explanation-step">
+            <strong className="render-text">2. RENDER:</strong> React calls this component function → Creates new UI description
+          </div>
+          <div className="explanation-step">
+            <strong className="commit-text">3. COMMIT:</strong> React compares old vs new UI → Updates ONLY changed parts in DOM
+          </div>
+          <div className="key-insight">
+            <strong>🎯 Key Insight:</strong> React only updates what actually changes! 
+            The static text around this box never gets touched in the DOM.
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-ReactDOM.render(<RenderVisualizer />, document.getElementById('root'));`}
+// This code triggers the INITIAL RENDER
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<RenderAndCommitVisualizer />);`}
             html={`<div id="root"></div>`}
             js={`const script1 = document.createElement('script');
 script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
@@ -836,6 +892,238 @@ h1 {
     background: #312e81;
     border-color: #8b5cf6;
     color: #ddd6fe;
+  }
+
+  /* Interactive Visualizer Styles */
+  .visualizer-container {
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-radius: 16px;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  .visualizer-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .visualizer-title {
+    font-size: 32px;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+
+  .visualizer-subtitle {
+    font-size: 16px;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  .step-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .step-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.5s ease;
+    border: 1px solid;
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  .step-box.step-1 {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-color: #60a5fa;
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .step-box.step-2 {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-color: #34d399;
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .step-box.step-3 {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-color: #34d399;
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .step-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .step-status {
+    font-size: 11px;
+    opacity: 0.8;
+    margin-top: 4px;
+    text-align: center;
+  }
+
+  .step-arrow {
+    font-size: 24px;
+    margin: 0 16px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+
+  .step-arrow.active {
+    opacity: 1;
+  }
+
+  .demo-box {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .demo-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: #60a5fa;
+  }
+
+  .demo-content {
+    background: rgba(255,255,255,0.1);
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .demo-label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .demo-count {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fbbf24;
+    transition: all 0.3s ease;
+    transform: scale(1);
+  }
+
+  .demo-count.animating {
+    transform: scale(1.2);
+  }
+
+  .demo-note {
+    font-size: 12px;
+    margin-top: 8px;
+    opacity: 0.6;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .trigger-button {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+
+  .trigger-button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .reset-button {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .explanation-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .explanation-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #60a5fa;
+  }
+
+  .explanation-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .explanation-step {
+    margin-bottom: 8px;
+  }
+
+  .trigger-text {
+    color: #fbbf24;
+  }
+
+  .render-text {
+    color: #60a5fa;
+  }
+
+  .commit-text {
+    color: #34d399;
+  }
+
+  .key-insight {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(251, 191, 36, 0.2);
   }
 }`}
           />

@@ -253,10 +253,10 @@ export function CheatsheetModal({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-full w-screen h-screen p-0 flex flex-col bg-slate-50 dark:bg-slate-950 border-0 rounded-none"
+        className="max-w-full w-screen h-screen p-0 flex flex-col bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none"
       >
         {/* Header */}
-        <DialogHeader className="px-6 py-3 border-b flex-shrink-0 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 border-slate-200/50 dark:border-slate-800/50">
+        <DialogHeader className="px-6 py-3 border-b flex-shrink-0 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 border-slate-300 dark:border-slate-800/50">
           <div className="flex items-center justify-between">
             {/* Title Section */}
             <div className="flex items-center gap-3">
@@ -284,7 +284,7 @@ export function CheatsheetModal({
                   onChange={(e) => {
                     updateFilter('searchQuery', e.target.value);
                   }}
-                  className="pl-8 pr-6 h-8 w-48 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 focus:ring-emerald-500/20 text-sm"
+                  className="pl-8 pr-6 h-8 w-48 bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 focus:ring-emerald-500/20 text-sm"
                 />
                 {filters.searchQuery && (
                   <button
@@ -308,11 +308,11 @@ export function CheatsheetModal({
           </div>
 
           {/* Pattern Filters - Always visible header, sub-filters toggleable */}
-          <div className="px-6 py-3 border-t border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+          <div className="px-6 py-3 border-t border-slate-300 dark:border-slate-800/50 bg-gradient-to-r from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => setShowTopics(!showTopics)}
-                className="group flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+                className="group flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               >
                 <span>Filter by:</span>
                 <ChevronDown className={cn(
@@ -350,7 +350,7 @@ export function CheatsheetModal({
                       onClick={() => handleSectionClick(cmd.command)}
                       className={cn(
                         "px-2 py-1 rounded text-xs font-medium transition-all duration-200",
-                        "border border-slate-200 dark:border-slate-700",
+                        "border border-slate-300 dark:border-slate-700",
                         isSelected
                           ? `${badgeColor} text-white border-transparent shadow-sm scale-105`
                           : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700"
@@ -378,7 +378,7 @@ export function CheatsheetModal({
                   className="break-inside-avoid mb-6"
                 >
                   {/* Section Card */}
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg overflow-hidden">
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-300 dark:border-slate-800 shadow-lg overflow-hidden">
                     {/* Section Title Badge */}
                     <div className="flex justify-center -mt-px">
                       <div className={cn(
@@ -409,7 +409,7 @@ export function CheatsheetModal({
 
                           {/* Code Block */}
                           <div className="relative group">
-                            <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-950 dark:to-black rounded-xl border border-gray-600 dark:border-gray-800 shadow-lg overflow-hidden">
+                            <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-black dark:via-gray-950 dark:to-black rounded-xl border border-slate-300 dark:border-gray-800 shadow-lg overflow-hidden">
                               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/3 to-transparent dark:from-emerald-400/5"></div>
                               <pre className="p-4 text-sm font-mono overflow-x-auto relative">
                                 <code className="text-emerald-500 dark:text-emerald-300 font-semibold leading-relaxed">
@@ -433,7 +433,7 @@ export function CheatsheetModal({
 
                           {/* Usage note */}
                           {cmd.usage && cmd.usage !== cmd.command && (
-                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200 dark:border-blue-800/30 shadow-sm">
+                            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-300 dark:border-blue-800/30 shadow-sm">
                               <p className="text-sm text-blue-800 dark:text-blue-200 font-mono p-3">
                                 {highlightText(cmd.usage, filters.searchQuery)}
                               </p>
@@ -442,7 +442,7 @@ export function CheatsheetModal({
 
                           {/* Separator between commands */}
                           {cmdIndex < section.commands.length - 1 && (
-                            <div className="border-b border-slate-100 dark:border-slate-800 pt-4" />
+                            <div className="border-b border-slate-200 dark:border-slate-800 pt-4" />
                           )}
                         </div>
                       ))}

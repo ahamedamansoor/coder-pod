@@ -40,11 +40,12 @@ export const react: Language = {
     { slug: 'rules-of-hooks', title: 'Rules of Hooks', explanation: "Master the two fundamental rules of Hooks and understand why they're essential for React to work.", category: 'Hooks Mastery' },
     { slug: 'usestate-hook', title: 'useState Deep Dive', explanation: "Advanced useState patterns: functional updates, lazy initialization, and performance considerations.", category: 'Hooks Mastery' },
     { slug: 'useeffect-hook', title: 'useEffect Deep Dive', explanation: "Master useEffect: cleanup functions, dependency arrays, effects lifecycle, and common patterns.", category: 'Hooks Mastery' },
-    { slug: 'usecontext-hook', title: 'useContext Hook', explanation: "Use Context API with useContext Hook, avoid prop drilling, and understand context performance.", category: 'Hooks Mastery' },
+    { slug: 'why-use-effect', title: 'Why Use Effect?', explanation: "Understand the fundamental need for useEffect, when side effects are necessary, and the philosophy behind effect-driven programming.", category: 'Hooks Mastery' },
     { slug: 'usereducer-hook', title: 'useReducer Hook', explanation: "Advanced useReducer patterns, complex state logic, actions, dispatch, and comparing with useState.", category: 'Hooks Mastery' },
+    { slug: 'usecontext-hook', title: 'useContext Hook', explanation: "Use Context API with useContext Hook, avoid prop drilling, and understand context performance.", category: 'Hooks Mastery' },
+    { slug: 'useref-hook', title: 'useRef Hook', explanation: "Access DOM elements, store mutable values, forward refs, and advanced ref patterns.", category: 'Hooks Mastery' },
     { slug: 'usecallback-hook', title: 'useCallback Hook', explanation: "Optimize performance with useCallback, prevent unnecessary re-renders, and memoization patterns.", category: 'Hooks Mastery' },
     { slug: 'usememo-hook', title: 'useMemo Hook', explanation: "Memoize expensive calculations, understand when to use useMemo vs useCallback, and performance optimization.", category: 'Hooks Mastery' },
-    { slug: 'useref-hook', title: 'useRef Hook', explanation: "Access DOM elements, store mutable values, forward refs, and advanced ref patterns.", category: 'Hooks Mastery' },
     { slug: 'uselayouteffect-hook', title: 'useLayoutEffect Hook', explanation: "Synchronous DOM measurements, when to use useLayoutEffect vs useEffect, and layout calculations.", category: 'Hooks Mastery' },
     
     // 6. ADVANCED HOOKS
@@ -80,11 +81,15 @@ export const react: Language = {
     // 10. PATTERNS & ARCHITECTURE
     { slug: 'keeping-components-pure', title: 'Pure Components', explanation: "Understand pure functions, side effects, and how to write predictable, testable components.", category: 'Patterns' },
     { slug: 'understanding-your-ui-as-a-tree', title: 'UI as Trees', explanation: "Visualize component trees, render trees, and module dependency trees for better architecture.", category: 'Patterns' },
+    { slug: 'basic-lifting-state-up', title: 'Basic Lifting State Up', explanation: "Component communication basics for sharing state between parent and child components.", category: 'Patterns' },
     { slug: 'controlled-components-pattern', title: 'Controlled Components', explanation: "Master controlled component patterns, form handling, and validation strategies.", category: 'Patterns' },
     { slug: 'uncontrolled-components-pattern', title: 'Uncontrolled Components', explanation: "Understand uncontrolled components, refs for forms, and when to use uncontrolled patterns.", category: 'Patterns' },
     { slug: 'lifting-state-up-pattern', title: 'Lifting State Up', explanation: "Advanced state sharing patterns, sibling communication, and state architecture.", category: 'Patterns' },
     { slug: 'keys-and-list-rendering-pattern', title: 'Keys & Lists', explanation: "Master key prop best practices, list performance, and common key anti-patterns.", category: 'Patterns' },
+    { slug: 'basic-react-portals', title: 'Basic React Portals', explanation: "Rendering outside DOM tree basics for modals, tooltips, and overlays.", category: 'Patterns' },
+    { slug: 'basic-error-boundaries', title: 'Basic Error Boundaries', explanation: "Error handling basics for catching and displaying errors gracefully in React applications.", category: 'Patterns' },
     { slug: 'reusing-logic-with-custom-hooks', title: 'Custom Hooks', explanation: "Create reusable custom hooks, share stateful logic, and advanced hook patterns.", category: 'Patterns' },
+    { slug: 'basic-custom-hooks', title: 'Basic Custom Hooks', explanation: "Creating reusable logic basics for sharing stateful logic between components.", category: 'Patterns' },
     { slug: 'custom-hook-examples', title: 'Custom Hook Examples', explanation: "Practical custom hooks: useForm, useWindowSize, useLocalStorage, useDebounce, and more.", category: 'Patterns' },
     
     // 11. ADVANCED CONCEPTS

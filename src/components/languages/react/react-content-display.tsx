@@ -10,17 +10,27 @@ import { EnhancedLoadingSkeleton, CompactLoadingSkeleton } from '@/components/sh
 // Lazy load all topic components
 const WhatIsReact = React.lazy(() => import('./topics/what-is-react'));
 const InstallationAndSetup = React.lazy(() => import('./topics/installation-and-setup'));
-const FirstComponent = React.lazy(() => import('./topics/first-component'));
+const FirstComponent = React.lazy(() => import('./topics/your-first-component'));
 const WritingJsx = React.lazy(() => import('./topics/writing-jsx'));
 const JavaScriptInJsx = React.lazy(() => import('./topics/javascript-in-jsx'));
 const ComponentsAndProps = React.lazy(() => import('./topics/components-and-props'));
 const ConditionalRendering = React.lazy(() => import('./topics/conditional-rendering'));
 const RenderingLists = React.lazy(() => import('./topics/rendering-lists'));
+const RenderAndCommit = React.lazy(() => import('./topics/render-and-commit'));
 const RespondingToEvents = React.lazy(() => import('./topics/responding-to-events'));
 const StateAsComponentsMemory = React.lazy(() => import('./topics/state-a-components-memory'));
+const StateAsASnapshot = React.lazy(() => import('./topics/state-as-a-snapshot'));
+const UpdatingObjectsInState = React.lazy(() => import('./topics/updating-objects-in-state'));
+const UpdatingArraysInState = React.lazy(() => import('./topics/updating-arrays-in-state'));
+const QueueingASeriesOfStateUpdates = React.lazy(() => import('./topics/queueing-a-series-of-state-updates'));
+const ChoosingTheStateStructure = React.lazy(() => import('./topics/choosing-the-state-structure'));
+const ExtractingStateLogicIntoAReducer = React.lazy(() => import('./topics/extracting-state-logic-into-a-reducer'));
+const SharingStateBetweenComponents = React.lazy(() => import('./topics/sharing-state-between-components'));
+const PreservingAndResettingState = React.lazy(() => import('./topics/preserving-and-resetting-state'));
 const HooksOverview = React.lazy(() => import('./topics/hooks-overview'));
 const RulesOfHooks = React.lazy(() => import('./topics/rules-of-hooks'));
 const UseStateHook = React.lazy(() => import('./topics/usestate-hook'));
+const WhyUseEffect = React.lazy(() => import('./topics/why-use-effect'));
 const UseEffectHook = React.lazy(() => import('./topics/useeffect-hook'));
 const UseContextHook = React.lazy(() => import('./topics/usecontext-hook'));
 const UseReducerHook = React.lazy(() => import('./topics/usereducer-hook'));
@@ -28,6 +38,10 @@ const UseCallbackHook = React.lazy(() => import('./topics/usecallback-hook'));
 const UseMemoHook = React.lazy(() => import('./topics/usememo-hook'));
 const UseRefHook = React.lazy(() => import('./topics/useref-hook'));
 const UseLayoutEffectHook = React.lazy(() => import('./topics/uselayouteffect-hook'));
+const UseInsertionEffectHook = React.lazy(() => import('./topics/useinsertioneffect-hook'));
+const UseTransitionHook = React.lazy(() => import('./topics/usetransition-hook'));
+const UseDeferredValueHook = React.lazy(() => import('./topics/usedeferredvalue-hook'));
+const UseImperativeHandleHook = React.lazy(() => import('./topics/useimperativehandle-hook'));
 const WhatIsContext = React.lazy(() => import('./topics/what-is-context'));
 const CreatingContext = React.lazy(() => import('./topics/creating-context'));
 const PassingDataWithContext = React.lazy(() => import('./topics/passing-data-with-context'));
@@ -61,11 +75,21 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'components-and-props': ComponentsAndProps,
   'conditional-rendering': ConditionalRendering,
   'rendering-lists': RenderingLists,
+  'render-and-commit': RenderAndCommit,
   'responding-to-events': RespondingToEvents,
   'state-a-components-memory': StateAsComponentsMemory,
+  'state-as-a-snapshot': StateAsASnapshot,
+  'updating-objects-in-state': UpdatingObjectsInState,
+  'updating-arrays-in-state': UpdatingArraysInState,
+  'queueing-a-series-of-state-updates': QueueingASeriesOfStateUpdates,
+  'choosing-the-state-structure': ChoosingTheStateStructure,
+  'extracting-state-logic-into-a-reducer': ExtractingStateLogicIntoAReducer,
+  'sharing-state-between-components': SharingStateBetweenComponents,
+  'preserving-and-resetting-state': PreservingAndResettingState,
   'hooks-overview': HooksOverview,
   'rules-of-hooks': RulesOfHooks,
   'usestate-hook': UseStateHook,
+  'why-use-effect': WhyUseEffect,
   'useeffect-hook': UseEffectHook,
   'usecontext-hook': UseContextHook,
   'usereducer-hook': UseReducerHook,
@@ -73,6 +97,10 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'usememo-hook': UseMemoHook,
   'useref-hook': UseRefHook,
   'uselayouteffect-hook': UseLayoutEffectHook,
+  'useinsertioneffect-hook': UseInsertionEffectHook,
+  'usetransition-hook': UseTransitionHook,
+  'usedeferredvalue-hook': UseDeferredValueHook,
+  'useimperativehandle-hook': UseImperativeHandleHook,
   'what-is-context': WhatIsContext,
   'creating-context': CreatingContext,
   'passing-data-with-context': PassingDataWithContext,

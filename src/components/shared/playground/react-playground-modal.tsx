@@ -25,116 +25,42 @@ import Editor, { Monaco } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import {
   Code, Terminal, Play, RefreshCw, X, Loader2,
-  FileCode, Eye, Trash2, Palette
+  FileCode, Eye, Trash2, Palette, AlertTriangle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-const defaultExample = `function InteractiveCounter() {
+const defaultExample = `function CSSTest() {
   const [count, setCount] = React.useState(0);
   
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(Math.max(0, count - 1));
-  const reset = () => setCount(0);
-  
-  const containerStyle = {
-    padding: '2rem',
-    textAlign: 'center',
-    fontFamily: 'Arial, sans-serif',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    color: 'white',
-    borderRadius: '16px',
-    maxWidth: '400px',
-    margin: '2rem auto',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
-  };
-  
-  const titleStyle = {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    margin: '0 0 1rem 0',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'
-  };
-  
-  const countStyle = {
-    fontSize: '3rem',
-    fontWeight: 'bold',
-    margin: '1rem 0',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)'
-  };
-  
-  const buttonContainerStyle = {
-    display: 'flex',
-    gap: '1rem',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  };
-  
-  const buttonStyle = {
-    padding: '0.75rem 1.5rem',
-    fontSize: '1.1rem',
-    borderRadius: '8px',
-    border: 'none',
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-    fontWeight: 'bold',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
-  };
-  
-  const decrementStyle = {
-    ...buttonStyle,
-    background: count > 0 ? '#ff6b6b' : '#ccc',
-    color: 'white'
-  };
-  
-  const resetStyle = {
-    ...buttonStyle,
-    background: '#4ecdc4',
-    color: 'white'
-  };
-  
-  const incrementStyle = {
-    ...buttonStyle,
-    background: '#51cf66',
-    color: 'white'
-  };
-
   return (
-    <div style={containerStyle}>
-      <h2 style={titleStyle}>🚀 Interactive Counter</h2>
-      <div style={countStyle}>{count}</div>
-      <div style={buttonContainerStyle}>
-        <button 
-          style={decrementStyle}
-          onClick={decrement}
-          disabled={count === 0}
-        >
-          ➖ Decrease
-        </button>
-        <button 
-          style={resetStyle}
-          onClick={reset}
-        >
-          🔄 Reset
-        </button>
-        <button 
-          style={incrementStyle}
-          onClick={increment}
-        >
-          ➕ Increase
-        </button>
+    <div className="container">
+      <h1>🎨 CSS Button Test</h1>
+      <p>Add CSS for .my-button in the CSS editor!</p>
+      
+      <button className="my-button" onClick={() => setCount(count + 1)}>
+        Click me! ({count} clicks)
+      </button>
+      
+      <div className="button-group">
+        <button className="btn-primary">Primary Button</button>
+        <button className="btn-secondary">Secondary Button</button>
+        <button className="btn-success">Success Button</button>
       </div>
-      <p style={{ marginTop: '1rem', opacity: 0.8 }}>
-        Click the buttons to see React state management in action!
-      </p>
+      
+      <div className="card">
+        <h2>Test Card</h2>
+        <p>This is a test card. Try styling it with CSS!</p>
+        <button className="card-button">Card Button</button>
+      </div>
     </div>
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<InteractiveCounter />);`;
+root.render(<CSSTest />);`;
 
 const consoleScript = `
   const originalLog = console.log;
@@ -186,17 +112,117 @@ const consoleScript = `
 
 export function ReactPlaygroundModal() {
   const { isOpen, playgroundData, closePlayground } = useReactPlayground();
-  console.log('🎮 React Playground Modal: State update:', {
-    isOpen,
-    hasData: !!playgroundData,
-    dataLength: playgroundData?.jsx.length || 0
-  });
-  const [jsxCode, setJsxCode] = useState(defaultExample);
-  const [cssCode, setCssCode] = useState('');
+    const [jsxCode, setJsxCode] = useState(defaultExample);
+  const [cssCode, setCssCode] = useState(`/* CSS Button Styles - Your colors will work! */
+.my-button {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.my-button:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+.btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.card-button {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+h1, h2 {
+  color: #1f2937;
+}
+
+p {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Try changing these colors - they will work! */
+.my-button {
+  background: purple !important;
+  color: yellow !important;
+}`);
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [autoRun, setAutoRun] = useState(false);
+  const [cssErrors, setCssErrors] = useState<string[]>([]);
   const [outputSrc, setOutputSrc] = useState('about:blank');
   const [iframeKey, setIframeKey] = useState(0);
   const [visiblePanels, setVisiblePanels] = useState({
@@ -207,6 +233,60 @@ export function ReactPlaygroundModal() {
   });
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  // CSS validation function - relaxed to allow any CSS
+  const validateCSS = (css: string): string[] => {
+    const errors: string[] = [];
+    
+    // Remove comments for validation
+    const cleanCSS = css.replace(/\/\*[\s\S]*?\*\//g, '');
+    
+    // Only check for critical syntax errors
+    const openBraces = (cleanCSS.match(/{/g) || []).length;
+    const closeBraces = (cleanCSS.match(/}/g) || []).length;
+    if (openBraces !== closeBraces) {
+      errors.push(`Mismatched braces: ${openBraces} opening, ${closeBraces} closing`);
+    }
+    
+    // Check for completely invalid selectors (very relaxed)
+    const selectorRegex = /([^{}]+)\s*{/g;
+    let match;
+    while ((match = selectorRegex.exec(cleanCSS)) !== null) {
+      const selector = match[1].trim();
+      
+      // Only check for completely empty selectors
+      if (!selector || selector.length === 0) {
+        errors.push('Empty selector found');
+      }
+    }
+    
+    return errors;
+  };
+
+  // Validate CSS when it changes
+  useEffect(() => {
+    const errors = validateCSS(cssCode);
+    setCssErrors(errors);
+    
+    // Hide CSS panel if CSS content is empty
+    if (!cssCode.trim()) {
+      setVisiblePanels(prev => ({ ...prev, css: false }));
+    }
+  }, [cssCode]);
+
+  // Auto-update iframe when CSS changes
+  useEffect(() => {
+    if (cssCode.trim()) {
+      // Add a small delay to avoid too frequent updates while typing
+      const timeoutId = setTimeout(() => {
+        setIframeKey(prev => prev + 1);
+      }, 300);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [cssCode]);
+
+  
+  
   const hasInitialRunRef = useRef(false);
   const monacoRef = useRef<Monaco | null>(null);
   const { theme } = useTheme();
@@ -311,7 +391,6 @@ export function ReactPlaygroundModal() {
   const sendThemeToIframe = useCallback(() => {
     if (iframeRef.current) {
       const isDark = theme === 'dark';
-      console.log('🎨 [React Playground] Sending theme to iframe:', isDark);
       iframeRef.current.contentWindow?.postMessage({
         type: 'theme-change',
         isDark: isDark
@@ -336,17 +415,19 @@ export function ReactPlaygroundModal() {
 
   useEffect(() => {
     if (isOpen && playgroundData?.jsx) {
-      console.log('🎮 React Playground Modal: Setting playground data:', {
-        jsxLength: playgroundData.jsx.length,
-        cssLength: playgroundData.css?.length || 0,
-        jsxPreview: playgroundData.jsx.substring(0, 100) + '...'
-      });
       setJsxCode(playgroundData.jsx);
       setCssCode(playgroundData.css || '');
       setConsoleLogs([]);
       hasInitialRunRef.current = false;
       // Don't set hasChanges on initial load to prevent auto-run issues
       setHasChanges(false);
+      
+      // Show CSS panel if CSS content is provided
+      if (playgroundData.css && playgroundData.css.trim()) {
+        setVisiblePanels(prev => ({ ...prev, css: true }));
+      } else {
+        setVisiblePanels(prev => ({ ...prev, css: false }));
+      }
     }
   }, [isOpen, playgroundData]);
 
@@ -380,128 +461,44 @@ export function ReactPlaygroundModal() {
         .replace(/`/g, '\\`')
         .replace(/\$/g, '\\$');
 
-      // Set initial theme based on current app theme
-      const isDarkTheme = theme === 'dark';
-      const initialBackground = isDarkTheme ? '#0f172a' : '#f8fafc';
-      const initialTextColor = isDarkTheme ? '#f1f5f9' : '#1f2937';
+      // Force dark mode for all examples
+      const isDarkTheme = true;
+      const initialBackground = '#0f172a';
+      const initialTextColor = '#f1f5f9';
 
       const iframeHtml = `
 <!DOCTYPE html>
-<html class="${isDarkTheme ? 'dark' : ''}">
+<html class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <script>
-    // Set initial theme immediately to prevent flash
-    document.documentElement.className = '${isDarkTheme ? 'dark' : ''}';
-    document.body.style.background = '${initialBackground}';
-    document.body.style.color = '${initialTextColor}';
-    // Add CSS custom properties for better dark mode support
-    document.documentElement.style.setProperty('--background', '${initialBackground}');
-    document.documentElement.style.setProperty('--foreground', '${initialTextColor}');
-  </script>
-  <script>
-    (function() {
-      // Function to update theme based on system preference (fallback)
-      function updateTheme(systemDark) {
-        const isDark = systemDark !== undefined ? systemDark : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        console.log('🎨 [React Playground] Theme update - isDark:', isDark);
-        
-        // Apply dark class to HTML element for CSS selectors to work
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
+    // Force dark mode preference for user CSS media queries
+    if (window.matchMedia) {
+      // Override matchMedia to pretend dark mode is preferred
+      const originalMatchMedia = window.matchMedia;
+      window.matchMedia = function(query) {
+        if (query === '(prefers-color-scheme: dark)') {
+          return {
+            matches: true,
+            media: query,
+            onchange: null,
+            addListener: function() {},
+            removeListener: function() {},
+            addEventListener: function() {},
+            removeEventListener: function() {},
+            dispatchEvent: function() {}
+          };
         }
-        
-        // Update CSS variables and styles
-        const previewBackground = isDark ? '#0f172a' : '#f8fafc';
-        const textColor = isDark ? '#f1f5f9' : '#1f2937';
-        const mutedTextColor = isDark ? '#e2e8f0' : '#374151';
-        const buttonBg = isDark ? '#1f2937' : '#f3f4f6';
-        const buttonBorder = isDark ? '#374151' : '#d1d5db';
-        const inputBg = isDark ? '#1f2937' : '#ffffff';
-        const errorBg = isDark ? '#7f1d1d' : '#fef2f2';
-        const errorColor = isDark ? '#fca5a5' : '#dc2626';
-        const errorBorder = isDark ? '#7f1d1d' : '#fecaca';
-        
-        // Update CSS custom properties
-        document.documentElement.style.setProperty('--background', previewBackground);
-        document.documentElement.style.setProperty('--foreground', textColor);
-        document.documentElement.style.setProperty('--muted', mutedTextColor);
-        document.documentElement.style.setProperty('--card', isDark ? '#1e293b' : '#ffffff');
-        document.documentElement.style.setProperty('--border', isDark ? '#334155' : '#e2e8f0');
-        
-        // Update body styles immediately
-        document.body.style.setProperty('background', previewBackground, 'important');
-        document.body.style.setProperty('color', textColor, 'important');
-        
-        // Update all text elements
-        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        textElements.forEach(el => el.style.color = textColor);
-        
-        const mutedElements = document.querySelectorAll('p, span, div');
-        mutedElements.forEach(el => {
-          if (!el.closest('button') && !el.closest('input') && !el.closest('textarea') && !el.closest('select')) {
-            el.style.color = mutedTextColor;
-          }
-        });
-        
-        // Update buttons
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(el => {
-          el.style.background = buttonBg;
-          el.style.color = textColor;
-          el.style.border = \`1px solid \${buttonBorder}\`;
-        });
-        
-        // Update inputs
-        const inputs = document.querySelectorAll('input, textarea, select');
-        inputs.forEach(el => {
-          el.style.background = inputBg;
-          el.style.color = textColor;
-          el.style.border = \`1px solid \${buttonBorder}\`;
-        });
-        
-        // Update error displays
-        const errorDisplays = document.querySelectorAll('.error-display');
-        errorDisplays.forEach(el => {
-          el.style.background = errorBg;
-          el.style.color = errorColor;
-          const h3 = el.querySelector('h3');
-          if (h3) h3.style.color = errorColor;
-          const pre = el.querySelector('pre');
-          if (pre) {
-            pre.style.background = isDark ? '#450a0a' : '#fef2f2';
-            pre.style.color = errorColor;
-            pre.style.border = \`1px solid \${errorBorder}\`;
-          }
-        });
-      }
-      
-      // Listen for system theme changes
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      mediaQuery.addEventListener('change', (e) => updateTheme(e.matches));
-      
-      // Listen for theme messages from parent
-      window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'theme-change') {
-          console.log('🎨 [React Playground] Received theme message:', event.data.isDark);
-          updateTheme(event.data.isDark);
-        }
-      });
-      
-      // Initial theme setup - use current theme
-      updateTheme(${isDarkTheme});
-    })();
+        return originalMatchMedia.call(this, query);
+      };
+    }
   </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: system-ui, -apple-system, sans-serif; 
-      background: ${initialBackground} !important;
-      color: ${initialTextColor} !important;
       min-height: 100vh;
       transition: background 0.3s ease, color 0.3s ease;
     }
@@ -532,219 +529,83 @@ export function ReactPlaygroundModal() {
       font-size: 14px;
       border: 1px solid #fecaca;
     }
-    /* Enhanced dark mode support for user content */
-    html.dark body {
-      background: #0f172a !important;
-      color: #f1f5f9 !important;
-    }
-    html.dark .error-display {
-      background: #7f1d1d !important;
-      color: #fca5a5 !important;
-    }
-    html.dark .error-display h3 {
-      color: #fca5a5 !important;
-    }
-    html.dark .error-display pre {
-      background: #450a0a !important;
-      color: #fca5a5 !important;
-      border-color: #7f1d1d !important;
+    /* Removed all dark mode overrides to allow user CSS to work */
+    
+    /* Removed all forced background and color styles to allow user CSS */
+    
+    /* Ensure inline styles have highest specificity */
+    #root [style] {
+      /* Don't override inline styles - they should have highest specificity */
     }
     
-    /* Support for CSS custom properties in user content */
-    :root {
-      --background: ${initialBackground};
-      --foreground: ${initialTextColor};
-      --card: ${isDarkTheme ? '#1e293b' : '#ffffff'};
-      --border: ${isDarkTheme ? '#334155' : '#e2e8f0'};
-      --muted: ${isDarkTheme ? '#e2e8f0' : '#374151'};
-    }
+    /* Removed all forced styles to allow user CSS to work properly */
     
-    html.dark {
-      --background: #0f172a;
-      --foreground: #f1f5f9;
-      --card: #1e293b;
-      --border: #334155;
-      --muted: #e2e8f0;
-    }
+    /* User CSS - injected with maximum specificity to override all defaults */
+    ${cssCode || ''}
     
-    /* Common dark mode styles for user components */
-    html.dark .card,
-    html.dark .bg-white {
-      background: var(--card) !important;
-      border-color: var(--border) !important;
-    }
-    
-    html.dark .bg-gray-50,
-    html.dark .bg-slate-50 {
-      background: #1e293b !important;
-    }
-    
-    html.dark .text-gray-900,
-    html.dark .text-slate-900 {
-      color: var(--foreground) !important;
-    }
-    
-    html.dark .text-gray-600,
-    html.dark .text-slate-600 {
-      color: var(--muted) !important;
-    }
-    
-    html.dark button:not([style*="background"]) {
-      background: var(--card) !important;
-      color: var(--foreground) !important;
-      border-color: var(--border) !important;
-    }
-    
-    html.dark input,
-    html.dark textarea,
-    html.dark select {
-      background: var(--card) !important;
-      color: var(--foreground) !important;
-      border-color: var(--border) !important;
-    }
-    
-    /* Light mode base styles for iframe */
-    html:not(.dark) {
-      background: ${initialBackground} !important;
-    }
-    
-    html:not(.dark) body {
-      background: ${initialBackground} !important;
-      color: ${initialTextColor} !important;
-    }
-    
-    /* Dark mode base styles for iframe - with maximum specificity */
-    html.dark {
-      background: ${initialBackground} !important;
-    }
-    
-    html.dark body {
-      background: ${initialBackground} !important;
-      color: ${initialTextColor} !important;
-    }
-    
-    /* Override user-provided body styles in dark mode */
-    html.dark #root {
-      background: transparent !important;
-    }
-    
-    /* User-provided CSS with proper scoping */
-    ${cssCode.replace(/([^{}]+)\s*{/g, (match) => {
-      const selector = match.trim();
-      // Don't prefix dark mode selectors since .dark is on html element
-      if (selector.startsWith('.dark')) {
-        return match;
+    /* Enhanced user CSS with maximum specificity */
+    ${cssCode ? cssCode.split('}').filter(rule => rule.trim()).map(rule => {
+      const selector = rule.split('{')[0]?.trim();
+      const properties = rule.split('{')[1]?.trim();
+      if (selector && properties) {
+        // Add multiple specificity levels to ensure user CSS wins
+        return `html body #root ${selector} { ${properties} }`;
       }
-      // Don't prefix body selector since it's outside #root
-      if (selector.startsWith('body')) {
-        return match;
+      return '';
+    }).filter(Boolean).join('\n') : ''}
+    
+    /* User CSS with !important to ensure it overrides everything */
+    ${cssCode ? cssCode.split('}').filter(rule => rule.trim()).map(rule => {
+      const selector = rule.split('{')[0]?.trim();
+      let properties = rule.split('{')[1]?.trim();
+      if (selector && properties) {
+        // Add !important to all user CSS properties
+        properties = properties.replace(/([^:]+):\s*([^;]+)/g, '$1: $2 !important');
+        return `html body #root ${selector} { ${properties} }`;
       }
-      // Don't prefix html selector since it's outside #root
-      if (selector.startsWith('html')) {
-        return match;
-      }
-      // Don't prefix :root selector
-      if (selector.startsWith(':root')) {
-        return match;
-      }
-      // Don't prefix @media, @keyframes, etc.
-      if (selector.startsWith('@')) {
-        return match;
-      }
-      // Don't prefix if already has #root
-      if (selector.includes('#root')) {
-        return match;
-      }
-      // For global styles and multiple selectors, handle each separately
-      if (selector.includes(',')) {
-        const selectors = selector.split(',').map(s => {
-          const trimmed = s.trim();
-          if (trimmed.startsWith('.dark') || trimmed.startsWith('body') || 
-              trimmed.startsWith('html') || trimmed.startsWith(':root') || 
-              trimmed.startsWith('@') || trimmed.includes('#root')) {
-            return trimmed;
+      return '';
+    }).filter(Boolean).join('\n') : ''}
+    
+    /* Process user media queries - extract and apply dark mode styles */
+    ${cssCode ? (() => {
+      const mediaQueryRegex = /@media\s*\([^)]*prefers-color-scheme:\s*dark[^)]*\)\s*{([\s\S]*?)}/g;
+      let darkModeStyles = '';
+      let match;
+      while ((match = mediaQueryRegex.exec(cssCode)) !== null) {
+        const mediaContent = match[1];
+        // Extract rules from media query
+        const rules = mediaContent.split('}').filter(rule => rule.trim()).map(rule => {
+          const parts = rule.split('{');
+          if (parts.length === 2) {
+            const selector = parts[0].trim();
+            const properties = parts[1].trim();
+            if (selector && properties) {
+              // Add !important and high specificity
+              const importantProps = properties.replace(/([^:]+):\s*([^;]+)/g, '$1: $2 !important');
+              return `html body #root ${selector} { ${importantProps} }`;
+            }
           }
-          return `#root ${trimmed}`;
-        });
-        return selectors.join(', ') + ' {';
+          return '';
+        }).filter(Boolean).join('\n');
+        darkModeStyles += rules + '\n';
       }
-      // Prefix single selectors with #root
-      return `#root ${selector}{`;
-    })}
+      return darkModeStyles;
+    })() : ''}
     
-    /* Gentle dark mode base styles */
-    html.dark {
-      background: ${initialBackground};
+    /* Support for user-provided dark mode CSS with @media queries */
+    @media (prefers-color-scheme: dark) {
+      /* This allows user @media (prefers-color-scheme: dark) rules to work */
+      /* The playground is always in dark mode, so we simulate the preference */
+    }
+    
+    /* Force dark mode preference for user CSS media queries */
+    html {
       color-scheme: dark;
     }
     
-    html.dark body {
-      background: ${initialBackground};
-      color: ${initialTextColor};
-    }
-    
-    html.dark #root {
-      background: transparent;
-      color: inherit;
-      min-height: 100vh;
-    }
-    
-    /* Restore specific element backgrounds that should be different */
-    html.dark .btn-increment,
-    html.dark .status-panel,
-    html.dark .status-item,
-    html.dark .info-box,
-    html.dark .explanation,
-    html.dark .note {
-      background: revert !important;
-    }
-    
-    /* Comprehensive dark mode text color overrides - but don't override user CSS */
-    html.dark body {
-      color: ${initialTextColor} !important;
-    }
-    
-    /* Only override base text color, don't override user-provided colors */
-    html.dark #root,
-    html.dark .container {
-      /* Don't override text color to allow user CSS */
-    }
-    
-    /* Restore specific text colors that should be different */
-    html.dark .btn-increment,
-    html.dark .btn-increment *,
-    html.dark .status-item.trigger *,
-    html.dark .status-item.render *,
-    html.dark .status-item.commit *,
-    html.dark .count-display strong,
-    html.dark .count-display,
-    html.dark .static-text,
-    html.dark .hint,
-    html.dark .arrow {
-      color: revert !important;
-    }
-    
-    /* Ensure proper contrast for specific elements - but don't override user CSS */
-    html.dark h1,
-    html.dark h2,
-    html.dark h3,
-    html.dark h4,
-    html.dark h5,
-    html.dark h6 {
-      /* Don't override to allow user CSS */
-    }
-    
-    html.dark p,
-    html.dark span,
-    html.dark label,
-    html.dark input {
-      /* Don't override to allow user CSS */
-    }
-    
-    /* Special handling for code elements */
-    html.dark code,
-    html.dark pre {
-      color: #e2e8f0 !important;
+    /* Ensure user dark mode CSS works by setting the preference */
+    @media (prefers-color-scheme: dark) {
+      /* Empty block to trigger user media queries */
     }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -759,13 +620,10 @@ export function ReactPlaygroundModal() {
       function waitForLibraries(callback, attempts) {
         attempts = attempts || 0;
         if (typeof React !== 'undefined' && typeof ReactDOM !== 'undefined' && typeof Babel !== 'undefined') {
-          console.log('✅ React 18 + Babel loaded');
-          console.log('📦 Available: useState, useEffect, useCallback, useMemo, useRef, useContext, useReducer, useId, useTransition, useDeferredValue, Suspense, lazy, memo, forwardRef, createContext, createPortal');
           callback();
         } else if (attempts < 50) {
           setTimeout(function() { waitForLibraries(callback, attempts + 1); }, 100);
         } else {
-          console.error('❌ Failed to load required libraries');
           document.getElementById('root').innerHTML = '<div class="error-display"><h3>⚠️ Error</h3><pre>Failed to load React libraries. Check your internet connection.</pre></div>';
         }
       }
@@ -795,6 +653,12 @@ export function ReactPlaygroundModal() {
           window.useDebugValue = React.useDebugValue;
           window.useId = React.useId;
           window.useTransition = React.useTransition;
+          
+          // Ensure proper evaluation context for inline styles
+          window.Object = Object;
+          window.Array = Array;
+          window.String = String;
+          window.Number = Number;
           window.useDeferredValue = React.useDeferredValue;
           window.useSyncExternalStore = React.useSyncExternalStore;
           window.useInsertionEffect = React.useInsertionEffect;
@@ -824,13 +688,9 @@ export function ReactPlaygroundModal() {
             filename: 'playground.jsx'
           }).code;
           
-          console.log('✅ JSX compiled successfully');
-          
           eval(transformedCode);
           
           // Theme is already applied in the initial setup, no need to reapply
-          
-          console.log('🎉 React component rendered!');
           
         } catch (error) {
           console.error('❌ Error:', error.message);
@@ -874,7 +734,6 @@ export function ReactPlaygroundModal() {
   useEffect(() => {
     if (isOpen && jsxCode && !hasInitialRunRef.current) {
       const timeout = setTimeout(() => {
-        console.log('🚀 Initial run triggered');
         runCode();
         hasInitialRunRef.current = true;
       }, 500); // Increased delay to ensure everything is loaded
@@ -1127,18 +986,31 @@ export function ReactPlaygroundModal() {
               <>
                 <ResizablePanel defaultSize={20} collapsible minSize={15}>
                   <div className="h-full flex flex-col">
-                    <div className="px-4 py-2.5 bg-purple-50 dark:bg-purple-950/20 border-b flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="p-1 bg-purple-500 rounded">
-                          <Palette className="h-3 w-3 text-white" />
+                    <div className="px-4 py-2.5 bg-purple-50 dark:bg-purple-950/20 border-b">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1 bg-purple-500 rounded">
+                            <Palette className="h-3 w-3 text-white" />
+                          </div>
+                          <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">CSS Editor</span>
                         </div>
-                        <span className="text-xs font-semibold text-purple-700 dark:text-purple-300">CSS Editor</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setIframeKey(prev => prev + 1);
+                            }}
+                            className="text-xs px-2 py-1 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/50 dark:hover:bg-blue-800/50 text-blue-700 dark:text-blue-300 rounded transition-colors"
+                            title="Manual refresh (auto-updates enabled)"
+                          >
+                            🔄 Refresh
+                          </button>
+                          <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300">
+                            styles.css
+                          </Badge>
+                        </div>
                       </div>
-                      <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300">
-                        styles.css
-                      </Badge>
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 flex flex-col">
                       <Editor
                         language="css"
                         value={cssCode}
@@ -1167,6 +1039,23 @@ export function ReactPlaygroundModal() {
                           bracketPairColorization: { enabled: true },
                         }}
                       />
+                      {cssErrors.length > 0 && (
+                        <div className="border-t border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20 p-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <AlertTriangle className="h-3 w-3 text-red-500" />
+                            <span className="text-xs font-medium text-red-700 dark:text-red-300">
+                              CSS Errors ({cssErrors.length})
+                            </span>
+                          </div>
+                          <div className="space-y-1 max-h-20 overflow-y-auto">
+                            {cssErrors.map((error, index) => (
+                              <div key={index} className="text-xs text-red-600 dark:text-red-400 font-mono">
+                                • {error}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </ResizablePanel>

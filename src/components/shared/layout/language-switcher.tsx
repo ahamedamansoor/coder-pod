@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { enabledLanguages as languages } from '@/data/languages';
+import type { Language } from '@/data/languages';
 import { useRouter } from 'next/navigation';
 import { ChevronDown, Code, Search } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -24,7 +25,7 @@ export function LanguageSwitcher({
   const [searchQuery, setSearchQuery] = useState('');
   
   const currentLanguage = languages.find(
-    (lang) => lang.slug === currentLanguageSlug
+    (language) => language.slug === currentLanguageSlug
   );
 
   const handleLanguageSelect = (slug: string) => {
@@ -32,47 +33,57 @@ export function LanguageSwitcher({
     setSearchQuery(''); // Reset search on selection
   };
 
-  const frontendSlugs = new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'typescript', 'react', 'vue', 'nextjs', 'angular', 'rxjs']);
-  const backendSlugs = new Set(['java', 'spring', 'spring-boot', 'python']);
-  const dsaSlugs = new Set(['dsa']);
-  const testingSlugs = new Set(['playwright', 'selenium']);
-  const toolsSlugs = new Set(['git']);
-  const excludedSlugs = new Set(['python']); // Languages to exclude from dropdown
+  // Use same language filtering as learning paths page
+  const allowedSlugs = ['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa'];
+  const frontendSlugs = ['html', 'css', 'scss', 'tailwind', 'javascript', 'react'];
+  const backendSlugs: string[] = [];
+  const dsaSlugs = ['dsa'];
+  const testingSlugs = ['selenium'];
+  const toolsSlugs: string[] = [];
+  const excludedSlugs: string[] = []; // No exclusions - use allowedSlugs filter
 
   // Filter languages based on search query
-  const filteredLanguages = useMemo(() => {
-    // Filter out excluded languages first
-    const availableLanguages = languages.filter((lang) => !excludedSlugs.has(lang.slug));
+  const filteredLanguages = useMemo((): {
+    frontend: Language[];
+    backend: Language[];
+    testing: Language[];
+    dsa: Language[];
+    tools: Language[];
+    other: Language[];
+  } => {
+    // Filter to only allowed slugs first (same as learning paths page)
+    const availableLanguages = languages.filter((language) => allowedSlugs.includes(language.slug));
     
     if (!searchQuery.trim()) {
       return {
-        frontend: availableLanguages.filter((lang) => frontendSlugs.has(lang.slug)),
-        backend: availableLanguages.filter((lang) => backendSlugs.has(lang.slug)),
-        testing: availableLanguages.filter((lang) => testingSlugs.has(lang.slug)),
-        dsa: availableLanguages.filter((lang) => dsaSlugs.has(lang.slug)),
-        tools: availableLanguages.filter((lang) => toolsSlugs.has(lang.slug)),
+        frontend: availableLanguages.filter((language) => frontendSlugs.includes(language.slug)),
+        backend: availableLanguages.filter((language) => backendSlugs.includes(language.slug)),
+        testing: availableLanguages.filter((language) => testingSlugs.includes(language.slug)),
+        dsa: availableLanguages.filter((language) => dsaSlugs.includes(language.slug)),
+        tools: availableLanguages.filter((language) => toolsSlugs.includes(language.slug)),
         other: availableLanguages.filter(
-          (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
+          (language) => !frontendSlugs.includes(language.slug) && !backendSlugs.includes(language.slug) && !dsaSlugs.includes(language.slug) && !testingSlugs.includes(language.slug) && !toolsSlugs.includes(language.slug)
         ),
       };
     }
 
     const query = searchQuery.toLowerCase();
-    const matchingLanguages = availableLanguages.filter((lang) =>
-      lang.name.toLowerCase().includes(query) || lang.slug.toLowerCase().includes(query)
+    const matchingLanguages = languages.filter((language) => 
+      allowedSlugs.includes(language.slug) &&
+      (language.name.toLowerCase().includes(query) || language.slug.toLowerCase().includes(query))
     );
 
     return {
-      frontend: matchingLanguages.filter((lang) => frontendSlugs.has(lang.slug)),
-      backend: matchingLanguages.filter((lang) => backendSlugs.has(lang.slug)),
-      testing: matchingLanguages.filter((lang) => testingSlugs.has(lang.slug)),
-      dsa: matchingLanguages.filter((lang) => dsaSlugs.has(lang.slug)),
-      tools: matchingLanguages.filter((lang) => toolsSlugs.has(lang.slug)),
+      frontend: matchingLanguages.filter((language) => frontendSlugs.includes(language.slug)),
+      backend: matchingLanguages.filter((language) => backendSlugs.includes(language.slug)),
+      testing: matchingLanguages.filter((language) => testingSlugs.includes(language.slug)),
+      dsa: matchingLanguages.filter((language) => dsaSlugs.includes(language.slug)),
+      tools: matchingLanguages.filter((language) => toolsSlugs.includes(language.slug)),
       other: matchingLanguages.filter(
-        (lang) => !frontendSlugs.has(lang.slug) && !backendSlugs.has(lang.slug) && !dsaSlugs.has(lang.slug) && !testingSlugs.has(lang.slug) && !toolsSlugs.has(lang.slug)
+        (language) => !frontendSlugs.includes(language.slug) && !backendSlugs.includes(language.slug) && !dsaSlugs.includes(language.slug) && !testingSlugs.includes(language.slug) && !toolsSlugs.includes(language.slug)
       ),
     };
-  }, [searchQuery, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs, toolsSlugs, excludedSlugs]);
+  }, [searchQuery, languages, frontendSlugs, backendSlugs, testingSlugs, dsaSlugs, toolsSlugs, excludedSlugs, allowedSlugs]);
 
   return (
       <DropdownMenu>
@@ -113,13 +124,13 @@ export function LanguageSwitcher({
                   Frontend ({filteredLanguages.frontend.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.frontend.map((lang) => (
+                  {filteredLanguages.frontend.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>
@@ -132,13 +143,13 @@ export function LanguageSwitcher({
                   Backend ({filteredLanguages.backend.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.backend.map((lang) => (
+                  {filteredLanguages.backend.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>
@@ -151,13 +162,13 @@ export function LanguageSwitcher({
                   Testing ({filteredLanguages.testing.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.testing.map((lang) => (
+                  {filteredLanguages.testing.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>
@@ -170,13 +181,13 @@ export function LanguageSwitcher({
                   DSA ({filteredLanguages.dsa.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.dsa.map((lang) => (
+                  {filteredLanguages.dsa.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>
@@ -189,13 +200,13 @@ export function LanguageSwitcher({
                   Tools ({filteredLanguages.tools.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.tools.map((lang) => (
+                  {filteredLanguages.tools.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>
@@ -208,13 +219,13 @@ export function LanguageSwitcher({
                   Other ({filteredLanguages.other.length})
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {filteredLanguages.other.map((lang) => (
+                  {filteredLanguages.other.map((language) => (
                     <DropdownMenuItem 
-                      key={lang.slug} 
-                      onClick={() => handleLanguageSelect(lang.slug)}
+                      key={language.slug} 
+                      onClick={() => handleLanguageSelect(language.slug)}
                       className="cursor-pointer text-sm"
                     >
-                      {lang.name}
+                      {language.name}
                     </DropdownMenuItem>
                   ))}
                 </div>

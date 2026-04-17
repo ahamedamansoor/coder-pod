@@ -33,7 +33,7 @@ export default function ManipulatingTheDOMWithRefs() {
         colorTheme="cyan"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
         {/* Getting a Ref to DOM Node */}
         <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
@@ -130,7 +130,8 @@ function MyComponent() {
   );
 }
 
-ReactDOM.render(<FocusInput />, document.getElementById('root'));`}
+const root = createRoot(document.getElementById('root'));
+root.render(<FocusInput />);`}
             html={`<div id="root"></div>`}
             js={`const script1 = document.createElement('script');
 script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
@@ -173,7 +174,8 @@ script2.onload = () => {
     );
   }
 
-  ReactDOM.render(h(FocusInput), document.getElementById('root'));
+  const root = createRoot(document.getElementById('root'));
+root.render(h(FocusInput));
 };
 
 document.head.appendChild(script1);
@@ -374,7 +376,8 @@ h1 {
   );
 }
 
-ReactDOM.render(<ScrollExample />, document.getElementById('root'));`}
+const root = createRoot(document.getElementById('root'));
+root.render(<ScrollExample />);`}
             html={`<div id="root"></div>`}
             js={`const script1 = document.createElement('script');
 script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
@@ -449,7 +452,8 @@ script2.onload = () => {
     );
   }
 
-  ReactDOM.render(h(ScrollExample), document.getElementById('root'));
+  const root = createRoot(document.getElementById('root'));
+root.render(h(ScrollExample));
 };
 
 document.head.appendChild(script1);

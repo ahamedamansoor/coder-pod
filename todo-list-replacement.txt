@@ -1,0 +1,572 @@
+<FrontendCodePreview learningContext="react"
+            title="Todo List Manager"
+            description="Add, complete, and delete todos while learning object immutability"
+            colorTheme="cyan"
+            react={`function TodoManager() {
+  const [todos, setTodos] = React.useState([
+    { id: 1, text: 'Learn React state', completed: true },
+    { id: 2, text: 'Build a todo app', completed: false },
+    { id: 3, text: 'Master immutability', completed: false }
+  ]);
+  const [inputValue, setInputValue] = React.useState('');
+
+  const addTodo = () => {
+    if (inputValue.trim()) {
+      const newTodo = {
+        id: Date.now(),
+        text: inputValue.trim(),
+        completed: false
+      };
+      setTodos([...todos, newTodo]);
+      setInputValue('');
+    }
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id 
+        ? { ...todo, completed: !todo.completed }
+        : todo
+    ));
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  const clearCompleted = () => {
+    setTodos(todos.filter(todo => !todo.completed));
+  };
+
+  const completedCount = todos.filter(todo => todo.completed).length;
+  const remainingCount = todos.length - completedCount;
+
+  return (
+    <div className="todo-container">
+      <h1>📝 Todo List Manager</h1>
+      
+      <div className="add-todo-section">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
+          placeholder="What needs to be done?"
+          className="todo-input"
+        />
+        <button onClick={addTodo} className="add-btn">
+          + Add Todo
+        </button>
+      </div>
+
+      <div className="stats-section">
+        <div className="stat-card">
+          <span className="stat-number">{todos.length}</span>
+          <span className="stat-label">Total</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-number">{remainingCount}</span>
+          <span className="stat-label">Active</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-number">{completedCount}</span>
+          <span className="stat-label">Completed</span>
+        </div>
+      </div>
+
+      <div className="todos-list">
+        {todos.map(todo => (
+          <div key={todo.id} className={'todo-item ' + (todo.completed ? 'completed' : '')}>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => toggleTodo(todo.id)}
+              className="todo-checkbox"
+            />
+            <span className="todo-text">{todo.text}</span>
+            <button
+              onClick={() => deleteTodo(todo.id)}
+              className="delete-btn"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {todos.length === 0 && (
+        <div className="empty-state">
+          <div className="empty-icon">📋</div>
+          <div className="empty-text">No todos yet! Add one above.</div>
+        </div>
+      )}
+
+      {completedCount > 0 && (
+        <div className="actions-section">
+          <button onClick={clearCompleted} className="clear-btn">
+            Clear Completed ({completedCount})
+          </button>
+        </div>
+      )}
+
+      <div className="state-display">
+        <h3>📊 Current State</h3>
+        <pre>{JSON.stringify(todos, null, 2)}</pre>
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<TodoManager />);`}
+            html={`<div id="root"></div>`}
+            js={`const script1 = document.createElement('script');
+script1.src = 'https://unpkg.com/react@18/umd/react.development.js';
+script1.crossOrigin = 'anonymous';
+
+const script2 = document.createElement('script');
+script2.src = 'https://unpkg.com/react-dom@18/umd/react-dom.development.js';
+script2.crossOrigin = 'anonymous';
+
+script2.onload = () => {
+  const { createElement: h, useState } = React;
+  const { createRoot } = ReactDOM;
+
+  function TodoManager() {
+    const [todos, setTodos] = useState([
+      { id: 1, text: 'Learn React state', completed: true },
+      { id: 2, text: 'Build a todo app', completed: false },
+      { id: 3, text: 'Master immutability', completed: false }
+    ]);
+    const [inputValue, setInputValue] = useState('');
+
+    const addTodo = () => {
+      if (inputValue.trim()) {
+        const newTodo = {
+          id: Date.now(),
+          text: inputValue.trim(),
+          completed: false
+        };
+        setTodos([...todos, newTodo]);
+        setInputValue('');
+      }
+    };
+
+    const toggleTodo = (id) => {
+      setTodos(todos.map(todo =>
+        todo.id === id 
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      ));
+    };
+
+    const deleteTodo = (id) => {
+      setTodos(todos.filter(todo => todo.id !== id));
+    };
+
+    const clearCompleted = () => {
+      setTodos(todos.filter(todo => !todo.completed));
+    };
+
+    const completedCount = todos.filter(todo => todo.completed).length;
+    const remainingCount = todos.length - completedCount;
+
+    return h('div', { className: 'todo-container' },
+      h('h1', null, '📝 Todo List Manager'),
+      
+      h('div', { className: 'add-todo-section' },
+        h('input', {
+          type: 'text',
+          value: inputValue,
+          onChange: (e) => setInputValue(e.target.value),
+          onKeyPress: (e) => e.key === 'Enter' && addTodo(),
+          placeholder: 'What needs to be done?',
+          className: 'todo-input'
+        }),
+        h('button', { onClick: addTodo, className: 'add-btn' }, '+ Add Todo')
+      ),
+
+      h('div', { className: 'stats-section' },
+        h('div', { className: 'stat-card' },
+          h('span', { className: 'stat-number' }, todos.length),
+          h('span', { className: 'stat-label' }, 'Total')
+        ),
+        h('div', { className: 'stat-card' },
+          h('span', { className: 'stat-number' }, remainingCount),
+          h('span', { className: 'stat-label' }, 'Active')
+        ),
+        h('div', { className: 'stat-card' },
+          h('span', { className: 'stat-number' }, completedCount),
+          h('span', { className: 'stat-label' }, 'Completed')
+        )
+      ),
+
+      h('div', { className: 'todos-list' },
+        todos.map(todo =>
+          h('div', { 
+            key: todo.id, 
+            className: 'todo-item ' + (todo.completed ? 'completed' : '') 
+          },
+            h('input', {
+              type: 'checkbox',
+              checked: todo.completed,
+              onChange: () => toggleTodo(todo.id),
+              className: 'todo-checkbox'
+            }),
+            h('span', { className: 'todo-text' }, todo.text),
+            h('button', {
+              onClick: () => deleteTodo(todo.id),
+              className: 'delete-btn'
+            }, 'Delete')
+          )
+        )
+      ),
+
+      todos.length === 0 && h('div', { className: 'empty-state' },
+        h('div', { className: 'empty-icon' }, '📋'),
+        h('div', { className: 'empty-text' }, 'No todos yet! Add one above.')
+      ),
+
+      completedCount > 0 && h('div', { className: 'actions-section' },
+        h('button', { 
+          onClick: clearCompleted, 
+          className: 'clear-btn' 
+        }, \`Clear Completed (\${completedCount})\`)
+      ),
+
+      h('div', { className: 'state-display' },
+        h('h3', null, '📊 Current State'),
+        h('pre', null, JSON.stringify(todos, null, 2))
+      )
+    );
+  }
+
+  const root = createRoot(document.getElementById('root'));
+  root.render(h(TodoManager));
+};
+
+document.head.appendChild(script1);
+document.head.appendChild(script2);`}
+            css={`* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.todo-container {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+}
+
+.todo-container h1 {
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.add-todo-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 15px 20px;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.todo-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.add-btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.add-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #dee2e6;
+}
+
+.stat-number {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  border-color: #667eea;
+  transform: translateX(5px);
+}
+
+.todo-item.completed {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border-color: #28a745;
+}
+
+.todo-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 16px;
+  color: #495057;
+  transition: all 0.3s ease;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #6c757d;
+  opacity: 0.7;
+}
+
+.delete-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  border: 2px dashed #dee2e6;
+  margin-bottom: 30px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.empty-text {
+  font-size: 18px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.actions-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.clear-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+}
+
+.state-display {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 25px;
+  border-radius: 16px;
+  border: 2px solid #4a5568;
+}
+
+.state-display h3 {
+  color: #a0aec0;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.state-display pre {
+  background: #1a202c;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e2e8f0;
+  border: 1px solid #4a5568;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  }
+
+  .todo-container {
+    background: #1f2937;
+  }
+
+  .todo-container h1 {
+    color: #60a5fa;
+  }
+
+  .todo-input {
+    background: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+
+  .todo-input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1);
+  }
+
+  .stat-card {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .stat-number {
+    color: #60a5fa;
+  }
+
+  .stat-label {
+    color: #9ca3af;
+  }
+
+  .todo-item {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .todo-item:hover {
+    border-color: #60a5fa;
+  }
+
+  .todo-item.completed {
+    background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+    border-color: #10b981;
+  }
+
+  .todo-text {
+    color: #e5e7eb;
+  }
+
+  .todo-item.completed .todo-text {
+    color: #9ca3af;
+  }
+
+  .empty-state {
+    background: #374151;
+    border-color: #4b5563;
+  }
+
+  .empty-text {
+    color: #9ca3af;
+  }
+
+  .state-display {
+    background: #111827;
+    border-color: #374151;
+  }
+
+  .state-display h3 {
+    color: #9ca3fd;
+  }
+
+  .state-display pre {
+    background: #000000;
+    color: #e5e7eb;
+    border-color: #374151;
+  }
+}`}
+          />

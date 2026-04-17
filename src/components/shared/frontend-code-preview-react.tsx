@@ -52,8 +52,9 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
   const [mounted, setMounted] = useState(false);
   const [consoleMessages, setConsoleMessages] = useState<Array<{type: 'log' | 'error' | 'warn'; message: string}>>([]);
   const [showConsole, setShowConsole] = useState(false);
-  const [activeTab, setActiveTab] = useState<'html' | 'css' | 'js' | 'react'>('react');
+  const [activeTab, setActiveTab] = useState<'react' | 'css'>('react');
   const [showCode, setShowCode] = useState(true);
+  const [reloadTrigger, setReloadTrigger] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const { theme: appTheme } = useTheme();
   const { openPlayground } = useReactPlayground();
@@ -95,10 +96,24 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
     };
   }, []);
 
+  // Auto-run on initial mount
+  useEffect(() => {
+    if (mounted && react) {
+      // Trigger initial run after a short delay to ensure everything is loaded
+      const timer = setTimeout(() => {
+        setReloadTrigger(1);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [mounted, react]);
+
+  
   // Get React preview content
   const getReactPreviewContent = () => {
-    const bgColor = isDarkMode ? '#0f172a' : '#f8fafc';
-    const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+    // Use theme-appropriate colors
+    const bgColor = isDarkMode ? '#0f172a' : '#ffffff';
+    const textColor = isDarkMode ? '#e2e8f0' : '#1f2937';
     
     const defaultStyles = `
       * { 
@@ -137,13 +152,14 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
     
     // Process the React code for execution in iframe
     let processedCode = react
+      // Remove React imports since React is available globally
       .replace(/import\s+React\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]react['"];?\s*/g, '')
       .replace(/import\s*\{[^}]*\}\s*from\s*['"]react['"];?\s*/g, '')
       .replace(/import\s*\{[^}]*createRoot[^}]*\}\s*from\s*['"]react-dom\/client['"];?\s*/g, '')
-      // Remove the entire createRoot execution pattern since we handle rendering in iframe
-      .replace(/\/\/ React 18 createRoot API pattern[\s\S]*?(?=export default)/g, '')
-      .replace(/export default/g, 'module.exports =')
-      .replace(/`/g, '\\`');
+      // Remove the createRoot execution pattern since we handle rendering in iframe
+      .replace(/const\s+root\s*=\s*ReactDOM\.createRoot\(document\.getElementById\(['"]root['"]\)\);\s*root\.render\([^)]*\);?\s*$/gm, '')
+      // Remove export default statements since we use global assignment
+      .replace(/export default\s+(\w+);?\s*$/gm, '');
     
     return `<!DOCTYPE html>
 <html lang="en" class="${isDarkMode ? 'dark' : ''}">
@@ -158,37 +174,11 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
   </style>
   <script>
     (function() {
-      // Function to update theme
-      function updateTheme() {
-        // Check if parent has dark mode, fallback to system preference
-        const parentHasDark = window.parent.document.documentElement.classList.contains('dark');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = parentHasDark || systemPrefersDark;
-        
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      }
-      
-      // Initial theme setup
-      setTimeout(updateTheme, 100);
-      
-      // Listen for theme changes in parent
-      if (window.parent.MutationObserver) {
-        const observer = new window.parent.MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-              updateTheme();
-            }
-          });
-        });
-        
-        observer.observe(window.parent.document.documentElement, {
-          attributes: true,
-          attributeFilter: ['class']
-        });
+      // Respect the current theme
+      if (${isDarkMode}) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
     })();
   </script>
@@ -236,42 +226,112 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
       }, '*');
     };
     
+    // Render the user's actual JSX code
     try {
-      // Create a module scope for the React component
-      const moduleExports = {};
-      const module = { exports: moduleExports };
+      console.log('🚀 Starting React component rendering...');
       
-      // Execute the React component code in module scope
-      const wrappedCode = \`
-        (function(module, exports, require, React, ReactDOM) {
-          \${processedCode}
-        })(module, moduleExports, undefined, React, ReactDOM);
-      \`;
+      // The processedCode is available from the outer scope
+      const userCode = ${JSON.stringify(processedCode)};
+      console.log('User code length:', userCode.length);
       
-      eval(wrappedCode);
+      // Transform JSX using Babel without import statements
+      const transformedCode = Babel.transform(userCode + \`
+        
+        // Make all function components globally available
+        // This will be evaluated in global scope, so functions become available on window
+      \`, {
+        presets: ['react'],
+        filename: 'component.jsx',
+        plugins: []
+      }).code;
       
-      // Get the component from module.exports
-      const Component = module.exports;
+      console.log('Transformed code:', transformedCode);
+      
+      // Execute the transformed code in global scope
+      eval(transformedCode);
+      
+      // Get the component from global scope - dynamically find any React component
+      let Component = null;
+      let componentName = null;
+      
+      // Look for any function that appears to be a React component
+      const potentialComponents = [];
+      for (const key in window) {
+        if (typeof window[key] === 'function' && 
+            key !== 'console' && 
+            key !== 'setTimeout' && 
+            key !== 'setInterval' &&
+            !key.startsWith('webkit') &&
+            !key.startsWith('moz') &&
+            key[0] === key[0].toUpperCase()) {
+          potentialComponents.push({ name: key, fn: window[key] });
+        }
+      }
+      
+      // Try to find the most likely component - prioritize App component first
+      if (potentialComponents.length > 0) {
+        // Sort by priority: App component first, then React components (ending in common patterns)
+        potentialComponents.sort((a, b) => {
+          const aIsApp = a.name === 'App';
+          const bIsApp = b.name === 'App';
+          
+          if (aIsApp && !bIsApp) return -1;
+          if (!aIsApp && bIsApp) return 1;
+          
+          const aIsReactComponent = /Demo$|Component$|Card$|Visualizer$/.test(a.name);
+          const bIsReactComponent = /Demo$|Component$|Card$|Visualizer$/.test(b.name);
+          
+          if (aIsReactComponent && !bIsReactComponent) return -1;
+          if (!aIsReactComponent && bIsReactComponent) return 1;
+          
+          // If both are React components or neither, sort by name length (longer names are usually more specific)
+          return b.name.length - a.name.length;
+        });
+        
+        Component = potentialComponents[0].fn;
+        componentName = potentialComponents[0].name;
+        console.log('✅ Found component:', componentName);
+        console.log('🔍 Available components:', potentialComponents.map(c => c.name));
+      }
+      
       const root = document.getElementById('react-root');
       
       if (root && Component) {
         // Clear previous content
         root.innerHTML = '';
         
-        // Use React 18 createRoot API with the specified pattern
-        const container = document.getElementById('react-root');
-        const reactRoot = ReactDOM.createRoot(container); // Create a root
+        // Create and render the user's component with error handling
         
-        // Render the App component inside the root
-        const reactElement = React.createElement(Component);
-        reactRoot.render(reactElement);
-        
-        console.log('✅ React component rendered successfully with createRoot');
+        try {
+          const reactRoot = ReactDOM.createRoot(root);
+          
+          // Create element without props (App component handles its own props)
+          const element = React.createElement(Component);
+          
+          reactRoot.render(element);
+          
+          console.log('✅ User component rendered successfully!');
+          console.log('Component rendered:', componentName || 'Anonymous');
+        } catch (error) {
+          console.error('❌ Error rendering component:', error);
+          root.innerHTML = '<div style="padding: 20px; color: red; font-family: monospace;">Rendering Error: ' + error.message + '</div>';
+        }
       } else {
-        console.error('❌ React component not found or root element missing');
+        console.error('❌ Component not found or root missing');
+        console.log('Available component functions:', potentialComponents.map(c => c.name));
+        
+        if (root) {
+          root.innerHTML = '<div style="padding: 20px; text-align: center; color: #e74c3c;">❌ Component not found. Check console for details.</div>';
+        }
       }
     } catch(e) {
-      console.error('❌ React rendering error:', e);
+      console.error('❌ Error rendering user component:', e);
+      console.error('Stack:', e.stack);
+      
+      const root = document.getElementById('react-root');
+      if (root) {
+        root.innerHTML = '<div style="padding: 20px; text-align: center; color: #e74c3c;">❌ Error: ' + e.message + '</div>';
+      }
     }
   </script>
 </body>
@@ -316,31 +376,39 @@ export const FrontendCodePreviewReact: React.FC<FrontendCodePreviewReactProps> =
 
   const theme = themeColors[colorTheme as keyof typeof themeColors] || themeColors.blue;
 
-  // Get current code based on active tab
+  // Get current code - always return React code
   const getCurrentCode = () => {
-    switch (activeTab) {
-      case 'html': return html;
-      case 'css': return css;
-      case 'js': return js;
-      case 'react': return react;
-      default: return react;
-    }
+    return react;
   };
 
   // Prepare code for React Playground
   const getPlaygroundCode = () => {
-    // Process React code for playground (remove imports, createRoot pattern, etc.)
+    // Process React code for playground (remove imports, but keep the component and createRoot pattern)
     let processedCode = react
       .replace(/import\s+React\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]react['"];?\s*/g, '')
       .replace(/import\s*\{[^}]*\}\s*from\s*['"]react['"];?\s*/g, '')
       .replace(/import\s*\{[^}]*createRoot[^}]*\}\s*from\s*['"]react-dom\/client['"];?\s*/g, '')
-      // Remove the entire createRoot execution pattern since we handle rendering in playground
-      .replace(/\/\/ React 18 createRoot API pattern[\s\S]*?(?=export default)/g, '')
+      // Remove export default statements since we use global assignment
       .replace(/export default\s+\w+;?\s*$/g, '');
     
     // Add CSS styling to the code if provided
     if (css && css.trim()) {
-      processedCode += `
+      // Insert CSS before the createRoot pattern - handle both single and multi-line patterns
+      const createRootMatch = processedCode.match(/const\s+root\s*=\s*ReactDOM\.createRoot\([^)]*\);?\s*root\.render\([\s\S]*?\);?/);
+      
+      if (createRootMatch) {
+        // Insert CSS before the createRoot call
+        const cssInsert = `
+// CSS Styling
+const style = document.createElement('style');
+style.textContent = \`${css.replace(/`/g, '\\`')}\`;
+document.head.appendChild(style);
+
+`;
+        processedCode = processedCode.replace(createRootMatch[0], cssInsert + createRootMatch[0]);
+      } else {
+        // If no createRoot pattern found, add it at the end
+        processedCode += `
 
 // CSS Styling
 const style = document.createElement('style');
@@ -350,6 +418,7 @@ document.head.appendChild(style);
 // Render the component
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(${extractComponentName(processedCode)}));`;
+      }
     }
     
     return processedCode.trim();
@@ -362,11 +431,24 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
   };
 
   // Copy to clipboard function
-  const copyToClipboard = () => {
-    const currentCode = getCurrentCode();
-    navigator.clipboard.writeText(currentCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyToClipboard = async () => {
+    try {
+      const currentCode = activeTab === 'css' ? css : getCurrentCode();
+      await navigator.clipboard.writeText(currentCode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy code: ', err);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = activeTab === 'css' ? css : getCurrentCode();
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   // Open React playground
@@ -376,6 +458,11 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
     } else if (openPlayground) {
       openPlayground({ jsx, css: css || '' });
     }
+  };
+
+  // Handle Run button click
+  const handleRunClick = () => {
+    setReloadTrigger(prev => prev + 1);
   };
 
   if (!mounted) {
@@ -446,28 +533,6 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
                       CSS
                     </button>
                   )}
-                  {/* HTML Tab */}
-                  {html && (
-                    <button
-                      onClick={() => setActiveTab('html')}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-                        activeTab === 'html' ? theme.tab : theme.tabInactive
-                      }`}
-                    >
-                      HTML
-                    </button>
-                  )}
-                  {/* JS Tab */}
-                  {js && (
-                    <button
-                      onClick={() => setActiveTab('js')}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors ${
-                        activeTab === 'js' ? theme.tab : theme.tabInactive
-                      }`}
-                    >
-                      JavaScript
-                    </button>
-                  )}
                 </div>
                 <button
                   onClick={copyToClipboard}
@@ -483,13 +548,7 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
               </div>
               <div className="flex-1 overflow-auto bg-white dark:bg-[#0d1117]">
                 <SyntaxHighlighter
-                  language={
-                    activeTab === 'html' ? 'html' :
-                    activeTab === 'css' ? 'css' :
-                    activeTab === 'js' ? 'javascript' :
-                    activeTab === 'react' ? 'jsx' :
-                    'javascript'
-                  }
+                  language={activeTab === 'css' ? 'css' : 'jsx'}
                   style={isDarkMode ? vscDarkPlus : prism}
                   showLineNumbers={false}
                   customStyle={{
@@ -507,7 +566,7 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
                     }
                   }}
                 >
-                  {getCurrentCode()}
+                  {activeTab === 'css' ? css : getCurrentCode()}
                 </SyntaxHighlighter>
               </div>
             </div>
@@ -524,9 +583,12 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                {openReactPlaygroundWithContent && (
+                {(onOpenReactPlayground !== undefined || openPlayground !== undefined) && (
                   <button
-                    onClick={() => openReactPlaygroundWithContent(react, css)}
+                    onClick={() => {
+                      handleRunClick();
+                      openReactPlaygroundWithContent(react, css);
+                    }}
                     className="px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all group shadow-sm hover:shadow-md bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white"
                     title="Open in React Playground"
                   >
@@ -555,7 +617,7 @@ root.render(React.createElement(${extractComponentName(processedCode)}));`;
               ) : (
                 <iframe
                   ref={iframeRef}
-                  key={`${isDarkMode ? 'dark' : 'light'}-${react.substring(0, 50).replace(/[^a-zA-Z0-9]/g, '')}`}
+                  key={`preview-${isDarkMode ? 'dark' : 'light'}-${reloadTrigger}-${react.substring(0, 30).replace(/[^a-zA-Z0-9]/g, '')}`}
                   srcDoc={getReactPreviewContent()}
                   title="React Preview"
                   className="w-full h-full border-0"

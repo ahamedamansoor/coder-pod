@@ -1,15 +1,17 @@
-import type { Language } from './types';
+import type { Roadmap } from './types';
 
-export const frontendDeveloper: Language = {
+export const frontendDeveloper: Roadmap = {
   slug: 'frontend-developer',
   name: 'Frontend Developer',
   topics: [
+    // CAREER PATH JOURNEY
     // 1. INTERNET & WEB FUNDAMENTALS
     { slug: 'internet-basics', title: 'How the Internet Works', explanation: 'HTTP/HTTPS, DNS, browsers, and client-server architecture.', category: 'Internet & Web Fundamentals' },
     { slug: 'html-fundamentals', title: 'HTML Fundamentals', explanation: 'Semantic HTML5, forms, accessibility basics.', category: 'Internet & Web Fundamentals' },
     { slug: 'css-fundamentals', title: 'CSS Fundamentals', explanation: 'Box model, selectors, specificity, cascade.', category: 'Internet & Web Fundamentals' },
     { slug: 'responsive-design', title: 'Responsive Design', explanation: 'Mobile-first approach, media queries, viewport.', category: 'Internet & Web Fundamentals' },
     { slug: 'browser-devtools', title: 'Browser DevTools', explanation: 'Chrome/Firefox DevTools for debugging and profiling.', category: 'Internet & Web Fundamentals' },
+    { slug: 'css-deep-dive', title: 'CSS Mastery →', explanation: 'Master CSS fundamentals, layouts, and advanced styling', category: 'Internet & Web Fundamentals', connectedRoadmap: 'css' },
     
     // 2. JAVASCRIPT ESSENTIALS
     { slug: 'js-syntax', title: 'JavaScript Syntax', explanation: 'Variables, data types, operators, control flow.', category: 'JavaScript Essentials' },
@@ -20,16 +22,19 @@ export const frontendDeveloper: Language = {
     { slug: 'fetch-api', title: 'Fetch API', explanation: 'Making HTTP requests, working with APIs.', category: 'JavaScript Essentials' },
     { slug: 'async-programming', title: 'Async Programming', explanation: 'Promises, async/await, error handling.', category: 'JavaScript Essentials' },
     { slug: 'es6-features', title: 'ES6+ Features', explanation: 'Let/const, template literals, spread/rest, modules.', category: 'JavaScript Essentials' },
+    { slug: 'javascript-deep-dive', title: 'JavaScript Deep Dive →', explanation: 'Master JavaScript fundamentals and advanced concepts', category: 'JavaScript Essentials', connectedRoadmap: 'javascript' },
     
     // 3. VERSION CONTROL
     { slug: 'git-basics', title: 'Git Basics', explanation: 'Clone, commit, push, pull, branches.', category: 'Version Control' },
     { slug: 'git-workflow', title: 'Git Workflow', explanation: 'Feature branches, pull requests, code review.', category: 'Version Control' },
     { slug: 'github', title: 'GitHub', explanation: 'Repositories, issues, actions, collaboration.', category: 'Version Control' },
+    { slug: 'git-deep-dive', title: 'Git Mastery →', explanation: 'Master Git version control, branching strategies, and collaboration', category: 'Version Control', connectedRoadmap: 'git' },
     
     // 4. PACKAGE MANAGERS
     { slug: 'npm-basics', title: 'npm Basics', explanation: 'Installing packages, package.json, scripts.', category: 'Package Managers' },
     { slug: 'package-management', title: 'Package Management', explanation: 'Dependencies, versioning, lock files.', category: 'Package Managers' },
     { slug: 'yarn-pnpm', title: 'Yarn & pnpm', explanation: 'Alternative package managers.', category: 'Package Managers' },
+    { slug: 'package-manager-mastery', title: 'Package Manager Mastery →', explanation: 'Master npm, yarn, pnpm and modern package management workflows', category: 'Package Managers', connectedRoadmap: 'package-manager' },
     
     // 5. MODERN CSS
     { slug: 'flexbox', title: 'Flexbox', explanation: 'One-dimensional layouts with Flexbox.', category: 'Modern CSS' },
@@ -37,39 +42,44 @@ export const frontendDeveloper: Language = {
     { slug: 'css-animations', title: 'CSS Animations', explanation: 'Transitions, keyframe animations, transforms.', category: 'Modern CSS' },
     { slug: 'css-variables', title: 'CSS Variables', explanation: 'Custom properties for theming and reusability.', category: 'Modern CSS' },
     { slug: 'preprocessors', title: 'CSS Preprocessors', explanation: 'Sass/SCSS for advanced CSS features.', category: 'Modern CSS' },
+    { slug: 'scss-deep-dive', title: 'SCSS Mastery →', explanation: 'Master SCSS preprocessing, mixins, and advanced Sass features', category: 'Modern CSS', connectedRoadmap: 'scss' },
     { slug: 'css-frameworks', title: 'CSS Frameworks', explanation: 'Tailwind CSS, utility-first approach.', category: 'Modern CSS' },
     { slug: 'css-modules', title: 'CSS Modules', explanation: 'Scoped CSS for component-based architecture.', category: 'Modern CSS' },
+    { slug: 'tailwind-deep-dive', title: 'Tailwind CSS Mastery →', explanation: 'Master Tailwind CSS utility classes and component design', category: 'Modern CSS', connectedRoadmap: 'tailwind' },
     
-    // 6. REACT FUNDAMENTALS
-    { slug: 'react-intro', title: 'React Introduction', explanation: 'Components, JSX, virtual DOM concepts.', category: 'React Fundamentals' },
-    { slug: 'react-components', title: 'React Components', explanation: 'Functional components, props, composition.', category: 'React Fundamentals' },
-    { slug: 'react-state', title: 'State Management', explanation: 'useState, state updates, lifting state up.', category: 'React Fundamentals' },
-    { slug: 'react-effects', title: 'Side Effects', explanation: 'useEffect, cleanup, dependencies.', category: 'React Fundamentals' },
-    { slug: 'react-hooks', title: 'React Hooks', explanation: 'useContext, useReducer, useRef, custom hooks.', category: 'React Fundamentals' },
-    { slug: 'react-events', title: 'Event Handling', explanation: 'Synthetic events, event handlers in React.', category: 'React Fundamentals' },
-    { slug: 'conditional-rendering', title: 'Conditional Rendering', explanation: 'Rendering based on conditions and state.', category: 'React Fundamentals' },
-    { slug: 'lists-keys', title: 'Lists & Keys', explanation: 'Rendering lists, key prop importance.', category: 'React Fundamentals' },
+    // 6. FRAMEWORK SELECTION
+    { slug: 'framework-overview', title: 'Framework Overview', explanation: 'Understanding different frontend frameworks and their philosophies.', category: 'Framework Selection' },
+    { slug: 'react-intro', title: 'React Path →', explanation: 'Component-based library with JSX and virtual DOM', category: 'Framework Selection', connectedRoadmap: 'react' },
+    { slug: 'vue-intro', title: 'Vue Path →', explanation: 'Progressive framework with templates and reactivity system', category: 'Framework Selection', connectedRoadmap: 'vue' },
+    { slug: 'angular-intro', title: 'Angular Path →', explanation: 'Full-featured framework with TypeScript and RxJS', category: 'Framework Selection', connectedRoadmap: 'angular' },
+    { slug: 'svelte-intro', title: 'Svelte Path →', explanation: 'Compiler-based framework with no virtual DOM', category: 'Framework Selection', connectedRoadmap: 'svelte' },
+    { slug: 'framework-comparison', title: 'Framework Comparison', explanation: 'Performance, ecosystem, learning curve, and use cases.', category: 'Framework Selection' },
+    { slug: 'choosing-framework', title: 'Choosing Your Framework', explanation: 'Factors to consider: project size, team, requirements.', category: 'Framework Selection' },
     
-    // 7. ADVANCED REACT
-    { slug: 'react-router', title: 'React Router', explanation: 'Client-side routing, navigation, routes.', category: 'Advanced React' },
-    { slug: 'context-api', title: 'Context API', explanation: 'Global state management with Context.', category: 'Advanced React' },
-    { slug: 'react-forms', title: 'Forms in React', explanation: 'Controlled components, form validation.', category: 'Advanced React' },
-    { slug: 'performance-optimization', title: 'Performance Optimization', explanation: 'React.memo, useMemo, useCallback, lazy loading.', category: 'Advanced React' },
-    { slug: 'error-boundaries', title: 'Error Boundaries', explanation: 'Catching errors in component tree.', category: 'Advanced React' },
-    { slug: 'portals', title: 'Portals', explanation: 'Rendering outside parent component.', category: 'Advanced React' },
-    { slug: 'refs-dom', title: 'Refs & DOM Access', explanation: 'useRef, forwardRef, accessing DOM nodes.', category: 'Advanced React' },
+    // 7. FRAMEWORK FUNDAMENTALS (Common Concepts)
+    { slug: 'component-architecture', title: 'Component Architecture', explanation: 'Reusable components, props, composition patterns.', category: 'Framework Fundamentals' },
+    { slug: 'state-management-basics', title: 'State Management Basics', explanation: 'Local state, global state, state lifting patterns.', category: 'Framework Fundamentals' },
+    { slug: 'lifecycle-hooks', title: 'Lifecycle & Hooks', explanation: 'Component lifecycle, effects, and hook patterns.', category: 'Framework Fundamentals' },
+    { slug: 'event-handling', title: 'Event Handling', explanation: 'User interactions, event delegation, synthetic events.', category: 'Framework Fundamentals' },
+    { slug: 'conditional-rendering', title: 'Conditional Rendering', explanation: 'Dynamic content based on state and conditions.', category: 'Framework Fundamentals' },
+    { slug: 'list-rendering', title: 'List Rendering', explanation: 'Rendering collections, keys, and optimization.', category: 'Framework Fundamentals' },
+    { slug: 'form-handling', title: 'Form Handling', explanation: 'Controlled/uncontrolled forms, validation patterns.', category: 'Framework Fundamentals' },
+    { slug: 'routing-basics', title: 'Routing Basics', explanation: 'Client-side routing, navigation, route guards.', category: 'Framework Fundamentals' },
     
-    // 8. STATE MANAGEMENT
+    // 8. ADVANCED STATE MANAGEMENT
     { slug: 'state-management-intro', title: 'State Management Overview', explanation: 'When and why to use state management libraries.', category: 'State Management' },
-    { slug: 'redux-toolkit', title: 'Redux Toolkit', explanation: 'Modern Redux with RTK, slices, thunks.', category: 'State Management' },
-    { slug: 'zustand', title: 'Zustand', explanation: 'Lightweight state management solution.', category: 'State Management' },
-    { slug: 'react-query', title: 'React Query', explanation: 'Server state management, caching, fetching.', category: 'State Management' },
+    { slug: 'redux-ecosystem', title: 'Redux Ecosystem', explanation: 'Redux Toolkit, middleware, and patterns.', category: 'State Management' },
+    { slug: 'vuex-pinia', title: 'Vue State Management', explanation: 'Vuex and Pinia for Vue applications.', category: 'State Management' },
+    { slug: 'ngrx-services', title: 'Angular State Management', explanation: 'NgRx and services for Angular apps.', category: 'State Management' },
+    { slug: 'lightweight-solutions', title: 'Lightweight Solutions', explanation: 'Zustand, Jotai, and simple state patterns.', category: 'State Management' },
+    { slug: 'server-state', title: 'Server State Management', explanation: 'React Query, SWR, and data fetching patterns.', category: 'State Management' },
     
-    // 9. TYPESCRIPT
+    // 9. TYPESCRIPT IN FRONTEND
     { slug: 'typescript-basics', title: 'TypeScript Basics', explanation: 'Types, interfaces, type annotations.', category: 'TypeScript' },
-    { slug: 'typescript-react', title: 'TypeScript with React', explanation: 'Typing components, props, hooks.', category: 'TypeScript' },
+    { slug: 'typescript-frameworks', title: 'TypeScript with Frameworks', explanation: 'Typing components, props, and framework-specific patterns.', category: 'TypeScript' },
     { slug: 'advanced-types', title: 'Advanced Types', explanation: 'Generics, utility types, type guards.', category: 'TypeScript' },
     { slug: 'typescript-config', title: 'TypeScript Configuration', explanation: 'tsconfig.json, compiler options.', category: 'TypeScript' },
+    { slug: 'typescript-deep-dive', title: 'TypeScript Mastery →', explanation: 'Master TypeScript types, generics, and advanced patterns', category: 'TypeScript', connectedRoadmap: 'typescript' },
     
     // 10. BUILD TOOLS
     { slug: 'module-bundlers', title: 'Module Bundlers', explanation: 'Webpack, Vite, build process overview.', category: 'Build Tools' },
@@ -78,19 +88,21 @@ export const frontendDeveloper: Language = {
     { slug: 'eslint', title: 'ESLint', explanation: 'Linting JavaScript code for quality.', category: 'Build Tools' },
     { slug: 'prettier', title: 'Prettier', explanation: 'Code formatting and style consistency.', category: 'Build Tools' },
     
-    // 11. TESTING
+    // 11. TESTING FRAMEWORKS
     { slug: 'testing-fundamentals', title: 'Testing Fundamentals', explanation: 'Unit, integration, E2E testing concepts.', category: 'Testing' },
-    { slug: 'jest', title: 'Jest', explanation: 'JavaScript testing framework.', category: 'Testing' },
-    { slug: 'react-testing-library', title: 'React Testing Library', explanation: 'Testing React components.', category: 'Testing' },
-    { slug: 'vitest', title: 'Vitest', explanation: 'Fast unit testing with Vite.', category: 'Testing' },
-    { slug: 'e2e-testing', title: 'E2E Testing', explanation: 'Cypress or Playwright for end-to-end tests.', category: 'Testing' },
+    { slug: 'testing-frameworks', title: 'Testing Frameworks', explanation: 'Jest, Vitest, and testing setup for different frameworks.', category: 'Testing' },
+    { slug: 'component-testing', title: 'Component Testing', explanation: 'Testing Library for React, Vue, Angular components.', category: 'Testing' },
+    { slug: 'e2e-testing', title: 'E2E Testing', explanation: 'Cypress, Playwright for end-to-end tests.', category: 'Testing' },
+    { slug: 'testing-best-practices', title: 'Testing Best Practices', explanation: 'Test organization, mocking, coverage.', category: 'Testing' },
+    { slug: 'testing-mastery', title: 'Testing Frameworks Mastery →', explanation: 'Master Jest, Vitest, Cypress and modern testing strategies', category: 'Testing', connectedRoadmap: 'testing' },
     
-    // 12. NEXT.JS & SSR
-    { slug: 'nextjs-intro', title: 'Next.js Introduction', explanation: 'React framework with SSR and SSG.', category: 'Next.js & SSR' },
-    { slug: 'nextjs-routing', title: 'Next.js Routing', explanation: 'File-based routing, dynamic routes.', category: 'Next.js & SSR' },
-    { slug: 'data-fetching', title: 'Data Fetching', explanation: 'getServerSideProps, getStaticProps, API routes.', category: 'Next.js & SSR' },
-    { slug: 'nextjs-app-router', title: 'App Router', explanation: 'Next.js 13+ App Router, server components.', category: 'Next.js & SSR' },
-    { slug: 'seo-optimization', title: 'SEO Optimization', explanation: 'Meta tags, structured data, performance.', category: 'Next.js & SSR' },
+    // 12. META FRAMEWORKS & SSR
+    { slug: 'meta-frameworks', title: 'Meta Frameworks Overview', explanation: 'Next.js, Nuxt, SvelteKit, Angular Universal.', category: 'Meta Frameworks' },
+    { slug: 'nextjs-path', title: 'Next.js Path →', explanation: 'React-based framework with SSR and SSG', category: 'Meta Frameworks', connectedRoadmap: 'nextjs' },
+    { slug: 'nuxt-path', title: 'Nuxt Path →', explanation: 'Vue-based framework with SSR and SSG', category: 'Meta Frameworks', connectedRoadmap: 'nuxt' },
+    { slug: 'sveltekit-path', title: 'SvelteKit Path →', explanation: 'Svelte-based framework with SSR and SSG', category: 'Meta Frameworks', connectedRoadmap: 'sveltekit' },
+    { slug: 'ssr-concepts', title: 'SSR/SSG Concepts', explanation: 'Server-side rendering, static generation, ISR.', category: 'Meta Frameworks' },
+    { slug: 'seo-optimization', title: 'SEO Optimization', explanation: 'Meta tags, structured data, performance.', category: 'Meta Frameworks' },
     
     // 13. BROWSER APIs
     { slug: 'local-storage', title: 'Web Storage', explanation: 'localStorage, sessionStorage for client-side data.', category: 'Browser APIs' },
@@ -128,18 +140,19 @@ export const frontendDeveloper: Language = {
     { slug: 'offline-support', title: 'Offline Support', explanation: 'Service workers for offline functionality.', category: 'Progressive Web Apps' },
     { slug: 'push-notifications', title: 'Push Notifications', explanation: 'Web push API for notifications.', category: 'Progressive Web Apps' },
     
-    // 18. DESIGN SYSTEMS
-    { slug: 'component-libraries', title: 'Component Libraries', explanation: 'Material-UI, Chakra UI, shadcn/ui.', category: 'Design Systems' },
+    // 18. DESIGN SYSTEMS & COMPONENTS
+    { slug: 'component-libraries', title: 'Component Libraries', explanation: 'Material-UI, Ant Design, Chakra UI, shadcn/ui.', category: 'Design Systems' },
+    { slug: 'framework-specific-ui', title: 'Framework-Specific UI', explanation: 'React (MUI), Vue (Vuetify), Angular (Angular Material).', category: 'Design Systems' },
     { slug: 'design-tokens', title: 'Design Tokens', explanation: 'Consistent design values across projects.', category: 'Design Systems' },
     { slug: 'storybook', title: 'Storybook', explanation: 'Component documentation and testing.', category: 'Design Systems' },
-    { slug: 'figma-integration', title: 'Figma Integration', explanation: 'Design-to-code workflow.', category: 'Design Systems' },
+    { slug: 'figma-integration', title: 'Design-to-Code', explanation: 'Figma, design systems, and development workflow.', category: 'Design Systems' },
     
     // 19. DEPLOYMENT & HOSTING
-    { slug: 'vercel', title: 'Vercel', explanation: 'Deploying Next.js and React apps.', category: 'Deployment & Hosting' },
-    { slug: 'netlify', title: 'Netlify', explanation: 'Static site hosting and CI/CD.', category: 'Deployment & Hosting' },
-    { slug: 'cloudflare', title: 'Cloudflare Pages', explanation: 'Edge hosting and performance.', category: 'Deployment & Hosting' },
+    { slug: 'hosting-platforms', title: 'Hosting Platforms', explanation: 'Vercel, Netlify, Cloudflare Pages, GitHub Pages.', category: 'Deployment & Hosting' },
+    { slug: 'framework-deployment', title: 'Framework-Specific Deployment', explanation: 'Deploying React, Vue, Angular, Svelte applications.', category: 'Deployment & Hosting' },
+    { slug: 'static-site-generation', title: 'Static Site Deployment', explanation: 'JAMstack, static hosting, CDN optimization.', category: 'Deployment & Hosting' },
     { slug: 'ci-cd', title: 'CI/CD', explanation: 'GitHub Actions, automated deployments.', category: 'Deployment & Hosting' },
-    { slug: 'docker', title: 'Docker Basics', explanation: 'Containerizing frontend applications.', category: 'Deployment & Hosting' },
+    { slug: 'docker-frontend', title: 'Docker for Frontend', explanation: 'Containerizing frontend applications.', category: 'Deployment & Hosting' },
     
     // 20. SOFT SKILLS & BEST PRACTICES
     { slug: 'code-review', title: 'Code Review', explanation: 'Reviewing and being reviewed effectively.', category: 'Professional Skills' },

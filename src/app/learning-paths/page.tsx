@@ -2,16 +2,18 @@
 
 import { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { Code2, Sparkles, Trophy, Target } from 'lucide-react';
 import { InnovativeHeader, LearningPathTitle } from '@/components/shared';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { languages as allLanguages } from '@/data/languages';
+import { enabledRoadmaps as allRoadmaps } from '@/data/roadmaps';
 import { useSupabaseAuth } from '@/hooks/use-auth-compat';
 import { useUser } from '@/hooks/use-auth-compat';
 import { unifiedCompletionService } from '@/services/unified-completion.service';
+import { toast } from 'sonner';
 
 type Filter = 'all' | 'frontend' | 'backend' | 'testing';
 
@@ -37,6 +39,7 @@ function LearningPathsPageContent() {
     const router = useRouter();
     const { user } = useUser();
     const { userProfile, signOut } = useSupabaseAuth();
+    const { setTheme } = useTheme();
 
     const [filter, setFilter] = useState<Filter>('all');
     const [searchQuery, setSearchQuery] = useState('');
@@ -47,14 +50,14 @@ function LearningPathsPageContent() {
     const [isCompletionLoading, setIsCompletionLoading] = useState(false);
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium', 'dsa']), []);
-    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind', 'dsa'];
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa']), []);
+    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind', 'react', 'dsa'];
     const backendLanguages: string[] = [];
     const testingLanguages: string[] = ['selenium'];
     const algorithmLanguages: string[] = [];
     const versionControlLanguages: string[] = [];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'selenium', 'dsa']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa']), []);
 
     // Load completion data from unified service
     useEffect(() => {
@@ -91,22 +94,22 @@ function LearningPathsPageContent() {
     }, []);
 
     const filteredLanguages = useMemo(() => {
-        return allLanguages.filter((lang) => {
-            if (!allowedSlugs.has(lang.slug)) return false;
+        return allRoadmaps.filter((roadmap) => {
+            if (!allowedSlugs.has(roadmap.slug)) return false;
             if (searchQuery) {
                 const query = searchQuery.toLowerCase();
                 const matchesSearch =
-                    lang.name.toLowerCase().includes(query) ||
-                    lang.description?.toLowerCase().includes(query) ||
-                    lang.slug.toLowerCase().includes(query);
+                    roadmap.name.toLowerCase().includes(query) ||
+                    roadmap.description?.toLowerCase().includes(query) ||
+                    roadmap.slug.toLowerCase().includes(query);
                 if (!matchesSearch) return false;
             }
 
             if (filter === 'all') return true;
-            if (filter === 'frontend') return frontendLanguages.includes(lang.slug);
-            if (filter === 'backend') return backendLanguages.includes(lang.slug);
-            if (filter === 'testing') return testingLanguages.includes(lang.slug);
-            if (filter === 'algorithms') return algorithmLanguages.includes(lang.slug);
+            if (filter === 'frontend') return frontendLanguages.includes(roadmap.slug);
+            if (filter === 'backend') return backendLanguages.includes(roadmap.slug);
+            if (filter === 'testing') return testingLanguages.includes(roadmap.slug);
+            if (filter === 'algorithms') return algorithmLanguages.includes(roadmap.slug);
             return true;
         });
     }, [filter, searchQuery, allowedSlugs]);
@@ -358,9 +361,17 @@ function LearningPathsPageContent() {
 
                                                 <button
                                                     className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium text-sm transition-all duration-200 hover:shadow-lg"
-                                                    onClick={(e) => {
+                                                    onClick={async (e) => {
                                                         e.preventDefault();
                                                         e.stopPropagation();
+                                                        // Force dark mode multiple ways
+                                                        setTheme('dark');
+                                                        document.documentElement.classList.add('dark');
+                                                        document.documentElement.classList.remove('light');
+                                                        localStorage.setItem('theme', 'dark');
+                                                        toast.success('We support dark mode only for learning path');
+                                                        // Add small delay to ensure theme is applied
+                                                        await new Promise(resolve => setTimeout(resolve, 100));
                                                         handleViewPath(lang);
                                                     }}
                                                 >
