@@ -38,6 +38,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { LearningPathTitle } from '@/components/shared';
 import Link from 'next/link';
 import { useEnhancedAuth } from '@/lib/auth/enhanced-auth-context';
+import { useRouter } from 'next/navigation';
 
 interface LanguageCard {
   title: string;
@@ -215,6 +216,7 @@ export default function PreparePage() {
   const [viewMode, setViewMode] = useState<'grid' | 'grouped'>('grid');
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { user } = useEnhancedAuth();
+  const router = useRouter();
   
   const completedLanguages = languagesData.filter(lang => lang.status === 'completed').length;
   const totalQuestions = languagesData.reduce((sum, lang) => sum + lang.stats.totalQuestions, 0);
@@ -444,16 +446,19 @@ export default function PreparePage() {
 
                   {/* Action Button */}
                   <Button 
-                    asChild 
                     size="sm"
                     className={`w-full ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
                     disabled={isDisabled}
-                    onClick={!user && !isDisabled ? () => setShowSignInModal(true) : undefined}
+                    onClick={() => {
+                      if (user) {
+                        router.push(language.href);
+                      } else {
+                        setShowSignInModal(true);
+                      }
+                    }}
                   >
-                    <Link href={language.href}>
-                      {isDisabled ? 'Coming Soon' : 'Practice'}
-                      {!isDisabled && <ArrowRight className="w-3 h-3 ml-1" />}
-                    </Link>
+                    {isDisabled ? 'Coming Soon' : 'Practice'}
+                    {!isDisabled && <ArrowRight className="w-3 h-3 ml-1" />}
                   </Button>
                 </CardContent>
               </Card>
