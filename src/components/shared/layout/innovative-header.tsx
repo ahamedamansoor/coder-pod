@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X, Users, Cpu, Sun, Moon } from 'lucide-react';
+import { Home, FileText, Map, Sparkles, LogOut, Settings, Menu, Code, Play, Zap, StickyNote, LogIn, Brain, X, Users, Cpu, Sun, Moon, Target } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { LanguageSwitcher } from './language-switcher';
 import { Logo } from './logo';
@@ -88,6 +88,7 @@ export function InnovativeHeader({
     { href: '/', label: 'Home', icon: Home, page: 'home', requiresAuth: false, description: 'Go to homepage' },
     { href: '/learning-paths', label: 'Learn', icon: Code, page: 'learning', requiresAuth: false, description: 'Curated learning path content' },
     { href: '/roadmaps', label: 'Roadmaps', icon: Map, page: 'roadmaps', requiresAuth: false, description: 'Structured learning roadmaps' },
+    { href: '/prepare', label: 'Prepare', icon: Target, page: 'prepare', requiresAuth: false, description: 'Interview preparation dashboard' },
     { href: '/cheatsheets', label: 'Quick Reference', icon: FileText, page: 'cheatsheets', requiresAuth: false, description: 'Cheatsheets & quick tips' },
     { href: '/ai-tools', label: 'AI Tools', icon: Cpu, page: 'ai-tools', requiresAuth: false, description: 'AI-powered tools and utilities' },
     { href: '/collaborative-interview', label: 'Live Interview', icon: Users, page: 'collaborative-interview', requiresAuth: true, description: 'Real-time coding with partner' },
