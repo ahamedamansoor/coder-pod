@@ -6,433 +6,634 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { TopicTitle } from '@/components/shared/topic-title';
-import { FrontendCodePreview } from '@/components/shared/frontend-code-preview';
-import { Lightbulb, CheckCircle2, Network, AlertTriangle, ArrowDown } from 'lucide-react';
+import {
+  Lightbulb,
+  CheckCircle2,
+  Zap,
+  Eye,
+  Code2,
+  Monitor,
+  Settings,
+  Globe,
+  ArrowRight,
+  AlertTriangle,
+  Radio,
+  Wifi,
+  Layers,
+  TreePine,
+  Users,
+  MessageSquare,
+} from 'lucide-react';
 
 export default function WhatIsContext() {
   return (
     <div className="w-full min-h-screen space-y-12 pb-16">
       <PageHeader
-        icon={Network}
-        category="React · Context API"
-        title="What is Context?"
-        description="Learn how Context solves the 'prop drilling' problem by providing a way to share data across the component tree without passing props manually."
-        colorTheme="cyan"
+        icon={Globe}
+        category="React · Context (Fundamental)"
+        title="What is React Context?"
+        description="Understand what Context truly IS - not how to use it, but what it represents in React's component architecture."
+        colorTheme="blue"
       />
 
       <div className="w-full px-4 sm:px-6 lg:px-8 space-y-12">
 
-        <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
+        {/* The Core Concept */}
+        <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/10 dark:to-indigo-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
-              icon={<Network className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-              title="The Prop Drilling Problem"
-              description="Why we need Context"
+              icon={<Globe className="w-7 h-7 text-blue-600 dark:text-blue-400" />}
+              title="Context IS a Global Broadcast System"
+              description="Think of Context as radio waves for your components"
               size="lg"
             />
 
             <p className="text-base text-gray-700 dark:text-gray-300">
-              <strong>Prop drilling</strong> occurs when you pass data through many component layers, even though intermediate components don't need that data. Context provides a way to share values between components without explicitly passing props!
+              <strong>React Context is NOT state management.</strong> It's a <strong>delivery mechanism</strong> - like radio waves that broadcast data to any component tuned to the right frequency. Components can "listen" to these broadcasts without knowing who sent them.
             </p>
 
-            <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-200 dark:border-red-800">
-              <h4 className="font-bold mb-4 text-red-700 dark:text-red-300">❌ Without Context (Prop Drilling)</h4>
-              <div className="flex items-center gap-3 flex-wrap justify-center text-sm">
-                <div className="px-4 py-2 bg-red-100 dark:bg-red-900 rounded font-semibold">App</div>
-                <ArrowDown className="w-4 h-4" />
-                <div className="px-4 py-2 bg-red-100 dark:bg-red-900 rounded">Header</div>
-                <ArrowDown className="w-4 h-4" />
-                <div className="px-4 py-2 bg-red-100 dark:bg-red-900 rounded">Navigation</div>
-                <ArrowDown className="w-4 h-4" />
-                <div className="px-4 py-2 bg-red-100 dark:bg-red-900 rounded font-semibold">UserMenu (needs user data)</div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-blue-300 dark:border-blue-700">
+                <Radio className="w-6 h-6 text-blue-600 dark:text-blue-400 mb-3" />
+                <h4 className="font-bold text-lg mb-2">What Context IS</h4>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• A broadcast system for data</li>
+                  <li>• A way to skip prop drilling</li>
+                  <li>• A subscription mechanism</li>
+                  <li>• A global communication channel</li>
+                </ul>
               </div>
-              <p className="text-sm text-red-600 dark:text-red-400 mt-3 text-center">Props passed through Header & Navigation even though they don't use them!</p>
+              
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400 mb-3" />
+                <h4 className="font-bold text-lg mb-2">What Context IS NOT</h4>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• State management solution</li>
+                  <li>• Replacement for Redux/Zustand</li>
+                  <li>• Performance optimization tool</li>
+                  <li>• A way to avoid all props</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-200 dark:border-green-800">
-              <h4 className="font-bold mb-4 text-green-700 dark:text-green-300">✅ With Context</h4>
-              <div className="text-center">
-                <div className="inline-block px-6 py-3 bg-green-100 dark:bg-green-900 rounded-lg font-semibold mb-4">
-                  Context Provider (user data)
+            <Alert className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-300 dark:border-blue-700">
+              <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <AlertTitle className="text-blue-900 dark:text-blue-100">Core Insight</AlertTitle>
+              <AlertDescription className="text-blue-800 dark:text-blue-200">
+                Context is about <strong>delivery</strong>, not <strong>storage</strong>. It delivers data from Provider to Consumer, but doesn't manage the data itself.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+
+        {/* The Radio Wave Analogy */}
+        <Card className="border-2 border-purple-200 dark:border-purple-800 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-950/10 dark:to-pink-950/10">
+          <CardContent className="space-y-6 pt-6">
+            <TopicTitle
+              icon={<Radio className="w-7 h-7 text-purple-600 dark:text-purple-400" />}
+              title="The Radio Wave Analogy"
+              description="Understanding Context through broadcast communication"
+              size="lg"
+            />
+
+            <div className="space-y-6">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-300 dark:border-purple-700">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                    <Wifi className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h4 className="font-bold text-xl text-purple-700 dark:text-purple-300">Radio Station (Provider)</h4>
                 </div>
-                <div className="flex items-center gap-3 justify-center text-sm">
-                  <div className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded">Header</div>
-                  <div className="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded">Navigation</div>
-                  <div className="px-4 py-2 bg-green-100 dark:bg-green-900 rounded font-semibold">UserMenu (consumes context)</div>
+                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                  A Context Provider is like a radio station broadcasting on a specific frequency. It continuously sends out data (the music/news) to anyone listening.
+                </p>
+                <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-xl">
+                  <div className="font-mono text-sm text-slate-700 dark:text-slate-300">
+                    <div>📻 Radio Station 101.5 FM:</div>
+                    <div className="ml-4">🎵 Now playing: User Data</div>
+                    <div className="ml-4">📢 Broadcasting to all receivers...</div>
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-green-600 dark:text-green-400 mt-3 text-center">Data flows directly to components that need it!</p>
+
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-blue-300 dark:border-blue-700">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                    <Radio className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h4 className="font-bold text-xl text-blue-700 dark:text-blue-300">Radio Receivers (Consumers)</h4>
+                </div>
+                <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                  Components using Context are like radio receivers tuned to the right frequency. They automatically receive broadcasts without knowing about the radio station.
+                </p>
+                <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-xl">
+                  <div className="font-mono text-sm text-slate-700 dark:text-slate-300">
+                    <div>📻 Component A: Tuned to 101.5 FM</div>
+                    <div className="ml-4">🎵 Receiving: User Data</div>
+                    <div>📻 Component B: Tuned to 101.5 FM</div>
+                    <div className="ml-4">🎵 Receiving: User Data</div>
+                    <div>📻 Component C: Tuned to 98.7 FM</div>
+                    <div className="ml-4">🎵 Receiving: Theme Data</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 bg-purple-50 dark:bg-purple-950/20 rounded-xl border-2 border-purple-300 dark:border-purple-800">
+              <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-2">💡 Key Insight</h4>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                Multiple Contexts can coexist like different radio stations. Components only hear the broadcasts they're tuned to, ignoring others completely.
+              </p>
             </div>
           </CardContent>
         </Card>
 
-        <div className="space-y-6">
-          <TopicTitle
-            icon={<Network className="w-8 h-8 text-green-600 dark:text-green-400" />}
-            title="Prop Drilling vs Context - Live Demo"
-            description="See the difference in action"
-            size="lg"
-          />
-          <FrontendCodePreview learningContext="react"
-            title="Context Solves Prop Drilling"
-            description="Toggle between approaches to see the difference"
-            colorTheme="green"
-            react={`function PropDrillingExample() {
-  const [useContext, setUseContext] = React.useState(false);
-  const user = { name: 'John Doe', role: 'Admin' };
-
-  return (
-    <div className="demo-container">
-      <div className="controls">
-        <h2>Prop Drilling vs Context</h2>
-        <button 
-          onClick={() => setUseContext(!useContext)}
-          className="toggle-btn"
-        >
-          {useContext ? '✅ Using Context' : '❌ Using Prop Drilling'}
-        </button>
-      </div>
-
-      {useContext ? (
-        <UserContextApp user={user} />
-      ) : (
-        <PropDrillingApp user={user} />
-      )}
-    </div>
-  );
-}
-
-// ❌ Without Context - Prop Drilling
-function PropDrillingApp({ user }) {
-  return (
-    <div className="app">
-      <div className="component level-1">
-        <strong>App</strong> (has user data)
-        <code>user={'{'}name: '{user.name}'{'}'}</code>
-        <Header user={user} />
-      </div>
-    </div>
-  );
-}
-
-function Header({ user }) {
-  return (
-    <div className="component level-2">
-      <strong>Header</strong> (doesn't need user)
-      <span className="warning">⚠️ Props passed through</span>
-      <Navigation user={user} />
-    </div>
-  );
-}
-
-function Navigation({ user }) {
-  return (
-    <div className="component level-3">
-      <strong>Navigation</strong> (doesn't need user)
-      <span className="warning">⚠️ Props passed through</span>
-      <UserMenu user={user} />
-    </div>
-  );
-}
-
-function UserMenu({ user }) {
-  return (
-    <div className="component level-4 highlight">
-      <strong>UserMenu</strong> (finally uses user!)
-      <div className="user-info">
-        👤 {user.name} ({user.role})
-      </div>
-    </div>
-  );
-}
-
-// ✅ With Context - No Prop Drilling
-const UserContext = React.createContext();
-
-function UserContextApp({ user }) {
-  return (
-    <UserContext.Provider value={user}>
-      <div className="app">
-        <div className="component level-1">
-          <strong>App</strong> (provides context)
-          <code>Context.Provider value={'{'}user{'}'}</code>
-          <HeaderWithContext />
-        </div>
-      </div>
-    </UserContext.Provider>
-  );
-}
-
-function HeaderWithContext() {
-  return (
-    <div className="component level-2 clean">
-      <strong>Header</strong> (no props needed)
-      <span className="success">✅ Clean component</span>
-      <NavigationWithContext />
-    </div>
-  );
-}
-
-function NavigationWithContext() {
-  return (
-    <div className="component level-3 clean">
-      <strong>Navigation</strong> (no props needed)
-      <span className="success">✅ Clean component</span>
-      <UserMenuWithContext />
-    </div>
-  );
-}
-
-function UserMenuWithContext() {
-  const user = React.useContext(UserContext);
-  return (
-    <div className="component level-4 highlight">
-      <strong>UserMenu</strong> (uses context!)
-      <div className="user-info">
-        👤 {user.name} ({user.role})
-      </div>
-    </div>
-  );
-}
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<PropDrillingExample />);`}
-            html={`<div id="root"></div>`}
-            css={`* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  min-height: 100vh;
-  padding: 20px;
-}
-
-.demo-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.controls {
-  background: white;
-  padding: 30px;
-  border-radius: 16px 16px 0 0;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.controls h2 {
-  color: #10b981;
-  margin-bottom: 20px;
-  font-size: 1.6rem;
-}
-
-.toggle-btn {
-  padding: 12px 32px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-}
-
-.toggle-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-}
-
-.app {
-  background: white;
-  padding: 30px;
-  border-radius: 0 0 16px 16px;
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
-}
-
-.component {
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 12px;
-  border: 2px solid;
-  position: relative;
-}
-
-.level-1 {
-  background: #eff6ff;
-  border-color: #3b82f6;
-  margin-left: 0;
-}
-
-.level-2 {
-  background: #fef3c7;
-  border-color: #f59e0b;
-  margin-left: 30px;
-}
-
-.level-3 {
-  background: #fce7f3;
-  border-color: #ec4899;
-  margin-left: 60px;
-}
-
-.level-4 {
-  background: #d1fae5;
-  border-color: #10b981;
-  margin-left: 90px;
-}
-
-.component.clean {
-  background: #f0fdf4;
-  border-color: #22c55e;
-}
-
-.component.highlight {
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-.component strong {
-  display: block;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #1f2937;
-}
-
-code {
-  display: block;
-  font-size: 12px;
-  color: #6b7280;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-top: 8px;
-}
-
-.warning {
-  display: inline-block;
-  padding: 4px 12px;
-  background: #fef2f2;
-  color: #dc2626;
-  border-radius: 6px;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.success {
-  display: inline-block;
-  padding: 4px 12px;
-  background: #d1fae5;
-  color: #059669;
-  border-radius: 6px;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-.user-info {
-  margin-top: 10px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 8px;
-  font-weight: 600;
-  color: #10b981;
-}
-
-@media (prefers-color-scheme: dark) {
-  .controls,
-  .app {
-    background: #1f2937;
-  }
-
-  .controls h2 {
-    color: #6ee7b7;
-  }
-
-  .level-1 {
-    background: #1e3a8a;
-    border-color: #60a5fa;
-  }
-
-  .level-2 {
-    background: #78350f;
-    border-color: #fbbf24;
-  }
-
-  .level-3 {
-    background: #831843;
-    border-color: #f472b6;
-  }
-
-  .level-4 {
-    background: #064e3b;
-    border-color: #6ee7b7;
-  }
-
-  .component.clean {
-    background: #14532d;
-    border-color: #4ade80;
-  }
-
-  .component strong {
-    color: #e5e7eb;
-  }
-
-  code {
-    color: #9ca3af;
-    background: rgba(0, 0, 0, 0.3);
-  }
-}`}
-          />
-        </div>
-
-        <Card className="border-2 border-cyan-200 dark:border-cyan-800 bg-gradient-to-br from-cyan-50/50 to-blue-50/50 dark:from-cyan-950/10 dark:to-blue-950/10">
+        {/* Step by Step Understanding */}
+        <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/10 dark:to-blue-950/10">
           <CardContent className="space-y-6 pt-6">
             <TopicTitle
-              icon={<CheckCircle2 className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />}
-              title="When to Use Context"
-              description="Best practices"
+              icon={<Settings className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />}
+              title="Step-by-Step Conceptual Understanding"
+              description="Master the mental model of Context"
               size="lg"
             />
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-2xl transform rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-indigo-200 dark:border-indigo-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">1</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center">
+                          <Globe className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-indigo-700 dark:text-indigo-300">Step 1: Create a Broadcast Channel</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        Creating Context is like reserving a radio frequency. You're setting up a communication channel that will carry specific type of data.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-indigo-500">//</span>
+                            <span className="text-slate-700 dark:text-slate-300">Reserve frequency 101.5 FM</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> UserContext = <span className="text-blue-600">createContext</span>();
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-cyan-600">// This creates a broadcast channel</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-cyan-600">// Not the data itself, just the channel</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-indigo-200 dark:border-indigo-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Lightbulb className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-indigo-800 dark:text-indigo-200 mb-1">Mental Model</p>
+                            <p className="text-sm text-indigo-700 dark:text-indigo-300">
+                              createContext() = "I'm setting up a radio station called UserContext"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl transform -rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-purple-200 dark:border-purple-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">2</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                          <Wifi className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-purple-700 dark:text-purple-300">Step 2: Start Broadcasting</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        The Provider starts broadcasting data on the channel. Any component within range can receive this broadcast automatically.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-purple-500">//</span>
+                            <span className="text-slate-700 dark:text-slate-300">Radio station starts broadcasting</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-red-600">&lt;UserContext.Provider</span> <span className="text-orange-600">value=</span>{'<span className="text-green-600">{user: "Alice"}</span>'}<span className="text-red-600">&gt;</span>
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            <span className="text-cyan-600">// All children can now receive this data</span>
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            <span className="text-red-600">&lt;App /&gt;</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-red-600">&lt;/UserContext.Provider&gt;</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 p-4 rounded-xl border border-purple-200 dark:border-purple-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Lightbulb className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-purple-800 dark:text-purple-200 mb-1">Mental Model</p>
+                            <p className="text-sm text-purple-700 dark:text-purple-300">
+                              Provider = "Radio station is now broadcasting: &#123;user: 'Alice'&#125;"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-rose-500/20 rounded-2xl transform rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-pink-200 dark:border-pink-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">3</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center">
+                          <Radio className="w-5 h-5 text-pink-600 dark:text-pink-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-pink-700 dark:text-pink-300">Step 3: Tune In and Listen</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        Components automatically receive broadcasts by "tuning in" to the Context. They don't need to know who's broadcasting or how.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-pink-500">//</span>
+                            <span className="text-slate-700 dark:text-slate-300">Component tunes to the frequency</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">function</span> <span className="text-blue-600">UserProfile</span>() {'{}'}
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">const</span> user = <span className="text-blue-600">useContext</span>(UserContext);
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            <span className="text-cyan-600">// Automatically receives broadcast!</span>
+                          </div>
+                          <div className="ml-8 text-slate-800 dark:text-slate-200">
+                            <span className="text-purple-600">return</span> <span className="text-red-600">&lt;div&gt;</span>Hello {'{'}user.name{'}'}<span className="text-red-600">&lt;/div&gt;</span>;
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            {'}'}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 p-4 rounded-xl border border-pink-200 dark:border-pink-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Lightbulb className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-pink-800 dark:text-pink-200 mb-1">Mental Model</p>
+                            <p className="text-sm text-pink-700 dark:text-pink-300">
+                              useContext() = "I'm tuning my radio to UserContext frequency"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-2xl transform -rotate-1"></div>
+                <div className="relative bg-white dark:bg-gray-900 rounded-2xl border-2 border-blue-200 dark:border-blue-700 shadow-xl overflow-hidden">
+                  <div className="flex">
+                    <div className="w-20 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                      <div className="text-white text-2xl font-bold">4</div>
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                          <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                        </div>
+                        <h4 className="font-bold text-xl text-blue-700 dark:text-blue-300">Step 4: Automatic Updates</h4>
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                        When the Provider broadcasts new data, all tuned-in components automatically receive the update and re-render.
+                      </p>
+                      <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+                        <div className="font-mono text-sm space-y-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-blue-500">//</span>
+                            <span className="text-slate-700 dark:text-slate-300">Radio station changes broadcast</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-red-600">&lt;UserContext.Provider</span> <span className="text-orange-600">value=</span>{'<span className="text-green-600">{user: "Bob"}</span>'}<span className="text-red-600">&gt;</span>
+                          </div>
+                          <div className="h-2"></div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-cyan-600">// All receivers automatically update!</span>
+                          </div>
+                          <div className="ml-4 text-slate-800 dark:text-slate-200">
+                            <span className="text-slate-500">// UserProfile now shows "Hello Bob"</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Lightbulb className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-1">Mental Model</p>
+                            <p className="text-sm text-blue-700 dark:text-blue-300">
+                              Value change = "Radio station now playing: &#123;user: 'Bob'&#125;"
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Common Misconceptions */}
+        <Card className="border-2 border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50/50 to-orange-50/50 dark:from-red-950/10 dark:to-orange-950/10">
+          <CardContent className="space-y-6 pt-6">
+            <TopicTitle
+              icon={<AlertTriangle className="w-7 h-7 text-red-600 dark:text-red-400" />}
+              title="Common Misconceptions"
+              description="What people get wrong about Context"
+              size="lg"
+            />
+
+            <div className="space-y-4">
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-red-700 dark:text-red-300 mb-2">"Context is for state management"</h4>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">
+                      <strong>Wrong.</strong> Context only delivers data. The data still needs to be managed somewhere (useState, useReducer, external stores, etc.).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-red-700 dark:text-red-300 mb-2">"Context replaces all props"</h4>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">
+                      <strong>Wrong.</strong> Context is for truly global data. Overusing it makes components harder to understand and test.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-red-700 dark:text-red-300 mb-2">"Context is slow"</h4>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">
+                      <strong>Wrong.</strong> Context itself is fast. Performance issues come from how often the value changes and how many components re-render.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-red-300 dark:border-red-700">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-red-700 dark:text-red-300 mb-2">"Context makes code unmaintainable"</h4>
+                    <p className="text-sm text-slate-700 dark:text-slate-300">
+                      <strong>Wrong.</strong> Context makes code MORE maintainable when used appropriately for truly global concerns.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Alert className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-300 dark:border-blue-700">
+              <Lightbulb className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <AlertTitle className="text-blue-900 dark:text-blue-100">The Truth</AlertTitle>
+              <AlertDescription className="text-blue-800 dark:text-blue-200">
+                Context is a delivery mechanism, not a solution. Use it to deliver data that is truly global and doesn't change frequently.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        </Card>
+
+        {/* When Context Makes Sense */}
+        <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-950/10 dark:to-emerald-950/10">
+          <CardContent className="space-y-6 pt-6">
+            <TopicTitle
+              icon={<CheckCircle2 className="w-7 h-7 text-green-600 dark:text-green-400" />}
+              title="When Context Actually Makes Sense"
+              description="Use cases where Context shines"
+              size="lg"
+            />
+
+            <div className="grid md:grid-cols-2 gap-6">
               <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-green-300 dark:border-green-700">
-                <Badge className="bg-green-500 mb-3">✅ Good Use Cases</Badge>
-                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>• Theme (dark/light mode)</li>
-                  <li>• User authentication</li>
-                  <li>• Language/locale settings</li>
-                  <li>• Global app settings</li>
-                  <li>• Shopping cart state</li>
+                <div className="flex items-center gap-2 mb-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500" />
+                  <h4 className="font-bold text-green-700 dark:text-green-300">Perfect Use Cases</h4>
+                </div>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• <strong>Theme</strong> (light/dark mode)</li>
+                  <li>• <strong>Authentication</strong> (user login status)</li>
+                  <li>• <strong>Language/Locale</strong> (i18n)</li>
+                  <li>• <strong>Routing</strong> (current route)</li>
+                  <li>• <strong>UI State</strong> (modals, sidebars)</li>
                 </ul>
               </div>
 
               <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-orange-300 dark:border-orange-700">
-                <Badge className="bg-orange-500 mb-3">⚠️ Not Ideal For</Badge>
-                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>• Frequently changing data</li>
-                  <li>• Complex state logic</li>
-                  <li>• Local component state</li>
-                  <li>• Performance-critical updates</li>
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertTriangle className="w-5 h-5 text-orange-500" />
+                  <h4 className="font-bold text-orange-700 dark:text-orange-300">Avoid For</h4>
+                </div>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• Form data (use local state)</li>
+                  <li>• Component-specific config (use props)</li>
+                  <li>• Frequently changing values</li>
+                  <li>• Complex business logic</li>
+                  <li>• Data that needs persistence</li>
                 </ul>
               </div>
             </div>
 
-            <Alert className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-300 dark:border-amber-700">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-              <AlertTitle className="text-amber-900 dark:text-amber-100">Don't Overuse Context!</AlertTitle>
-              <AlertDescription className="text-amber-800 dark:text-amber-200">
-                Context is not a replacement for all props. Use it for truly global data. For local state, stick with props!
-              </AlertDescription>
-            </Alert>
+            <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-emerald-300 dark:border-emerald-700">
+              <h4 className="font-bold text-emerald-700 dark:text-emerald-300 mb-4">The Golden Rule</h4>
+              <p className="text-slate-700 dark:text-slate-300 mb-4">
+                Use Context when <strong>many components need the same data</strong> AND <strong>the data doesn't change frequently</strong> AND <strong>the data is truly global</strong>.
+              </p>
+              <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded-xl">
+                <div className="font-mono text-sm text-slate-700 dark:text-slate-300">
+                  <div>✅ Many components need theme data</div>
+                  <div>✅ Theme changes rarely</div>
+                  <div>✅ Theme is global to the entire app</div>
+                  <div>→ Perfect for Context!</div>
+                  <div className="mt-2"></div>
+                  <div>❌ Only one component needs form data</div>
+                  <div>❌ Form data changes constantly</div>
+                  <div>❌ Form data is component-specific</div>
+                  <div>→ Use local state instead!</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-            <Alert className="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border-cyan-300 dark:border-cyan-700">
-              <Lightbulb className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
-              <AlertTitle className="text-cyan-900 dark:text-cyan-100">Context = React's Built-in State Manager!</AlertTitle>
-              <AlertDescription className="text-cyan-800 dark:text-cyan-200">
-                Context provides a way to share values between components without passing props through every level. It's perfect for global data like themes, auth, and settings!
+        {/* Visual Example */}
+        <div className="space-y-6">
+          <TopicTitle
+            icon={<Code2 className="w-8 h-8 text-green-600 dark:text-green-400" />}
+            title="Visual Example: Broadcast System"
+            description="See Context in action as a broadcast system"
+            size="lg"
+          />
+
+          <div className="p-6 bg-white dark:bg-gray-900 rounded-xl border-2 border-blue-300 dark:border-blue-700">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <Wifi className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-blue-700 dark:text-blue-300">Radio Station (Provider)</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Broadcasting user data to all receivers</p>
+                </div>
+              </div>
+
+              <div className="border-l-4 border-blue-300 dark:border-blue-700 pl-6 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  </div>
+                  <span className="text-sm text-slate-700 dark:text-slate-300">Broadcasting: &#123;user: "Alice", role: "Admin"&#125;</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                  <Radio className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-purple-700 dark:text-purple-300">Receivers (Consumers)</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Components tuned to the frequency</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-purple-200 dark:bg-purple-800 rounded flex items-center justify-center">
+                      <Radio className="w-3 h-3 text-purple-700 dark:text-purple-300" />
+                    </div>
+                    <span className="text-sm font-semibold">Header</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Receiving: Alice (Admin)</p>
+                </div>
+
+                <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-purple-200 dark:bg-purple-800 rounded flex items-center justify-center">
+                      <Radio className="w-3 h-3 text-purple-700 dark:text-purple-300" />
+                    </div>
+                    <span className="text-sm font-semibold">Sidebar</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Receiving: Alice (Admin)</p>
+                </div>
+
+                <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 bg-purple-200 dark:bg-purple-800 rounded flex items-center justify-center">
+                      <Radio className="w-3 h-3 text-purple-700 dark:text-purple-300" />
+                    </div>
+                    <span className="text-sm font-semibold">Profile</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Receiving: Alice (Admin)</p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <strong>Key Insight:</strong> All components receive the same broadcast simultaneously, without knowing about each other or the Provider.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Key Takeaways */}
+        <Card className="border-2 border-indigo-200 dark:border-indigo-800 bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/10 dark:to-blue-950/10">
+          <CardContent className="space-y-6 pt-6">
+            <TopicTitle
+              icon={<Lightbulb className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />}
+              title="Key Takeaways"
+              description="What you should remember about Context"
+              size="lg"
+            />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-indigo-300 dark:border-indigo-700">
+                <h4 className="font-bold text-indigo-700 dark:text-indigo-300 mb-3">🎯 What Context IS</h4>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• A broadcast system for data</li>
+                  <li>• A way to skip prop drilling</li>
+                  <li>• A subscription mechanism</li>
+                  <li>• A global communication channel</li>
+                  <li>• A delivery mechanism, not storage</li>
+                </ul>
+              </div>
+
+              <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border-2 border-purple-300 dark:border-purple-700">
+                <h4 className="font-bold text-purple-700 dark:text-purple-300 mb-3">💡 When to Use It</h4>
+                <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <li>• Many components need same data</li>
+                  <li>• Data doesn't change frequently</li>
+                  <li>• Data is truly global</li>
+                  <li>• Theme, auth, language, routing</li>
+                  <li>• UI state like modals/sidebars</li>
+                </ul>
+              </div>
+            </div>
+
+            <Alert className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-300 dark:border-green-700">
+              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <AlertTitle className="text-green-900 dark:text-green-100">Final Thought</AlertTitle>
+              <AlertDescription className="text-green-800 dark:text-green-200">
+                Context is like radio waves - it delivers data to anyone tuned in. The magic isn't in the delivery, it's in knowing what deserves to be broadcast.
               </AlertDescription>
             </Alert>
           </CardContent>

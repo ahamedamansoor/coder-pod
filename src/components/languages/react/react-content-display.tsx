@@ -42,6 +42,9 @@ const UseInsertionEffectHook = React.lazy(() => import('./topics/useinsertioneff
 const UseTransitionHook = React.lazy(() => import('./topics/usetransition-hook'));
 const UseDeferredValueHook = React.lazy(() => import('./topics/usedeferredvalue-hook'));
 const UseImperativeHandleHook = React.lazy(() => import('./topics/useimperativehandle-hook'));
+const UseDebugValueHook = React.lazy(() => import('./topics/usedebugvalue-hook'));
+const UseIdHook = React.lazy(() => import('./topics/useid-hook'));
+const UseSyncExternalStoreHook = React.lazy(() => import('./topics/usesyncexternalstore-hook'));
 const WhatIsContext = React.lazy(() => import('./topics/what-is-context'));
 const CreatingContext = React.lazy(() => import('./topics/creating-context'));
 const PassingDataWithContext = React.lazy(() => import('./topics/passing-data-with-context'));
@@ -101,6 +104,9 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'usetransition-hook': UseTransitionHook,
   'usedeferredvalue-hook': UseDeferredValueHook,
   'useimperativehandle-hook': UseImperativeHandleHook,
+  'usedebugvalue-hook': UseDebugValueHook,
+  'useid-hook': UseIdHook,
+  'usesyncexternalstore-hook': UseSyncExternalStoreHook,
   'what-is-context': WhatIsContext,
   'creating-context': CreatingContext,
   'passing-data-with-context': PassingDataWithContext,
