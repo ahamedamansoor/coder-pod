@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://coderpod.org/sitemap.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://coderpod.org/sitemap-languages.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://coderpod.org/sitemap-cheatsheets.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://coderpod.org/sitemap-tutorials.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://coderpod.org/sitemap-tools.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+  
+  <sitemap>
+    <loc>https://coderpod.org/sitemap-images.xml</loc>
+    <lastmod>2025-04-19</lastmod>
+  </sitemap>
+</sitemapindex>

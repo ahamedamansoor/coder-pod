@@ -1,0 +1,53 @@
+# Coder Pod Robots.txt
+# https://coderpod.org
+
+User-agent: *
+Allow: /
+
+# Prioritize important content
+Crawl-delay: 1
+
+# Sitemaps for search engines
+Sitemap: https://coderpod.org/sitemap-index.xml
+Sitemap: https://coderpod.org/sitemap.xml
+Sitemap: https://coderpod.org/sitemap-languages.xml
+Sitemap: https://coderpod.org/sitemap-cheatsheets.xml
+Sitemap: https://coderpod.org/sitemap-tutorials.xml
+Sitemap: https://coderpod.org/sitemap-tools.xml
+Sitemap: https://coderpod.org/sitemap-images.xml
+
+# Allow all search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Block unnecessary crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Disallow admin and private areas
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /auth/callback

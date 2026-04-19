@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Homepage with images -->
+  <url>
+    <loc>https://coderpod.org</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/logo.svg</image:loc>
+      <image:title>Coder Pod Logo</image:title>
+      <image:caption>Coder Pod - AI-Powered Learning Platform</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Coder Pod Open Graph Image</image:title>
+      <image:caption>Learn Programming Online with AI-Powered Tools</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://coderpod.org/icon-192.png</image:loc>
+      <image:title>Coder Pod App Icon</image:title>
+      <image:caption>Coder Pod Mobile App Icon</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://coderpod.org/icon-512.png</image:loc>
+      <image:title>Coder Pod High Resolution Icon</image:title>
+      <image:caption>Coder Pod High Resolution App Icon</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Dashboard with images -->
+  <url>
+    <loc>https://coderpod.org/dashboard</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Coder Pod Dashboard</image:title>
+      <image:caption>AI-Powered Coding Dashboard for Learning Progress</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- AI Interview page with images -->
+  <url>
+    <loc>https://coderpod.org/ai-interview</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>AI Interview Practice</image:title>
+      <image:caption>Practice Coding Interviews with AI-Powered Mock Interviews</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- AI Tools page with images -->
+  <url>
+    <loc>https://coderpod.org/ai-tools</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>AI Development Tools</image:title>
+      <image:caption>AI-Powered Tools for Enhanced Coding Experience</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Learning Paths page with images -->
+  <url>
+    <loc>https://coderpod.org/learning-paths</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Programming Learning Paths</image:title>
+      <image:caption>Structured Learning Paths for Programming Languages</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Cheatsheets page with images -->
+  <url>
+    <loc>https://coderpod.org/cheatsheets</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Programming Cheatsheets</image:title>
+      <image:caption>Quick Reference Guides for Programming Languages</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Collaborative Interview page with images -->
+  <url>
+    <loc>https://coderpod.org/collaborative-interview</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Collaborative Coding Interview</image:title>
+      <image:caption>Practice Coding Interviews with Real-time Collaboration</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Discover page with images -->
+  <url>
+    <loc>https://coderpod.org/discover</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Discover Programming Content</image:title>
+      <image:caption>Explore New Programming Topics and Technologies</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Roadmaps page with images -->
+  <url>
+    <loc>https://coderpod.org/roadmaps</loc>
+    <lastmod>2025-04-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://coderpod.org/og-image.png</image:loc>
+      <image:title>Programming Roadmaps</image:title>
+      <image:caption>Career Roadmaps for Software Developers</image:caption>
+    </image:image>
+  </url>
+</urlset>
