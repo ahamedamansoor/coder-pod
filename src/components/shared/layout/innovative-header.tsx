@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/tooltip';
 
 interface InnovativeHeaderProps {
-  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'collaborative-interview' | 'ai-tools' | 'ai-interview';
+  currentPage?: 'home' | 'roadmaps' | 'cheatsheets' | 'notes' | 'discover' | 'bookmarks' | 'dashboard' | 'learning' | 'collaborative-interview' | 'ai-tools' | 'ai-interview' | 'prepare';
   showNavigation?: boolean;
   user?: {
     displayName?: string | null;
