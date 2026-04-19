@@ -6,6 +6,7 @@ import "./globals.css";
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://coderpod.org'),
   title: "Coder Pod - Learn Programming Online | AI Coding Tutor & Interview Practice",
   description: "Master coding with AI-powered tutorials, interactive courses, and mock interviews. Learn JavaScript, React, Python, Java, HTML, CSS & more. Get hired faster with personalized coding practice and real-time feedback.",
   manifest: "/manifest.json",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Coder Pod - Learn Programming Online | AI Coding Tutor & Interview Practice",
     description: "Master coding with AI-powered tutorials, interactive courses, and mock interviews. Learn JavaScript, React, Python, Java, HTML, CSS & more. Get hired faster with personalized coding practice and real-time feedback.",
-    url: "https://coder-pod.com",
+    url: "https://coderpod.org",
     siteName: "Coder Pod",
     images: [
       {
@@ -229,8 +230,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@context": "https://schema.org",
               "@type": "EducationalOrganization",
               "name": "Coder Pod",
-              "url": "https://coderpod.io",
-              "logo": "https://coderpod.io/icon-192.png",
+              "url": "https://coderpod.org",
+              "logo": "https://coderpod.org/icon-192.png",
               "description": "AI-powered programming platform offering interactive courses, AI interview practice, collaborative coding, learning paths, cheatsheets, personal notes, and AI tools for developers.",
               "sameAs": [
                 "https://www.linkedin.com/company/coderpod",
@@ -270,10 +271,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "mainEntity": {
                 "@type": "WebSite",
                 "name": "Coder Pod",
-                "url": "https://coderpod.io",
+                "url": "https://coderpod.org",
                 "potentialAction": {
                   "@type": "SearchAction",
-                  "target": "https://coderpod.io/search?q={search_term_string}",
+                  "target": "https://coderpod.org/search?q={search_term_string}",
                   "query-input": "required name=search_term_string"
                 }
               }
@@ -289,7 +290,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
               "name": "Coder Pod",
-              "url": "https://coderpod.io",
+              "url": "https://coderpod.org",
               "applicationCategory": "EducationalApplication",
               "operatingSystem": "Web Browser",
               "offers": {
