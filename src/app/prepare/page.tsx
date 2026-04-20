@@ -218,14 +218,14 @@ export default function PreparePage() {
   const { user } = useEnhancedAuth();
   const router = useRouter();
   
-  const completedLanguages = languagesData.filter(lang => lang.status === 'completed').length;
+  const completedLanguages = languagesData.filter(lang => lang.status === 'available').length;
   const totalQuestions = languagesData.reduce((sum, lang) => sum + lang.stats.totalQuestions, 0);
 
   // Filter based on active category and search query
   const filteredLanguages = languagesData.filter(lang => {
     // Category filter
     const matchesCategory = activeCategory === 'all' || 
-      (activeCategory === 'available' && lang.status === 'completed') ||
+      (activeCategory === 'available' && lang.status === 'available') ||
       (activeCategory === 'coming' && lang.status === 'learning') ||
       categoryMap[activeCategory]?.includes(lang.title);
 
@@ -264,7 +264,7 @@ export default function PreparePage() {
               const count = cat.id === 'all'
                 ? languagesData.length
                 : cat.id === 'available' 
-                  ? languagesData.filter(lang => lang.status === 'completed').length
+                  ? languagesData.filter(lang => lang.status === 'available').length
                   : cat.id === 'coming'
                     ? languagesData.filter(lang => lang.status === 'learning').length
                     : categoryMap[cat.id]?.filter(slug => languagesData.some(r => r.title === slug)).length || 0;
