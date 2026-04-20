@@ -173,11 +173,11 @@ export default function InterviewHeader({ showBackButton = true, currentLanguage
                   <span className="font-semibold">Pro Tip</span>
                 </div>
                 <div className="flex flex-col sm:flex-row items-center gap-1 text-emerald-600 dark:text-emerald-400 text-center">
-                  <span className="font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded">Easy</span>
+                  <span className="font-semibold text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/30 px-3 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-green-200 dark:hover:bg-green-900/50 hover:scale-105 hover:shadow-md active:scale-95">Easy</span>
                   <span className="text-emerald-500">→</span>
-                  <span className="font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded">Medium</span>
+                  <span className="font-semibold text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-yellow-200 dark:hover:bg-yellow-900/50 hover:scale-105 hover:shadow-md active:scale-95">Medium</span>
                   <span className="text-emerald-500">→</span>
-                  <span className="font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded">Hard</span>
+                  <span className="font-semibold text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/30 px-3 py-1 rounded cursor-pointer transition-all duration-200 hover:bg-red-200 dark:hover:bg-red-900/50 hover:scale-105 hover:shadow-md active:scale-95">Hard</span>
                   <span className="text-emerald-600 dark:text-emerald-400">• Try to answer before expanding! Take notes on challenging concepts.</span>
                 </div>
               </div>

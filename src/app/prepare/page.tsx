@@ -63,9 +63,9 @@ const languagesData: LanguageCard[] = [
     icon: <Code className="w-8 h-8" />,
     color: 'orange',
     stats: {
-      totalQuestions: 18,
+      totalQuestions: 82,
       difficulty: 'Beginner to Advanced',
-      estimatedTime: '1-2 hours',
+      estimatedTime: '2-3 hours',
       progress: 100
     },
     features: [
