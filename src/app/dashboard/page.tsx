@@ -18,9 +18,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import Link from 'next/link';
 import { enabledRoadmaps as roadmaps } from '@/data/roadmaps';
-import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, FileText, MessageSquare, TrendingUp, Award, Clock, Palette, Layers, Check } from 'lucide-react';
+import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, FileText, MessageSquare, TrendingUp, Award, Clock, Palette, Layers, Check, Lock } from 'lucide-react';
 
 import { InnovativeHeader } from '@/components/shared';
 import { FeaturesShowcase } from '@/components/dashboard/features-showcase';
@@ -93,10 +94,20 @@ function getUserInitials(displayName: string | null | undefined, email: string |
 function DashboardContent({ user, handleLogout }: { user: any; handleLogout: () => void }) {
   const { openPlayground } = useReactPlayground();
   const [showContent, setShowContent] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setShowContent(true);
   }, []);
+
+  const handleInterviewCardClick = (languagePath: string) => {
+    if (user) {
+      router.push(`/prepare/${languagePath}/interview-questions`);
+    } else {
+      setShowSignInModal(true);
+    }
+  };
   
   const handlePlaygroundOpen = () => {
     openPlayground({
@@ -354,8 +365,10 @@ try {
                         { name: 'Angular', icon: Target, color: 'from-red-500 to-red-600', questions: 63, level: 'Enterprise' },
                         { name: 'Vue.js', icon: Sparkles, color: 'from-green-500 to-green-600', questions: 50, level: 'Progressive' }
                       ].map((lang, index) => (
-                        <Link key={lang.name} href={`/prepare/${lang.name.toLowerCase().replace('.', '')}/interview-questions`}>
-                          <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 border border-blue-200/50 dark:border-slate-700/50 hover:border-blue-400 dark:hover:border-slate-600 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer">
+                        <div 
+                          key={lang.name}
+                          onClick={() => handleInterviewCardClick(lang.name.toLowerCase().replace('.', ''))}
+                          className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 border border-blue-200/50 dark:border-slate-700/50 hover:border-blue-400 dark:hover:border-slate-600 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer">
                             {/* Hover gradient overlay */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${lang.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
                             
@@ -372,10 +385,8 @@ try {
                               <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
                                 {lang.level}
                               </div>
-                              
-                                                          </div>
+                            </div>
                           </div>
-                        </Link>
                       ))}
                     </div>
 
@@ -678,6 +689,41 @@ try {
         <WebPlaygroundModal />
         <ReactPlaygroundModal />
         <BackendPlaygroundModal />
+
+        {/* Sign In Required Modal */}
+        <Dialog open={showSignInModal} onOpenChange={setShowSignInModal}>
+          <DialogContent className="sm:max-w-md">
+            <div className="flex flex-col items-center text-center space-y-6 py-6">
+              {/* Animated lock icon */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-2xl animate-pulse" />
+                <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+                  <Lock className="w-10 h-10 text-white" />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Sign In Required
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 max-w-sm">
+                  Please sign in to access interview questions and validate yourself. Track your progress and master your skills!
+                </p>
+              </div>
+
+              <div className="space-y-3 w-full">
+                <Link href="/login" className="w-full">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                    Sign In to Continue
+                  </Button>
+                </Link>
+                <Button variant="ghost" onClick={() => setShowSignInModal(false)} className="w-full">
+                  Maybe Later
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
     </>
   );
 }
