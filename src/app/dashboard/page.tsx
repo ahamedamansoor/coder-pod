@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import { enabledRoadmaps as roadmaps } from '@/data/roadmaps';
-import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, MessageSquare, TrendingUp, Award, Clock } from 'lucide-react';
+import { Code, Code2, Sparkles, Rocket, ArrowRight, Zap, Trophy, Target, Linkedin, Heart, Mail, BookOpen, MapPin, Users, Terminal, GitBranch, Database, Cloud, Shield, Globe, Cpu, FileCode, FileText, MessageSquare, TrendingUp, Award, Clock, Palette, Layers, Check } from 'lucide-react';
 
 import { InnovativeHeader } from '@/components/shared';
 import { FeaturesShowcase } from '@/components/dashboard/features-showcase';
@@ -295,7 +295,162 @@ try {
           {/* Features Showcase Section */}
           <FeaturesShowcase />
 
+          {/* Interactive Interview Arena */}
+          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 mb-12 lg:mb-16">
+            <div className="max-w-[1920px] mx-auto">
+              <div className="relative">
+                {/* Floating particles background */}
+                <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-20 animate-float"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 5}s`,
+                        animationDuration: `${10 + Math.random() * 10}s`
+                      }}
+                    />
+                  ))}
+                </div>
 
+                <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 dark:from-blue-950/20 dark:via-slate-900 dark:to-cyan-950/20 rounded-3xl p-1 border border-blue-200/50 dark:border-blue-800/30">
+                  <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl p-8 sm:p-12">
+                    {/* Header with animated text */}
+                    <div className="text-center mb-12">
+                      <div className="inline-flex items-center gap-3 mb-4">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg animate-pulse"></div>
+                          <div className="relative p-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500">
+                            <Target className="w-8 h-8 text-white animate-pulse" />
+                          </div>
+                        </div>
+                        <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent" style={{ color: '#29ABE2' }}>
+                          Interview Arena
+                        </h2>
+                      </div>
+                      <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+                        Challenge yourself with real interview questions. Track your progress and master the art of technical interviews.
+                      </p>
+                      
+                      {/* Success Rate Highlight */}
+                      <div className="mt-6 inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200/50 dark:border-green-800/30">
+                        <Award className="w-5 h-5 text-green-600 dark:text-green-400 animate-pulse" />
+                        <span className="text-green-700 dark:text-green-300 font-semibold">
+                          <span className="text-2xl font-bold">95%</span> Success Rate - Master these question bundles and ace your interviews with confidence!
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Interactive Language Cards Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-12">
+                      {[
+                        { name: 'HTML', icon: Code, color: 'from-blue-500 to-blue-600', questions: 82, level: 'Foundation' },
+                        { name: 'CSS', icon: Palette, color: 'from-cyan-500 to-cyan-600', questions: 40, level: 'Styling' },
+                        { name: 'JavaScript', icon: FileText, color: 'from-yellow-500 to-yellow-600', questions: 24, level: 'Core' },
+                        { name: 'React', icon: Layers, color: 'from-blue-600 to-cyan-600', questions: 55, level: 'Advanced' },
+                        { name: 'TypeScript', icon: Code2, color: 'from-indigo-500 to-blue-600', questions: 15, level: 'Type Safe' },
+                        { name: 'Angular', icon: Target, color: 'from-red-500 to-red-600', questions: 63, level: 'Enterprise' },
+                        { name: 'Vue.js', icon: Sparkles, color: 'from-green-500 to-green-600', questions: 50, level: 'Progressive' }
+                      ].map((lang, index) => (
+                        <Link key={lang.name} href={`/prepare/${lang.name.toLowerCase().replace('.', '')}/interview-questions`}>
+                          <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 border border-blue-200/50 dark:border-slate-700/50 hover:border-blue-400 dark:hover:border-slate-600 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer">
+                            {/* Hover gradient overlay */}
+                            <div className={`absolute inset-0 bg-gradient-to-br ${lang.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                            
+                            <div className="relative p-4 text-center">
+                              <div className={`inline-flex p-2 rounded-lg bg-gradient-to-br ${lang.color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                                <lang.icon className="w-5 h-5 text-white" />
+                              </div>
+                              <h3 className="font-semibold text-slate-900 dark:text-white text-sm mb-1 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-blue-600 group-hover:to-cyan-600 transition-all duration-300">
+                                {lang.name}
+                              </h3>
+                              <div className="text-xs text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                {lang.questions} Qs
+                              </div>
+                              <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                {lang.level}
+                              </div>
+                              
+                                                          </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+
+                    {/* Interactive Stats Bar */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20 border border-blue-200/50 dark:border-blue-800/30 p-6 group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="relative">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-blue-600 dark:text-blue-400 font-semibold">Total Questions</span>
+                            <Zap className="w-5 h-5 text-blue-500 animate-pulse" />
+                          </div>
+                          <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">329+</div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">Across 7 technologies</div>
+                        </div>
+                      </div>
+
+                      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20 border border-cyan-200/50 dark:border-cyan-800/30 p-6 group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="relative">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-cyan-600 dark:text-cyan-400 font-semibold">Difficulty Levels</span>
+                            <Trophy className="w-5 h-5 text-cyan-500 animate-pulse" />
+                          </div>
+                          <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">3</div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">Easy → Medium → Hard</div>
+                        </div>
+                      </div>
+
+                      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-200/50 dark:border-blue-800/30 p-6 group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="relative">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-blue-600 dark:text-blue-400 font-semibold">Success Rate</span>
+                            <Award className="w-5 h-5 text-blue-500 animate-pulse" />
+                          </div>
+                          <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">95%</div>
+                          <div className="text-sm text-slate-600 dark:text-slate-400">Based on our analysis</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Call to Action */}
+                    <div className="text-center">
+                      <Link href="/prepare">
+                        <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white text-lg font-bold px-12 py-4 rounded-xl transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30 hover:scale-105 border-2 border-blue-500/20" style={{ background: 'linear-gradient(to right, #29ABE2, #06B6D4)' }}>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          <span className="relative flex items-center gap-3">
+                            <Rocket className="w-6 h-6 group-hover:animate-bounce" />
+                            Enter Interview Arena
+                            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                          </span>
+                        </Button>
+                      </Link>
+                      
+                      <div className="flex items-center justify-center gap-8 mt-6 text-sm text-slate-600 dark:text-slate-400">
+                        <div className="flex items-center gap-2 group cursor-pointer">
+                          <Clock className="w-4 h-4 text-blue-500 group-hover:animate-pulse" />
+                          <span className="group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Self-paced</span>
+                        </div>
+                        <div className="flex items-center gap-2 group cursor-pointer">
+                          <TrendingUp className="w-4 h-4 text-cyan-500 group-hover:animate-pulse" />
+                          <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">Progress Tracking</span>
+                        </div>
+                        <div className="flex items-center gap-2 group cursor-pointer">
+                          <Target className="w-4 h-4 text-blue-500 group-hover:animate-pulse" />
+                          <span className="group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Real Questions</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Quick Stats Section */}
           <div className="w-full bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/10 dark:to-indigo-950/10 py-12 sm:py-16 lg:py-20">
@@ -475,7 +630,6 @@ try {
                     <div className="bg-gradient-to-r from-transparent via-slate-50 dark:via-slate-950 to-transparent px-4">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        <span>Built with Next.js, TypeScript & Supabase and Vercel</span>
                         <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
                       </div>
                     </div>

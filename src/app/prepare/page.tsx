@@ -65,7 +65,7 @@ const languagesData: LanguageCard[] = [
     stats: {
       totalQuestions: 82,
       difficulty: 'Beginner to Advanced',
-      estimatedTime: '2-3 hours',
+      estimatedTime: '1-2 hours',
       progress: 100
     },
     features: [
@@ -87,7 +87,7 @@ const languagesData: LanguageCard[] = [
     stats: {
       totalQuestions: 40,
       difficulty: 'Beginner to Advanced',
-      estimatedTime: '2-3 hours',
+      estimatedTime: '1-2 hours',
       progress: 100
     },
     features: [
@@ -108,7 +108,7 @@ const languagesData: LanguageCard[] = [
     stats: {
       totalQuestions: 24,
       difficulty: 'Beginner to Expert',
-      estimatedTime: '3-4 hours',
+      estimatedTime: '1-2 hours',
       progress: 100
     },
     features: [
@@ -127,9 +127,9 @@ const languagesData: LanguageCard[] = [
     icon: <Layers className="w-8 h-8" />,
     color: 'cyan',
     stats: {
-      totalQuestions: 26,
+      totalQuestions: 55,
       difficulty: 'Beginner to Expert',
-      estimatedTime: '3-4 hours',
+      estimatedTime: '2-3 hours',
       progress: 100
     },
     features: [
@@ -141,8 +141,73 @@ const languagesData: LanguageCard[] = [
     ],
     href: '/prepare/react/interview-questions',
     status: 'available'
-  }
-];
+  },
+  {
+    title: 'TypeScript',
+    description: 'Master TypeScript concepts from basic types to advanced type system features and best practices',
+    icon: <Code2 className="w-8 h-8" />,
+    color: 'indigo',
+    stats: {
+      totalQuestions: 15,
+      difficulty: 'Beginner to Expert',
+      estimatedTime: '1 hour',
+      progress: 100
+    },
+    features: [
+      'Type System',
+      'Generics & Utilities',
+      'Advanced Types',
+      'Type Safety',
+      'Best Practices'
+    ],
+    href: '/prepare/typescript/interview-questions',
+    status: 'available'
+  },
+  {
+    title: 'Angular',
+    description: 'Master Angular framework from basic components to advanced patterns, RxJS, and enterprise-level applications',
+    icon: <Target className="w-8 h-8" />,
+    color: 'red',
+    stats: {
+      totalQuestions: 63,
+      difficulty: 'Beginner to Expert',
+      estimatedTime: '2-3 hours',
+      progress: 100
+    },
+    features: [
+      'Components & Modules',
+      'RxJS & Observables',
+      'Forms & Validation',
+      'Routing & Guards',
+      'NgRx State Management',
+      'Testing & Performance'
+    ],
+    href: '/prepare/angular/interview-questions',
+    status: 'available'
+  },
+  {
+    title: 'Vue.js',
+    description: 'Master Vue.js framework from basic components to advanced patterns, Composition API, and modern Vue development',
+    icon: <Sparkles className="w-8 h-8" />,
+    color: 'green',
+    stats: {
+      totalQuestions: 50,
+      difficulty: 'Beginner to Expert',
+      estimatedTime: '2-3 hours',
+      progress: 100
+    },
+    features: [
+      'Components & Directives',
+      'Composition API',
+      'Vue Router & Pinia',
+      'Reactivity System',
+      'Advanced Patterns',
+      'Performance Optimization'
+    ],
+    href: '/prepare/vue/interview-questions',
+    status: 'available'
+  },
+  ];
 
 const getStatusBadge = (status: LanguageCard['status']) => {
   switch (status) {
@@ -187,6 +252,30 @@ const getColorClasses = (color: string) => {
       text: 'text-cyan-600 dark:text-cyan-400',
       border: 'border-cyan-200 dark:border-cyan-800',
       hover: 'hover:shadow-cyan-100'
+    },
+    indigo: {
+      bg: 'bg-indigo-100 dark:bg-indigo-900/40',
+      text: 'text-indigo-600 dark:text-indigo-400',
+      border: 'border-indigo-200 dark:border-indigo-800',
+      hover: 'hover:shadow-indigo-100'
+    },
+    red: {
+      bg: 'bg-red-100 dark:bg-red-900/40',
+      text: 'text-red-600 dark:text-red-400',
+      border: 'border-red-200 dark:border-red-800',
+      hover: 'hover:shadow-red-100'
+    },
+    purple: {
+      bg: 'bg-purple-100 dark:bg-purple-900/40',
+      text: 'text-purple-600 dark:text-purple-400',
+      border: 'border-purple-200 dark:border-purple-800',
+      hover: 'hover:shadow-purple-100'
+    },
+    green: {
+      bg: 'bg-green-100 dark:bg-green-900/40',
+      text: 'text-green-600 dark:text-green-400',
+      border: 'border-green-200 dark:border-green-800',
+      hover: 'hover:shadow-green-100'
     }
   };
   return colorMap[color as keyof typeof colorMap] || colorMap.blue;
@@ -203,7 +292,7 @@ const categories = [
 ];
 
 const categoryMap: Record<string, string[]> = {
-  frontend: ['HTML', 'CSS', 'JavaScript', 'React'],
+  frontend: ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Angular', 'Vue.js'],
   backend: [],
   database: [],
   testing: [],
@@ -332,7 +421,11 @@ export default function PreparePage() {
               : language.title === 'JavaScript'
               ? ['Google', 'Meta', 'Netflix', 'Tesla', 'Twitter']
               : language.title === 'React'
-              ? ['Meta', 'Netflix', 'Airbnb', 'Uber', ' Spotify']
+              ? ['Meta', 'Netflix', 'Airbnb', 'Uber', 'Spotify']
+              : language.title === 'TypeScript'
+              ? ['Microsoft', 'Google', 'Meta', 'Amazon', 'Slack']
+              : language.title === 'Angular'
+              ? ['Google', 'Microsoft', 'IBM', 'Accenture', 'Deloitte']
               : ['Coming Soon'];
             
             return (

@@ -18,51 +18,63 @@ import {
   Palette,
   FileText,
   Play,
-  Lightbulb
+  Lightbulb,
+  Layers,
+  Target,
+  Database,
+  TestTube,
+  Globe,
+  Sparkles
 } from 'lucide-react';
+import { enabledLanguages } from '@/data/languages';
+
+// Languages that are shown on the prepare page dashboard
+const dashboardLanguages = enabledLanguages.filter(lang => 
+  ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Angular', 'Vue.js'].includes(lang.name)
+);
 
 interface InterviewHeaderProps {
   showBackButton?: boolean;
   currentLanguage?: string;
 }
 
-const languages = [
-  {
-    title: 'HTML',
-    icon: <Code className="w-4 h-4" />,
-    href: '/prepare/html/interview-questions',
-    color: 'orange',
-    status: 'available'
-  },
-  {
-    title: 'CSS',
-    icon: <Palette className="w-4 h-4" />,
-    href: '/prepare/css/interview-questions',
-    color: 'blue',
-    status: 'available'
-  },
-  {
-    title: 'JavaScript',
-    icon: <FileText className="w-4 h-4" />,
-    href: '/prepare/javascript/interview-questions',
-    color: 'yellow',
-    status: 'available'
-  },
-  {
-    title: 'React',
-    icon: <Play className="w-4 h-4" />,
-    href: '/prepare/react/interview-questions',
-    color: 'cyan',
-    status: 'available'
-  },
-  {
-    title: 'TypeScript',
-    icon: <Code className="w-4 h-4" />,
-    href: '#',
-    color: 'blue',
-    status: 'learning'
+// Icon mapping for different languages
+const getIcon = (title: string) => {
+  switch (title) {
+    case 'HTML': return <Code className="w-4 h-4" />;
+    case 'CSS': return <Palette className="w-4 h-4" />;
+    case 'SCSS': return <Palette className="w-4 h-4" />;
+    case 'Tailwind': return <Palette className="w-4 h-4" />;
+    case 'JavaScript': return <FileText className="w-4 h-4" />;
+    case 'TypeScript': return <Code className="w-4 h-4" />;
+    case 'React': return <Layers className="w-4 h-4" />;
+    case 'Angular': return <Target className="w-4 h-4" />;
+    case 'Vue.js': return <Sparkles className="w-4 h-4" />;
+    case 'DSA': return <Database className="w-4 h-4" />;
+    case 'Selenium': return <TestTube className="w-4 h-4" />;
+    case 'Python': return <Globe className="w-4 h-4" />;
+    default: return <Code className="w-4 h-4" />;
   }
-];
+};
+
+// Color mapping for different languages
+const getColor = (title: string) => {
+  switch (title) {
+    case 'HTML': return 'orange';
+    case 'CSS': return 'blue';
+    case 'SCSS': return 'pink';
+    case 'Tailwind': return 'cyan';
+    case 'JavaScript': return 'yellow';
+    case 'TypeScript': return 'indigo';
+    case 'React': return 'cyan';
+    case 'Angular': return 'red';
+    case 'Vue.js': return 'green';
+    case 'DSA': return 'green';
+    case 'Selenium': return 'green';
+    case 'Python': return 'blue';
+    default: return 'slate';
+  }
+};
 
 export default function InterviewHeader({ showBackButton = true, currentLanguage }: InterviewHeaderProps) {
   // Show header on dashboard, show Pro Tip on interview pages
@@ -94,20 +106,28 @@ export default function InterviewHeader({ showBackButton = true, currentLanguage
                 {currentLanguage && currentLanguage !== "Dashboard" ? (
                   <>
                     <div className={`p-1 rounded-md ${
-                      languages.find(lang => lang.title === currentLanguage)?.color === 'orange' ? 'bg-orange-100 dark:bg-orange-900/40' :
-                      languages.find(lang => lang.title === currentLanguage)?.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/40' :
-                      languages.find(lang => lang.title === currentLanguage)?.color === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/40' :
-                      languages.find(lang => lang.title === currentLanguage)?.color === 'cyan' ? 'bg-cyan-100 dark:bg-cyan-900/40' :
+                      getColor(currentLanguage) === 'orange' ? 'bg-orange-100 dark:bg-orange-900/40' :
+                      getColor(currentLanguage) === 'blue' ? 'bg-blue-100 dark:bg-blue-900/40' :
+                      getColor(currentLanguage) === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/40' :
+                      getColor(currentLanguage) === 'cyan' ? 'bg-cyan-100 dark:bg-cyan-900/40' :
+                      getColor(currentLanguage) === 'pink' ? 'bg-pink-100 dark:bg-pink-900/40' :
+                      getColor(currentLanguage) === 'indigo' ? 'bg-indigo-100 dark:bg-indigo-900/40' :
+                      getColor(currentLanguage) === 'red' ? 'bg-red-100 dark:bg-red-900/40' :
+                      getColor(currentLanguage) === 'green' ? 'bg-green-100 dark:bg-green-900/40' :
                       'bg-slate-100 dark:bg-slate-900/40'
                     }`}>
                       <div className={
-                        languages.find(lang => lang.title === currentLanguage)?.color === 'orange' ? 'text-orange-600 dark:text-orange-400' :
-                        languages.find(lang => lang.title === currentLanguage)?.color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
-                        languages.find(lang => lang.title === currentLanguage)?.color === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
-                        languages.find(lang => lang.title === currentLanguage)?.color === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' :
+                        getColor(currentLanguage) === 'orange' ? 'text-orange-600 dark:text-orange-400' :
+                        getColor(currentLanguage) === 'blue' ? 'text-blue-600 dark:text-blue-400' :
+                        getColor(currentLanguage) === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
+                        getColor(currentLanguage) === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' :
+                        getColor(currentLanguage) === 'pink' ? 'text-pink-600 dark:text-pink-400' :
+                        getColor(currentLanguage) === 'indigo' ? 'text-indigo-600 dark:text-indigo-400' :
+                        getColor(currentLanguage) === 'red' ? 'text-red-600 dark:text-red-400' :
+                        getColor(currentLanguage) === 'green' ? 'text-green-600 dark:text-green-400' :
                         'text-slate-600 dark:text-slate-400'
                       }>
-                        {languages.find(lang => lang.title === currentLanguage)?.icon}
+                        {getIcon(currentLanguage)}
                       </div>
                     </div>
                     <span className="font-medium">{currentLanguage}</span>
@@ -122,38 +142,46 @@ export default function InterviewHeader({ showBackButton = true, currentLanguage
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-48">
-              {languages.map((language, index) => (
-                <DropdownMenuItem key={index} asChild>
-                  <Link 
-                    href={language.href}
-                    className="flex items-center gap-3 w-full px-2 py-2 cursor-pointer"
-                  >
-                    <div className={`p-1.5 rounded-md ${
-                      language.color === 'orange' ? 'bg-orange-100 dark:bg-orange-900/40' :
-                      language.color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/40' :
-                      language.color === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/40' :
-                      language.color === 'cyan' ? 'bg-cyan-100 dark:bg-cyan-900/40' :
-                      'bg-slate-100 dark:bg-slate-900/40'
-                    }`}>
-                      <div className={
-                        language.color === 'orange' ? 'text-orange-600 dark:text-orange-400' :
-                        language.color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
-                        language.color === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
-                        language.color === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' :
-                        'text-slate-600 dark:text-slate-400'
-                      }>
-                        {language.icon}
+              {dashboardLanguages.map((language, index) => {
+                const color = getColor(language.name);
+                return (
+                  <DropdownMenuItem key={index} asChild>
+                    <Link 
+                      href={`/prepare/${language.slug}/interview-questions`}
+                      className="flex items-center gap-3 w-full px-2 py-2 cursor-pointer"
+                    >
+                      <div className={`p-1.5 rounded-md ${
+                        color === 'orange' ? 'bg-orange-100 dark:bg-orange-900/40' :
+                        color === 'blue' ? 'bg-blue-100 dark:bg-blue-900/40' :
+                        color === 'yellow' ? 'bg-yellow-100 dark:bg-yellow-900/40' :
+                        color === 'cyan' ? 'bg-cyan-100 dark:bg-cyan-900/40' :
+                        color === 'pink' ? 'bg-pink-100 dark:bg-pink-900/40' :
+                        color === 'indigo' ? 'bg-indigo-100 dark:bg-indigo-900/40' :
+                        color === 'red' ? 'bg-red-100 dark:bg-red-900/40' :
+                        color === 'green' ? 'bg-green-100 dark:bg-green-900/40' :
+                        'bg-slate-100 dark:bg-slate-900/40'
+                      }`}>
+                        <div className={
+                          color === 'orange' ? 'text-orange-600 dark:text-orange-400' :
+                          color === 'blue' ? 'text-blue-600 dark:text-blue-400' :
+                          color === 'yellow' ? 'text-yellow-600 dark:text-yellow-400' :
+                          color === 'cyan' ? 'text-cyan-600 dark:text-cyan-400' :
+                          color === 'pink' ? 'text-pink-600 dark:text-pink-400' :
+                          color === 'indigo' ? 'text-indigo-600 dark:text-indigo-400' :
+                          color === 'red' ? 'text-red-600 dark:text-red-400' :
+                          color === 'green' ? 'text-green-600 dark:text-green-400' :
+                          'text-slate-600 dark:text-slate-400'
+                        }>
+                          {getIcon(language.name)}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">{language.title}</div>
-                      <div className="text-xs text-slate-500">
-                        {language.status === 'available' ? 'Available' : 'Coming Soon'}
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">{language.name}</div>
                       </div>
-                    </div>
-                  </Link>
-                </DropdownMenuItem>
-              ))}
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
