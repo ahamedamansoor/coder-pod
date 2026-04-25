@@ -39,7 +39,6 @@ import { LearningPathTitle } from '@/components/shared';
 import Link from 'next/link';
 import { useEnhancedAuth } from '@/lib/auth/enhanced-auth-context';
 import { useRouter } from 'next/navigation';
-import { htmlQuestions } from '@/data/languages/html';
 
 interface LanguageCard {
   title: string;
