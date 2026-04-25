@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Brain, PenTool, FileText, Palette, Video, Mic, Code, Briefcase, TrendingUp, GraduationCap, Zap, ChevronRight, Layers, BookOpen, Cpu, Star, Crown, Sparkles, Search, Grid3x3, List } from 'lucide-react';
+import { ExternalLink, Brain, PenTool, FileText, Palette, Video, Mic, Code, Briefcase, TrendingUp, GraduationCap, Zap, Layers, BookOpen, Cpu, Star, Crown, Sparkles, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AiTool {
@@ -489,7 +489,6 @@ const aiCategories: AiCategory[] = [
 export default function AiToolsContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'grouped'>('grouped');
 
   const handleToolClick = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -536,7 +535,7 @@ export default function AiToolsContent() {
       <div className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 px-4 sm:px-6 lg:px-8 xl:px-12 pt-4 pb-4 mb-6 bg-background/95 backdrop-blur-md border-b border-border/40 transition-all duration-200">
         <div className="flex flex-col justify-center items-center gap-6 max-w-4xl mx-auto w-full">
           {/* Category Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 max-w-full w-auto mx-auto lg:mx-0 snap-x">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide p-1 rounded-xl bg-slate-100/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 w-full snap-x">
             {aiToolCategories.map((cat) => {
               const Icon = cat.icon;
               const isActive = activeCategory === cat.id;
@@ -587,38 +586,11 @@ export default function AiToolsContent() {
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
           </div>
-
-          {/* View Mode Toggle */}
-          <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
-            <button
-              onClick={() => setViewMode('grouped')}
-              className={cn(
-                'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
-                viewMode === 'grouped'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              )}
-            >
-              <List className="w-4 h-4" />
-              <span>Grouped</span>
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              className={cn(
-                'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
-                viewMode === 'grid'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              )}
-            >
-              <Grid3x3 className="w-4 h-4" />
-              <span>Grid</span>
-            </button>
-          </div>
         </div>
       </div>
 
       {/* Top 10 AI Tools Section */}
+      {!searchQuery && activeCategory === 'all' && (
       <div className="px-4 sm:px-6 lg:px-8 xl:px-12 py-6 bg-gradient-to-br from-violet-50/50 to-purple-50/30 dark:from-violet-950/20 dark:to-purple-950/10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
@@ -692,7 +664,7 @@ export default function AiToolsContent() {
           </div>
         </div>
       </div>
-
+      )}
       {/* Main Content */}
       <div className="px-4 sm:px-6 lg:px-8 xl:px-12 py-6">
         <div className="w-full">
@@ -848,7 +820,7 @@ export default function AiToolsContent() {
                 })}
               </div>
             </div>
-          ) : viewMode === 'grouped' ? (
+          ) : (
             /* Grouped View by Category */
             <div className="space-y-8">
               {filteredCategories.map((category) => {
@@ -923,82 +895,6 @@ export default function AiToolsContent() {
                       </div>
                     </CardContent>
                   </Card>
-                );
-              })}
-            </div>
-          ) : (
-            /* Grid View (All tools in one grid) */
-            <div className="space-y-8">
-              {filteredCategories.map((category) => {
-                const CategoryIcon = category.icon;
-                return (
-                  <div key={category.title} className="space-y-4">
-                    <div className="flex items-center gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center`}>
-                        <CategoryIcon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                          {category.title}
-                        </h2>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
-                          {category.tools.length} tool{category.tools.length !== 1 ? 's' : ''}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                      {category.tools.map((tool) => (
-                        <div
-                          key={tool.name}
-                          onClick={() => handleToolClick(tool.url)}
-                          className="group cursor-pointer"
-                        >
-                          <div className={cn(
-                            'relative h-full rounded-xl overflow-hidden',
-                            'bg-white dark:bg-slate-900',
-                            `border ${categoryColors[category.title]?.border || 'border-slate-200'} dark:${categoryColors[category.title]?.border || 'dark:border-slate-800'}`,
-                            'shadow-sm hover:shadow-md',
-                            'transition-all duration-200',
-                            'hover:-translate-y-0.5'
-                          )}>
-                            <div className={cn(
-                              'absolute left-0 top-0 bottom-0 w-1',
-                              categoryColors[category.title]?.accent || 'bg-gradient-to-b from-blue-500 to-blue-600'
-                            )} />
-                            <div className="p-5 pl-6 flex flex-col h-full">
-                              <div className="flex items-start gap-3 mb-3">
-                                <div className={cn(
-                                  'p-2 rounded-lg flex-shrink-0',
-                                  categoryColors[category.title]?.bg || 'bg-blue-50 dark:bg-blue-950/50'
-                                )}>
-                                  <CategoryIcon className={cn('h-5 w-5', categoryColors[category.title]?.icon || 'text-blue-600 dark:text-blue-400')} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h3 className="text-base font-semibold text-slate-900 dark:text-white mb-1 truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                    {tool.name}
-                                  </h3>
-                                  <span className="text-xs text-slate-500 dark:text-slate-400">
-                                    AI Tool
-                                  </span>
-                                </div>
-                                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" />
-                              </div>
-                              <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3 mb-4 min-h-[3.75rem] flex-1">
-                                {tool.description}
-                              </p>
-                              <div className="flex items-center justify-between mt-auto">
-                                <div className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
-                                  <ExternalLink className="w-4 h-4" />
-                                  <span>Visit Tool</span>
-                                </div>
-                                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 );
               })}
             </div>

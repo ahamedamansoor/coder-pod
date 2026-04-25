@@ -386,17 +386,20 @@ function QnA({ questions }: QnAProps) {
                       {q.question}
                     </p>
                   </div>
-                  <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-2 py-1">
-                    Answer
-                  </Badge>
+                  <Button
+                    onClick={() => {
+                      const searchQuery = encodeURIComponent(`${q.question} JavaScript`);
+                      window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                    }}
+                    className="w-8 h-8 p-0 bg-red-600 hover:bg-red-700 text-white rounded flex items-center justify-center mr-2"
+                  >
+                    <Play className="w-4 h-4" />
+                  </Button>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4 pt-2">
                 <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <div className="mb-3">
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">Answer</span>
-                  </div>
-                  <div 
+                                    <div 
                     className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-slate-700 dark:prose-headings:text-slate-300 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-code:bg-slate-200 dark:prose-code:bg-slate-800 prose-code:text-green-700 dark:prose-code:text-green-300 prose-code:font-medium prose-pre:bg-slate-100 dark:prose-pre:bg-slate-950 prose-pre:border dark:prose-pre:border-slate-600 prose-p:mb-3 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:leading-relaxed prose-pre:my-3 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:text-slate-700 dark:prose-pre:text-slate-300 prose-code:font-mono prose-pre:font-mono prose-pre:text-xs prose-pre:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: String(marked.parse(q.idealAnswer)) }} 
                   />

@@ -367,7 +367,10 @@ try {
                       ].map((lang, index) => (
                         <div 
                           key={lang.name}
-                          onClick={() => handleInterviewCardClick(lang.name.toLowerCase().replace('.', ''))}
+                          onClick={() => {
+                            const languagePath = lang.name.toLowerCase() === 'vue.js' ? 'vue' : lang.name.toLowerCase().replace('.', '');
+                            handleInterviewCardClick(languagePath);
+                          }}
                           className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 border border-blue-200/50 dark:border-slate-700/50 hover:border-blue-400 dark:hover:border-slate-600 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer">
                             {/* Hover gradient overlay */}
                             <div className={`absolute inset-0 bg-gradient-to-br ${lang.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />

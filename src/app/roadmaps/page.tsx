@@ -239,34 +239,7 @@ export default function RoadmapsPage() {
                 <Code2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
               </div>
 
-              {/* View Mode Toggle */}
-              <div className="inline-flex items-center gap-1 p-1 rounded-lg bg-slate-100/80 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
-                <button
-                  onClick={() => setViewMode('grouped')}
-                  className={cn(
-                    'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
-                    viewMode === 'grouped'
-                      ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  )}
-                >
-                  <List className="w-4 h-4" />
-                  <span>Grouped</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={cn(
-                    'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200',
-                    viewMode === 'grid'
-                      ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  )}
-                >
-                  <Grid3x3 className="w-4 h-4" />
-                  <span>Grid</span>
-                </button>
-              </div>
-            </div>
+                          </div>
           </div>
 
           {/* Roadmaps Display */}

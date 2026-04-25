@@ -50,7 +50,6 @@ $text-color: #333;
 
 body {
   font-family: sans-serif;
-  background-color: #f0f2f5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,7 +90,6 @@ body {
 
 const defaultCss = `body {
   font-family: sans-serif;
-  background-color: #f0f2f5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -297,7 +295,7 @@ export function WebPlaygroundModal({
   const [outputSrc, setOutputSrc] = useState('about:blank');
   const [consoleLogs, setConsoleLogs] = useState<ConsoleLog[]>([]);
   const [iframeKey, setIframeKey] = useState(0);
-  const [autoRun, setAutoRun] = useState(false); // Default to manual run
+  const [autoRun, setAutoRun] = useState(true); // Default to auto-run for better UX
   const [hasChanges, setHasChanges] = useState(false);
   
   // Initialize visible panels based on defaultFocusedPanel or content.visiblePanels
@@ -704,6 +702,9 @@ export function WebPlaygroundModal({
       const htmlContent = `
           <html>
             <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:;">
               ${tailwindCDN}
               <style>${combinedCss}</style>
               <script>${themeScript}</script>

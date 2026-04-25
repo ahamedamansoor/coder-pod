@@ -39,6 +39,7 @@ import { LearningPathTitle } from '@/components/shared';
 import Link from 'next/link';
 import { useEnhancedAuth } from '@/lib/auth/enhanced-auth-context';
 import { useRouter } from 'next/navigation';
+import { htmlQuestions } from '@/data/languages/html';
 
 interface LanguageCard {
   title: string;
@@ -87,8 +88,8 @@ const languagesData: LanguageCard[] = [
     stats: {
       totalQuestions: 40,
       difficulty: 'Beginner to Advanced',
-      estimatedTime: '1-2 hours',
-      progress: 100
+      estimatedTime: '3-4 hours',
+      progress: 0
     },
     features: [
       'CSS Selectors',
@@ -558,6 +559,24 @@ export default function PreparePage() {
             );
           })}
         </div>
+
+        {/* Empty State */}
+        {filteredLanguages.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-slate-500 dark:text-slate-400 mb-4">
+              No interview topics in this category yet.
+            </p>
+            <button
+              onClick={() => {
+                setActiveCategory('all');
+                setSearchQuery('');
+              }}
+              className="px-5 py-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold hover:shadow-lg hover:scale-105 transition-all"
+            >
+              View All
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Getting Started Guide */}

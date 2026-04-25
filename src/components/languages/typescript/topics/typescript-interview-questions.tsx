@@ -6,12 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -27,13 +21,11 @@ import {
   Star,
   Code,
   Zap,
-  ChevronDown,
-  Search
+  Play
 } from 'lucide-react';
 import Link from 'next/link';
 import { marked } from 'marked';
 import InterviewHeader from '@/components/shared/interview-header';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 const easyQuestions = [
@@ -162,17 +154,20 @@ function QnA({ questions }: { questions: typeof easyQuestions }) {
                       {q.question}
                     </p>
                   </div>
-                  <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs px-2 py-1">
-                    Answer
-                  </Badge>
+                  <Button
+                    onClick={() => {
+                      const searchQuery = encodeURIComponent(`${q.question} TypeScript`);
+                      window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                    }}
+                    className="w-8 h-8 p-0 bg-red-600 hover:bg-red-700 text-white rounded flex items-center justify-center mr-2"
+                  >
+                    <Play className="w-4 h-4" />
+                  </Button>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4 pt-2">
                 <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <div className="mb-3">
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">Answer</span>
-                  </div>
-                  <div 
+                                    <div 
                     className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-slate-700 dark:prose-headings:text-slate-300 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:text-green-700 dark:prose-code:text-green-300 prose-code:font-medium prose-pre:bg-slate-100 dark:prose-pre:bg-slate-950 prose-pre:border dark:prose-pre:border-slate-600 prose-p:mb-3 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:leading-relaxed prose-pre:my-3 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:text-slate-700 dark:prose-pre:text-slate-300 prose-code:font-mono prose-pre:font-mono prose-pre:text-xs prose-pre:leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: String(marked.parse(q.idealAnswer)) }} 
                   />
@@ -192,148 +187,13 @@ interface TypeScriptInterviewQuestionsProps {
 
 export default function TypeScriptInterviewQuestions({ showBackButton = true }: TypeScriptInterviewQuestionsProps) {
   const [activeTab, setActiveTab] = useState('easy');
-  const [searchQuery, setSearchQuery] = useState('');
 
-  // Topic categories for the dropdown
-  const topicCategories = {
-    basics: {
-      title: 'Basic Concepts',
-      icon: BookOpen,
-      description: 'Fundamental TypeScript concepts',
-      topics: ['What is TypeScript', 'Type Safety', 'Type Inference', 'Basic Types', 'Any vs Unknown', 'Null vs Undefined', 'Enums', 'Tuples', 'Void Type']
-    },
-    types: {
-      title: 'Types & Interfaces',
-      icon: Target,
-      description: 'Type definitions and interfaces',
-      topics: ['Interface vs Type', 'Type Aliases', 'Union Types', 'Intersection Types', 'Optional Properties', 'Readonly Properties', 'Index Signatures', 'Extending Interfaces', 'Declaration Merging', 'Structural Typing']
-    },
-    functions: {
-      title: 'Functions & OOP',
-      icon: Code,
-      description: 'Functions and object-oriented programming',
-      topics: ['Arrow Functions', 'Function Overloading', 'Access Modifiers', 'Abstract Classes', 'Class vs Interface', 'Constructor Shorthand', 'Method Overriding', 'Static vs Instance', 'Polymorphism', 'Getters/Setters']
-    },
-    generics: {
-      title: 'Generics',
-      icon: Brain,
-      description: 'Generic programming concepts',
-      topics: ['What are Generics', 'Why Use Generics', 'Generic Constraints', 'Generic Interfaces', 'Generic Classes', 'Generics vs Any']
-    },
-    advanced: {
-      title: 'Advanced Concepts',
-      icon: Zap,
-      description: 'Advanced TypeScript features',
-      topics: ['Utility Types', 'Keyof Operator', 'Typeof Operator', 'Mapped Types', 'Conditional Types', 'Type Narrowing', 'Type Assertion', 'Decorators', 'Modules vs Namespaces', 'Declaration Files']
-    }
-  };
-
-  const handleTopicSelect = (topic: string) => {
-    // Scroll to the first occurrence of the topic in the questions
-    const searchTopic = topic.toLowerCase();
-    const allQuestions = [...easyQuestions, ...mediumQuestions, ...hardQuestions];
-    
-    const foundQuestion = allQuestions.find(q => 
-      q.question.toLowerCase().includes(searchTopic)
-    );
-    
-    if (foundQuestion) {
-      const elementId = `question-${foundQuestion.question.substring(0, 20).replace(/\s+/g, '-').toLowerCase()}`;
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-  };
-
+  
   return (
     <div className="w-screen px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 pb-8 sm:pb-12">
       <InterviewHeader showBackButton={showBackButton} currentLanguage="TypeScript" />
 
-      {/* Topic Categories Dropdown */}
-      <div className="flex justify-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="group relative overflow-hidden rounded-full border border-slate-200/70 bg-white/70 text-slate-900 shadow-sm transition-all hover:bg-white/80 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-slate-800/60 dark:bg-slate-950/50 dark:text-slate-100">
-              <Target className="relative z-10 mr-2 h-4 w-4" />
-              <span className="relative z-10 max-w-[10rem] truncate font-semibold">
-                Topic Categories
-              </span>
-              <ChevronDown className="relative z-10 ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="center" className="w-96 p-0">
-            {/* Search Bar */}
-            <div className="p-3 border-b sticky top-0 bg-background z-10">
-              <div className="relative">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <input
-                  placeholder="Search topics..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-3 py-2 w-full text-sm border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-slate-500/30"
-                />
-              </div>
-            </div>
-
-            {/* Scrollable Content */}
-            <ScrollArea className="max-h-[400px]">
-              <div className="p-3 space-y-4">
-                {Object.entries(topicCategories).map(([key, category]) => {
-                  const Icon = category.icon;
-                  const filteredTopics = searchQuery.trim() 
-                    ? category.topics.filter(topic => 
-                        topic.toLowerCase().includes(searchQuery.toLowerCase())
-                      )
-                    : category.topics;
-
-                  if (filteredTopics.length === 0) return null;
-
-                  return (
-                    <div key={key} className="space-y-2">
-                      <div className="flex items-center gap-2 px-2 py-1">
-                        <Icon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                        <div>
-                          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                            {category.title}
-                          </p>
-                          <p className="text-xs text-slate-600 dark:text-slate-400">
-                            {category.description}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-1 gap-1">
-                        {filteredTopics.map((topic) => (
-                          <DropdownMenuItem 
-                            key={topic} 
-                            onClick={() => handleTopicSelect(topic)}
-                            className="cursor-pointer text-sm px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                          >
-                            {topic}
-                          </DropdownMenuItem>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {/* No Results */}
-                {searchQuery && 
-                 Object.values(topicCategories).every(category => 
-                   !category.topics.some(topic => 
-                     topic.toLowerCase().includes(searchQuery.toLowerCase())
-                   )
-                 ) && (
-                  <div className="text-center py-6 text-sm text-muted-foreground">
-                    No topics found matching "{searchQuery}"
-                  </div>
-                )}
-              </div>
-            </ScrollArea>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
+      
       {/* Questions Tabs */}
       <div className="space-y-6">
         
