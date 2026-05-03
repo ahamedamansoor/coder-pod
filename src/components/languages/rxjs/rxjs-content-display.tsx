@@ -47,6 +47,7 @@ const RxjsSwitchMapOperator = React.lazy(() => import('./topics/rxjs-switchmap-o
 const RxjsConcatMapOperator = React.lazy(() => import('./topics/rxjs-concatmap-operator'));
 const RxjsExhaustMapOperator = React.lazy(() => import('./topics/rxjs-exhaustmap-operator'));
 const RxjsMergeAllOperator = React.lazy(() => import('./topics/rxjs-mergeall-operator'));
+const RxjsInterviewQuestions = React.lazy(() => import('./topics/rxjs-interview-questions'));
 
 const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'rxjs-core-concepts-what-is-reactive-programming': RxjsWhatIsReactiveProgramming,
@@ -89,6 +90,7 @@ const topicComponents: Record<string, React.LazyExoticComponent<any>> = {
   'rxjs-flattening-operators-concatmap': RxjsConcatMapOperator,
   'rxjs-flattening-operators-exhaustmap': RxjsExhaustMapOperator,
   'rxjs-flattening-operators-mergeall': RxjsMergeAllOperator,
+  'interview-questions': RxjsInterviewQuestions,
 };
 
 

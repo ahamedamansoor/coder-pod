@@ -198,32 +198,35 @@ export default function TypeScriptInterviewQuestions({ showBackButton = true }: 
       <div className="space-y-6">
         
         <Tabs defaultValue="easy" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
-            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300">{easyQuestions.length} questions • 5-10 min</span>
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-3 sm:grid-cols-2 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
+            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 hidden sm:block">{easyQuestions.length} questions • 5-10 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 sm:hidden">{easyQuestions.length} • 5-10m</span>
             </TabsTrigger>
-            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <Target className="w-4 h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300">{mediumQuestions.length} questions • 10-15 min</span>
+            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <Target className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 hidden sm:block">{mediumQuestions.length} questions • 10-15 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 sm:hidden">{mediumQuestions.length} • 10-15m</span>
             </TabsTrigger>
-            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <TrendingUp className="w-4 h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300">{hardQuestions.length} questions • 15-20 min</span>
+            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 hidden sm:block">{hardQuestions.length} questions • 15-20 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 sm:hidden">{hardQuestions.length} • 15-20m</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="easy" className="space-y-4">
+          <TabsContent value="easy" className="space-y-3 sm:space-y-4">
             <Card className="border-green-200 dark:border-green-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
-                  <BookOpen className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200 text-lg sm:text-xl">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                   Easy Level
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-green-700 dark:text-green-300 text-sm sm:text-base">
                   Fundamental TypeScript concepts every developer should know
                 </CardDescription>
               </CardHeader>
@@ -231,14 +234,14 @@ export default function TypeScriptInterviewQuestions({ showBackButton = true }: 
             <QnA questions={easyQuestions} />
           </TabsContent>
           
-          <TabsContent value="medium" className="space-y-4">
+          <TabsContent value="medium" className="space-y-3 sm:space-y-4">
             <Card className="border-yellow-200 dark:border-yellow-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
-                  <Target className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200 text-lg sm:text-xl">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                   Medium Level
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-yellow-700 dark:text-yellow-300 text-sm sm:text-base">
                   Intermediate TypeScript topics for practical development
                 </CardDescription>
               </CardHeader>
@@ -246,14 +249,14 @@ export default function TypeScriptInterviewQuestions({ showBackButton = true }: 
             <QnA questions={mediumQuestions} />
           </TabsContent>
           
-          <TabsContent value="hard" className="space-y-4">
+          <TabsContent value="hard" className="space-y-3 sm:space-y-4">
             <Card className="border-red-200 dark:border-red-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200">
-                  <Brain className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200 text-lg sm:text-xl">
+                  <Brain className="w-4 h-4 sm:w-5 sm:h-5" />
                   Hard Level
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-red-700 dark:text-red-300 text-sm sm:text-base">
                   Advanced TypeScript concepts for senior developers
                 </CardDescription>
               </CardHeader>

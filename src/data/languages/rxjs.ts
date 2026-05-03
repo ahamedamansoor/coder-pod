@@ -25,6 +25,11 @@ export const rxjs: Language = {
       title: 'Learning Plan',
       explanation: 'Structured RxJS roadmap from observables to real-world patterns.',
     },
+    {
+      slug: 'interview-questions',
+      title: 'Interview Q&A',
+      explanation: 'A curated list of common RxJS interview questions and answers.',
+    },
     ...rxjsTopics,
   ],
 };

@@ -207,7 +207,75 @@ const languagesData: LanguageCard[] = [
     href: '/prepare/vue/interview-questions',
     status: 'available'
   },
-  ];
+  {
+    title: 'Java',
+    description: 'Master Java programming from core concepts to advanced features, multithreading, and enterprise development',
+    icon: <Server className="w-8 h-8" />,
+    color: 'orange',
+    stats: {
+      totalQuestions: 114,
+      difficulty: 'Beginner to Expert',
+      estimatedTime: '3-4 hours',
+      progress: 100
+    },
+    features: [
+      'Core Java Basics',
+      'OOP Concepts',
+      'Collections Framework',
+      'Multithreading',
+      'Java 8+ Features',
+      'JVM Internals',
+      'Design Patterns',
+      'Exception Handling'
+    ],
+    href: '/prepare/java/interview-questions',
+    status: 'available'
+  },
+  {
+    title: 'RxJS',
+    description: 'Master reactive programming with RxJS observables, operators, and advanced patterns for handling asynchronous data streams',
+    icon: <Database className="w-8 h-8" />,
+    color: 'purple',
+    stats: {
+      totalQuestions: 15,
+      difficulty: 'Intermediate to Expert',
+      estimatedTime: '1-2 hours',
+      progress: 100
+    },
+    features: [
+      'Observables & Subjects',
+      'Operators & Pipelines',
+      'Error Handling',
+      'Memory Management',
+      'Advanced Patterns',
+      'Testing Strategies'
+    ],
+    href: '/prepare/rxjs/interview-questions',
+    status: 'available'
+  },
+  {
+    title: 'Node.js',
+    description: 'Master Node.js runtime, event-driven architecture, and server-side JavaScript development with comprehensive interview questions',
+    icon: <Server className="w-8 h-8" />,
+    color: 'green',
+    stats: {
+      totalQuestions: 55,
+      difficulty: 'Beginner to Expert',
+      estimatedTime: '3-4 hours',
+      progress: 100
+    },
+    features: [
+      'Event Loop & Async Programming',
+      'Core Modules & APIs',
+      'Express.js Framework',
+      'Database Integration',
+      'Security & Authentication',
+      'Performance & Deployment'
+    ],
+    href: '/prepare/nodejs/interview-questions',
+    status: 'available'
+  },
+];
 
 const getStatusBadge = (status: LanguageCard['status']) => {
   switch (status) {
@@ -292,8 +360,8 @@ const categories = [
 ];
 
 const categoryMap: Record<string, string[]> = {
-  frontend: ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Angular', 'Vue.js'],
-  backend: [],
+  frontend: ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Angular', 'Vue.js', 'RxJS'],
+  backend: ['Node.js'],
   database: [],
   testing: [],
   devops: [],
@@ -414,23 +482,45 @@ export default function PreparePage() {
             const isDisabled = language.status !== 'available';
             
             // Mock company data based on language
-            const companies = language.title === 'HTML' 
-              ? ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple']
-              : language.title === 'CSS'
-              ? ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple']
-              : language.title === 'JavaScript'
-              ? ['Google', 'Meta', 'Netflix', 'Tesla', 'Twitter']
-              : language.title === 'React'
-              ? ['Meta', 'Netflix', 'Airbnb', 'Uber', 'Spotify']
-              : language.title === 'TypeScript'
-              ? ['Microsoft', 'Google', 'Meta', 'Amazon', 'Slack']
-              : language.title === 'Angular'
-              ? ['Google', 'Microsoft', 'IBM', 'Accenture', 'Deloitte']
-              : ['Coming Soon'];
+            let companies;
+            switch (language.title) {
+              case 'HTML':
+                companies = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple'];
+                break;
+              case 'CSS':
+                companies = ['Google', 'Microsoft', 'Amazon', 'Meta', 'Apple'];
+                break;
+              case 'JavaScript':
+                companies = ['Google', 'Meta', 'Netflix', 'Tesla', 'Twitter'];
+                break;
+              case 'React':
+                companies = ['Meta', 'Netflix', 'Airbnb', 'Uber', 'Spotify'];
+                break;
+              case 'TypeScript':
+                companies = ['Microsoft', 'Google', 'Meta', 'Amazon', 'Slack'];
+                break;
+              case 'Angular':
+                companies = ['Google', 'Microsoft', 'IBM', 'Accenture', 'Deloitte'];
+                break;
+              case 'RxJS':
+                companies = ['Netflix', 'Google', 'Microsoft', 'Meta', 'Amazon'];
+                break;
+              case 'Node.js':
+                companies = ['Netflix', 'Uber', 'LinkedIn', 'PayPal', 'Walmart'];
+                break;
+              case 'Vue.js':
+                companies = ['Google', 'Apple', 'Netflix', 'Adobe', 'GitLab'];
+                break;
+              case 'Java':
+                companies = ['Google', 'Amazon', 'Microsoft', 'Oracle', 'IBM'];
+                break;
+              default:
+                companies = ['Coming Soon'];
+            }
             
             return (
               <Card 
-                key={index} 
+                key={language.title} 
                 className={`border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-600 hover:-translate-y-1 hover:bg-gradient-to-br hover:from-white/80 hover:to-slate-50/80 dark:hover:from-slate-800/80 dark:hover:to-slate-900/80 hover:backdrop-blur-sm relative overflow-hidden ${
                   isDisabled ? 'opacity-75' : ''
                 }`}
@@ -460,24 +550,27 @@ export default function PreparePage() {
                       <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Asked at:</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {companies.slice(0, 3).map((company, idx) => {
-                        const companyColors = [
-                          'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 dark:from-blue-900/30 dark:to-blue-800/40 dark:text-blue-300 border border-blue-200/50 dark:border-blue-700/50',
-                          'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 dark:from-emerald-900/30 dark:to-emerald-800/40 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-700/50',
-                          'bg-gradient-to-r from-violet-50 to-violet-100 text-violet-700 dark:from-violet-900/30 dark:to-violet-800/40 dark:text-violet-300 border border-violet-200/50 dark:border-violet-700/50',
-                          'bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 dark:from-amber-900/30 dark:to-amber-800/40 dark:text-amber-300 border border-amber-200/50 dark:border-amber-700/50',
-                          'bg-gradient-to-r from-rose-50 to-rose-100 text-rose-700 dark:from-rose-900/30 dark:to-rose-800/40 dark:text-rose-300 border border-rose-200/50 dark:border-rose-700/50'
-                        ];
+                      {companies && companies.length > 0 ? (
+                        companies.slice(0, 3).map((company, idx) => {
+                          const companyColors = [
+                            'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 dark:from-blue-900/30 dark:to-blue-800/40 dark:text-blue-300 border border-blue-200/50 dark:border-blue-700/50',
+                            'bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 dark:from-emerald-900/30 dark:to-emerald-800/40 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-700/50',
+                            'bg-gradient-to-r from-violet-50 to-violet-100 text-violet-700 dark:from-violet-900/30 dark:to-violet-800/40 dark:text-violet-300 border border-violet-200/50 dark:border-violet-700/50',
+                            'bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 dark:from-amber-900/30 dark:to-amber-800/40 dark:text-amber-300 border border-amber-200/50 dark:border-amber-700/50',
+                            'bg-gradient-to-r from-rose-50 to-rose-100 text-rose-700 dark:from-rose-900/30 dark:to-rose-800/40 dark:text-rose-300 border border-rose-200/50 dark:border-rose-700/50'
+                          ];
                         return (
                           <span 
-                            key={idx}
+                            key={company}
                             className={`px-3 py-1 text-xs font-semibold rounded-full antialiased tracking-tight shadow-sm hover:shadow-md transition-all duration-200 ${companyColors[idx % companyColors.length]}`}
                           >
                             {company}
                           </span>
                         );
-                      })}
-                      {companies.length > 3 && (
+                      })) : (
+                        <span className="text-xs text-slate-400">No companies available</span>
+                      )}
+                      {companies && companies.length > 3 && (
                         <Tooltip>
                           <TooltipTrigger>
                             <span className="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full cursor-help">
@@ -487,8 +580,8 @@ export default function PreparePage() {
                           <TooltipContent>
                             <p className="text-sm font-medium">More companies:</p>
                             <div className="flex flex-col gap-1 mt-1">
-                              {companies.slice(3).map((company, idx) => (
-                                <span key={idx} className="text-xs">• {company}</span>
+                              {companies.slice(3).map((company) => (
+                                <span key={company} className="text-xs">• {company}</span>
                               ))}
                             </div>
                           </TooltipContent>
@@ -521,9 +614,9 @@ export default function PreparePage() {
                   <div className="space-y-2">
                     <div className="text-xs font-medium text-slate-600 dark:text-slate-400">Topics:</div>
                     <div className="flex flex-wrap gap-1">
-                      {language.features.slice(0, 3).map((feature, featureIndex) => (
+                      {language.features.slice(0, 3).map((feature) => (
                         <span 
-                          key={featureIndex} 
+                          key={feature} 
                           className="px-2 py-0.5 text-xs bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded"
                         >
                           {feature}

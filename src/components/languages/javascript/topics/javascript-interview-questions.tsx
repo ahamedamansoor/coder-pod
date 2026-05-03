@@ -38,12 +38,15 @@ import {
   Code,
   Palette,
   FileText,
-  Play
+  Play,
+  Rocket
 } from 'lucide-react';
 import React from 'react';
 import { marked } from 'marked';
 import Link from 'next/link';
 import InterviewHeader from '@/components/shared/interview-header';
+import { WebPlaygroundModal } from '@/components/shared/playground/web-playground-modal';
+import { useWebPlayground } from '@/components/shared/playground/web-playground-context';
 import { PageHeader } from '@/components/shared/generic-page-header';
 import { TopicNavigation } from '@/components/shared/topic-navigation';
 import type { Language, Topic } from '@/data/languages';
@@ -262,6 +265,49 @@ const mediumQuestions = [
   }
 ];
 
+const implementationQuestions = [
+  {
+    question: "Build a Todo List Application",
+    idealAnswer: "**Todo List Application** - A classic JavaScript exercise that demonstrates DOM manipulation, event handling, and state management.\n\n**Key Features:**\n- Add new todos\n- Mark todos as complete/incomplete\n- Delete todos\n- Filter todos (all, active, completed)\n- Local storage persistence\n\n**Implementation Steps:**\n1. Create HTML structure with input field and todo list\n2. Add event listeners for user interactions\n3. Implement CRUD operations\n4. Add filtering functionality\n5. Persist data to localStorage",
+    implementation: 'todo-list'
+  },
+  {
+    question: "Create a Weather App using API",
+    idealAnswer: "**Weather Application** - Fetches real weather data from an API and displays it dynamically.\n\n**Key Features:**\n- Search for any city\n- Display current weather (temperature, conditions, humidity)\n- Show 5-day forecast\n- Handle loading and error states\n- Responsive design\n\n**Implementation Steps:**\n1. Set up API integration (OpenWeatherMap or similar)\n2. Create search functionality\n3. Parse and display weather data\n4. Add error handling\n5. Implement loading states",
+    implementation: 'weather-app'
+  },
+  {
+    question: "Build a Calculator Application",
+    idealAnswer: "**Calculator Application** - A fully functional calculator with basic and advanced operations.\n\n**Key Features:**\n- Basic arithmetic (+, -, *, /)\n- Clear and delete functions\n- Decimal point support\n- Keyboard support\n- Error handling for invalid operations\n\n**Implementation Steps:**\n1. Create calculator UI with buttons\n2. Implement display logic\n3. Add operation handlers\n4. Handle edge cases (division by zero, etc.)\n5. Add keyboard event listeners",
+    implementation: 'calculator'
+  },
+  {
+    question: "Create a Password Generator",
+    idealAnswer: "**Password Generator** - Generates secure random passwords with customizable options.\n\n**Key Features:**\n- Adjustable password length\n- Include/exclude uppercase, lowercase, numbers, symbols\n- Copy to clipboard functionality\n- Password strength indicator\n- Generate multiple passwords\n\n**Implementation Steps:**\n1. Create UI with options and controls\n2. Implement random character generation\n3. Add password strength calculation\n4. Implement copy to clipboard\n5. Add visual feedback",
+    implementation: 'password-generator'
+  },
+  {
+    question: "Build a Quiz Application",
+    idealAnswer: "**Quiz Application** - Interactive quiz with multiple choice questions and scoring.\n\n**Key Features:**\n- Multiple choice questions\n- Timer functionality\n- Score tracking\n- Progress indicator\n- Results screen with performance breakdown\n\n**Implementation Steps:**\n1. Create question data structure\n2. Build quiz interface\n3. Implement timer logic\n4. Add score calculation\n5. Create results display",
+    implementation: 'quiz-app'
+  },
+  {
+    question: "Create a Drag and Drop Interface",
+    idealAnswer: "**Drag and Drop Interface** - Implement drag and drop functionality for organizing items.\n\n**Key Features:**\n- Drag items between containers\n- Visual feedback during dragging\n- Drop zone highlighting\n- Reorder items within containers\n- Touch device support\n\n**Implementation Steps:**\n1. Set up HTML5 drag and drop API\n2. Add drag event listeners\n3. Implement visual feedback\n4. Handle drop logic\n5. Add mobile touch support",
+    implementation: 'drag-drop'
+  },
+  {
+    question: "Build a Real-time Chat Interface",
+    idealAnswer: "**Real-time Chat Interface** - Simulated chat application with messaging features.\n\n**Key Features:**\n- Send and receive messages\n- Timestamp display\n- User avatars\n- Typing indicators\n- Message status (sent, delivered)\n\n**Implementation Steps:**\n1. Create chat UI with message list\n2. Implement message sending\n3. Add simulated receiving\n4. Include typing indicators\n5. Add message status features",
+    implementation: 'chat-interface'
+  },
+  {
+    question: "Create an Image Gallery with Lightbox",
+    idealAnswer: "**Image Gallery with Lightbox** - Interactive image viewer with modal functionality.\n\n**Key Features:**\n- Grid layout for thumbnails\n- Lightbox modal for full-size images\n- Navigation between images\n- Keyboard navigation\n- Responsive design\n\n**Implementation Steps:**\n1. Create gallery grid layout\n2. Implement lightbox modal\n3. Add image navigation\n4. Include keyboard controls\n5. Add responsive behavior",
+    implementation: 'image-gallery'
+  }
+];
+
 const hardQuestions = [
   {
     question: "Explain the JavaScript event loop and how it works with asynchronous operations.",
@@ -298,6 +344,50 @@ const hardQuestions = [
   {
     question: "Implement a function that supports chaining like a(1)(2,3)(4)() and returns the sum of all arguments",
     idealAnswer: "**Function Chaining Implementation:**\n\nThis requires returning a function that accumulates arguments until called with no arguments:\n\n```javascript\nfunction a(...args) {\n  let sum = args.reduce((acc, val) => acc + val, 0);\n  \n  function chained(...moreArgs) {\n    if (moreArgs.length === 0) {\n      return sum;\n    }\n    sum += moreArgs.reduce((acc, val) => acc + val, 0);\n    return chained;\n  }\n  \n  return chained;\n}\n\n// Usage\nconsole.log(a(1)(2,3)(4)()); // 10\nconsole.log(a(5, 10)(15)()); // 30\n```\n\n**Advanced Version with ValueOf:**\n```javascript\nfunction add(...args) {\n  const sum = args.reduce((acc, val) => acc + val, 0);\n  \n  const chained = (...moreArgs) => add(sum, ...moreArgs);\n  chained.valueOf = () => sum;\n  chained.toString = () => sum.toString();\n  \n  return chained;\n}\n\n// Can be used without final ()\nconsole.log(add(1)(2,3)(4)); // 10\nconsole.log(add(1)(2) + add(3)(4)); // 10\n```"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.map()",
+    idealAnswer: "**Array.prototype.map() Polyfill:**\n\n```javascript\nif (!Array.prototype.map) {\n  Array.prototype.map = function(callback, thisArg) {\n    // Check if callback is a function\n    if (typeof callback !== 'function') {\n      throw new TypeError(callback + ' is not a function');\n    }\n    \n    // Get the array context\n    const O = Object(this);\n    const len = O.length >>> 0; // Convert to unsigned 32-bit integer\n    \n    // Create new array for results\n    const A = new Array(len);\n    \n    // Iterate through array\n    for (let k = 0; k < len; k++) {\n      // Check if index exists in sparse array\n      if (k in O) {\n        const kValue = O[k];\n        // Call callback with proper context\n        const mappedValue = callback.call(thisArg, kValue, k, O);\n        A[k] = mappedValue;\n      }\n    }\n    \n    return A;\n  };\n}\n\n// Usage examples\nconst numbers = [1, 2, 3, 4];\nconst doubled = numbers.map(x => x * 2); // [2, 4, 6, 8]\n\n// With thisArg\nconst obj = { multiplier: 3 };\nconst tripled = numbers.map(function(x) {\n  return x * this.multiplier;\n}, obj); // [3, 6, 9, 12]\n\n// Sparse arrays\nconst sparse = [1, , 3]; // [1, empty, 3]\nconst result = sparse.map(x => x * 2); // [2, empty, 6]\n```\n\n**Key Implementation Details:**\n- Handles sparse arrays correctly\n- Supports thisArg parameter\n- Throws TypeError for non-function callbacks\n- Uses `>>> 0` to convert length to unsigned 32-bit integer\n- Preserves array length in result\n- Doesn't modify original array"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.filter()",
+    idealAnswer: "**Array.prototype.filter() Polyfill:**\n\n```javascript\nif (!Array.prototype.filter) {\n  Array.prototype.filter = function(callback, thisArg) {\n    // Validate callback\n    if (typeof callback !== 'function') {\n      throw new TypeError(callback + ' is not a function');\n    }\n    \n    const O = Object(this);\n    const len = O.length >>> 0;\n    \n    // Create new array for filtered results\n    const result = [];\n    \n    for (let k = 0; k < len; k++) {\n      if (k in O) {\n        const kValue = O[k];\n        // Include element if callback returns truthy\n        if (callback.call(thisArg, kValue, k, O)) {\n          result.push(kValue);\n        }\n      }\n    }\n    \n    return result;\n  };\n}\n\n// Usage examples\nconst numbers = [1, 2, 3, 4, 5, 6];\nconst evens = numbers.filter(x => x % 2 === 0); // [2, 4, 6]\n\n// With thisArg\nconst context = { min: 3 };\nconst filtered = numbers.filter(function(x) {\n  return x > this.min;\n}, context); // [4, 5, 6]\n\n// Filtering objects\nconst users = [\n  { id: 1, active: true },\n  { id: 2, active: false },\n  { id: 3, active: true }\n];\nconst activeUsers = users.filter(user => user.active);\n// [{ id: 1, active: true }, { id: 3, active: true }]\n\n// Edge cases\nconst sparseArray = [1, , 3, , 5];\nconst filteredSparse = sparseArray.filter(x => x > 2); // [3, 5]\n```\n\n**Implementation Notes:**\n- Only includes elements where callback returns truthy values\n- Maintains order of original elements\n- Handles sparse arrays by skipping empty slots\n- Supports thisArg for custom context\n- Returns new array without modifying original"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.reduce()",
+    idealAnswer: "**Array.prototype.reduce() Polyfill:**\n\n```javascript\nif (!Array.prototype.reduce) {\n  Array.prototype.reduce = function(callback, initialValue) {\n    // Validate callback\n    if (typeof callback !== 'function') {\n      throw new TypeError(callback + ' is not a function');\n    }\n    \n    const O = Object(this);\n    const len = O.length >>> 0;\n    \n    // Handle empty array with no initial value\n    if (len === 0 && arguments.length < 2) {\n      throw new TypeError('Reduce of empty array with no initial value');\n    }\n    \n    let k = 0;\n    let accumulator;\n    \n    // Set initial accumulator\n    if (arguments.length >= 2) {\n      accumulator = initialValue;\n    } else {\n      // Find first existing element in sparse array\n      while (k < len && !(k in O)) {\n        k++;\n      }\n      if (k >= len) {\n        throw new TypeError('Reduce of empty array with no initial value');\n      }\n      accumulator = O[k++];\n    }\n    \n    // Iterate through remaining elements\n    while (k < len) {\n      if (k in O) {\n        accumulator = callback.call(undefined, accumulator, O[k], k, O);\n      }\n      k++;\n    }\n    \n    return accumulator;\n  };\n}\n\n// Usage examples\nconst numbers = [1, 2, 3, 4, 5];\nconst sum = numbers.reduce((acc, val) => acc + val, 0); // 15\nconst product = numbers.reduce((acc, val) => acc * val); // 120\n\n// Without initial value\nconst total = numbers.reduce((acc, val) => acc + val); // 15\n\n// Finding max\nconst max = numbers.reduce((acc, val) => Math.max(acc, val)); // 5\n\n// Grouping objects\nconst people = [\n  { name: 'Alice', age: 25 },\n  { name: 'Bob', age: 30 },\n  { name: 'Charlie', age: 25 }\n];\n\nconst groupedByAge = people.reduce((acc, person) => {\n  const age = person.age;\n  if (!acc[age]) acc[age] = [];\n  acc[age].push(person);\n  return acc;\n}, {});\n// { 25: [{ name: 'Alice', age: 25 }, { name: 'Charlie', age: 25 }],\n//   30: [{ name: 'Bob', age: 30 }] }\n\n// Edge case: empty array\n// [].reduce(() => {}, 0) // 0 (with initial value)\n// [].reduce(() => {}) // TypeError (no initial value)\n```\n\n**Key Features:**\n- Handles both with and without initial value\n- Throws appropriate errors for edge cases\n- Correctly processes sparse arrays\n- Uses first element as accumulator when no initial value provided"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.forEach()",
+    idealAnswer: "**Array.prototype.forEach() Polyfill:**\n\n```javascript\nif (!Array.prototype.forEach) {\n  Array.prototype.forEach = function(callback, thisArg) {\n    // Validate callback\n    if (typeof callback !== 'function') {\n      throw new TypeError(callback + ' is not a function');\n    }\n    \n    const O = Object(this);\n    const len = O.length >>> 0;\n    \n    for (let k = 0; k < len; k++) {\n      if (k in O) {\n        callback.call(thisArg, O[k], k, O);\n      }\n    }\n  };\n}\n\n// Usage examples\nconst fruits = ['apple', 'banana', 'orange'];\nfruits.forEach((fruit, index) => {\n  console.log(`${index}: ${fruit}`);\n});\n// 0: apple\n// 1: banana\n// 2: orange\n\n// With thisArg\nconst obj = { prefix: 'Fruit: ' };\nfruits.forEach(function(fruit) {\n  console.log(this.prefix + fruit);\n}, obj);\n// Fruit: apple\n// Fruit: banana\n// Fruit: orange\n\n// Modifying array during iteration\nconst numbers = [1, 2, 3, 4];\nnumbers.forEach((num, index, arr) => {\n  arr[index] = num * 2;\n});\nconsole.log(numbers); // [2, 4, 6, 8]\n\n// Sparse arrays\nconst sparse = [1, , 3];\nsparse.forEach(x => console.log(x)); // 1, 3 (skips empty)\n\n// Early termination (not possible with forEach)\n// Use for...of or some() instead for early exit\n```\n\n**Implementation Details:**\n- Always returns undefined\n- Cannot be broken out of (use for...of for that)\n- Supports thisArg for custom context\n- Handles sparse arrays correctly\n- Allows modification of the array during iteration"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.find()",
+    idealAnswer: "**Array.prototype.find() Polyfill:**\n\n```javascript\nif (!Array.prototype.find) {\n  Array.prototype.find = function(callback, thisArg) {\n    // Validate callback\n    if (typeof callback !== 'function') {\n      throw new TypeError(callback + ' is not a function');\n    }\n    \n    const O = Object(this);\n    const len = O.length >>> 0;\n    \n    for (let k = 0; k < len; k++) {\n      if (k in O) {\n        const kValue = O[k];\n        // Return first element that satisfies condition\n        if (callback.call(thisArg, kValue, k, O)) {\n          return kValue;\n        }\n      }\n    }\n    \n    // Return undefined if no element found\n    return undefined;\n  };\n}\n\n// Usage examples\nconst numbers = [1, 2, 3, 4, 5];\nconst firstEven = numbers.find(x => x % 2 === 0); // 2\nconst firstGreaterThan3 = numbers.find(x => x > 3); // 4\nconst notFound = numbers.find(x => x > 10); // undefined\n\n// Finding objects\nconst users = [\n  { id: 1, name: 'Alice', active: false },\n  { id: 2, name: 'Bob', active: true },\n  { id: 3, name: 'Charlie', active: true }\n];\n\nconst activeUser = users.find(user => user.active);\n// { id: 2, name: 'Bob', active: true }\n\nconst userById = users.find(user => user.id === 3);\n// { id: 3, name: 'Charlie', active: true }\n\n// With thisArg\nconst context = { minId: 2 };\nconst foundUser = users.find(function(user) {\n  return user.id > this.minId;\n}, context);\n// { id: 3, name: 'Charlie', active: true }\n\n// Sparse arrays\nconst sparse = [1, , 3, , 5];\nconst found = sparse.find(x => x > 2); // 3\n\n// Complex search\nconst products = [\n  { name: 'Laptop', price: 999, inStock: true },\n  { name: 'Phone', price: 699, inStock: false },\n  { name: 'Tablet', price: 299, inStock: true }\n];\n\nconst affordableProduct = products.find(product => \n  product.price < 500 && product.inStock\n);\n// { name: 'Tablet', price: 299, inStock: true }\n```\n\n**Key Points:**\n- Returns first matching element or undefined\n- Stops searching once match is found (efficient)\n- Supports thisArg parameter\n- Handles sparse arrays correctly\n- Different from filter() which returns all matches"
+  },
+  {
+    question: "Implement a polyfill for Array.prototype.includes()",
+    idealAnswer: "**Array.prototype.includes() Polyfill:**\n\n```javascript\nif (!Array.prototype.includes) {\n  Array.prototype.includes = function(searchElement, fromIndex) {\n    // Handle fromIndex (default: 0)\n    const len = this.length >>> 0;\n    const from = fromIndex >>> 0; // Convert to integer\n    \n    let k = from;\n    \n    // Handle negative fromIndex\n    if (from < 0) {\n      k = Math.max(len + from, 0);\n    }\n    \n    // Search for element\n    for (; k < len; k++) {\n      if (k in this && this[k] === searchElement) {\n        return true;\n      }\n    }\n    \n    return false;\n  };\n}\n\n// Usage examples\nconst fruits = ['apple', 'banana', 'orange'];\nconsole.log(fruits.includes('banana')); // true\nconsole.log(fruits.includes('grape')); // false\n\n// With fromIndex\nconsole.log(fruits.includes('orange', 1)); // true (search from index 1)\nconsole.log(fruits.includes('apple', 1)); // false (search from index 1)\nconsole.log(fruits.includes('orange', 2)); // true (search from index 2)\nconsole.log(fruits.includes('orange', 3)); // false (index out of bounds)\n\n// Negative fromIndex\nconsole.log(fruits.includes('banana', -1)); // false (start from last element)\nconsole.log(fruits.includes('banana', -2)); // true (start from second to last)\nconsole.log(fruits.includes('apple', -3)); // true (start from third to last)\nconsole.log(fruits.includes('apple', -4)); // true (start before first element)\n\n// Number comparisons\nconst numbers = [1, 2, 3, NaN];\nconsole.log(numbers.includes(2)); // true\nconsole.log(numbers.includes(NaN)); // true (NaN equality check)\nconsole.log(numbers.includes(4)); // false\n\n// Difference from indexOf\nconsole.log([NaN].indexOf(NaN)); // -1 (indexOf uses strict equality)\nconsole.log([NaN].includes(NaN)); // true (includes handles NaN specially)\n\n// Sparse arrays\nconst sparse = [1, , 3];\nconsole.log(sparse.includes(undefined)); // false (empty slots are not undefined)\nconsole.log(sparse.includes(1)); // true\nconsole.log(sparse.includes(3)); // true\n\n// Edge cases\nconsole.log([].includes()); // false\nconsole.log([undefined].includes()); // false\nconsole.log([undefined].includes(undefined)); // true\n```\n\n**Implementation Notes:**\n- Uses SameValueZero algorithm (handles NaN correctly)\n- Supports fromIndex parameter (positive and negative)\n- Handles sparse arrays correctly\n- Returns boolean (unlike indexOf which returns index)\n- More reliable than indexOf for checking existence"
+  },
+  {
+    question: "Implement a polyfill for Object.create()",
+    idealAnswer: "**Object.create() Polyfill:**\n\n```javascript\nif (typeof Object.create !== 'function') {\n  Object.create = function(proto, propertiesObject) {\n    // Handle null prototype\n    if (proto === null) {\n      // Create object with no prototype\n      const obj = {};\n      obj.__proto__ = null;\n      return obj;\n    }\n    \n    // Type checking\n    if (typeof proto !== 'object' && typeof proto !== 'function') {\n      throw new TypeError('Object prototype may only be an Object or null');\n    }\n    \n    // Create temporary constructor\n    function Temp() {}\n    Temp.prototype = proto;\n    \n    const result = new Temp();\n    \n    // Set constructor property\n    if (proto.hasOwnProperty('constructor')) {\n      result.constructor = proto.constructor;\n    }\n    \n    // Add properties if provided\n    if (propertiesObject !== undefined) {\n      Object.defineProperties(result, propertiesObject);\n    }\n    \n    return result;\n  };\n}\n\n// Usage examples\n// Basic inheritance\nconst person = {\n  name: 'Default',\n  greet() {\n    return `Hello, I'm ${this.name}`;\n  }\n};\n\nconst john = Object.create(person);\njohn.name = 'John';\nconsole.log(john.greet()); // 'Hello, I'm John'\nconsole.log(john.__proto__ === person); // true\n\n// With properties object\nconst employee = Object.create(person, {\n  id: {\n    value: 123,\n    enumerable: true,\n    writable: true,\n    configurable: true\n  },\n  department: {\n    value: 'Engineering',\n    enumerable: true\n  }\n});\n\nconsole.log(employee.id); // 123\nconsole.log(employee.department); // 'Engineering'\nconsole.log(employee.greet()); // 'Hello, I'm Default'\n\n// Null prototype (no inheritance)\nconst cleanObj = Object.create(null);\ncleanObj.key = 'value';\nconsole.log(cleanObj.key); // 'value'\nconsole.log(cleanObj.toString); // undefined (no Object methods)\n\n// Creating inheritance chains\nconst animal = {\n  breathe() {\n    console.log('Breathing...');\n  }\n};\n\nconst mammal = Object.create(animal, {\n  warmBlooded: {\n    value: true,\n    enumerable: true\n  }\n});\n\nconst dog = Object.create(mammal, {\n  bark: {\n    value: function() {\n      console.log('Woof!');\n    },\n    enumerable: true\n  }\n});\n\ndog.breathe(); // 'Breathing...'\ndog.bark(); // 'Woof!'\nconsole.log(dog.warmBlooded); // true\n```\n\n**Key Features:**\n- Creates object with specified prototype\n- Supports properties object with descriptors\n- Handles null prototype correctly\n- Maintains prototype chain\n- Used for prototypal inheritance pattern"
+  },
+  {
+    question: "Implement a polyfill for Object.assign()",
+    idealAnswer: "**Object.assign() Polyfill:**\n\n```javascript\nif (typeof Object.assign !== 'function') {\n  Object.assign = function(target, ...sources) {\n    // Handle null/undefined target\n    if (target === null || target === undefined) {\n      throw new TypeError('Cannot convert undefined or null to object');\n    }\n    \n    // Convert target to object\n    const to = Object(target);\n    \n    for (let index = 0; index < sources.length; index++) {\n      const nextSource = sources[index];\n      \n      // Skip null/undefined sources\n      if (nextSource !== null && nextSource !== undefined) {\n        const from = Object(nextSource);\n        \n        // Copy own enumerable properties\n        for (const nextKey in from) {\n          if (Object.prototype.hasOwnProperty.call(from, nextKey)) {\n            to[nextKey] = from[nextKey];\n          }\n        }\n        \n        // Copy symbol properties (ES6+)\n        if (Object.getOwnPropertySymbols) {\n          const symbols = Object.getOwnPropertySymbols(from);\n          for (let i = 0; i < symbols.length; i++) {\n            const symbol = symbols[i];\n            if (Object.prototype.propertyIsEnumerable.call(from, symbol)) {\n              to[symbol] = from[symbol];\n            }\n          }\n        }\n      }\n    }\n    \n    return to;\n  };\n}\n\n// Usage examples\n// Basic copying\nconst target = { a: 1, b: 2 };\nconst source = { b: 3, c: 4 };\nconst result = Object.assign(target, source);\nconsole.log(result); // { a: 1, b: 3, c: 4 }\nconsole.log(target === result); // true (modifies target)\n\n// Multiple sources\nconst obj1 = { a: 1 };\nconst obj2 = { b: 2 };\nconst obj3 = { c: 3 };\nconst merged = Object.assign({}, obj1, obj2, obj3);\nconsole.log(merged); // { a: 1, b: 2, c: 3 }\n\n// Cloning objects\nconst original = { x: 1, y: 2 };\nconst clone = Object.assign({}, original);\nconsole.log(clone); // { x: 1, y: 2 }\nconsole.log(clone === original); // false\n\n// Merging with default values\nconst defaults = { theme: 'light', fontSize: 16, language: 'en' };\nconst userSettings = { fontSize: 18, language: 'es' };\nconst finalSettings = Object.assign({}, defaults, userSettings);\nconsole.log(finalSettings);\n// { theme: 'light', fontSize: 18, language: 'es' }\n\n// Handling null/undefined\nconst obj = { a: 1 };\nObject.assign(obj, null, undefined, { b: 2 });\nconsole.log(obj); // { a: 1, b: 2 } (null/undefined ignored)\n\n// Property descriptors (shallow copy)\nconst source = {\n  x: 1,\n  get y() { return 2; }\n};\nconst target = {};\nObject.assign(target, source);\nconsole.log(target); // { x: 1, y: 2 } (getter becomes value)\n\n// Symbol properties\nconst symbol = Symbol('id');\nconst objWithSymbol = { [symbol]: 123, normal: 'property' };\nconst copied = Object.assign({}, objWithSymbol);\nconsole.log(copied[symbol]); // 123\nconsole.log(copied.normal); // 'property'\n\n// Edge case: primitive target\nconst strTarget = Object.assign('hello', { a: 1 });\nconsole.log(strTarget); // String { 0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o', a: 1 }\n```\n\n**Important Notes:**\n- Performs shallow copy (nested objects are referenced)\n- Modifies the target object and returns it\n- Copies own enumerable properties only\n- Later sources overwrite earlier ones\n- Handles symbol properties in ES6+\n- Throws error for null/undefined target"
+  },
+  {
+    question: "Implement a polyfill for Function.prototype.bind()",
+    idealAnswer: "**Function.prototype.bind() Polyfill:**\n\n```javascript\nif (!Function.prototype.bind) {\n  Function.prototype.bind = function(context, ...boundArgs) {\n    // Check if this is a function\n    if (typeof this !== 'function') {\n      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');\n    }\n    \n    const fn = this;\n    \n    function BoundFunction(...args) {\n      // Check if called with new\n      if (new.target) {\n        // Called as constructor\n        return fn.apply(this, boundArgs.concat(args));\n      } else {\n        // Called as function\n        return fn.apply(context, boundArgs.concat(args));\n      }\n    }\n    \n    // Maintain prototype chain\n    if (fn.prototype) {\n      BoundFunction.prototype = Object.create(fn.prototype);\n    }\n    \n    return BoundFunction;\n  };\n}\n\n// Usage examples\n// Basic binding\nconst person = {\n  name: 'John',\n  greet(greeting) {\n    return `${greeting}, I'm ${this.name}`;\n  }\n};\n\nconst greet = person.greet;\nconsole.log(greet('Hello')); // undefined (this lost)\n\nconst boundGreet = greet.bind(person);\nconsole.log(boundGreet('Hello')); // 'Hello, I'm John'\n\n// Partial application\nfunction multiply(a, b) {\n  return a * b;\n}\n\nconst double = multiply.bind(null, 2);\nconsole.log(double(5)); // 10\nconsole.log(double(10)); // 20\n\nconst triple = multiply.bind(null, 3);\nconsole.log(triple(4)); // 12\n\n// Constructor usage\nfunction Person(name, age) {\n  this.name = name;\n  this.age = age;\n}\n\nPerson.prototype.describe = function() {\n  return `${this.name} is ${this.age} years old`;\n};\n\nconst BoundPerson = Person.bind(null, 'Alice');\nconst alice = new BoundPerson(25);\nconsole.log(alice.name); // 'Alice'\nconsole.log(alice.age); // 25\nconsole.log(alice.describe()); // 'Alice is 25 years old'\nconsole.log(alice instanceof Person); // true\nconsole.log(alice instanceof BoundPerson); // true\n\n// Method borrowing\nconst obj1 = {\n  x: 10,\n  getX() {\n    return this.x;\n  }\n};\n\nconst obj2 = { x: 20 };\nconst getXFromObj2 = obj1.getX.bind(obj2);\nconsole.log(getXFromObj2()); // 20\n\n// Event handlers\nclass Counter {\n  constructor() {\n    this.count = 0;\n    this.button = document.createElement('button');\n    this.button.textContent = 'Click me';\n    \n    // Without bind, 'this' would be the button\n    this.button.addEventListener('click', this.handleClick.bind(this));\n  }\n  \n  handleClick() {\n    this.count++;\n    console.log('Count:', this.count);\n  }\n}\n\n// Arrow function alternative (no bind needed)\nclass ModernCounter {\n  constructor() {\n    this.count = 0;\n    this.handleClick = () => {\n      this.count++;\n      console.log('Count:', this.count);\n    };\n  }\n}\n```\n\n**Key Implementation Details:**\n- Preserves function's prototype for constructor usage\n- Handles both function calls and constructor calls with new\n- Supports partial application with pre-bound arguments\n- Maintains proper this binding\n- Throws TypeError for non-function contexts"
+  },
+  {
+    question: "Implement a polyfill for Promise.all()",
+    idealAnswer: "**Promise.all() Polyfill:**\n\n```javascript\nif (!Promise.all) {\n  Promise.all = function(promises) {\n    return new Promise((resolve, reject) => {\n      // Handle non-iterable input\n      if (typeof promises[Symbol.iterator] !== 'function') {\n        return reject(new TypeError('Promise.all requires an iterable'));\n      }\n      \n      const promisesArray = Array.from(promises);\n      const results = new Array(promisesArray.length);\n      let completed = 0;\n      \n      // Handle empty iterable\n      if (promisesArray.length === 0) {\n        return resolve([]);\n      }\n      \n      promisesArray.forEach((promise, index) => {\n        // Convert non-promise values to promises\n        Promise.resolve(promise).then(\n          value => {\n            results[index] = value;\n            completed++;\n            \n            // Resolve when all promises complete\n            if (completed === promisesArray.length) {\n              resolve(results);\n            }\n          },\n          // Reject immediately on first error\n          error => {\n            reject(error);\n          }\n        );\n      });\n    });\n  };\n}\n\n// Usage examples\n// All promises resolve\nconst promise1 = Promise.resolve(1);\nconst promise2 = Promise.resolve(2);\nconst promise3 = Promise.resolve(3);\n\nPromise.all([promise1, promise2, promise3])\n  .then(results => console.log(results)) // [1, 2, 3]\n  .catch(error => console.error(error));\n\n// Mixed values and promises\nPromise.all([1, Promise.resolve(2), 3])\n  .then(results => console.log(results)) // [1, 2, 3]\n  .catch(error => console.error(error));\n\n// One promise rejects\nconst success1 = Promise.resolve('success');\nconst failure = Promise.reject('error');\nconst success2 = Promise.resolve('success');\n\nPromise.all([success1, failure, success2])\n  .then(results => console.log(results)) // Never called\n  .catch(error => console.error(error)); // 'error'\n\n// Real-world example: multiple API calls\nfunction fetchUsers() {\n  return Promise.all([\n    fetch('/api/users/1').then(r => r.json()),\n    fetch('/api/users/2').then(r => r.json()),\n    fetch('/api/users/3').then(r => r.json())\n  ]).then(users => {\n    console.log('All users loaded:', users);\n    return users;\n  });\n}\n\n// Parallel file reading (Node.js)\nconst fs = require('fs').promises;\n\nfunction readAllFiles(filePaths) {\n  const filePromises = filePaths.map(path => fs.readFile(path, 'utf8'));\n  return Promise.all(filePromises);\n}\n\nreadAllFiles(['file1.txt', 'file2.txt', 'file3.txt'])\n  .then(contents => {\n    console.log('File contents:', contents);\n  })\n  .catch(error => {\n    console.error('Error reading files:', error);\n  });\n\n// Empty iterable\nPromise.all([])\n  .then(results => console.log(results)); // []\n\n// Non-iterable input\nPromise.all(123)\n  .then(results => console.log(results))\n  .catch(error => console.error(error)); // TypeError\n\n// Promise that resolves after delay\nconst delayedPromises = [\n  new Promise(resolve => setTimeout(() => resolve('A'), 100)),\n  new Promise(resolve => setTimeout(() => resolve('B'), 200)),\n  new Promise(resolve => setTimeout(() => resolve('C'), 50))\n];\n\nPromise.all(delayedPromises)\n  .then(results => console.log(results)); // ['A', 'B', 'C'] after 200ms\n```\n\n**Key Features:**\n- Resolves when all promises resolve\n- Rejects immediately when any promise rejects\n- Maintains order of results matching input order\n- Converts non-promise values to promises\n- Handles empty iterable (resolves with empty array)\n- Rejects with TypeError for non-iterable input"
+  },
+  {
+    question: "Implement a polyfill for Promise.race()",
+    idealAnswer: "**Promise.race() Polyfill:**\n\n```javascript\nif (!Promise.race) {\n  Promise.race = function(promises) {\n    return new Promise((resolve, reject) => {\n      // Handle non-iterable input\n      if (typeof promises[Symbol.iterator] !== 'function') {\n        return reject(new TypeError('Promise.race requires an iterable'));\n      }\n      \n      const promisesArray = Array.from(promises);\n      \n      // Handle empty iterable\n      if (promisesArray.length === 0) {\n        // Promise.race with empty iterable never settles\n        return;\n      }\n      \n      promisesArray.forEach(promise => {\n        // Convert non-promise values to promises\n        Promise.resolve(promise).then(\n          // Resolve with first promise that resolves\n          value => resolve(value),\n          // Reject with first promise that rejects\n          error => reject(error)\n        );\n      });\n    });\n  };\n}\n\n// Usage examples\n// First promise to resolve wins\nconst promise1 = new Promise(resolve => \n  setTimeout(() => resolve('First'), 100)\n);\nconst promise2 = new Promise(resolve => \n  setTimeout(() => resolve('Second'), 200)\n);\nconst promise3 = new Promise(resolve => \n  setTimeout(() => resolve('Third'), 50)\n);\n\nPromise.race([promise1, promise2, promise3])\n  .then(winner => console.log(winner)) // 'Third' (fastest)\n  .catch(error => console.error(error));\n\n// First rejection wins\nconst success = new Promise(resolve => \n  setTimeout(() => resolve('Success'), 200)\n);\nconst failure = new Promise((_, reject) => \n  setTimeout(() => reject('Failure'), 100)\n);\n\nPromise.race([success, failure])\n  .then(result => console.log(result)) // Never called\n  .catch(error => console.error(error)); // 'Failure'\n\n// Mixed values and promises\nPromise.race([\n  'immediate', // Non-promise value\n  new Promise(resolve => setTimeout(() => resolve('delayed'), 100))\n])\n  .then(winner => console.log(winner)); // 'immediate'\n\n// Real-world example: timeout pattern\nfunction fetchWithTimeout(url, timeout = 5000) {\n  const fetchPromise = fetch(url);\n  const timeoutPromise = new Promise((_, reject) => {\n    setTimeout(() => reject(new Error('Request timeout')), timeout);\n  });\n  \n  return Promise.race([fetchPromise, timeoutPromise]);\n}\n\nfetchWithTimeout('/api/data', 3000)\n  .then(response => response.json())\n  .then(data => console.log('Data:', data))\n  .catch(error => {\n    if (error.message === 'Request timeout') {\n      console.log('Request took too long');\n    } else {\n      console.error('Fetch error:', error);\n    }\n  });\n\n// Race between multiple sources\nfunction getFirstAvailableData() {\n  const sources = [\n    fetch('/api/primary').then(r => r.json()),\n    fetch('/api/secondary').then(r => r.json()),\n    fetch('/api/backup').then(r => r.json())\n  ];\n  \n  return Promise.race(sources);\n}\n\ngetFirstAvailableData()\n  .then(data => console.log('First available data:', data))\n  .catch(error => console.error('All sources failed:', error));\n\n// Caching pattern\nfunction getCachedOrFresh(key, freshDataPromise) {\n  const cachedPromise = new Promise(resolve => {\n    // Simulate cache lookup\n    setTimeout(() => {\n      const cached = localStorage.getItem(key);\n      if (cached) {\n        resolve(JSON.parse(cached));\n      } else {\n        resolve(null); // Cache miss\n      }\n    }, 10);\n  });\n  \n  return Promise.race([cachedPromise, freshDataPromise])\n    .then(result => {\n      if (result === null) {\n        // Cache miss, wait for fresh data\n        return freshDataPromise.then(data => {\n          localStorage.setItem(key, JSON.stringify(data));\n          return data;\n        });\n      }\n      return result; // Cache hit\n    });\n}\n\n// Empty iterable (never settles)\nconst neverSettles = Promise.race([]);\n// This promise will never resolve or reject\n\n// Non-iterable input\nPromise.race(123)\n  .then(result => console.log(result))\n  .catch(error => console.error(error)); // TypeError\n```\n\n**Key Features:**\n- Settles with the first promise that settles (resolve or reject)\n- Doesn't wait for other promises after first settlement\n- Converts non-promise values to promises\n- Empty iterable creates a promise that never settles\n- Useful for timeout patterns and competing operations"
   },
   {
     question: "Create a curry function that transforms a function to support currying like add(1,2,3) or add(1)(2)(3)",
@@ -366,47 +456,8068 @@ const hardQuestions = [
 ];
 
 interface QnAProps {
-  questions: { question: string; idealAnswer: string }[];
+  questions: { question: string; idealAnswer: string; implementation?: string }[];
+  isImplementation?: boolean;
 }
 
-function QnA({ questions }: QnAProps) {
+function QnA({ questions, isImplementation = false }: QnAProps & { isImplementation?: boolean }) {
+  const { openWithContent } = useWebPlayground();
+
+  const openPlayground = (type: string) => {
+    let html = '';
+    let css = '';
+    let js = '';
+    
+    if (type === 'todo-list') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Todo List</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba7 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #ff6b6b);
+            background-size: 300% 100%;
+            animation: gradientWave 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        @keyframes gradientWave {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-bottom: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .stats-bar::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: statsBarGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes statsBarGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .input-section {
+            padding: 30px;
+            background: var(--bg-primary);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .todo-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        .todo-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .add-btn {
+            padding: 16px 24px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .add-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .add-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            padding: 0 30px 20px;
+            background: var(--bg-primary);
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-accent);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before {
+            left: 0;
+        }
+
+        .filter-btn:hover {
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-accent);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .todo-list {
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+        }
+
+        .todo-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .todo-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .todo-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .todo-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .todo-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .todo-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .todo-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(4px);
+        }
+
+        .todo-item.completed {
+            opacity: 0.6;
+        }
+
+        .todo-item.completed::before {
+            background: var(--success-color);
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .todo-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-right: 16px;
+            cursor: pointer;
+            accent-color: var(--accent-color);
+            transition: transform 0.2s;
+        }
+
+        .todo-checkbox:hover {
+            transform: scale(1.1);
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: color 0.3s;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .todo-item:hover .todo-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+        }
+
+        .delete-btn {
+            background: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .edit-btn {
+            background: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .edit-btn:hover {
+            background: var(--warning-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--accent-color);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+        }
+
+        .footer {
+            padding: 20px 30px;
+            background: var(--bg-tertiary);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .footer-text span {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 16px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .stats-bar {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .stat-item {
+                flex: 1 1 calc(50% - 6px);
+                min-width: 120px;
+            }
+
+            .input-section {
+                padding: 15px;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+
+            .filters {
+                padding: 0 20px 20px;
+                flex-wrap: wrap;
+            }
+
+            .filter-btn {
+                flex: 1;
+                min-width: 80px;
+            }
+
+            .todo-item {
+                padding: 16px 20px;
+            }
+
+            .todo-actions {
+                opacity: 1;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>✨ Premium Todo List</h1>
+                <p>Transform your productivity with elegant task management</p>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalCount">0</span>
+                    <span class="stat-label">Total Tasks</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="activeCount">0</span>
+                    <span class="stat-label">Active</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="completedCount">0</span>
+                    <span class="stat-label">Completed</span>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <div class="input-wrapper">
+                    <input type="text" class="todo-input" id="todoInput" placeholder="What needs to be accomplished today?" autofocus>
+                    <button class="add-btn" id="addBtn">
+                        <span>Add Task</span>
+                    </button>
+                </div>
+                
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All Tasks</button>
+                    <button class="filter-btn" data-filter="active">Active</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+            </div>
+            
+            <ul class="todo-list" id="todoList"></ul>
+            
+            <div class="footer">
+                <p class="footer-text">
+                    Productivity Mode: <span id="motivationText">Ready to conquer your day! 🚀</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PremiumTodoApp {
+            constructor() {
+                this.todos = JSON.parse(localStorage.getItem('premiumTodos')) || [];
+                this.currentFilter = 'all';
+                this.motivationalQuotes = [
+                    "Ready to conquer your day! 🚀",
+                    "Small steps, big progress! 🌟",
+                    "Focus on what matters! 💪",
+                    "Making it happen! ✨",
+                    "You've got this! 🎯",
+                    "Productivity mode: ON! ⚡",
+                    "Crushing your goals! 🏆"
+                ];
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.render();
+                this.updateMotivation();
+                this.startMotivationTimer();
+            }
+
+            bindEvents() {
+                const addBtn = document.getElementById('addBtn');
+                const todoInput = document.getElementById('todoInput');
+                
+                addBtn.addEventListener('click', () => this.addTodo());
+                todoInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.addTodo();
+                });
+
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.currentFilter = e.target.dataset.filter;
+                        this.updateFilterButtons();
+                        this.render();
+                    });
+                });
+            }
+
+            addTodo() {
+                const input = document.getElementById('todoInput');
+                const text = input.value.trim();
+                
+                if (text) {
+                    const todo = {
+                        id: Date.now(),
+                        text: text,
+                        completed: false,
+                        createdAt: new Date().toISOString(),
+                        priority: this.calculatePriority(text)
+                    };
+                    
+                    this.todos.unshift(todo); // Add to beginning
+                    input.value = '';
+                    this.save();
+                    this.render();
+                    this.updateMotivation();
+                    
+                    // Add a subtle animation feedback
+                    this.showNotification('Task added successfully! 🎉');
+                }
+            }
+
+            calculatePriority(text) {
+                // Simple priority based on keywords
+                const urgentKeywords = ['urgent', 'asap', 'important', 'critical'];
+                const textLower = text.toLowerCase();
+                
+                if (urgentKeywords.some(keyword => textLower.includes(keyword))) {
+                    return 'high';
+                } else if (textLower.includes('meeting') || textLower.includes('call')) {
+                    return 'medium';
+                }
+                return 'normal';
+            }
+
+            toggleTodo(id) {
+                const todo = this.todos.find(t => t.id === id);
+                if (todo) {
+                    todo.completed = !todo.completed;
+                    todo.completedAt = todo.completed ? new Date().toISOString() : null;
+                    this.save();
+                    this.render();
+                    this.updateMotivation();
+                    
+                    if (todo.completed) {
+                        this.showNotification('Great job! Task completed! 🎊');
+                    }
+                }
+            }
+
+            deleteTodo(id) {
+                const todoIndex = this.todos.findIndex(t => t.id === id);
+                if (todoIndex !== -1) {
+                    this.todos.splice(todoIndex, 1);
+                    this.save();
+                    this.render();
+                    this.updateMotivation();
+                    this.showNotification('Task removed 🗑️');
+                }
+            }
+
+            editTodo(id) {
+                const todo = this.todos.find(t => t.id === id);
+                if (todo) {
+                    const newText = prompt('Edit task:', todo.text);
+                    if (newText && newText.trim() !== todo.text) {
+                        todo.text = newText.trim();
+                        todo.priority = this.calculatePriority(newText.trim());
+                        this.save();
+                        this.render();
+                        this.showNotification('Task updated! ✏️');
+                    }
+                }
+            }
+
+            getFilteredTodos() {
+                switch(this.currentFilter) {
+                    case 'active': return this.todos.filter(t => !t.completed);
+                    case 'completed': return this.todos.filter(t => t.completed);
+                    default: return this.todos;
+                }
+            }
+
+            updateFilterButtons() {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.filter === this.currentFilter);
+                });
+            }
+
+            updateStats() {
+                const totalCount = this.todos.length;
+                const completedCount = this.todos.filter(t => t.completed).length;
+                const activeCount = totalCount - completedCount;
+
+                document.getElementById('totalCount').textContent = totalCount;
+                document.getElementById('activeCount').textContent = activeCount;
+                document.getElementById('completedCount').textContent = completedCount;
+            }
+
+            updateMotivation() {
+                const completedCount = this.todos.filter(t => t.completed).length;
+                const totalCount = this.todos.length;
+                
+                let motivationText;
+                if (totalCount === 0) {
+                    motivationText = this.motivationalQuotes[0];
+                } else if (completedCount === totalCount && totalCount > 0) {
+                    motivationText = "All tasks completed! You're amazing! 🎉";
+                } else if (completedCount / totalCount > 0.7) {
+                    motivationText = "Almost there! Keep going! 🔥";
+                } else if (completedCount / totalCount > 0.5) {
+                    motivationText = "Great progress! Halfway there! 🌟";
+                } else {
+                    motivationText = this.motivationalQuotes[Math.floor(Math.random() * this.motivationalQuotes.length)];
+                }
+                
+                document.getElementById('motivationText').textContent = motivationText;
+            }
+
+            startMotivationTimer() {
+                setInterval(() => {
+                    if (this.todos.length > 0) {
+                        this.updateMotivation();
+                    }
+                }, 30000); // Update every 30 seconds
+            }
+
+            showNotification(message) {
+                // Create a simple notification (could be enhanced with a toast library)
+                const notification = document.createElement('div');
+                notification.style.cssText = \`
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--gradient-accent);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: var(--shadow-lg);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease-out;
+                \`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+
+            render() {
+                const todoList = document.getElementById('todoList');
+                const filteredTodos = this.getFilteredTodos();
+
+                this.updateStats();
+
+                if (filteredTodos.length === 0) {
+                    todoList.innerHTML = \`
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <h3>No tasks yet</h3>
+                            <p>Start adding tasks to boost your productivity!</p>
+                        </div>
+                    \`;
+                } else {
+                    todoList.innerHTML = filteredTodos.map((todo, index) => \`
+                        <li class="todo-item \${todo.completed ? 'completed' : ''}" style="animation: slideIn 0.3s ease-out \${index * 0.05}s both">
+                            <input type="checkbox" 
+                                   class="todo-checkbox" 
+                                   \${todo.completed ? 'checked' : ''} 
+                                   onchange="app.toggleTodo(\${todo.id})">
+                            <span class="todo-text">\${todo.text}</span>
+                            <div class="todo-actions">
+                                <button class="action-btn edit-btn" onclick="app.editTodo(\${todo.id})" title="Edit">
+                                    ✏️
+                                </button>
+                                <button class="action-btn delete-btn" onclick="app.deleteTodo(\${todo.id})" title="Delete">
+                                    🗑️
+                                </button>
+                            </div>
+                        </li>
+                    \`).join('');
+                }
+            }
+
+            save() {
+                localStorage.setItem('premiumTodos', JSON.stringify(this.todos));
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = \`
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+            }
+        \`;
+        document.head.appendChild(style);
+
+        // Initialize the app
+        const app = new PremiumTodoApp();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'calculator') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Calculator</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-display: #1e293b;
+            --bg-button: #f8fafc;
+            --bg-button-hover: #e2e8f0;
+            --bg-operator: #3b82f6;
+            --bg-operator-hover: #2563eb;
+            --bg-equals: #10b981;
+            --bg-equals-hover: #059669;
+            --bg-clear: #ef4444;
+            --bg-clear-hover: #dc2626;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-display: #f8fafc;
+            --text-button: #1e293b;
+            --text-operator: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba7 100%);
+            --gradient-display: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-display: #0f172a;
+                --bg-button: #334155;
+                --bg-button-hover: #475569;
+                --bg-operator: #3b82f6;
+                --bg-operator-hover: #60a5fa;
+                --bg-equals: #10b981;
+                --bg-equals-hover: #34d399;
+                --bg-clear: #ef4444;
+                --bg-clear-hover: #f87171;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-display: #f8fafc;
+                --text-button: #f8fafc;
+                --text-operator: #ffffff;
+                --border-color: #334155;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-display: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculator-wrapper {
+            background: var(--bg-primary);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .calculator-wrapper:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .calculator-header {
+            background: var(--gradient-display);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .calculator-title {
+            color: var(--text-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .calculator-subtitle {
+            color: var(--text-display);
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .display {
+            background: var(--bg-display);
+            padding: 30px 20px;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .display-text {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--text-display);
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transition: all 0.2s ease;
+        }
+
+        .display-text.error {
+            color: #ef4444;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            padding: 1px;
+        }
+
+        .btn {
+            background: var(--bg-button);
+            color: var(--text-button);
+            border: none;
+            font-size: 1.25rem;
+            font-weight: 500;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+
+        .btn:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .btn:hover {
+            background: var(--bg-button-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn.number {
+            font-weight: 600;
+        }
+
+        .btn.operator {
+            background: var(--bg-operator);
+            color: var(--text-operator);
+            font-weight: 600;
+        }
+
+        .btn.operator:hover {
+            background: var(--bg-operator-hover);
+        }
+
+        .btn.equals {
+            background: var(--bg-equals);
+            color: white;
+            font-weight: 700;
+            grid-row: span 2;
+        }
+
+        .btn.equals:hover {
+            background: var(--bg-equals-hover);
+        }
+
+        .btn.clear {
+            background: var(--bg-clear);
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn.clear:hover {
+            background: var(--bg-clear-hover);
+        }
+
+        .btn.zero {
+            grid-column: span 2;
+        }
+
+        .history {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-color);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: var(--bg-button-hover);
+            transform: translateX(4px);
+        }
+
+        .history-expression {
+            color: var(--text-secondary);
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        .history-result {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 8px;
+            }
+
+            .calculator-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .calculator-header {
+                padding: 20px 15px;
+            }
+
+            .calculator-title {
+                font-size: 1.5rem;
+            }
+
+            .display-text {
+                font-size: 1.8rem;
+            }
+
+            .buttons {
+                padding: 15px;
+                gap: 8px;
+            }
+
+            .btn {
+                font-size: 1rem;
+                padding: 12px;
+            }
+
+            .btn.zero {
+                grid-column: span 2;
+            }
+
+            .history {
+                padding: 15px;
+            }
+
+            .history-title {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Custom scrollbar for history */
+        .history::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .history::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        .history::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .history::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-wrapper">
+            <div class="calculator-header">
+                <h1 class="calculator-title">Premium Calculator</h1>
+                <p class="calculator-subtitle">Advanced mathematical operations</p>
+            </div>
+            
+            <div class="display">
+                <div class="display-text" id="display">0</div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn clear" onclick="clearDisplay()">C</button>
+                <button class="btn operator" onclick="appendToDisplay('/')">/</button>
+                <button class="btn operator" onclick="appendToDisplay('*')">×</button>
+                <button class="btn operator" onclick="deleteLast()">←</button>
+                
+                <button class="btn number" onclick="appendToDisplay('7')">7</button>
+                <button class="btn number" onclick="appendToDisplay('8')">8</button>
+                <button class="btn number" onclick="appendToDisplay('9')">9</button>
+                <button class="btn operator" onclick="appendToDisplay('-')">-</button>
+                
+                <button class="btn number" onclick="appendToDisplay('4')">4</button>
+                <button class="btn number" onclick="appendToDisplay('5')">5</button>
+                <button class="btn number" onclick="appendToDisplay('6')">6</button>
+                <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+                
+                <button class="btn number" onclick="appendToDisplay('1')">1</button>
+                <button class="btn number" onclick="appendToDisplay('2')">2</button>
+                <button class="btn number" onclick="appendToDisplay('3')">3</button>
+                <button class="btn equals" onclick="calculate()">=</button>
+                
+                <button class="btn number zero" onclick="appendToDisplay('0')">0</button>
+                <button class="btn number" onclick="appendToDisplay('.')">.</button>
+            </div>
+            
+            <div class="history">
+                <h3 class="history-title">History</h3>
+                <div id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PremiumCalculator {
+            constructor() {
+                this.display = document.getElementById('display');
+                this.historyList = document.getElementById('historyList');
+                this.currentInput = '0';
+                this.shouldResetDisplay = false;
+                this.history = [];
+                this.maxHistoryItems = 10;
+                this.init();
+            }
+
+            init() {
+                this.updateDisplay();
+                this.loadHistory();
+                this.bindKeyboardEvents();
+            }
+
+            bindKeyboardEvents() {
+                document.addEventListener('keydown', (e) => {
+                    e.preventDefault();
+                    
+                    if (e.key >= '0' && e.key <= '9') {
+                        this.appendToDisplay(e.key);
+                    } else if (e.key === '.') {
+                        this.appendToDisplay('.');
+                    } else if (e.key === '+') {
+                        this.appendToDisplay('+');
+                    } else if (e.key === '-') {
+                        this.appendToDisplay('-');
+                    } else if (e.key === '*') {
+                        this.appendToDisplay('*');
+                    } else if (e.key === '/') {
+                        this.appendToDisplay('/');
+                    } else if (e.key === 'Enter' || e.key === '=') {
+                        this.calculate();
+                    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                        this.clearDisplay();
+                    } else if (e.key === 'Backspace') {
+                        this.deleteLast();
+                    }
+                });
+            }
+
+            updateDisplay() {
+                this.display.textContent = this.currentInput;
+                this.display.classList.remove('error');
+            }
+
+            clearDisplay() {
+                this.currentInput = '0';
+                this.shouldResetDisplay = false;
+                this.updateDisplay();
+                this.animateButton('clear');
+            }
+
+            appendToDisplay(value) {
+                if (this.shouldResetDisplay) {
+                    this.currentInput = '0';
+                    this.shouldResetDisplay = false;
+                }
+                
+                if (this.currentInput === '0' && value !== '.') {
+                    this.currentInput = value;
+                } else if (value === '.' && !this.currentInput.includes('.')) {
+                    this.currentInput += value;
+                } else if (value !== '.' || !this.currentInput.includes('.')) {
+                    this.currentInput += value;
+                }
+                
+                this.updateDisplay();
+                this.animateButton(value);
+            }
+
+            deleteLast() {
+                if (this.currentInput.length > 1) {
+                    this.currentInput = this.currentInput.slice(0, -1);
+                } else {
+                    this.currentInput = '0';
+                }
+                this.updateDisplay();
+                this.animateButton('delete');
+            }
+
+            calculate() {
+                try {
+                    // Replace × with * for evaluation
+                    let expression = this.currentInput.replace(/×/g, '*');
+                    
+                    // Validate expression
+                    if (!this.isValidExpression(expression)) {
+                        throw new Error('Invalid expression');
+                    }
+                    
+                    // Calculate result
+                    let result = eval(expression);
+                    
+                    // Handle special cases
+                    if (!isFinite(result)) {
+                        throw new Error('Math error');
+                    }
+                    
+                    // Round to avoid floating point precision issues
+                    result = Math.round(result * 100000000) / 100000000;
+                    
+                    // Add to history
+                    this.addToHistory(this.currentInput, result.toString());
+                    
+                    this.currentInput = result.toString();
+                    this.shouldResetDisplay = true;
+                    this.updateDisplay();
+                    this.animateButton('equals');
+                    
+                } catch (error) {
+                    this.currentInput = 'Error';
+                    this.display.classList.add('error');
+                    this.shouldResetDisplay = true;
+                    
+                    setTimeout(() => {
+                        this.clearDisplay();
+                    }, 2000);
+                }
+            }
+
+            isValidExpression(expression) {
+                // Check for balanced parentheses
+                let parentheses = 0;
+                for (let char of expression) {
+                    if (char === '(') parentheses++;
+                    if (char === ')') parentheses--;
+                    if (parentheses < 0) return false;
+                }
+                if (parentheses !== 0) return false;
+                
+                // Check for invalid operators at start or end
+                const invalidStart = ['+', '*', '/', '.'];
+                const invalidEnd = ['+', '-', '*', '/', '.'];
+                
+                if (invalidStart.includes(expression[0])) return false;
+                if (invalidEnd.includes(expression[expression.length - 1])) return false;
+                
+                return true;
+            }
+
+            addToHistory(expression, result) {
+                const historyItem = {
+                    expression: expression,
+                    result: result,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.history.unshift(historyItem);
+                
+                if (this.history.length > this.maxHistoryItems) {
+                    this.history = this.history.slice(0, this.maxHistoryItems);
+                }
+                
+                this.saveHistory();
+                this.renderHistory();
+            }
+
+            renderHistory() {
+                if (this.history.length === 0) {
+                    this.historyList.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.875rem; text-align: center;">No calculations yet</p>';
+                    return;
+                }
+                
+                this.historyList.innerHTML = this.history.map(item => \`
+                    <div class="history-item">
+                        <span class="history-expression">\${item.expression}</span>
+                        <span class="history-result">\${item.result}</span>
+                    </div>
+                \`).join('');
+            }
+
+            saveHistory() {
+                localStorage.setItem('calculatorHistory', JSON.stringify(this.history));
+            }
+
+            loadHistory() {
+                const saved = localStorage.getItem('calculatorHistory');
+                if (saved) {
+                    try {
+                        this.history = JSON.parse(saved);
+                        this.renderHistory();
+                    } catch (e) {
+                        this.history = [];
+                    }
+                } else {
+                    this.renderHistory();
+                }
+            }
+
+            animateButton(action) {
+                // Visual feedback for button presses
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(btn => {
+                    if (btn.textContent.includes(action) || 
+                        (action === 'delete' && btn.textContent === '←') ||
+                        (action === 'equals' && btn.textContent === '=') ||
+                        (action === 'clear' && btn.textContent === 'C')) {
+                        btn.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            btn.style.transform = '';
+                        }, 100);
+                    }
+                });
+            }
+        }
+
+        // Initialize the calculator
+        const calculator = new PremiumCalculator();
+        
+        // Global wrapper functions for HTML onclick handlers
+        function appendToDisplay(value) {
+            calculator.appendToDisplay(value);
+        }
+        
+        function calculate() {
+            calculator.calculate();
+        }
+        
+        function clearDisplay() {
+            calculator.clearDisplay();
+        }
+        
+        function deleteLast() {
+            calculator.deleteLast();
+        }
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'password-generator') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Password Generator</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba7 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+                --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: var(--gradient-accent);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 30px;
+            background: var(--bg-primary);
+        }
+
+        .password-display {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .password-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color), var(--warning-color), var(--danger-color));
+            animation: rainbow 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbow {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .password-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .password-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .copy-btn {
+            padding: 16px 20px;
+            background: var(--gradient-success);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            min-width: 120px;
+        }
+
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .copy-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .copy-btn.copied {
+            background: var(--gradient-success);
+        }
+
+        .options-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .length-control {
+            margin-bottom: 25px;
+        }
+
+        .length-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .length-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .length-value {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .length-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .length-slider::-webkit-slider-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            height: 8px;
+        }
+
+        .length-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .length-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .length-slider::-moz-range-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            height: 8px;
+        }
+
+        .length-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .length-slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .character-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .option-card {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .option-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .option-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .option-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .strength-section {
+            margin-bottom: 30px;
+        }
+
+        .strength-meter {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .strength-bar-container {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .strength-bar {
+            height: 100%;
+            border-radius: 8px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strength-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .strength-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .strength-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .strength-score {
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .strength-weak { background: var(--gradient-danger); color: white; }
+        .strength-fair { background: var(--gradient-warning); color: white; }
+        .strength-good { background: var(--gradient-accent); color: white; }
+        .strength-strong { background: var(--gradient-success); color: white; }
+
+        .generate-btn {
+            width: 100%;
+            padding: 18px 24px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .generate-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .history-section {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(4px);
+        }
+
+        .history-password {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .history-strength {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .password-display {
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .password-wrapper {
+                flex-direction: column;
+            }
+
+            .copy-btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .character-options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .option-item {
+                padding: 12px;
+            }
+
+            .slider-container {
+                padding: 15px;
+            }
+
+            .slider {
+                width: 100%;
+            }
+
+            .generate-btn {
+                width: 100%;
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .history-section {
+                padding: 15px;
+            }
+
+            .history-item {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        .history-section::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .history-section::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 3px;
+        }
+
+        .history-section::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .history-section::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>🔐 Secure Password Generator</h1>
+                <p>Create strong, unique passwords with advanced security features</p>
+            </div>
+            
+            <div class="content">
+                <div class="password-display">
+                    <div class="password-wrapper">
+                        <input type="text" class="password-input" id="password" readonly placeholder="Click generate to create password">
+                        <button class="copy-btn" id="copyBtn" onclick="copyPassword()">
+                            <span id="copyText">📋 Copy</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="options-section">
+                    <h2 class="section-title">⚙️ Password Options</h2>
+                    
+                    <div class="length-control">
+                        <div class="length-header">
+                            <span class="length-label">Password Length</span>
+                            <span class="length-value" id="lengthValue">16</span>
+                        </div>
+                        <input type="range" class="length-slider" id="length" min="8" max="32" value="16">
+                    </div>
+                    
+                    <div class="character-options">
+                        <div class="option-card" id="uppercaseCard" onclick="toggleOption('uppercase')">
+                            <div class="option-header">
+                                <span class="option-title">
+                                    🔠 Uppercase Letters
+                                </span>
+                                <input type="checkbox" class="option-checkbox" id="uppercase" checked>
+                            </div>
+                            <p class="option-description">Include uppercase letters (A-Z)</p>
+                        </div>
+                        
+                        <div class="option-card" id="lowercaseCard" onclick="toggleOption('lowercase')">
+                            <div class="option-header">
+                                <span class="option-title">
+                                    🔡 Lowercase Letters
+                                </span>
+                                <input type="checkbox" class="option-checkbox" id="lowercase" checked>
+                            </div>
+                            <p class="option-description">Include lowercase letters (a-z)</p>
+                        </div>
+                        
+                        <div class="option-card" id="numbersCard" onclick="toggleOption('numbers')">
+                            <div class="option-header">
+                                <span class="option-title">
+                                    🔢 Numbers
+                                </span>
+                                <input type="checkbox" class="option-checkbox" id="numbers" checked>
+                            </div>
+                            <p class="option-description">Include numbers (0-9)</p>
+                        </div>
+                        
+                        <div class="option-card" id="symbolsCard" onclick="toggleOption('symbols')">
+                            <div class="option-header">
+                                <span class="option-title">
+                                    🔣 Special Symbols
+                                </span>
+                                <input type="checkbox" class="option-checkbox" id="symbols" checked>
+                            </div>
+                            <p class="option-description">Include special characters (!@#$%^&*)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="strength-section">
+                    <h2 class="section-title">💪 Password Strength</h2>
+                    <div class="strength-meter">
+                        <div class="strength-bar-container">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="strength-info">
+                            <span class="strength-label" id="strengthLabel">Password Strength</span>
+                            <span class="strength-score" id="strengthScore">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="generate-btn" onclick="generatePassword()">
+                    🎲 Generate New Password
+                </button>
+                
+                <div class="history-section" style="margin-top: 30px;">
+                    <h3 class="history-title">📜 Recent Passwords</h3>
+                    <div class="history-list" id="historyList">
+                        <p style="color: var(--text-secondary); text-align: center;">No passwords generated yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class SecurePasswordGenerator {
+            constructor() {
+                this.lengthSlider = document.getElementById('length');
+                this.lengthValue = document.getElementById('lengthValue');
+                this.passwordInput = document.getElementById('password');
+                this.strengthBar = document.getElementById('strengthBar');
+                this.strengthLabel = document.getElementById('strengthLabel');
+                this.strengthScore = document.getElementById('strengthScore');
+                this.copyBtn = document.getElementById('copyBtn');
+                this.copyText = document.getElementById('copyText');
+                this.historyList = document.getElementById('historyList');
+                
+                this.passwordHistory = [];
+                this.maxHistoryItems = 5;
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.generatePassword();
+                this.loadHistory();
+            }
+
+            bindEvents() {
+                this.lengthSlider.addEventListener('input', () => {
+                    this.lengthValue.textContent = this.lengthSlider.value;
+                    this.generatePassword();
+                });
+
+                ['uppercase', 'lowercase', 'numbers', 'symbols'].forEach(option => {
+                    const checkbox = document.getElementById(option);
+                    checkbox.addEventListener('change', () => {
+                        this.validateOptions();
+                        this.generatePassword();
+                    });
+                });
+            }
+
+            validateOptions() {
+                const options = ['uppercase', 'lowercase', 'numbers', 'symbols'];
+                const checkedOptions = options.filter(option => document.getElementById(option).checked);
+                
+                if (checkedOptions.length === 0) {
+                    // Always keep at least one option checked
+                    document.getElementById('lowercase').checked = true;
+                }
+                
+                // Update card styles
+                options.forEach(option => {
+                    const card = document.getElementById(option + 'Card');
+                    const checkbox = document.getElementById(option);
+                    
+                    if (checkbox.checked) {
+                        card.classList.remove('disabled');
+                    } else {
+                        card.classList.add('disabled');
+                    }
+                });
+            }
+
+            generatePassword() {
+                const length = parseInt(this.lengthSlider.value);
+                const useUppercase = document.getElementById('uppercase').checked;
+                const useLowercase = document.getElementById('lowercase').checked;
+                const useNumbers = document.getElementById('numbers').checked;
+                const useSymbols = document.getElementById('symbols').checked;
+                
+                let charset = '';
+                
+                if (useUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                if (useLowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
+                if (useNumbers) charset += '0123456789';
+                if (useSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+                
+                let password = '';
+                
+                // Ensure at least one character from each selected type
+                const guaranteedChars = [];
+                if (useUppercase) guaranteedChars.push(this.getRandomChar('ABCDEFGHIJKLMNOPQRSTUVWXYZ'));
+                if (useLowercase) guaranteedChars.push(this.getRandomChar('abcdefghijklmnopqrstuvwxyz'));
+                if (useNumbers) guaranteedChars.push(this.getRandomChar('0123456789'));
+                if (useSymbols) guaranteedChars.push(this.getRandomChar('!@#$%^&*()_+-=[]{}|;:,.<>?'));
+                
+                // Fill the rest randomly
+                for (let i = guaranteedChars.length; i < length; i++) {
+                    password += this.getRandomChar(charset);
+                }
+                
+                // Add guaranteed characters and shuffle
+                password += guaranteedChars.join('');
+                password = this.shuffleString(password);
+                
+                this.passwordInput.value = password;
+                this.updateStrength(password);
+            }
+
+            getRandomChar(charset) {
+                return charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+
+            shuffleString(str) {
+                const arr = str.split('');
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr.join('');
+            }
+
+            updateStrength(password) {
+                const length = password.length;
+                let strength = 0;
+                let strengthLabel = '';
+                let strengthClass = '';
+                let strengthColor = '';
+                
+                // Length scoring
+                if (length >= 8) strength += 20;
+                if (length >= 12) strength += 20;
+                if (length >= 16) strength += 20;
+                if (length >= 20) strength += 20;
+                
+                // Character variety scoring
+                if (/[a-z]/.test(password)) strength += 10;
+                if (/[A-Z]/.test(password)) strength += 10;
+                if (/[0-9]/.test(password)) strength += 10;
+                if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+                
+                // Determine strength level
+                if (strength <= 30) {
+                    strengthLabel = 'Weak';
+                    strengthClass = 'strength-weak';
+                    strengthColor = '#ef4444';
+                } else if (strength <= 50) {
+                    strengthLabel = 'Fair';
+                    strengthClass = 'strength-fair';
+                    strengthColor = '#f59e0b';
+                } else if (strength <= 70) {
+                    strengthLabel = 'Good';
+                    strengthClass = 'strength-good';
+                    strengthColor = '#3b82f6';
+                } else {
+                    strengthLabel = 'Strong';
+                    strengthClass = 'strength-strong';
+                    strengthColor = '#10b981';
+                }
+                
+                // Update UI
+                this.strengthBar.style.width = strength + '%';
+                this.strengthBar.style.background = strengthColor;
+                this.strengthLabel.textContent = strengthLabel;
+                this.strengthScore.textContent = strength + '/100';
+                this.strengthScore.className = 'strength-score ' + strengthClass;
+            }
+
+            copyPassword() {
+                const password = this.passwordInput.value;
+                
+                if (!password) {
+                    this.showNotification('No password to copy!', 'warning');
+                    return;
+                }
+                
+                navigator.clipboard.writeText(password).then(() => {
+                    this.copyText.textContent = '✅ Copied!';
+                    this.copyBtn.classList.add('copied');
+                    
+                    this.addToHistory(password);
+                    this.showNotification('Password copied to clipboard!', 'success');
+                    
+                    setTimeout(() => {
+                        this.copyText.textContent = '📋 Copy';
+                        this.copyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(() => {
+                    this.showNotification('Failed to copy password', 'error');
+                });
+            }
+
+            addToHistory(password) {
+                const strength = this.calculateStrengthScore(password);
+                const historyItem = {
+                    password: password,
+                    strength: strength,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.passwordHistory.unshift(historyItem);
+                
+                if (this.passwordHistory.length > this.maxHistoryItems) {
+                    this.passwordHistory = this.passwordHistory.slice(0, this.maxHistoryItems);
+                }
+                
+                this.saveHistory();
+                this.renderHistory();
+            }
+
+            calculateStrengthScore(password) {
+                const length = password.length;
+                let strength = 0;
+                
+                if (length >= 8) strength += 20;
+                if (length >= 12) strength += 20;
+                if (length >= 16) strength += 20;
+                if (length >= 20) strength += 20;
+                
+                if (/[a-z]/.test(password)) strength += 10;
+                if (/[A-Z]/.test(password)) strength += 10;
+                if (/[0-9]/.test(password)) strength += 10;
+                if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+                
+                return strength;
+            }
+
+            renderHistory() {
+                if (this.passwordHistory.length === 0) {
+                    this.historyList.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">No passwords generated yet</p>';
+                    return;
+                }
+                
+                this.historyList.innerHTML = this.passwordHistory.map(item => {
+                    let strengthClass = 'strength-weak';
+                    if (item.strength > 70) strengthClass = 'strength-strong';
+                    else if (item.strength > 50) strengthClass = 'strength-good';
+                    else if (item.strength > 30) strengthClass = 'strength-fair';
+                    
+                    return \`
+                        <div class="history-item">
+                            <span class="history-password">\${item.password}</span>
+                            <span class="history-strength \${strengthClass}">\${item.strength}%</span>
+                        </div>
+                    \`;
+                }).join('');
+            }
+
+            saveHistory() {
+                // Note: In a real app, you might want to encrypt this
+                localStorage.setItem('passwordHistory', JSON.stringify(this.passwordHistory));
+            }
+
+            loadHistory() {
+                const saved = localStorage.getItem('passwordHistory');
+                if (saved) {
+                    try {
+                        this.passwordHistory = JSON.parse(saved);
+                        this.renderHistory();
+                    } catch (e) {
+                        this.passwordHistory = [];
+                    }
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = \`
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 16px 24px;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: 600;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease-out;
+                    box-shadow: var(--shadow-lg);
+                \`;
+                
+                switch(type) {
+                    case 'success':
+                        notification.style.background = 'var(--gradient-success)';
+                        break;
+                    case 'warning':
+                        notification.style.background = 'var(--gradient-warning)';
+                        break;
+                    case 'error':
+                        notification.style.background = 'var(--gradient-danger)';
+                        break;
+                    default:
+                        notification.style.background = 'var(--gradient-accent)';
+                }
+                
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        // Global functions for onclick handlers
+        let generator;
+
+        function toggleOption(option) {
+            const checkbox = document.getElementById(option);
+            checkbox.checked = !checkbox.checked;
+            generator.validateOptions();
+            generator.generatePassword();
+        }
+
+        function copyPassword() {
+            generator.copyPassword();
+        }
+
+        function generatePassword() {
+            generator.generatePassword();
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = \`
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+            }
+        \`;
+        document.head.appendChild(style);
+
+        // Initialize the generator
+        generator = new SecurePasswordGenerator();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'quiz-app') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz Application</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: var(--gradient-accent);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 30px;
+            background: var(--bg-primary);
+        }
+
+        .quiz-progress {
+            margin-bottom: 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .progress-value {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .quiz-card {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color), var(--warning-color), var(--danger-color));
+            animation: rainbow 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbow {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .question-category {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option-card:hover::before {
+            opacity: 1;
+        }
+
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .option-card.selected {
+            border-color: var(--accent-color);
+            background: var(--accent-light);
+        }
+
+        .option-card.correct {
+            border-color: var(--success-color);
+            background: var(--success-light);
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        .option-card.incorrect {
+            border-color: var(--danger-color);
+            background: var(--danger-light);
+            animation: shake 0.5s ease-out;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .option-card.selected .option-radio {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+        }
+
+        .option-card.correct .option-radio {
+            border-color: var(--success-color);
+            background: var(--success-color);
+        }
+
+        .option-card.incorrect .option-radio {
+            border-color: var(--danger-color);
+            background: var(--danger-color);
+        }
+
+        .option-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option-card.selected .option-radio::after,
+        .option-card.correct .option-radio::after,
+        .option-card.incorrect .option-radio::after {
+            opacity: 1;
+        }
+
+        .option-text {
+            flex: 1;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .option-feedback {
+            font-size: 0.875rem;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .option-card.correct .option-feedback {
+            display: block;
+            background: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .option-card.incorrect .option-feedback {
+            display: block;
+            background: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .quiz-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .next-btn {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .restart-btn {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .results-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .results-message {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-tertiary);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timer-icon {
+            font-size: 1.2rem;
+        }
+
+        .timer-text {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .quiz-card {
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .options-grid {
+                gap: 10px;
+            }
+
+            .option-btn {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+
+            .quiz-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .progress-bar {
+                height: 8px;
+            }
+
+            .timer {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .results-card {
+                padding: 20px;
+            }
+
+            .results-title {
+                font-size: 1.5rem;
+            }
+
+            .results-score {
+                font-size: 2.5rem;
+            }
+
+            .results-message {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .quiz-actions {
+                flex-direction: column;
+            }
+
+            .results-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>🧠 Interactive Quiz</h1>
+                <p>Test your knowledge with engaging questions</p>
+            </div>
+            
+            <div class="content">
+                <div class="quiz-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Progress</span>
+                        <span class="progress-value" id="progressValue">1/5</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+                    </div>
+                </div>
+                
+                <div class="timer" id="timer">
+                    <span class="timer-icon">⏱️</span>
+                    <span class="timer-text" id="timerText">00:00</span>
+                </div>
+                
+                <div id="quizContent">
+                    <div class="quiz-card">
+                        <div class="question-header">
+                            <span class="question-number" id="questionNumber">Question 1</span>
+                            <span class="question-category" id="questionCategory">JavaScript</span>
+                        </div>
+                        <h2 class="question-text" id="questionText">What is the output of: console.log(typeof null)?</h2>
+                        
+                        <div class="options-grid" id="optionsGrid">
+                            <div class="option-card" onclick="selectOption(0)">
+                                <div class="option-radio"></div>
+                                <span class="option-text">"null"</span>
+                                <div class="option-feedback">Incorrect! typeof null returns "object" due to a JavaScript bug.</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(1)">
+                                <div class="option-radio"></div>
+                                <span class="option-text">"object"</span>
+                                <div class="option-feedback">Correct! typeof null returns "object" due to a JavaScript bug.</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(2)">
+                                <div class="option-radio"></div>
+                                <span class="option-text">"undefined"</span>
+                                <div class="option-feedback">Incorrect! typeof null returns "object" due to a JavaScript bug.</div>
+                            </div>
+                            <div class="option-card" onclick="selectOption(3)">
+                                <div class="option-radio"></div>
+                                <span class="option-text">Error</span>
+                                <div class="option-feedback">Incorrect! typeof null returns "object" due to a JavaScript bug.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-actions">
+                    <button class="action-btn submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>
+                        Submit Answer
+                    </button>
+                    <button class="action-btn next-btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">
+                        Next Question →
+                    </button>
+                    <button class="action-btn restart-btn" id="restartBtn" onclick="restartQuiz()" style="display: none;">
+                        Restart Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class InteractiveQuiz {
+            constructor() {
+                this.questions = [
+                    {
+                        question: "What is the output of: console.log(typeof null)?",
+                        options: ["null", "object", "undefined", "Error"],
+                        correct: 1,
+                        category: "JavaScript",
+                        explanation: "typeof null returns 'object' due to a JavaScript bug. This is a well-known quirk in the language."
+                    },
+                    {
+                        question: "Which method adds an element to the end of an array?",
+                        options: ["push()", "pop()", "shift()", "unshift()"],
+                        correct: 0,
+                        category: "JavaScript",
+                        explanation: "push() adds one or more elements to the end of an array and returns the new length."
+                    },
+                    {
+                        question: "What does the '===' operator check?",
+                        options: ["Value only", "Type and value", "Reference only", "Type only"],
+                        correct: 1,
+                        category: "JavaScript",
+                        explanation: "The '===' operator checks both value and type, making it a strict equality operator."
+                    },
+                    {
+                        question: "Which keyword is used to declare a constant?",
+                        options: ["var", "let", "const", "constant"],
+                        correct: 2,
+                        category: "JavaScript",
+                        explanation: "const is used to declare variables whose values cannot be reassigned."
+                    },
+                    {
+                        question: "What is the default value of an uninitialized variable?",
+                        options: ["null", "undefined", "0", "false"],
+                        correct: 1,
+                        category: "JavaScript",
+                        explanation: "Uninitialized variables in JavaScript have the value 'undefined'."
+                    }
+                ];
+                
+                this.currentQuestion = 0;
+                this.score = 0;
+                this.selectedOption = null;
+                this.isAnswered = false;
+                this.startTime = Date.now();
+                this.timerInterval = null;
+                
+                this.init();
+            }
+
+            init() {
+                this.loadQuestion();
+                this.startTimer();
+                this.updateProgress();
+            }
+
+            startTimer() {
+                this.timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60);
+                    const seconds = elapsed % 60;
+                    document.getElementById('timerText').textContent = 
+                        \`\${minutes.toString().padStart(2, '0')}:\${seconds.toString().padStart(2, '0')}\`;
+                }, 1000);
+            }
+
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+
+            loadQuestion() {
+                const question = this.questions[this.currentQuestion];
+                
+                document.getElementById('questionNumber').textContent = \`Question \${this.currentQuestion + 1}\`;
+                document.getElementById('questionCategory').textContent = question.category;
+                document.getElementById('questionText').textContent = question.question;
+                
+                const optionsGrid = document.getElementById('optionsGrid');
+                optionsGrid.innerHTML = question.options.map((option, index) => \`
+                    <div class="option-card" onclick="selectOption(\${index})">
+                        <div class="option-radio"></div>
+                        <span class="option-text">\${option}</span>
+                        <div class="option-feedback">\${question.explanation}</div>
+                    </div>
+                \`).join('');
+                
+                this.selectedOption = null;
+                this.isAnswered = false;
+                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('submitBtn').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('restartBtn').style.display = 'none';
+            }
+
+            selectOption(index) {
+                if (this.isAnswered) return;
+                
+                // Remove previous selection
+                document.querySelectorAll('.option-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                document.querySelectorAll('.option-card')[index].classList.add('selected');
+                this.selectedOption = index;
+                
+                // Enable submit button
+                document.getElementById('submitBtn').disabled = false;
+            }
+
+            submitAnswer() {
+                if (this.selectedOption === null || this.isAnswered) return;
+                
+                this.isAnswered = true;
+                const question = this.questions[this.currentQuestion];
+                const optionCards = document.querySelectorAll('.option-card');
+                
+                // Show correct/incorrect feedback
+                if (this.selectedOption === question.correct) {
+                    optionCards[this.selectedOption].classList.add('correct');
+                    this.score++;
+                } else {
+                    optionCards[this.selectedOption].classList.add('incorrect');
+                    optionCards[question.correct].classList.add('correct');
+                }
+                
+                // Hide submit button, show next or restart button
+                document.getElementById('submitBtn').style.display = 'none';
+                
+                if (this.currentQuestion < this.questions.length - 1) {
+                    document.getElementById('nextBtn').style.display = 'block';
+                } else {
+                    this.showResults();
+                }
+            }
+
+            nextQuestion() {
+                this.currentQuestion++;
+                this.loadQuestion();
+                this.updateProgress();
+            }
+
+            updateProgress() {
+                const progress = ((this.currentQuestion + 1) / this.questions.length) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressValue').textContent = 
+                    \`\${this.currentQuestion + 1}/\${this.questions.length}\`;
+            }
+
+            showResults() {
+                this.stopTimer();
+                
+                const percentage = Math.round((this.score / this.questions.length) * 100);
+                let message = '';
+                let icon = '';
+                
+                if (percentage >= 80) {
+                    message = "Excellent work! You're a JavaScript master! 🎉";
+                    icon = "🏆";
+                } else if (percentage >= 60) {
+                    message = "Good job! You have solid JavaScript knowledge! 👍";
+                    icon = "⭐";
+                } else if (percentage >= 40) {
+                    message = "Not bad! Keep practicing to improve! 📚";
+                    icon = "📖";
+                } else {
+                    message = "Keep learning! JavaScript takes time to master! 💪";
+                    icon = "🎯";
+                }
+                
+                const quizContent = document.getElementById('quizContent');
+                quizContent.innerHTML = \`
+                    <div class="results-section">
+                        <div class="results-icon">\${icon}</div>
+                        <h2 class="results-title">Quiz Complete!</h2>
+                        <div class="results-score">\${percentage}%</div>
+                        <p class="results-message">\${message}</p>
+                        
+                        <div class="results-stats">
+                            <div class="stat-card">
+                                <span class="stat-value">\${this.score}</span>
+                                <span class="stat-label">Correct</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-value">\${this.questions.length - this.score}</span>
+                                <span class="stat-label">Incorrect</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-value">\${this.questions.length}</span>
+                                <span class="stat-label">Total Questions</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-value" id="finalTime">00:00</span>
+                                <span class="stat-label">Time Taken</span>
+                            </div>
+                        </div>
+                    </div>
+                \`;
+                
+                // Update final time
+                const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('finalTime').textContent = 
+                    \`\${minutes.toString().padStart(2, '0')}:\${seconds.toString().padStart(2, '0')}\`;
+                
+                // Show restart button
+                document.getElementById('restartBtn').style.display = 'block';
+            }
+
+            restartQuiz() {
+                this.currentQuestion = 0;
+                this.score = 0;
+                this.selectedOption = null;
+                this.isAnswered = false;
+                this.startTime = Date.now();
+                
+                this.stopTimer();
+                this.startTimer();
+                this.loadQuestion();
+                this.updateProgress();
+            }
+        }
+
+        // Global functions for onclick handlers
+        let quiz;
+
+        function selectOption(index) {
+            quiz.selectOption(index);
+        }
+
+        function submitAnswer() {
+            quiz.submitAnswer();
+        }
+
+        function nextQuestion() {
+            quiz.nextQuestion();
+        }
+
+        function restartQuiz() {
+            quiz.restartQuiz();
+        }
+
+        // Initialize the quiz
+        quiz = new InteractiveQuiz();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'weather-app') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-sunny: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            --gradient-cloudy: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            --gradient-rainy: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+                --gradient-sunny: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+                --gradient-cloudy: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+                --gradient-rainy: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: var(--gradient-accent);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 30px;
+            background: var(--bg-primary);
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+            transform: translateY(-1px);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-btn {
+            padding: 16px 24px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .search-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-btn:active {
+            transform: translateY(0);
+        }
+
+        .location-btn {
+            padding: 16px 20px;
+            background: var(--gradient-success);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quick-cities {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .city-chip {
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .city-chip:hover {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            transform: translateY(-1px);
+        }
+
+        .weather-display {
+            display: none;
+        }
+
+        .weather-display.active {
+            display: block;
+        }
+
+        .current-weather {
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .current-weather::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-sunny);
+        }
+
+        .current-weather.cloudy::before {
+            background: var(--gradient-cloudy);
+        }
+
+        .current-weather.rainy::before {
+            background: var(--gradient-rainy);
+        }
+
+        .weather-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .weather-info {
+            flex: 1;
+        }
+
+        .city-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .weather-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        .temperature {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .weather-icon {
+            font-size: 6rem;
+            text-align: center;
+            animation: weatherFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes weatherFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .detail-card {
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .detail-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .forecast-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .forecast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+        }
+
+        .forecast-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .forecast-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .forecast-day {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .forecast-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .forecast-temp {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .forecast-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: var(--danger-light);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .search-wrapper {
+                flex-direction: column;
+            }
+
+            .weather-main {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .temperature {
+                font-size: 3rem;
+            }
+
+            .weather-icon {
+                font-size: 4rem;
+            }
+
+            .forecast-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>🌤️ Weather Dashboard</h1>
+                <p>Get real-time weather information for any city</p>
+            </div>
+            
+            <div class="content">
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Enter city name..." autofocus>
+                        <button class="search-btn" onclick="searchWeather()">Search</button>
+                        <button class="location-btn" onclick="getCurrentLocation()">📍 My Location</button>
+                    </div>
+                    
+                    <div class="quick-cities">
+                        <div class="city-chip" onclick="quickSearch('London')">London</div>
+                        <div class="city-chip" onclick="quickSearch('New York')">New York</div>
+                        <div class="city-chip" onclick="quickSearch('Tokyo')">Tokyo</div>
+                        <div class="city-chip" onclick="quickSearch('Paris')">Paris</div>
+                        <div class="city-chip" onclick="quickSearch('Sydney')">Sydney</div>
+                        <div class="city-chip" onclick="quickSearch('Dubai')">Dubai</div>
+                    </div>
+                </div>
+                
+                <div id="errorContainer"></div>
+                
+                <div class="weather-display" id="weatherDisplay">
+                    <div class="current-weather" id="currentWeather">
+                        <div class="weather-main">
+                            <div class="weather-info">
+                                <h2 class="city-name" id="cityName">--</h2>
+                                <p class="weather-description" id="weatherDescription">--</p>
+                                <div class="temperature" id="temperature">--°</div>
+                            </div>
+                            <div class="weather-icon" id="weatherIcon">🌤️</div>
+                        </div>
+                        
+                        <div class="weather-details">
+                            <div class="detail-card">
+                                <div class="detail-icon">🌡️</div>
+                                <div class="detail-value" id="feelsLike">--°</div>
+                                <div class="detail-label">Feels Like</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon">💧</div>
+                                <div class="detail-value" id="humidity">--%</div>
+                                <div class="detail-label">Humidity</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon">💨</div>
+                                <div class="detail-value" id="windSpeed">-- mph</div>
+                                <div class="detail-label">Wind Speed</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon">👁️</div>
+                                <div class="detail-value" id="visibility">-- mi</div>
+                                <div class="detail-label">Visibility</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon">🌅</div>
+                                <div class="detail-value" id="sunrise">--:--</div>
+                                <div class="detail-label">Sunrise</div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon">🌇</div>
+                                <div class="detail-value" id="sunset">--:--</div>
+                                <div class="detail-label">Sunset</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="forecast-section">
+                        <h3 class="section-title">📅 5-Day Forecast</h3>
+                        <div class="forecast-grid" id="forecastGrid">
+                            <!-- Forecast cards will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class WeatherDashboard {
+            constructor() {
+                this.apiKey = 'demo'; // In production, use a real API key
+                this.searchInput = document.getElementById('searchInput');
+                this.weatherDisplay = document.getElementById('weatherDisplay');
+                this.loading = document.getElementById('loading');
+                this.errorContainer = document.getElementById('errorContainer');
+                
+                this.init();
+            }
+
+            init() {
+                // Add enter key support
+                this.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.searchWeather();
+                    }
+                });
+
+                // Load default city
+                this.searchWeather();
+            }
+
+            async searchWeather() {
+                const city = this.searchInput.value.trim();
+                if (!city) {
+                    this.showError('Please enter a city name');
+                    return;
+                }
+
+                await this.fetchWeatherData(city);
+            }
+
+            async getCurrentLocation() {
+                if (!navigator.geolocation) {
+                    this.showError('Geolocation is not supported by your browser');
+                    return;
+                }
+
+                this.showLoading();
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const { latitude, longitude } = position.coords;
+                        await this.fetchWeatherByCoords(latitude, longitude);
+                    },
+                    (error) => {
+                        this.hideLoading();
+                        this.showError('Unable to get your location. Please try searching manually.');
+                    }
+                );
+            }
+
+            async fetchWeatherData(city) {
+                this.showLoading();
+                this.clearError();
+
+                try {
+                    // Simulate API call with mock data
+                    await this.simulateApiCall();
+                    
+                    const weatherData = this.generateMockWeatherData(city);
+                    this.displayWeather(weatherData);
+                    
+                } catch (error) {
+                    this.showError('Failed to fetch weather data. Please try again.');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async fetchWeatherByCoords(lat, lon) {
+                try {
+                    await this.simulateApiCall();
+                    
+                    const weatherData = this.generateMockWeatherData('Current Location', lat, lon);
+                    this.displayWeather(weatherData);
+                    
+                } catch (error) {
+                    this.showError('Failed to fetch weather data for your location.');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            generateMockWeatherData(city, lat = null, lon = null) {
+                const conditions = ['clear', 'clouds', 'rain', 'drizzle', 'thunderstorm', 'snow', 'mist'];
+                const condition = conditions[Math.floor(Math.random() * conditions.length)];
+                
+                const baseTemp = Math.floor(Math.random() * 30) + 10; // 10-40°C
+                const temp = lat ? this.adjustTempForLatitude(baseTemp, lat) : baseTemp;
+                
+                return {
+                    city: city,
+                    country: 'Demo Country',
+                    temperature: temp,
+                    feelsLike: temp + Math.floor(Math.random() * 5) - 2,
+                    condition: condition,
+                    description: this.getWeatherDescription(condition),
+                    humidity: Math.floor(Math.random() * 40) + 40, // 40-80%
+                    windSpeed: Math.floor(Math.random() * 20) + 5, // 5-25 mph
+                    visibility: Math.floor(Math.random() * 10) + 5, // 5-15 miles
+                    pressure: Math.floor(Math.random() * 50) + 980, // 980-1030 hPa
+                    uvIndex: Math.floor(Math.random() * 11), // 0-10
+                    sunrise: '06:' + String(Math.floor(Math.random() * 30) + 15).padStart(2, '0'),
+                    sunset: '18:' + String(Math.floor(Math.random() * 30) + 15).padStart(2, '0'),
+                    forecast: this.generateForecast()
+                };
+            }
+
+            adjustTempForLatitude(baseTemp, lat) {
+                // Simple temperature adjustment based on latitude
+                if (Math.abs(lat) > 60) return baseTemp - 15; // Polar regions
+                if (Math.abs(lat) > 30) return baseTemp - 5; // Temperate
+                return baseTemp; // Tropical
+            }
+
+            generateForecast() {
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                const conditions = ['sunny', 'cloudy', 'rainy', 'partly-cloudy'];
+                
+                return days.map(day => ({
+                    day: day,
+                    condition: conditions[Math.floor(Math.random() * conditions.length)],
+                    high: Math.floor(Math.random() * 15) + 20,
+                    low: Math.floor(Math.random() * 10) + 10
+                }));
+            }
+
+            getWeatherDescription(condition) {
+                const descriptions = {
+                    clear: 'Clear sky',
+                    clouds: 'Cloudy',
+                    rain: 'Rainy',
+                    drizzle: 'Light drizzle',
+                    thunderstorm: 'Thunderstorm',
+                    snow: 'Snowy',
+                    mist: 'Misty'
+                };
+                return descriptions[condition] || 'Unknown';
+            }
+
+            getWeatherIcon(condition) {
+                const icons = {
+                    clear: '☀️',
+                    clouds: '☁️',
+                    rain: '🌧️',
+                    drizzle: '🌦️',
+                    thunderstorm: '⛈️',
+                    snow: '❄️',
+                    mist: '🌫️'
+                };
+                return icons[condition] || '🌤️';
+            }
+
+            getForecastIcon(condition) {
+                const icons = {
+                    sunny: '☀️',
+                    cloudy: '☁️',
+                    rainy: '🌧️',
+                    'partly-cloudy': '⛅'
+                };
+                return icons[condition] || '🌤️';
+            }
+
+            displayWeather(data) {
+                // Update current weather
+                document.getElementById('cityName').textContent = data.city;
+                document.getElementById('weatherDescription').textContent = data.description;
+                document.getElementById('temperature').textContent = data.temperature + '°';
+                document.getElementById('weatherIcon').textContent = this.getWeatherIcon(data.condition);
+                
+                // Update details
+                document.getElementById('feelsLike').textContent = data.feelsLike + '°';
+                document.getElementById('humidity').textContent = data.humidity + '%';
+                document.getElementById('windSpeed').textContent = data.windSpeed + ' mph';
+                document.getElementById('visibility').textContent = data.visibility + ' mi';
+                document.getElementById('sunrise').textContent = data.sunrise;
+                document.getElementById('sunset').textContent = data.sunset;
+                
+                // Update weather card class
+                const currentWeather = document.getElementById('currentWeather');
+                currentWeather.className = 'current-weather';
+                if (data.condition === 'clear') {
+                    currentWeather.classList.add('sunny');
+                } else if (data.condition === 'clouds' || data.condition === 'mist') {
+                    currentWeather.classList.add('cloudy');
+                } else if (data.condition === 'rain' || data.condition === 'drizzle' || data.condition === 'thunderstorm') {
+                    currentWeather.classList.add('rainy');
+                }
+                
+                // Update forecast
+                const forecastGrid = document.getElementById('forecastGrid');
+                forecastGrid.innerHTML = data.forecast.map(day => \`
+                    <div class="forecast-card">
+                        <div class="forecast-day">\${day.day}</div>
+                        <div class="forecast-icon">\${this.getForecastIcon(day.condition)}</div>
+                        <div class="forecast-temp">\${day.high}° / \${day.low}°</div>
+                        <div class="forecast-desc">\${day.condition.replace('-', ' ')}</div>
+                    </div>
+                \`).join('');
+                
+                // Show weather display
+                this.weatherDisplay.classList.add('active');
+            }
+
+            showLoading() {
+                this.loading.style.display = 'block';
+                this.weatherDisplay.classList.remove('active');
+            }
+
+            hideLoading() {
+                this.loading.style.display = 'none';
+            }
+
+            showError(message) {
+                this.errorContainer.innerHTML = \`
+                    <div class="error">
+                        <span>⚠️</span>
+                        <span>\${message}</span>
+                    </div>
+                \`;
+            }
+
+            clearError() {
+                this.errorContainer.innerHTML = '';
+            }
+
+            simulateApiCall() {
+                // Simulate network delay
+                return new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+
+        // Global functions for onclick handlers
+        let weatherApp;
+
+        function searchWeather() {
+            weatherApp.searchWeather();
+        }
+
+        function getCurrentLocation() {
+            weatherApp.getCurrentLocation();
+        }
+
+        function quickSearch(city) {
+            document.getElementById('searchInput').value = city;
+            weatherApp.searchWeather();
+        }
+
+        // Initialize the weather dashboard
+        weatherApp = new WeatherDashboard();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'drag-drop') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop Task Manager</title>
+    <style>
+        :root {
+            /* Enhanced Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #667eea;
+            --accent-hover: #5a67d8;
+            --accent-light: #e9d8fd;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+                --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #ff6b6b);
+            background-size: 300% 100%;
+            animation: gradientWave 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        @keyframes gradientWave {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 35px;
+            background: var(--bg-primary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .add-task-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .add-task-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .add-task-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .add-task-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .clear-btn {
+            padding: 12px 24px;
+            background: var(--gradient-danger);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .column {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 400px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .column.drag-over {
+            border-color: var(--accent-color);
+            background: var(--accent-light);
+            transform: scale(1.02);
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .column-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column-count {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+        }
+
+        .todo-column .column-title { color: var(--text-primary); }
+        .progress-column .column-title { color: var(--warning-color); }
+        .done-column .column-title { color: var(--success-color); }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+            padding: 4px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .task-list.drag-over {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .task-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: move;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .task-card:hover::before {
+            opacity: 1;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-color);
+        }
+
+        .task-card.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+            cursor: grabbing;
+        }
+
+        .task-priority {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        .priority-medium {
+            background: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .priority-low {
+            background: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .task-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .task-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .task-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .task-action-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .task-action-btn.delete:hover {
+            background: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+            font-weight: 600;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .kanban-board {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .column {
+                min-width: auto;
+            }
+
+            .column-header {
+                padding: 12px;
+            }
+
+            .column-title {
+                font-size: 1rem;
+            }
+
+            .task-card {
+                padding: 12px;
+                margin-bottom: 8px;
+            }
+
+            .task-title {
+                font-size: 0.9rem;
+            }
+
+            .task-meta {
+                font-size: 0.8rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .add-task-btn {
+                width: 100%;
+                padding: 12px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .modal-title {
+                font-size: 1.2rem;
+            }
+
+            .form-input,
+            .form-textarea,
+            .form-select {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 12px;
+            }
+
+            .toast {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>📋 Drag & Drop Task Manager</h1>
+                <p>Organize your tasks with intuitive drag and drop functionality</p>
+            </div>
+            
+            <div class="content">
+                <div class="controls">
+                    <button class="add-task-btn" onclick="openModal()">➕ Add New Task</button>
+                    <button class="clear-btn" onclick="clearCompleted()">🗑️ Clear Completed</button>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-icon">📝</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="todoCount">0</span>
+                            <span class="stat-label">To Do</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⚡</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="progressCount">0</span>
+                            <span class="stat-label">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">✅</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="doneCount">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kanban-board">
+                    <div class="column todo-column" data-column="todo">
+                        <div class="column-header">
+                            <h3 class="column-title">
+                                <span>📝</span>
+                                <span>To Do</span>
+                            </h3>
+                            <span class="column-count" id="todoColumnCount">0</span>
+                        </div>
+                        <div class="task-list" id="todoList" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    
+                    <div class="column progress-column" data-column="progress">
+                        <div class="column-header">
+                            <h3 class="column-title">
+                                <span>⚡</span>
+                                <span>In Progress</span>
+                            </h3>
+                            <span class="column-count" id="progressColumnCount">0</span>
+                        </div>
+                        <div class="task-list" id="progressList" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                    
+                    <div class="column done-column" data-column="done">
+                        <div class="column-header">
+                            <h3 class="column-title">
+                                <span>✅</span>
+                                <span>Completed</span>
+                            </h3>
+                            <span class="column-count" id="doneColumnCount">0</span>
+                        </div>
+                        <div class="task-list" id="doneList" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Task</h2>
+            </div>
+            <form id="taskForm" onsubmit="addTask(event)">
+                <div class="form-group">
+                    <label class="form-label" for="taskTitle">Task Title *</label>
+                    <input type="text" class="form-input" id="taskTitle" required placeholder="Enter task title">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="taskDescription">Description</label>
+                    <textarea class="form-textarea" id="taskDescription" placeholder="Enter task description"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="taskPriority">Priority</label>
+                    <select class="form-select" id="taskPriority">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        class DragDropTaskManager {
+            constructor() {
+                this.tasks = [];
+                this.taskIdCounter = 1;
+                this.draggedTask = null;
+                this.init();
+            }
+
+            init() {
+                this.loadTasks();
+                this.renderTasks();
+                this.updateStats();
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                // Close modal when clicking outside
+                document.getElementById('taskModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'taskModal') {
+                        this.closeModal();
+                    }
+                });
+
+                // Add dragover listeners to all task lists
+                document.querySelectorAll('.task-list').forEach(list => {
+                    list.addEventListener('dragover', (e) => this.allowDrop(e));
+                    list.addEventListener('drop', (e) => this.drop(e));
+                    list.addEventListener('dragenter', (e) => this.dragEnter(e));
+                    list.addEventListener('dragleave', (e) => this.dragLeave(e));
+                });
+            }
+
+            generateTaskId() {
+                return \`task-\${this.taskIdCounter++}\`;
+            }
+
+            addTask(event) {
+                event.preventDefault();
+                
+                const title = document.getElementById('taskTitle').value.trim();
+                const description = document.getElementById('taskDescription').value.trim();
+                const priority = document.getElementById('taskPriority').value;
+                
+                if (!title) return;
+                
+                const task = {
+                    id: this.generateTaskId(),
+                    title: title,
+                    description: description,
+                    priority: priority,
+                    status: 'todo',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                this.tasks.push(task);
+                this.saveTasks();
+                this.renderTasks();
+                this.updateStats();
+                this.closeModal();
+                this.showToast('Task added successfully!');
+                
+                // Reset form
+                document.getElementById('taskForm').reset();
+            }
+
+            deleteTask(taskId) {
+                this.tasks = this.tasks.filter(task => task.id !== taskId);
+                this.saveTasks();
+                this.renderTasks();
+                this.updateStats();
+                this.showToast('Task deleted successfully!');
+            }
+
+            moveTask(taskId, newStatus) {
+                const task = this.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = newStatus;
+                    task.updatedAt = new Date().toISOString();
+                    this.saveTasks();
+                    this.updateStats();
+                    this.showToast(\`Task moved to \${newStatus}!\`);
+                }
+            }
+
+            clearCompleted() {
+                const completedCount = this.tasks.filter(task => task.status === 'done').length;
+                if (completedCount === 0) {
+                    this.showToast('No completed tasks to clear!');
+                    return;
+                }
+                
+                this.tasks = this.tasks.filter(task => task.status !== 'done');
+                this.saveTasks();
+                this.renderTasks();
+                this.updateStats();
+                this.showToast(\`Cleared \${completedCount} completed tasks!\`);
+            }
+
+            renderTasks() {
+                const todoList = document.getElementById('todoList');
+                const progressList = document.getElementById('progressList');
+                const doneList = document.getElementById('doneList');
+                
+                // Clear existing tasks
+                todoList.innerHTML = '';
+                progressList.innerHTML = '';
+                doneList.innerHTML = '';
+                
+                // Sort tasks by priority and creation date
+                const sortedTasks = [...this.tasks].sort((a, b) => {
+                    const priorityOrder = { high: 0, medium: 1, low: 2 };
+                    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                        return priorityOrder[a.priority] - priorityOrder[b.priority];
+                    }
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+                
+                // Render tasks in appropriate columns
+                sortedTasks.forEach(task => {
+                    const taskElement = this.createTaskElement(task);
+                    
+                    switch (task.status) {
+                        case 'todo':
+                            todoList.appendChild(taskElement);
+                            break;
+                        case 'progress':
+                            progressList.appendChild(taskElement);
+                            break;
+                        case 'done':
+                            doneList.appendChild(taskElement);
+                            break;
+                    }
+                });
+                
+                // Update column counts
+                document.getElementById('todoColumnCount').textContent = todoList.children.length;
+                document.getElementById('progressColumnCount').textContent = progressList.children.length;
+                document.getElementById('doneColumnCount').textContent = doneList.children.length;
+            }
+
+            createTaskElement(task) {
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task-card';
+                taskDiv.draggable = true;
+                taskDiv.dataset.taskId = task.id;
+                
+                const priorityClass = \`priority-\${task.priority}\`;
+                const createdDate = new Date(task.createdAt).toLocaleDateString();
+                
+                taskDiv.innerHTML = \`
+                    <div class="task-priority \${priorityClass}">\${task.priority}</div>
+                    <h4 class="task-title">\${task.title}</h4>
+                    \${task.description ? \`<p class="task-description">\${task.description}</p>\` : ''}
+                    <div class="task-meta">
+                        <span class="task-date">
+                            📅 \${createdDate}
+                        </span>
+                        <div class="task-actions">
+                            <button class="task-action-btn delete" onclick="taskManager.deleteTask('\${task.id}')">
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                \`;
+                
+                // Add drag event listeners
+                taskDiv.addEventListener('dragstart', (e) => this.dragStart(e));
+                taskDiv.addEventListener('dragend', (e) => this.dragEnd(e));
+                
+                return taskDiv;
+            }
+
+            dragStart(event) {
+                this.draggedTask = event.target;
+                event.target.classList.add('dragging');
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/html', event.target.innerHTML);
+            }
+
+            dragEnd(event) {
+                event.target.classList.remove('dragging');
+                this.draggedTask = null;
+                
+                // Remove drag-over class from all columns
+                document.querySelectorAll('.column').forEach(col => {
+                    col.classList.remove('drag-over');
+                });
+            }
+
+            allowDrop(event) {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+            }
+
+            dragEnter(event) {
+                if (event.target.classList.contains('task-list')) {
+                    event.target.classList.add('drag-over');
+                } else if (event.target.closest('.column')) {
+                    event.target.closest('.column').classList.add('drag-over');
+                }
+            }
+
+            dragLeave(event) {
+                if (event.target.classList.contains('task-list')) {
+                    event.target.classList.remove('drag-over');
+                } else if (event.target.closest('.column')) {
+                    const column = event.target.closest('.column');
+                    const rect = column.getBoundingClientRect();
+                    if (event.clientX < rect.left || event.clientX > rect.right ||
+                        event.clientY < rect.top || event.clientY > rect.bottom) {
+                        column.classList.remove('drag-over');
+                    }
+                }
+            }
+
+            drop(event) {
+                event.preventDefault();
+                
+                const taskList = event.target.classList.contains('task-list') ? 
+                    event.target : event.target.closest('.task-list');
+                
+                if (!taskList || !this.draggedTask) return;
+                
+                const column = taskList.closest('.column');
+                const newStatus = column.dataset.column;
+                
+                taskList.appendChild(this.draggedTask);
+                this.moveTask(this.draggedTask.dataset.taskId, newStatus);
+                
+                // Remove drag-over classes
+                document.querySelectorAll('.task-list, .column').forEach(el => {
+                    el.classList.remove('drag-over');
+                });
+            }
+
+            updateStats() {
+                const todoCount = this.tasks.filter(task => task.status === 'todo').length;
+                const progressCount = this.tasks.filter(task => task.status === 'progress').length;
+                const doneCount = this.tasks.filter(task => task.status === 'done').length;
+                
+                document.getElementById('todoCount').textContent = todoCount;
+                document.getElementById('progressCount').textContent = progressCount;
+                document.getElementById('doneCount').textContent = doneCount;
+            }
+
+            openModal() {
+                document.getElementById('taskModal').classList.add('active');
+                document.getElementById('taskTitle').focus();
+            }
+
+            closeModal() {
+                document.getElementById('taskModal').classList.remove('active');
+            }
+
+            showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            saveTasks() {
+                localStorage.setItem('dragDropTasks', JSON.stringify(this.tasks));
+            }
+
+            loadTasks() {
+                const saved = localStorage.getItem('dragDropTasks');
+                if (saved) {
+                    try {
+                        this.tasks = JSON.parse(saved);
+                        // Update task ID counter to avoid conflicts
+                        const maxId = Math.max(...this.tasks.map(t => 
+                            parseInt(t.id.replace('task-', '')) || 0), 0);
+                        this.taskIdCounter = maxId + 1;
+                    } catch (e) {
+                        this.tasks = [];
+                    }
+                } else {
+                    // Add some sample tasks for demonstration
+                    this.tasks = [
+                        {
+                            id: this.generateTaskId(),
+                            title: 'Welcome to Drag & Drop Tasks!',
+                            description: 'Try dragging this task to other columns',
+                            priority: 'medium',
+                            status: 'todo',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateTaskId(),
+                            title: 'Click the + button to add new tasks',
+                            description: 'You can set priority and description',
+                            priority: 'low',
+                            status: 'todo',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        },
+                        {
+                            id: this.generateTaskId(),
+                            title: 'Drag tasks between columns',
+                            description: 'Organize your workflow efficiently',
+                            priority: 'high',
+                            status: 'progress',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        }
+                    ];
+                    this.saveTasks();
+                }
+            }
+        }
+
+        // Global functions for onclick handlers
+        let taskManager;
+
+        function openModal() {
+            taskManager.openModal();
+        }
+
+        function closeModal() {
+            taskManager.closeModal();
+        }
+
+        function addTask(event) {
+            taskManager.addTask(event);
+        }
+
+        function clearCompleted() {
+            taskManager.clearCompleted();
+        }
+
+        function allowDrop(event) {
+            taskManager.allowDrop(event);
+        }
+
+        function drop(event) {
+            taskManager.drop(event);
+        }
+
+        // Initialize the task manager
+        taskManager = new DragDropTaskManager();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'chat-interface') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chat Interface</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+                --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-wrapper:hover {
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #ff6b6b);
+            background-size: 300% 100%;
+            animation: gradientWave 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        @keyframes gradientWave {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg-primary);
+        }
+
+        .messages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages-container::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            animation: messageSlideIn 0.3s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .message.bot .message-avatar {
+            background: var(--gradient-accent);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: var(--bg-tertiary);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .message.user .message-content {
+            background: var(--accent-light);
+            color: var(--text-primary);
+        }
+
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .input-container {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            font-size: 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            line-height: 1.4;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .send-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient-accent);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quick-actions {
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .quick-actions-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .quick-action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action-btn {
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-color);
+            transform: translateY(-1px);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .chat-container {
+                height: 60vh;
+            }
+
+            .messages {
+                padding: 15px;
+            }
+
+            .message {
+                gap: 8px;
+            }
+
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+
+            .message-content {
+                max-width: 85%;
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            .message-time {
+                font-size: 0.7rem;
+            }
+
+            .input-container {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .message-input {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            .send-button {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+
+            .quick-actions {
+                padding: 12px 15px;
+            }
+
+            .quick-actions-title {
+                font-size: 0.8rem;
+                margin-bottom: 8px;
+            }
+
+            .quick-action-buttons {
+                gap: 6px;
+            }
+
+            .quick-action-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .typing-indicator {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .typing-dots span {
+                width: 6px;
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>💬 Interactive Chat Interface</h1>
+                <p>Experience a modern chat application with AI responses</p>
+            </div>
+            
+            <div class="chat-container">
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-actions-title">Quick Actions</div>
+                    <div class="quick-action-buttons">
+                        <button class="quick-action-btn" onclick="chatInterface.sendQuickMessage('Hello! 👋')">Say Hello</button>
+                        <button class="quick-action-btn" onclick="chatInterface.sendQuickMessage('Tell me a joke')">Tell a Joke</button>
+                        <button class="quick-action-btn" onclick="chatInterface.sendQuickMessage('What can you do?')">Capabilities</button>
+                        <button class="quick-action-btn" onclick="chatInterface.sendQuickMessage('Help me with JavaScript')">JavaScript Help</button>
+                        <button class="quick-action-btn" onclick="chatInterface.sendQuickMessage('Give me a quote')">Daily Quote</button>
+                        <button class="quick-action-btn" onclick="chatInterface.clearChat()">Clear Chat</button>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            class="input-field" 
+                            id="messageInput" 
+                            placeholder="Type your message here..."
+                            rows="1"
+                            onkeydown="chatInterface.handleKeyPress(event)"
+                            oninput="chatInterface.autoResize(this)"
+                        ></textarea>
+                        <button class="send-button" id="sendButton" onclick="chatInterface.sendMessage()">
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ChatInterface {
+            constructor() {
+                this.messages = [];
+                this.isTyping = false;
+                this.responses = {
+                    greetings: [
+                        "Hello! How can I help you today? 😊",
+                        "Hi there! What's on your mind?",
+                        "Hey! Nice to see you! How can I assist you?",
+                        "Greetings! I'm here to help with whatever you need!"
+                    ],
+                    jokes: [
+                        "Why don't scientists trust atoms? Because they make up everything! 😄",
+                        "Why did the scarecrow win an award? He was outstanding in his field! 🌾",
+                        "Why don't eggs tell jokes? They'd crack each other up! 🥚",
+                        "What do you call a fake noodle? An impasta! 🍝"
+                    ],
+                    capabilities: [
+                        "I can help you with: 💻 Programming questions, 📚 General knowledge, 🎯 Problem solving, 💡 Creative ideas, and much more! What would you like to explore?",
+                        "My capabilities include: Answering questions, Providing explanations, Helping with coding, Offering suggestions, and Engaging in conversations. What interests you?",
+                        "I'm here to assist with various topics: Technology, Science, Arts, Education, and everyday questions. What can I help you with today?"
+                    ],
+                    javascript: [
+                        "JavaScript is a versatile programming language! Here are some key concepts: Variables (let, const, var), Functions, Arrays, Objects, DOM manipulation, and ES6+ features. What specific JavaScript topic would you like to explore?",
+                        "JavaScript powers the web! 🌐 Key areas include: Frontend development, Node.js for backend, React/Vue/Angular frameworks, Async programming, and Modern ES6+ syntax. What would you like to learn?",
+                            "JavaScript fundamentals: Data types, Control structures, Functions, Scope, Closures, Promises, and Array methods. Ready to dive deeper into any of these topics?"
+                    ],
+                    quotes: [
+                        "The only way to do great work is to love what you do. - Steve Jobs ✨",
+                        "Innovation distinguishes between a leader and a follower. - Steve Jobs 🚀",
+                        "Code is like humor. When you have to explain it, it's bad. - Cory House 😄",
+                        "First, solve the problem. Then, write the code. - John Johnson 💻",
+                        "Experience is the name everyone gives to their mistakes. - Oscar Wilde 🌟"
+                    ],
+                    default: [
+                        "That's interesting! Tell me more about what you're thinking.",
+                        "I'd love to help you with that! Could you provide more details?",
+                        "That's a great question! Let me think about the best way to assist you.",
+                        "I'm here to help! What specific aspect would you like to explore further?",
+                        "Thanks for sharing that! How can I help you move forward?"
+                    ]
+                };
+                this.init();
+            }
+
+            init() {
+                this.loadMessages();
+                this.renderMessages();
+                this.scrollToBottom();
+                
+                // Add welcome message if chat is empty
+                if (this.messages.length === 0) {
+                    this.addBotMessage("Hello! 👋 I'm your AI assistant. Feel free to ask me anything or try the quick actions below!");
+                }
+            }
+
+            handleKeyPress(event) {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    this.sendMessage();
+                }
+            }
+
+            autoResize(textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+            }
+
+            sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value.trim();
+                
+                if (!message || this.isTyping) return;
+                
+                this.addUserMessage(message);
+                input.value = '';
+                this.autoResize(input);
+                
+                // Show typing indicator
+                this.showTypingIndicator();
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    this.hideTypingIndicator();
+                    this.generateBotResponse(message);
+                }, 1000 + Math.random() * 1000);
+            }
+
+            sendQuickMessage(message) {
+                document.getElementById('messageInput').value = message;
+                this.sendMessage();
+            }
+
+            addUserMessage(text) {
+                const message = {
+                    id: Date.now(),
+                    type: 'user',
+                    text: text,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.messages.push(message);
+                this.renderMessage(message);
+                this.saveMessages();
+                this.scrollToBottom();
+            }
+
+            addBotMessage(text) {
+                const message = {
+                    id: Date.now(),
+                    type: 'bot',
+                    text: text,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.messages.push(message);
+                this.renderMessage(message);
+                this.saveMessages();
+                this.scrollToBottom();
+            }
+
+            generateBotResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                let response;
+                
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                    response = this.getRandomResponse('greetings');
+                } else if (lowerMessage.includes('joke') || lowerMessage.includes('funny')) {
+                    response = this.getRandomResponse('jokes');
+                } else if (lowerMessage.includes('what can you do') || lowerMessage.includes('capabilities') || lowerMessage.includes('help')) {
+                    response = this.getRandomResponse('capabilities');
+                } else if (lowerMessage.includes('javascript') || lowerMessage.includes('js') || lowerMessage.includes('coding')) {
+                    response = this.getRandomResponse('javascript');
+                } else if (lowerMessage.includes('quote') || lowerMessage.includes('inspiration')) {
+                    response = this.getRandomResponse('quotes');
+                } else {
+                    response = this.getRandomResponse('default');
+                }
+                
+                this.addBotMessage(response);
+            }
+
+            getRandomResponse(category) {
+                const responses = this.responses[category];
+                return responses[Math.floor(Math.random() * responses.length)];
+            }
+
+            showTypingIndicator() {
+                this.isTyping = true;
+                const container = document.getElementById('messagesContainer');
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = \`
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                \`;
+                container.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            hideTypingIndicator() {
+                this.isTyping = false;
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+
+            renderMessage(message) {
+                const container = document.getElementById('messagesContainer');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = \`message \${message.type}\`;
+                
+                const time = new Date(message.timestamp).toLocaleTimeString([], { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+                
+                messageDiv.innerHTML = \`
+                    <div class="message-avatar">
+                        \${message.type === 'bot' ? '🤖' : '👤'}
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">\${message.text}</div>
+                        <div class="message-time">\${time}</div>
+                    </div>
+                \`;
+                
+                container.appendChild(messageDiv);
+            }
+
+            renderMessages() {
+                const container = document.getElementById('messagesContainer');
+                container.innerHTML = '';
+                
+                this.messages.forEach(message => {
+                    this.renderMessage(message);
+                });
+            }
+
+            scrollToBottom() {
+                const container = document.getElementById('messagesContainer');
+                container.scrollTop = container.scrollHeight;
+            }
+
+            clearChat() {
+                this.messages = [];
+                this.saveMessages();
+                this.renderMessages();
+                this.addBotMessage("Chat cleared! How can I help you today? 🔄");
+            }
+
+            saveMessages() {
+                // Keep only last 50 messages to avoid storage issues
+                const messagesToSave = this.messages.slice(-50);
+                localStorage.setItem('chatMessages', JSON.stringify(messagesToSave));
+            }
+
+            loadMessages() {
+                const saved = localStorage.getItem('chatMessages');
+                if (saved) {
+                    try {
+                        this.messages = JSON.parse(saved);
+                    } catch (e) {
+                        this.messages = [];
+                    }
+                }
+            }
+        }
+
+        // Initialize the chat interface
+        const chatInterface = new ChatInterface();
+    </script>
+</body>
+</html>`;
+    }
+    
+    if (type === 'image-gallery') {
+      html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Image Gallery</title>
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-input: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --border-color: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #dbeafe;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --success-light: #d1fae5;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --danger-light: #fee2e2;
+            --warning-color: #f59e0b;
+            --warning-hover: #d97706;
+            --warning-light: #fef3c7;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Colors */
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #334155;
+                --bg-input: #1e293b;
+                --bg-glass: rgba(15, 23, 42, 0.95);
+                --border-color: #334155;
+                --border-light: #475569;
+                --text-primary: #f8fafc;
+                --text-secondary: #cbd5e1;
+                --text-muted: #94a3b8;
+                --accent-color: #60a5fa;
+                --accent-hover: #3b82f6;
+                --accent-light: #1e3a8a;
+                --success-color: #34d399;
+                --success-hover: #10b981;
+                --success-light: #064e3b;
+                --danger-color: #f87171;
+                --danger-hover: #ef4444;
+                --danger-light: #7f1d1d;
+                --warning-color: #fbbf24;
+                --warning-hover: #f59e0b;
+                --warning-light: #78350f;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+                --gradient-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+                --gradient-accent: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+                --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+                --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+                --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-wrapper {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .app-wrapper:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7, #ff6b6b);
+            background-size: 300% 100%;
+            animation: gradientWave 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        @keyframes gradientWave {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.3); }
+            to { text-shadow: 0 4px 8px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 35px;
+            background: var(--bg-primary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 14px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 18px;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .view-btn {
+            padding: 10px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .view-btn.active {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 20px 24px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.3;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .gallery-container {
+            position: relative;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+
+        .gallery-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+
+        .gallery-item.list-view {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            gap: 16px;
+        }
+
+        .gallery-item.grid-view {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .gallery-item.grid-view .image-container {
+            height: 200px;
+        }
+
+        .gallery-item.list-view .image-container {
+            width: 120px;
+            height: 80px;
+            flex-shrink: 0;
+            border-radius: 8px;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+        }
+
+        .gallery-item:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .overlay-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .overlay-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .overlay-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .item-info {
+            padding: 16px;
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .item-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .item-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            background: var(--accent-light);
+            color: var(--accent-color);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: lightboxSlideIn 0.3s ease-out;
+        }
+
+        @keyframes lightboxSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .lightbox-info {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            z-index: 1001;
+        }
+
+        .lightbox-close:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .lightbox-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .empty-action {
+            padding: 12px 24px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .empty-action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 8px;
+            }
+
+            .app-wrapper {
+                border-radius: 20px;
+                margin: 8px;
+            }
+
+            .header {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .search-box {
+                min-width: auto;
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .view-buttons {
+                gap: 8px;
+            }
+
+            .view-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
+
+            .gallery-item {
+                border-radius: 12px;
+            }
+
+            .gallery-image {
+                height: 150px;
+            }
+
+            .item-info {
+                padding: 10px;
+            }
+
+            .item-title {
+                font-size: 0.9rem;
+            }
+
+            .item-meta {
+                font-size: 0.8rem;
+            }
+
+            .tag {
+                padding: 3px 6px;
+                font-size: 0.7rem;
+            }
+
+            .lightbox-content {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+                max-height: calc(100vh - 20px);
+            }
+
+            .lightbox-image {
+                max-height: calc(100vh - 120px);
+            }
+
+            .lightbox-info {
+                padding: 15px;
+            }
+
+            .lightbox-title {
+                font-size: 1.2rem;
+            }
+
+            .lightbox-description {
+                font-size: 0.9rem;
+            }
+
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+
+            .lightbox-close {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .empty-state {
+                padding: 40px 15px;
+            }
+
+            .empty-icon {
+                font-size: 3rem;
+            }
+
+            .empty-title {
+                font-size: 1.3rem;
+            }
+
+            .empty-description {
+                font-size: 0.9rem;
+            }
+
+            .empty-action {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 8px;
+            }
+
+            .gallery-image {
+                height: 120px;
+            }
+
+            .gallery-item.list-view {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="header">
+                <h1>🖼️ Interactive Image Gallery</h1>
+                <p>Explore beautiful images with advanced filtering and viewing options</p>
+            </div>
+            
+            <div class="content">
+                <div class="controls">
+                    <input 
+                        type="text" 
+                        class="search-box" 
+                        id="searchInput" 
+                        placeholder="Search images..."
+                    >
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-category="all">All</button>
+                        <button class="filter-btn" data-category="nature">Nature</button>
+                        <button class="filter-btn" data-category="architecture">Architecture</button>
+                        <button class="filter-btn" data-category="people">People</button>
+                        <button class="filter-btn" data-category="technology">Technology</button>
+                    </div>
+                    
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">⊞ Grid</button>
+                        <button class="view-btn" data-view="list">☰ List</button>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-icon">📸</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="totalImages">0</span>
+                            <span class="stat-label">Total Images</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🏷️</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="totalCategories">0</span>
+                            <span class="stat-label">Categories</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">👁️</span>
+                        <div class="stat-info">
+                            <span class="stat-value" id="totalViews">0</span>
+                            <span class="stat-label">Total Views</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-container">
+                    <div id="galleryContainer" class="gallery-grid">
+                        <!-- Gallery items will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="gallery.closeLightbox()">×</button>
+        <button class="lightbox-nav lightbox-prev" onclick="gallery.navigateLightbox(-1)">‹</button>
+        <button class="lightbox-nav lightbox-next" onclick="gallery.navigateLightbox(1)">›</button>
+        
+        <div class="lightbox-content">
+            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDescription"></p>
+                <div class="item-meta">
+                    <span class="meta-item">📅 <span id="lightboxDate"></span></span>
+                    <span class="meta-item">👁️ <span id="lightboxViews"></span> views</span>
+                    <span class="meta-item">📏 <span id="lightboxSize"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ImageGallery {
+            constructor() {
+                this.images = [];
+                this.filteredImages = [];
+                this.currentFilter = 'all';
+                this.currentView = 'grid';
+                this.currentLightboxIndex = -1;
+                this.searchQuery = '';
+                this.totalViews = 0;
+                this.init();
+            }
+
+            init() {
+                this.generateMockImages();
+                this.setupEventListeners();
+                this.renderGallery();
+                this.updateStats();
+            }
+
+            generateMockImages() {
+                const categories = ['nature', 'architecture', 'people', 'technology'];
+                const titles = {
+                    nature: ['Mountain Sunrise', 'Forest Path', 'Ocean Waves', 'Desert Sunset', 'Waterfall', 'Autumn Leaves'],
+                    architecture: ['Modern Building', 'Historic Bridge', 'City Skyline', 'Ancient Temple', 'Glass Tower', 'Street View'],
+                    people: ['Portrait Study', 'Group Photo', 'Candid Moment', 'Professional Headshot', 'Street Photography', 'Event Coverage'],
+                    technology: ['Circuit Board', 'Data Center', 'Smartphone', 'Laptop Setup', 'Server Room', 'Network Equipment']
+                };
+
+                const descriptions = {
+                    nature: ['Beautiful natural landscape captured in perfect lighting', 'Stunning view of nature at its finest', 'Breathtaking scenery from around the world'],
+                    architecture: ['Impressive architectural design and engineering', 'Modern and historical buildings showcase', 'Urban architecture and city planning'],
+                    people: ['Capturing human emotions and expressions', 'Professional photography of people', 'Documentary and portrait photography'],
+                    technology: ['Cutting-edge technology and innovation', 'Modern digital equipment and devices', 'Technical and industrial photography']
+                };
+
+                categories.forEach(category => {
+                    titles[category].forEach((title, index) => {
+                        const image = {
+                            id: \`\${category}-\${index}\`,
+                            title: title,
+                            description: descriptions[category][index % descriptions[category].length],
+                            category: category,
+                            tags: [category, \`\${category}-photo\`, 'high-quality'],
+                            views: Math.floor(Math.random() * 1000) + 50,
+                            date: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
+                            size: \`\${Math.floor(Math.random() * 2000) + 1000}x\${Math.floor(Math.random() * 2000) + 1000}\`,
+                            url: \`https://picsum.photos/seed/\${category}-\${index}/800/600.jpg\`,
+                            thumbnailUrl: \`https://picsum.photos/seed/\${category}-\${index}/400/300.jpg\`
+                        };
+                        this.images.push(image);
+                    });
+                });
+
+                this.filteredImages = [...this.images];
+            }
+
+            setupEventListeners() {
+                // Search functionality
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    this.searchQuery = e.target.value.toLowerCase();
+                    this.filterImages();
+                });
+
+                // Category filters
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentFilter = btn.dataset.category;
+                        this.filterImages();
+                    });
+                });
+
+                // View toggle
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentView = btn.dataset.view;
+                        this.renderGallery();
+                    });
+                });
+
+                // Keyboard navigation for lightbox
+                document.addEventListener('keydown', (e) => {
+                    if (document.getElementById('lightbox').classList.contains('active')) {
+                        if (e.key === 'Escape') this.closeLightbox();
+                        if (e.key === 'ArrowLeft') this.navigateLightbox(-1);
+                        if (e.key === 'ArrowRight') this.navigateLightbox(1);
+                    }
+                });
+
+                // Close lightbox on background click
+                document.getElementById('lightbox').addEventListener('click', (e) => {
+                    if (e.target.id === 'lightbox') {
+                        this.closeLightbox();
+                    }
+                });
+            }
+
+            filterImages() {
+                this.filteredImages = this.images.filter(image => {
+                    const matchesCategory = this.currentFilter === 'all' || image.category === this.currentFilter;
+                    const matchesSearch = !this.searchQuery || 
+                        image.title.toLowerCase().includes(this.searchQuery) ||
+                        image.description.toLowerCase().includes(this.searchQuery) ||
+                        image.tags.some(tag => tag.toLowerCase().includes(this.searchQuery));
+                    
+                    return matchesCategory && matchesSearch;
+                });
+                
+                this.renderGallery();
+                this.updateStats();
+            }
+
+            renderGallery() {
+                const container = document.getElementById('galleryContainer');
+                container.className = this.currentView === 'grid' ? 'gallery-grid' : 'gallery-list';
+                
+                if (this.filteredImages.length === 0) {
+                    container.innerHTML = \`
+                        <div class="empty-state">
+                            <div class="empty-icon">📷</div>
+                            <h3 class="empty-title">No images found</h3>
+                            <p class="empty-description">Try adjusting your search or filter criteria</p>
+                            <button class="empty-action" onclick="gallery.resetFilters()">Reset Filters</button>
+                        </div>
+                    \`;
+                    return;
+                }
+
+                container.innerHTML = this.filteredImages.map((image, index) => {
+                    const viewClass = this.currentView === 'grid' ? 'grid-view' : 'list-view';
+                    return \`
+                        <div class="gallery-item \${viewClass}" onclick="gallery.openLightbox(\${index})">
+                            <div class="image-container">
+                                <img class="gallery-image" src="\${image.thumbnailUrl}" alt="\${image.title}" loading="lazy">
+                                <div class="image-overlay">
+                                    <div class="overlay-actions">
+                                        <button class="overlay-btn" onclick="event.stopPropagation(); gallery.likeImage('\${image.id}')">❤️</button>
+                                        <button class="overlay-btn" onclick="event.stopPropagation(); gallery.shareImage('\${image.id}')">🔗</button>
+                                        <button class="overlay-btn" onclick="event.stopPropagation(); gallery.downloadImage('\${image.id}')">⬇️</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-info">
+                                <h3 class="item-title">\${image.title}</h3>
+                                <p class="item-description">\${image.description}</p>
+                                <div class="item-meta">
+                                    <span class="meta-item">📅 \${new Date(image.date).toLocaleDateString()}</span>
+                                    <span class="meta-item">👁️ \${image.views}</span>
+                                    <span class="meta-item">📏 \${image.size}</span>
+                                </div>
+                                <div class="item-tags">
+                                    \${image.tags.map(tag => \`<span class="tag">\${tag}</span>\`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    \`;
+                }).join('');
+            }
+
+            openLightbox(index) {
+                this.currentLightboxIndex = index;
+                const image = this.filteredImages[index];
+                
+                // Increment views
+                image.views++;
+                this.totalViews++;
+                this.updateStats();
+                
+                // Update lightbox content
+                document.getElementById('lightboxImage').src = image.url;
+                document.getElementById('lightboxTitle').textContent = image.title;
+                document.getElementById('lightboxDescription').textContent = image.description;
+                document.getElementById('lightboxDate').textContent = new Date(image.date).toLocaleDateString();
+                document.getElementById('lightboxViews').textContent = image.views;
+                document.getElementById('lightboxSize').textContent = image.size;
+                
+                // Show lightbox
+                document.getElementById('lightbox').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeLightbox() {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = '';
+                this.currentLightboxIndex = -1;
+            }
+
+            navigateLightbox(direction) {
+                const newIndex = this.currentLightboxIndex + direction;
+                if (newIndex >= 0 && newIndex < this.filteredImages.length) {
+                    this.openLightbox(newIndex);
+                }
+            }
+
+            likeImage(imageId) {
+                const image = this.images.find(img => img.id === imageId);
+                if (image) {
+                    // Simulate like action
+                    this.showToast('❤️ Image liked!');
+                }
+            }
+
+            shareImage(imageId) {
+                const image = this.images.find(img => img.id === imageId);
+                if (image) {
+                    // Simulate share action
+                    if (navigator.share) {
+                        navigator.share({
+                            title: image.title,
+                            text: image.description,
+                            url: window.location.href
+                        });
+                    } else {
+                        // Fallback: copy to clipboard
+                        navigator.clipboard.writeText(window.location.href);
+                        this.showToast('🔗 Link copied to clipboard!');
+                    }
+                }
+            }
+
+            downloadImage(imageId) {
+                const image = this.images.find(img => img.id === imageId);
+                if (image) {
+                    // Simulate download action
+                    const link = document.createElement('a');
+                    link.href = image.url;
+                    link.download = \`\${image.title.replace(/\\s+/g, '-').toLowerCase()}.jpg\`;
+                    link.click();
+                    this.showToast('⬇️ Download started!');
+                }
+            }
+
+            resetFilters() {
+                this.currentFilter = 'all';
+                this.searchQuery = '';
+                document.getElementById('searchInput').value = '';
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.category === 'all') {
+                        btn.classList.add('active');
+                    }
+                });
+                this.filterImages();
+            }
+
+            updateStats() {
+                document.getElementById('totalImages').textContent = this.filteredImages.length;
+                document.getElementById('totalCategories').textContent = [...new Set(this.images.map(img => img.category))].length;
+                document.getElementById('totalViews').textContent = this.totalViews + this.images.reduce((sum, img) => sum + img.views, 0);
+            }
+
+            showToast(message) {
+                // Create toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = \`
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: var(--gradient-success);
+                    color: white;
+                    padding: 16px 24px;
+                    border-radius: 12px;
+                    box-shadow: var(--shadow-lg);
+                    z-index: 2000;
+                    font-weight: 600;
+                    animation: slideInUp 0.3s ease-out;
+                \`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.animation = 'slideOutDown 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = \`
+            @keyframes slideInUp {
+                from { transform: translateY(100px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideOutDown {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(100px); opacity: 0; }
+            }
+        \`;
+        document.head.appendChild(style);
+
+        // Initialize the gallery
+        const gallery = new ImageGallery();
+    </script>
+</body>
+</html>`;
+    }
+    
+    openWithContent(html, css, js);
+  };
+
   return (
     <div className="space-y-4">
       {questions.map((q, index) => (
         <Card key={index} className="border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600">
-          <Accordion type="single" collapsible className="w-full border-0 bg-transparent">
-            <AccordionItem value={`item-${index}`} className="border-0">
-              <AccordionTrigger className="text-left hover:no-underline p-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                <div className="flex items-center gap-3 w-full">
-                  <div className="flex-shrink-0 w-6 h-6 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
-                    <span className="text-slate-600 dark:text-slate-300 font-semibold text-xs">{index + 1}</span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-slate-900 dark:text-slate-100 text-sm leading-tight">
-                      {q.question}
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => {
-                      const searchQuery = encodeURIComponent(`${q.question} JavaScript`);
-                      window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
-                    }}
-                    className="w-8 h-8 p-0 bg-red-600 hover:bg-red-700 text-white rounded flex items-center justify-center mr-2"
-                  >
-                    <Play className="w-4 h-4" />
-                  </Button>
+          {isImplementation ? (
+            // For implementation questions - no accordion, just playground button
+            <div className="p-4">
+              <div className="flex items-center gap-3 w-full">
+                <div className="flex-shrink-0 w-6 h-6 bg-purple-100 dark:bg-purple-900/40 rounded-full flex items-center justify-center">
+                  <span className="text-purple-600 dark:text-purple-300 font-semibold text-xs">{index + 1}</span>
                 </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-4 pb-4 pt-2">
-                <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
-                                    <div 
-                    className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-slate-700 dark:prose-headings:text-slate-300 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-code:bg-slate-200 dark:prose-code:bg-slate-800 prose-code:text-green-700 dark:prose-code:text-green-300 prose-code:font-medium prose-pre:bg-slate-100 dark:prose-pre:bg-slate-950 prose-pre:border dark:prose-pre:border-slate-600 prose-p:mb-3 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:leading-relaxed prose-pre:my-3 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:text-slate-700 dark:prose-pre:text-slate-300 prose-code:font-mono prose-pre:font-mono prose-pre:text-xs prose-pre:leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: String(marked.parse(q.idealAnswer)) }} 
-                  />
+                <div className="flex-1 flex items-center gap-2">
+                  <p className="font-medium text-slate-900 dark:text-slate-100 text-sm leading-tight">
+                    {q.question}
+                  </p>
+                  <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 flex-shrink-0">
+                    Implementation
+                  </Badge>
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                <Button
+                   onClick={(e) => {
+                     e.stopPropagation();
+                     openPlayground(q.implementation!);
+                   }}
+                   className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center"
+                   title="Try in Playground"
+                 >
+                  <Code className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            // For regular questions - with accordion and YouTube
+            <Accordion type="single" collapsible className="w-full border-0 bg-transparent">
+              <AccordionItem value={`item-${index}`} className="border-0">
+                <AccordionTrigger className="text-left hover:no-underline p-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="flex-shrink-0 w-6 h-6 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center">
+                      <span className="text-slate-600 dark:text-slate-300 font-semibold text-xs">{index + 1}</span>
+                    </div>
+                    <div className="flex-1 flex items-center gap-2">
+                      <p className="font-medium text-slate-900 dark:text-slate-100 text-sm leading-tight">
+                        {q.question}
+                      </p>
+                      {q.implementation && (
+                        <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 flex-shrink-0">
+                          Implementation
+                        </Badge>
+                      )}
+                    </div>
+                    <Button
+                      onClick={() => {
+                        const searchQuery = encodeURIComponent(`${q.question} JavaScript`);
+                        window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                      }}
+                      className="w-8 h-8 p-0 bg-red-600 hover:bg-red-700 text-white rounded flex items-center justify-center mr-2"
+                    >
+                      <Play className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 pt-2">
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                    <div 
+                      className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-slate-700 dark:prose-headings:text-slate-300 prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-code:bg-slate-200 dark:prose-code:bg-slate-800 prose-code:text-green-700 dark:prose-code:text-green-300 prose-code:font-medium prose-pre:bg-slate-100 dark:prose-pre:bg-slate-950 prose-pre:border dark:prose-pre:border-slate-600 prose-p:mb-3 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:leading-relaxed prose-pre:my-3 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:text-slate-700 dark:prose-pre:text-slate-300 prose-code:font-mono prose-pre:font-mono prose-pre:text-xs prose-pre:leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: String(marked.parse(q.idealAnswer)) }} 
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
         </Card>
       ))}
     </div>
@@ -419,13 +8530,15 @@ export default function JavaScriptInterviewQuestions() {
   const questions = {
     easy: easyQuestions,
     medium: mediumQuestions,
-    hard: hardQuestions
+    hard: hardQuestions,
+    implementation: implementationQuestions
   };
 
   const difficultyStats = {
     easy: { count: easyQuestions.length, icon: BookOpen, color: 'green', time: '5-10 min' },
     medium: { count: mediumQuestions.length, icon: Target, color: 'yellow', time: '10-15 min' },
-    hard: { count: hardQuestions.length, icon: TrendingUp, color: 'red', time: '15-20 min' }
+    hard: { count: hardQuestions.length, icon: TrendingUp, color: 'red', time: '15-20 min' },
+    implementation: { count: implementationQuestions.length, icon: Code, color: 'purple', time: '20-30 min' }
   };
 
   return (
@@ -439,72 +8552,98 @@ export default function JavaScriptInterviewQuestions() {
       <div className="space-y-6">
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
-            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300">{easyQuestions.length} questions • 5-10 min</span>
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-4 sm:grid-cols-2 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
+            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 hidden sm:block">{easyQuestions.length} questions • 5-10 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 sm:hidden">{easyQuestions.length} • 5-10m</span>
             </TabsTrigger>
-            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <Target className="w-4 h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300">{mediumQuestions.length} questions • 10-15 min</span>
+            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <Target className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 hidden sm:block">{mediumQuestions.length} questions • 10-15 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 sm:hidden">{mediumQuestions.length} • 10-15m</span>
             </TabsTrigger>
-            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <TrendingUp className="w-4 h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300">{hardQuestions.length} questions • 15-20 min</span>
+            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 hidden sm:block">{hardQuestions.length} questions • 15-20 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 sm:hidden">{hardQuestions.length} • 15-20m</span>
+            </TabsTrigger>
+            <TabsTrigger value="implementation" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 rounded-lg data-[state=active]:bg-purple-100 dark:data-[state=active]:bg-purple-900/60 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200 data-[state=active]:shadow-sm hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <Rocket className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600 dark:text-purple-400 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200">Implementation</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-purple-600 dark:data-[state=active]:text-purple-300 hidden sm:block">{implementationQuestions.length} questions • Hands-on</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-purple-600 dark:data-[state=active]:text-purple-300 sm:hidden">{implementationQuestions.length} • Hands-on</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Questions Content */}
-          <TabsContent value="easy" className="space-y-4">
+          <TabsContent value="easy" className="space-y-3 sm:space-y-4">
             <Card className="border-green-200 dark:border-green-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
-                  <BookOpen className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200 text-lg sm:text-xl">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                   Easy Level
                 </CardTitle>
-                <CardDescription className="text-green-700 dark:text-green-300">
+                <CardDescription className="text-green-700 dark:text-green-300 text-sm sm:text-base">
                   Fundamental JavaScript concepts perfect for beginners and quick reviews
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0 sm:pt-0">
                 <QnA questions={easyQuestions} />
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="medium" className="space-y-4">
+          <TabsContent value="medium" className="space-y-3 sm:space-y-4">
             <Card className="border-yellow-200 dark:border-yellow-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
-                  <Target className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200 text-lg sm:text-xl">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                   Medium Level
                 </CardTitle>
-                <CardDescription className="text-yellow-700 dark:text-yellow-300">
+                <CardDescription className="text-yellow-700 dark:text-yellow-300 text-sm sm:text-base">
                   Intermediate JavaScript topics for practical applications and real-world scenarios
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0 sm:pt-0">
                 <QnA questions={mediumQuestions} />
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="hard" className="space-y-4">
+          <TabsContent value="hard" className="space-y-3 sm:space-y-4">
             <Card className="border-red-200 dark:border-red-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200">
-                  <TrendingUp className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200 text-lg sm:text-xl">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                   Hard Level
                 </CardTitle>
-                <CardDescription className="text-red-700 dark:text-red-300">
+                <CardDescription className="text-red-700 dark:text-red-300 text-sm sm:text-base">
                   Advanced JavaScript concepts for expert-level understanding and technical interviews
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0 sm:pt-0">
                 <QnA questions={hardQuestions} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="implementation" className="space-y-3 sm:space-y-4">
+            <Card className="border-purple-200 dark:border-purple-800">
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-purple-800 dark:text-purple-200 text-lg sm:text-xl">
+                  <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
+                  🚀 Top 8 JavaScript Implementation Questions
+                </CardTitle>
+                <CardDescription className="text-purple-700 dark:text-purple-300 text-sm sm:text-base">
+                  Practical coding tasks asked in interviews and machine tests - All with playground implementations
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+                <QnA questions={implementationQuestions} isImplementation={true} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -559,6 +8698,7 @@ export default function JavaScriptInterviewQuestions() {
           </CardContent>
         </Card>
       </div>
+      <WebPlaygroundModal />
     </div>
   );
 }

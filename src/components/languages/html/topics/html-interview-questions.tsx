@@ -9342,16 +9342,16 @@ export default async function(request) {
                   </p>
                   <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 flex-shrink-0">
                     Implementation
-                  </Badge>
-                </div>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openPlayground(q.implementation);
-                  }}
-                  className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center"
-                  title="Try in Playground"
-                >
+                   </Badge>
+                 </div>
+                 <Button
+                   onClick={(e) => {
+                     e.stopPropagation();
+                     openPlayground(q.implementation!);
+                   }}
+                   className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center"
+                   title="Try in Playground"
+                 >
                   <Code className="w-4 h-4" />
                 </Button>
               </div>
@@ -9387,14 +9387,14 @@ export default async function(request) {
                       </Button>
                     )}
                     {q.implementation && (
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openPlayground(q.implementation);
-                        }}
-                        className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center mr-2"
-                        title="Try in Playground"
-                      >
+                       <Button
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           openPlayground(q.implementation!);
+                         }}
+                         className="w-8 h-8 p-0 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center mr-2"
+                         title="Try in Playground"
+                       >
                         <Code className="w-4 h-4" />
                       </Button>
                     )}
@@ -9452,92 +9452,96 @@ export default function HtmlInterviewQuestions({ showBackButton = true }: HtmlIn
       <div className="space-y-6">
         
         <Tabs defaultValue="easy" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
-            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300">{easyQuestions.length} questions • 5-10 min</span>
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-4 sm:grid-cols-2 h-auto p-1 sticky top-16 z-10 bg-background/95 backdrop-blur-sm border-b">
+            <TabsTrigger value="easy" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900/60 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200 data-[state=active]:shadow-sm hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 dark:text-green-400 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-green-800 dark:data-[state=active]:text-green-200">Easy</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 hidden sm:block">{easyQuestions.length} questions • 5-10 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-green-600 dark:data-[state=active]:text-green-300 sm:hidden">{easyQuestions.length} • 5-10m</span>
             </TabsTrigger>
-            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <Target className="w-4 h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300">{mediumQuestions.length} questions • 10-15 min</span>
+            <TabsTrigger value="medium" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-yellow-100 dark:data-[state=active]:bg-yellow-900/60 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200 data-[state=active]:shadow-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <Target className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 dark:text-yellow-400 data-[state=active]:text-yellow-700 dark:data-[state=active]:text-yellow-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-yellow-800 dark:data-[state=active]:text-yellow-200">Medium</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 hidden sm:block">{mediumQuestions.length} questions • 10-15 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-yellow-600 dark:data-[state=active]:text-yellow-300 sm:hidden">{mediumQuestions.length} • 10-15m</span>
             </TabsTrigger>
-            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <TrendingUp className="w-4 h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300">{hardQuestions.length} questions • 15-20 min</span>
+            <TabsTrigger value="hard" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-red-100 dark:data-[state=active]:bg-red-900/60 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200 data-[state=active]:shadow-sm hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-red-600 dark:text-red-400 data-[state=active]:text-red-700 dark:data-[state=active]:text-red-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-red-800 dark:data-[state=active]:text-red-200">Hard</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 hidden sm:block">{hardQuestions.length} questions • 15-20 min</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-300 sm:hidden">{hardQuestions.length} • 15-20m</span>
             </TabsTrigger>
-            <TabsTrigger value="implementation" className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg data-[state=active]:bg-purple-100 dark:data-[state=active]:bg-purple-900/60 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200 data-[state=active]:shadow-sm hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-150 cursor-pointer border border-transparent">
-              <Rocket className="w-4 h-4 text-purple-600 dark:text-purple-400 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300" />
-              <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200">Implementation</span>
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-purple-600 dark:data-[state=active]:text-purple-300">{implementationQuestions.length} questions • Hands-on</span>
+            <TabsTrigger value="implementation" className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-4 rounded-lg data-[state=active]:bg-purple-100 dark:data-[state=active]:bg-purple-900/60 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200 data-[state=active]:shadow-sm hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-150 cursor-pointer border border-transparent">
+              <Rocket className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600 dark:text-purple-400 data-[state=active]:text-purple-700 dark:data-[state=active]:text-purple-300" />
+              <span className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 data-[state=active]:text-purple-800 dark:data-[state=active]:text-purple-200">Implementation</span>
+              <span className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-purple-600 dark:data-[state=active]:text-purple-300 hidden sm:block">{implementationQuestions.length} questions • Hands-on</span>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 data-[state=active]:text-purple-600 dark:data-[state=active]:text-purple-300 sm:hidden">{implementationQuestions.length} • Hands-on</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="easy" className="space-y-4">
+          <TabsContent value="easy" className="space-y-3 sm:space-y-4">
             <Card className="border-green-200 dark:border-green-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200">
-                  <BookOpen className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-green-800 dark:text-green-200 text-lg sm:text-xl">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                   Easy Level
                 </CardTitle>
-                <CardDescription className="text-green-700 dark:text-green-300">
+                <CardDescription className="text-green-700 dark:text-green-300 text-sm sm:text-base">
                   Fundamental HTML concepts perfect for beginners and quick reviews
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
                 <QnA questions={categories.easy} isImplementation={false} />
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="medium" className="space-y-4">
+          <TabsContent value="medium" className="space-y-3 sm:space-y-4">
             <Card className="border-yellow-200 dark:border-yellow-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200">
-                  <Target className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-200 text-lg sm:text-xl">
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                   Medium Level
                 </CardTitle>
-                <CardDescription className="text-yellow-700 dark:text-yellow-300">
+                <CardDescription className="text-yellow-700 dark:text-yellow-300 text-sm sm:text-base">
                   Intermediate concepts that test deeper understanding of HTML
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
                 <QnA questions={categories.medium} isImplementation={false} />
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="hard" className="space-y-4">
+          <TabsContent value="hard" className="space-y-3 sm:space-y-4">
             <Card className="border-red-200 dark:border-red-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200">
-                  <TrendingUp className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-red-800 dark:text-red-200 text-lg sm:text-xl">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                   Hard Level
                 </CardTitle>
-                <CardDescription className="text-red-700 dark:text-red-300">
+                <CardDescription className="text-red-700 dark:text-red-300 text-sm sm:text-base">
                   Advanced topics and complex scenarios for experienced developers
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
                 <QnA questions={categories.hard} isImplementation={false} />
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="implementation" className="space-y-4">
+          <TabsContent value="implementation" className="space-y-3 sm:space-y-4">
             <Card className="border-purple-200 dark:border-purple-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
-                  <Rocket className="w-5 h-5" />
+              <CardHeader className="pb-3 sm:pb-6">
+                <CardTitle className="flex items-center gap-2 text-purple-800 dark:text-purple-200 text-lg sm:text-xl">
+                  <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
                   🚀 Top 10 HTML Implementation Questions
                 </CardTitle>
-                <CardDescription className="text-purple-700 dark:text-purple-300">
+                <CardDescription className="text-purple-700 dark:text-purple-300 text-sm sm:text-base">
                   Practical coding tasks asked in interviews and machine tests - All with playground implementations
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
                 <QnA questions={categories.implementation} isImplementation={true} />
               </CardContent>
             </Card>

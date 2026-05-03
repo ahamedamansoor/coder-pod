@@ -19,6 +19,7 @@ import { selenium } from './selenium';
 import { python } from './python';
 import { git } from './git';
 import { postgresql } from './postgresql';
+import { nodejs } from './nodejs';
 import { frontendSystemDesign } from './frontend-system-design';
 import type { Language } from './types';
 
@@ -33,7 +34,7 @@ export const languages: Language[] = [
     { ...vue, enabled: true },
     { ...nextjs, enabled: false },
     { ...angular, enabled: true },
-    { ...java, enabled: false },
+    { ...java, enabled: true },
     { ...spring, enabled: false },
     { ...springBoot, enabled: false },
     { ...dsa, enabled: true },
@@ -43,6 +44,7 @@ export const languages: Language[] = [
     { ...python, enabled: true },
     { ...git, enabled: false },
     { ...postgresql, enabled: false },
+    { ...nodejs, enabled: true },
     { ...frontendSystemDesign, enabled: false },
 
 ];
