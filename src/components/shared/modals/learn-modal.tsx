@@ -70,6 +70,7 @@ export function LearnModal({ autoOpen = false }: { autoOpen?: boolean }) {
             { href: '/scss/learning-plan', label: 'Sass/SCSS' },
             { href: '/javascript/learning-plan', label: 'JavaScript' },
             { href: '/react/learning-plan', label: 'React' },
+            { href: '/vue/learning-plan', label: 'Vue.js' },
             { href: '/rxjs/learning-plan', label: 'RxJS' },
           ]
       },

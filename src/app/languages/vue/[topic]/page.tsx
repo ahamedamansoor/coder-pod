@@ -35,7 +35,7 @@ function TopicPageContent() {
           {isLearningPlanTopic ? (
             <VueLearningRoadmap language={language} />
           ) : (
-            <VueContentDisplay topic={selectedTopic} />
+            <VueContentDisplay topic={selectedTopic} language={language} />
           )}
         </div>
       </ResizablePanel>

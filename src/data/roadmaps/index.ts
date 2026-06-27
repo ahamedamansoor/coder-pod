@@ -18,6 +18,7 @@ import { playwright } from './playwright';
 import { selenium } from './selenium';
 import { python } from './python';
 import { git } from './git';
+import { mysql } from './mysql';
 import { postgresql } from './postgresql';
 import { frontendSystemDesign } from './frontend-system-design';
 import { packageManager } from './package-manager';
@@ -34,7 +35,7 @@ export const roadmaps: Roadmap[] = [
     { ...javascript, enabled: true },
     { ...typescript, enabled: false },
     { ...react, enabled: false },
-    { ...vue, enabled: false },
+    { ...vue, enabled: true },
     { ...nextjs, enabled: false },
     { ...angular, enabled: false },
     { ...java, enabled: false },
@@ -43,9 +44,10 @@ export const roadmaps: Roadmap[] = [
     { ...dsa, enabled: true },
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
-    { ...selenium, enabled: true },
+    { ...selenium, enabled: false },
     { ...python, enabled: true },
     { ...git, enabled: false },
+    { ...mysql, enabled: true },
     { ...postgresql, enabled: false },
     { ...frontendSystemDesign, enabled: false },
     { ...packageManager, enabled: false },

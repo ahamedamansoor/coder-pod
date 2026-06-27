@@ -18,6 +18,7 @@ import { playwright } from './playwright';
 import { selenium } from './selenium';
 import { python } from './python';
 import { git } from './git';
+import { mysql } from './mysql';
 import { postgresql } from './postgresql';
 import { nodejs } from './nodejs';
 import { frontendSystemDesign } from './frontend-system-design';
@@ -29,22 +30,23 @@ export const languages: Language[] = [
     { ...scss, enabled: true },
     { ...tailwind, enabled: true },
     { ...javascript, enabled: true },
-    { ...typescript, enabled: true },
-    { ...react, enabled: true },
-    { ...vue, enabled: true },
+    { ...typescript, enabled: false },
+    { ...react, enabled: false },
+    { ...vue, enabled: false },
     { ...nextjs, enabled: false },
-    { ...angular, enabled: true },
-    { ...java, enabled: true },
+    { ...angular, enabled: false },
+    { ...java, enabled: false },
     { ...spring, enabled: false },
     { ...springBoot, enabled: false },
-    { ...dsa, enabled: true },
+    { ...dsa, enabled: false },
     { ...rxjs, enabled: false },
     { ...playwright, enabled: false },
-    { ...selenium, enabled: true },
-    { ...python, enabled: true },
+    { ...selenium, enabled: false },
+    { ...python, enabled: false },
     { ...git, enabled: false },
+    { ...mysql, enabled: false },
     { ...postgresql, enabled: false },
-    { ...nodejs, enabled: true },
+    { ...nodejs, enabled: false },
     { ...frontendSystemDesign, enabled: false },
 
 ];

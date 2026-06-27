@@ -189,7 +189,7 @@ function handleCountChange(newCount) {
 \`\`\`vue
 <template>
   <div v-bind:id="dynamicId"></div>
-  <!-- Shorthand -->
+  {/* Shorthand */}
   <div :id="dynamicId"></div>
   
   <button :disabled="isDisabled">Click me</button>
@@ -229,7 +229,7 @@ function handleCountChange(newCount) {
   <button @click="doSomething">Click me</button>
   <button @click="doThis('hello', $event)">Submit</button>
   
-  <!-- Event modifiers -->
+  {/* Event modifiers */}
   <form @submit.prevent="onSubmit">
     <button @click.stop="doThis">Click</button>
   </form>
@@ -251,7 +251,7 @@ function handleCountChange(newCount) {
 \`\`\`vue
 <template>
   <img v-bind:src="imageSrc" />
-  <!-- Shorthand -->
+  {/* Shorthand */}
   <img :src="imageSrc" />
 </template>
 \`\`\`
@@ -260,7 +260,7 @@ function handleCountChange(newCount) {
 \`\`\`vue
 <template>
   <button v-on:click="doSomething">Click</button>
-  <!-- Shorthand -->
+  {/* Shorthand */}
   <button @click="doSomething">Click</button>
 </template>
 \`\`\`
@@ -425,7 +425,7 @@ const props = defineProps({
 
 **Using Props:**
 \`\`\`vue
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <div>
     <BlogPost 
@@ -437,7 +437,7 @@ const props = defineProps({
   </div>
 </template>
 
-<!-- Child Component -->
+{/* Child Component */}
 <script setup>
 const props = defineProps({
   title: String,
@@ -511,7 +511,7 @@ const props = defineProps({
 
 **Emitting Events:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <script setup>
 const emit = defineEmits(['enlarge-text'])
 
@@ -560,7 +560,7 @@ const emit = defineEmits({
 
 **Listening to Events:**
 \`\`\`vue
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <div :style="{ fontSize: postFontSize + 'em' }">
     <BlogPost
@@ -583,19 +583,19 @@ const post = ref({
 **Event Modifiers:**
 \`\`\`vue
 <template>
-  <!-- Stop event propagation -->
+  {/* Stop event propagation */}
   <button @click.stop="doThis"></button>
   
-  <!-- Prevent default behavior -->
+  {/* Prevent default behavior */}
   <form @submit.prevent="onSubmit"></form>
   
-  <!-- Capture mode -->
+  {/* Capture mode */}
   <div @click.capture="doThis">...</div>
   
-  <!-- Only trigger once -->
+  {/* Only trigger once */}
   <button @click.once="doThis"></button>
   
-  <!-- Only trigger if event.target is the element itself -->
+  {/* Only trigger if event.target is the element itself */}
   <div @click.self="doThat">...</div>
 </template>
 \`\`\`
@@ -686,7 +686,7 @@ const message = ref('Hello Vue!')
 
 **Custom v-model:**
 \`\`\`vue
-<!-- Custom Component -->
+{/* Custom Component */}
 <script setup>
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
@@ -703,7 +703,7 @@ function updateValue(event) {
   />
 </template>
 
-<!-- Usage -->
+{/* Usage */}
 <CustomInput v-model="searchText" />
 \`\`\`
 
@@ -1143,7 +1143,7 @@ async function fetchData() {
 
 **Basic Slot:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <div class="alert-box">
     <strong>Error!</strong>
@@ -1151,14 +1151,14 @@ async function fetchData() {
   </div>
 </template>
 
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <AlertBox>
     Something bad happened.
   </AlertBox>
 </template>
 
-<!-- Renders as -->
+{/* Renders as */}
 <div class="alert-box">
   <strong>Error!</strong>
   Something bad happened.
@@ -1167,7 +1167,7 @@ async function fetchData() {
 
 **Named Slots:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <div class="container">
     <header>
@@ -1182,7 +1182,7 @@ async function fetchData() {
   </div>
 </template>
 
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <BaseLayout>
     <template #header>
@@ -1203,7 +1203,7 @@ async function fetchData() {
 
 **Scoped Slots:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <ul>
     <li v-for="item in items" :key="item.id">
@@ -1218,7 +1218,7 @@ defineProps({
 })
 </script>
 
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <TodoList :items="todos">
     <template #default="{ item, index }">
@@ -1248,29 +1248,29 @@ const dynamicSlotName = ref('header')
 
 **Slot Fallbacks:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <div class="button">
     <slot>
-      <!-- Default content if no slot provided -->
+      {/* Default content if no slot provided */}
       Click me
     </slot>
   </div>
 </template>
 
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
-  <!-- Will show default content -->
+  {/* Will show default content */}
   <MyButton />
   
-  <!-- Will show custom content -->
+  {/* Will show custom content */}
   <MyButton>Save</MyButton>
 </template>
 \`\`\`
 
 **Advanced Slot Usage:**
 \`\`\`vue
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <div class="card">
     <div class="card-header">
@@ -1756,12 +1756,12 @@ const classObject = computed(() => ({
 
 **With Components:**
 \`\`\`vue
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <MyComponent class="base-class" :class="{ active: isActive }" />
 </template>
 
-<!-- Child Component -->
+{/* Child Component */}
 <template>
   <div class="child-class" :class="$attrs.class">
     Child content
@@ -1844,7 +1844,7 @@ const isDisabled = ref(false)
 
 **Basic Inline Template:**
 \`\`\`vue
-<!-- Parent Component -->
+{/* Parent Component */}
 <template>
   <div>
     <my-component inline-template>
@@ -2264,7 +2264,7 @@ const user = inject('user')  // { name: 'John' }
 
 **Reactive Provide/Inject:**
 \`\`\`vue
-<!-- Parent Component -->
+{/* Parent Component */}
 <script setup>
 import { provide, ref, computed } from 'vue'
 
@@ -2281,7 +2281,7 @@ function increment() {
 provide('increment', increment)
 </script>
 
-<!-- Child Component -->
+{/* Child Component */}
 <script setup>
 import { inject } from 'vue'
 

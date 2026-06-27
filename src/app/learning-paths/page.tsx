@@ -15,7 +15,7 @@ import { useUser } from '@/hooks/use-auth-compat';
 import { unifiedCompletionService } from '@/services/unified-completion.service';
 import { toast } from 'sonner';
 
-type Filter = 'all' | 'frontend' | 'backend' | 'testing';
+type Filter = 'all' | 'frontend' | 'backend' | 'database' | 'testing';
 
 // Accent gradients for cards
 const accentMap: Record<string, string> = {
@@ -24,6 +24,7 @@ const accentMap: Record<string, string> = {
     css: 'from-sky-100/80 via-blue-50/60 to-indigo-100/80',
     scss: 'from-pink-100/80 via-fuchsia-50/60 to-rose-100/80',
     react: 'from-cyan-100/80 via-sky-50/60 to-blue-100/80',
+    vue: 'from-emerald-100/80 via-green-50/60 to-teal-100/80',
     java: 'from-orange-100/80 via-amber-50/60 to-pink-100/80',
     spring: 'from-emerald-100/80 via-green-50/60 to-lime-100/80',
     'spring-boot': 'from-teal-100/80 via-emerald-50/60 to-green-100/80',
@@ -31,6 +32,7 @@ const accentMap: Record<string, string> = {
     selenium: 'from-green-100/80 via-emerald-50/60 to-teal-100/80',
     rxjs: 'from-cyan-100/80 via-sky-50/60 to-indigo-100/80',
     git: 'from-orange-100/80 via-red-50/60 to-orange-100/80',
+    mysql: 'from-blue-100/80 via-cyan-50/60 to-blue-100/80',
     postgresql: 'from-blue-100/80 via-indigo-50/60 to-purple-100/80',
     'frontend-system-design': 'from-purple-100/80 via-pink-50/60 to-indigo-100/80',
 };
@@ -50,14 +52,15 @@ function LearningPathsPageContent() {
     const [isCompletionLoading, setIsCompletionLoading] = useState(false);
 
     // Only show allowed slugs
-    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa']), []);
-    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind', 'react', 'dsa'];
+    const allowedSlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript']), []);
+    const frontendLanguages = ['html', 'css', 'javascript', 'scss', 'tailwind'];
     const backendLanguages: string[] = [];
-    const testingLanguages: string[] = ['selenium'];
+    const databaseLanguages: string[] = [];
+    const testingLanguages: string[] = [];
     const algorithmLanguages: string[] = [];
     const versionControlLanguages: string[] = [];
 
-    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript', 'react', 'selenium', 'dsa']), []);
+    const readySlugs = useMemo(() => new Set(['html', 'css', 'scss', 'tailwind', 'javascript']), []);
 
     // Load completion data from unified service
     useEffect(() => {
@@ -108,6 +111,7 @@ function LearningPathsPageContent() {
             if (filter === 'all') return true;
             if (filter === 'frontend') return frontendLanguages.includes(roadmap.slug);
             if (filter === 'backend') return backendLanguages.includes(roadmap.slug);
+            if (filter === 'database') return databaseLanguages.includes(roadmap.slug);
             if (filter === 'testing') return testingLanguages.includes(roadmap.slug);
             if (filter === 'algorithms') return algorithmLanguages.includes(roadmap.slug);
             return true;
@@ -178,6 +182,7 @@ function LearningPathsPageContent() {
                                     { id: 'all', label: 'All' },
                                     { id: 'frontend', label: 'Frontend' },
                                     { id: 'backend', label: 'Backend' },
+                                    { id: 'database', label: 'Database' },
                                     { id: 'testing', label: 'Testing' },
                                 ].map((option) => (
                                     <button
